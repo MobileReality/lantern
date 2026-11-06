@@ -2,7 +2,15 @@
   "name": "lantern",
   "version": "1.0.0",
   "private": true,
-  "description": "Desktop app for running and understanding Claude Code and Codex across your harness: watch sessions, get notified when one needs you, and read each change.",
+  "description": "Your project is the whole context for your AI. Lantern maps it, helps you plan changes, reviews pull requests with generated flows, and keeps your AI assistant sessions together.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MobileReality/lantern.git"
+  },
+  "homepage": "https://thelantern.dev",
+  "bugs": {
+    "url": "https://github.com/MobileReality/lantern/issues"
+  },
   "keywords": [
     "claude-code",
     "codex",

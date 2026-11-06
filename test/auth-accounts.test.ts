@@ -5,9 +5,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createAuthWorld } from './helpers/auth-world';
 import { startFakeProviders } from './helpers/fake-providers';
 import type { FakeProviders } from './helpers/fake-providers';
-import { FAKE_ATLASSIAN_TOKEN, FAKE_GITHUB_TOKEN } from './helpers/fake-tokens';
+import { FAKE_ATLASSIAN_TOKEN, FAKE_GITHUB_TOKEN, fakeGithubToken } from './helpers/fake-tokens';
 
 const GITHUB_TOKEN = FAKE_GITHUB_TOKEN;
+const WRONG_GITHUB_TOKEN = fakeGithubToken('wrongwrongwrongwrongwrongwrongwrong00');
 const ATLASSIAN_TOKEN = FAKE_ATLASSIAN_TOKEN;
 const PROJECT = '/work/shop';
 
@@ -91,7 +92,7 @@ describe('auth.addToken', () => {
     it.each(cases)('%s', async (_name, arrange, reason) => {
       arrange();
       const { auth, dir, logs } = world(80);
-      const token = reason === CHECK_FAILURE.unauthorized ? 'ghp_wrongwrongwrongwrongwrongwrongwrong00' : GITHUB_TOKEN;
+      const token = reason === CHECK_FAILURE.unauthorized ? WRONG_GITHUB_TOKEN : GITHUB_TOKEN;
       const reply = await auth.addToken({ provider: 'github', token });
       expect(reply).toMatchObject({ ok: false, error: AUTH_ERROR.checkFailed, reason, message: expect.any(String) });
       expect(JSON.stringify(reply)).not.toContain(token);

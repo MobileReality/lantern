@@ -58,7 +58,7 @@ test/e2e/integrations-bindings.spec.ts . test 37d96ac1debb
 #feature integrations
   = test/e2e/support/integrations-harness.ts#launchIntegrationsHarness
 
-test/e2e/integrations.spec.ts . test 4e77b21fb5f6
+test/e2e/integrations.spec.ts . test 4333562959b8
 #feature integrations
   = test/e2e/support/integrations-harness.ts#launchIntegrationsHarness
   = test/e2e/support/overflow.ts#findClippedText

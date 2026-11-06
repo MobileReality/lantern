@@ -1,10 +1,11 @@
+import { fakeAtlassianToken } from './fake-tokens';
 import { branchOff, commitFile, commitRecord, git, makeWorld } from './git-repo';
 import type { World } from './git-repo';
 
 const BITBUCKET_ORIGIN = 'git@bitbucket.org:acme/shop.git';
 const GITHUB_ORIGIN = 'git@github.com:acme/shop.git';
 const EMAIL = 'dev@example.com';
-const TOKEN = 'ATATT-secret-token-4f2a9c';
+const TOKEN = fakeAtlassianToken('secret-token-4f2a9c');
 const ENV = { BITBUCKET_EMAIL: EMAIL, BITBUCKET_API_TOKEN: TOKEN };
 
 function pushOpenPr(project: string, id: number, branch = `feat/pr-${id}`) {

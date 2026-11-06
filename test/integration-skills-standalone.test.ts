@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { installBundleGuarded } from '../scripts/lantern-bundle.mjs';
 import { createRouter, startFakeHost } from './helpers/fake-host';
 import type { Router } from './helpers/fake-host';
+import { fakeAtlassianToken, fakeFineGrainedToken } from './helpers/fake-tokens';
 import { SKILLS_ROOT, git, makeHostedRepo } from './helpers/skill-runner';
 import type { HostedRepo } from './helpers/skill-runner';
 
@@ -22,7 +23,7 @@ const GITHUB_ORIGIN = 'git@github.com:example-owner/shop.git';
 const SITE = 'https://example.atlassian.net';
 const BB = 'https://api.bitbucket.org/2.0/repositories/example-workspace/shop/pullrequests';
 const GH = 'https://api.github.com/repos/example-owner/shop';
-const TOKENS = { jira: 'ATATT-jira-1a2b3c', bitbucket: 'ATATT-bitbucket-4d5e6f', github: 'github_pat_7g8h9i' };
+const TOKENS = { jira: fakeAtlassianToken('jira-1a2b3c'), bitbucket: fakeAtlassianToken('bitbucket-4d5e6f'), github: fakeFineGrainedToken('7g8h9i') };
 const INJECTED: Record<SkillName, Record<string, string>> = {
   'lantern-jira': { ATLASSIAN_EMAIL: 'dev@example.com', GLOBAL_ATLASSIAN_TOKEN: TOKENS.jira, ATLASSIAN_BASE_URL: SITE },
   'lantern-bitbucket': { BITBUCKET_EMAIL: 'dev@example.com', BITBUCKET_API_TOKEN: TOKENS.bitbucket },

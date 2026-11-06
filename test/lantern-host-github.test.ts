@@ -12,6 +12,7 @@ import type { FakeGithub } from './helpers/fake-github';
 import { branchOff, commitFile, commitRecord, git, makeWorld, mergeNoFf, squashMerge } from './helpers/git-repo';
 import type { World } from './helpers/git-repo';
 import { BITBUCKET_ORIGIN, GITHUB_ORIGIN, makeHostWorld } from './helpers/host-world';
+import { fakeAtlassianToken } from './helpers/fake-tokens';
 
 vi.setConfig({ testTimeout: 30_000, hookTimeout: 30_000 });
 
@@ -439,7 +440,7 @@ describe('the GitHub account a project uses', () => {
   it('does not use a Bitbucket account for a GitHub project', async () => {
     world = makeHostWorld([126], GITHUB_ORIGIN);
     const surroundings = accounts(null);
-    surroundings.addStatic('bitbucket', 'ATATT-account-token', 'dev', { email: 'dev@example.com' });
+    surroundings.addStatic('bitbucket', fakeAtlassianToken('account-token'), 'dev', { email: 'dev@example.com' });
     const { warnings } = await load(service({ account: accountLookup(surroundings.auth) }));
     expect(warnings).toHaveLength(1);
     expect(fake.requests).toHaveLength(0);

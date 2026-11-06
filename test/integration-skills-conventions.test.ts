@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { fakeAtlassianToken, fakeFineGrainedToken } from './helpers/fake-tokens';
 import { SKILLS_ROOT } from './helpers/skill-runner';
 
 const run = promisify(execFile);
@@ -17,9 +18,9 @@ interface Case {
 }
 
 const CASES: Case[] = [
-  { skill: 'lantern-jira', script: 'jira.mjs', kind: 'ticket', repoTemplate: '.github/ISSUE_TEMPLATE.md', credentials: { ATLASSIAN_EMAIL: 'dev@example.com', GLOBAL_ATLASSIAN_TOKEN: 'ATATT-conv-1a2b3c', ATLASSIAN_BASE_URL: 'https://example.atlassian.net' } },
-  { skill: 'lantern-bitbucket', script: 'bitbucket.mjs', kind: 'pr', repoTemplate: 'pull_request_template.md', credentials: { BITBUCKET_EMAIL: 'dev@example.com', BITBUCKET_API_TOKEN: 'ATATT-conv-4d5e6f' } },
-  { skill: 'lantern-github', script: 'github.mjs', kind: 'pr', repoTemplate: '.github/pull_request_template.md', credentials: { GITHUB_TOKEN: 'github_pat_conv_7g8h9i' } },
+  { skill: 'lantern-jira', script: 'jira.mjs', kind: 'ticket', repoTemplate: '.github/ISSUE_TEMPLATE.md', credentials: { ATLASSIAN_EMAIL: 'dev@example.com', GLOBAL_ATLASSIAN_TOKEN: fakeAtlassianToken('conv-1a2b3c'), ATLASSIAN_BASE_URL: 'https://example.atlassian.net' } },
+  { skill: 'lantern-bitbucket', script: 'bitbucket.mjs', kind: 'pr', repoTemplate: 'pull_request_template.md', credentials: { BITBUCKET_EMAIL: 'dev@example.com', BITBUCKET_API_TOKEN: fakeAtlassianToken('conv-4d5e6f') } },
+  { skill: 'lantern-github', script: 'github.mjs', kind: 'pr', repoTemplate: '.github/pull_request_template.md', credentials: { GITHUB_TOKEN: fakeFineGrainedToken('conv_7g8h9i') } },
 ];
 
 const BODY_MARKER = 'BODY-LINE-THAT-MUST-STAY-PRIVATE';

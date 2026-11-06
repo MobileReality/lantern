@@ -4,12 +4,13 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createRouter, fakeFetch } from './helpers/fake-host';
+import { fakeAtlassianToken } from './helpers/fake-tokens';
 import type { Route, Router } from './helpers/fake-host';
 import { SKILLS_ROOT, runSkill } from './helpers/skill-runner';
 
 const SITE = 'https://example.atlassian.net';
 const GATEWAY = 'https://api.atlassian.com/ex/jira/cloud-1';
-const TOKEN = 'ATATT-jira-token-3f9a';
+const TOKEN = fakeAtlassianToken('jira-token-3f9a');
 const ENV = { ATLASSIAN_EMAIL: 'dev@example.com', GLOBAL_ATLASSIAN_TOKEN: TOKEN, ATLASSIAN_BASE_URL: SITE };
 const BASIC = `Basic ${Buffer.from(`dev@example.com:${TOKEN}`).toString('base64')}`;
 

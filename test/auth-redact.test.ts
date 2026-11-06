@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createLog, redact } from '../src/main/auth/redact';
+import { fakeFineGrainedToken, fakeGithubUserToken } from './helpers/fake-tokens';
+
+const USER_TOKEN = fakeGithubUserToken('16C7e42F292c6912E7710c838347Ae178B4a');
+const FINE_GRAINED_TOKEN = fakeFineGrainedToken('11ABCDEFG0abcdefghijklmnopqrstuvwxyz');
 
 describe('redact', () => {
   it.each([
@@ -18,8 +22,8 @@ describe('redact', () => {
     ['Authorization: Bearer abc.def-SECRET', 'abc.def-SECRET'],
     ['authorization=Basic dXNlcjpwYXNz', 'dXNlcjpwYXNz'],
     ['sent Bearer longtoken-SECRET to host', 'longtoken-SECRET'],
-    ['ghu_16C7e42F292c6912E7710c838347Ae178B4a', 'ghu_16C7e42F292c6912E7710c838347Ae178B4a'],
-    ['github_pat_11ABCDEFG0abcdefghijklmnopqrstuvwxyz', 'github_pat_11ABCDEFG0abcdefghijklmnopqrstuvwxyz'],
+    [USER_TOKEN, USER_TOKEN],
+    [FINE_GRAINED_TOKEN, FINE_GRAINED_TOKEN],
     ['token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSJ9.c2lnbmF0dXJl', 'eyJhbGciOiJIUzI1NiJ9'],
   ])('hides the secret in %s', (input, secret) => {
     const out = redact(input);
