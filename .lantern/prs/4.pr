@@ -1,0 +1,97 @@
+lantern-pr 1
+# 4
+#title feat: read GitHub pull request state from the host
+#url https://github.com/MobileReality/lantern/pull/4
+#branch feat/github-pr-host-state
+#base main
+#opened 2026-11-06
+#head eae2007442dfee17f05f7f070f4b12c5af3dd169
+#describe what The pull request view asks GitHub for the state of each pull request, the way it already did for Bitbucket, and the host answer wins over what commit messages say.
+#describe what A GitHub rate limit, a bad token, a 404, a timeout or a network error give the existing note and keep the git state.
+#describe before A GitHub project got no host state, so a pull request merged by squash or rebase showed as open.
+#describe after The squash-merged pull request shows merged, a closed unmerged one shows declined, and an open one stays open.
+#describe verified Typecheck, lint, the full test suite, compile, the skills check and a stub-API check of the strip, all green; the real api.github.com was not driven.
++ src/main/lantern-host-drivers.ts
++ src/main/lantern-host-github.ts
++ test/e2e/pr-host-state.spec.ts
++ test/helpers/fake-github.ts
++ test/lantern-host-github.test.ts
+~ CONTRIBUTING.md
+~ docs/architecture.md
+~ docs/getting-started.md
+~ docs/primitives.md
+~ package.json
+~ src/main/lantern-host-account.ts
+~ src/main/lantern-host-origin.ts
+~ src/main/lantern-host-request.ts
+~ src/main/lantern-host-status.ts
+~ src/main/lantern-prs.ts
+~ src/shared/lang/en/messages.json
+~ src/shared/providers.ts
+~ test/auth-host-detection.test.ts
+~ test/helpers/git-repo.ts
+~ test/helpers/host-world.ts
+~ test/lantern-host-status.test.ts
+~ test/providers-table.test.ts
+#order src/shared/providers.ts
+#order src/main/lantern-host-request.ts
+#order src/main/lantern-host-github.ts
+#order src/main/lantern-host-drivers.ts
+#order src/main/lantern-host-account.ts
+#order src/main/lantern-host-status.ts
+#order src/main/lantern-host-origin.ts
+#order src/main/lantern-prs.ts
+#order src/shared/lang/en/messages.json
+#order test/lantern-host-github.test.ts
+#order test/helpers/fake-github.ts
+#order test/helpers/git-repo.ts
+#order test/helpers/host-world.ts
+#order test/lantern-host-status.test.ts
+#order test/auth-host-detection.test.ts
+#order test/providers-table.test.ts
+#order test/e2e/pr-host-state.spec.ts
+#order package.json
+#order docs/getting-started.md
+#order docs/architecture.md
+#order docs/primitives.md
+#order CONTRIBUTING.md
+#reason src/main/lantern-host-drivers.ts Puts what differs per code host in one table so the status layer stays generic.
+#reason src/main/lantern-host-github.ts Reads a GitHub pull request's state and base branch and tells a rate limit from other failures.
+#reason test/e2e/pr-host-state.spec.ts Shows the strip of a GitHub-origin project against a stub API, with screenshots on request.
+#reason test/helpers/fake-github.ts Gives the tests a local GitHub API that answers states, errors and rate limits.
+#reason test/lantern-host-github.test.ts Proves the GitHub states, failures, rate limit, account choice and token secrecy.
+#reason CONTRIBUTING.md Tells contributors a new code host needs a driver as well as a provider row.
+#reason docs/architecture.md Explains how the view takes a pull request's state from git and from the host.
+#reason docs/getting-started.md States precisely what an account gives the view: the host's state of each pull request.
+#reason docs/primitives.md Names the host state capability and its tests so the next change composes it.
+#reason package.json Adds the script that runs the stub-API check of the pull request strip.
+#reason src/main/lantern-host-account.ts Resolves the project's account for either code host instead of Bitbucket only.
+#reason src/main/lantern-host-origin.ts Recognises GitHub's ssh.github.com remote through the provider table.
+#reason src/main/lantern-host-request.ts Exposes the redirect-safe request with its status and headers for the GitHub request.
+#reason src/main/lantern-host-status.ts Asks whichever host the origin names and lets its answer override git, pausing on a rate limit.
+#reason src/main/lantern-prs.ts Hands the host service every record so it can choose whom to ask.
+#reason src/shared/lang/en/messages.json Adds the notices for hosts that are asked about merged pull requests too.
+#reason src/shared/providers.ts Lists the extra git remote hosts of a provider, GitHub's ssh.github.com.
+#reason test/auth-host-detection.test.ts Pins the ssh.github.com forms and the lookalike hosts that must stay refused.
+#reason test/helpers/git-repo.ts Adds a squash merge helper and a URL option to the record writer.
+#reason test/helpers/host-world.ts Names the GitHub origin the new tests use.
+#reason test/lantern-host-status.test.ts Keeps the non-Bitbucket skip test honest now that GitHub is asked too.
+#reason test/providers-table.test.ts Pins the remote aliases of each provider.
+#story A pull request merged by squash shows as merged
+#step actor Reviewer
+#step action opens the Lantern tab of a GitHub project
+#file src/main/lantern-host-status.ts
+#file src/main/lantern-host-github.ts
+#step subject a pull request merged with Squash and merge
+#file test/lantern-host-github.test.ts
+#below interaction sees it merged, not open
+#file test/e2e/pr-host-state.spec.ts
+#below consequence shown as open => shown as merged
+#story The host decides, and a failure keeps the git state
+#step actor Reviewer
+#step action refreshes with no account or a failing request
+#file src/main/lantern-host-drivers.ts
+#step subject the state of each pull request
+#below interaction keeps the git state and reads one note
+#file src/shared/lang/en/messages.json
+#below consequence GitHub was never asked => GitHub is asked, with a pause after a rate limit
