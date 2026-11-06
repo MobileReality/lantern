@@ -184,25 +184,27 @@ src/main/lantern-git.ts . gateway 38b1cd7ee2d4
 src/main/lantern-host-credentials.ts . service 2b383882e31b
 #feature pull-requests
 
-src/main/lantern-host-origin.ts . service 21874dfed584
+src/main/lantern-host-origin.ts . service 560aa714cfb1
 #feature pull-requests
   = src/main/lantern-git.ts
   < src/shared/providers.ts#CODE_HOST_IDS
   = ext:ssh
 
-src/main/lantern-host-request.ts . gateway 354fac4f5ce6
+src/main/lantern-host-request.ts . gateway 14e9bb1646a5
 #feature pull-requests
   < src/shared/control-characters.ts#hasControlCharacter
   < src/main/lantern-host-credentials.ts#HostCredentials
   < src/main/lantern-host-origin.ts#BitbucketRepo
   > ext:bitbucket-api
 
-src/main/lantern-host-status.ts . service 39fb8272e40b
+src/main/lantern-host-status.ts . service d38b6cef5ecc
 #feature pull-requests
   = src/main/lantern-batch.ts
-  = src/main/lantern-host-credentials.ts#readHostCredentials
-  = src/main/lantern-host-origin.ts#bitbucketRepoOf
-  = src/main/lantern-host-request.ts#fetchHostState
+  = src/main/lantern-host-drivers.ts#DRIVERS
+  = src/main/lantern-host-origin.ts#codeHostOf
+  < src/main/lantern-host-github.ts#isRateLimited
+  < src/main/lantern-host-request.ts#HostAnswer
+  < src/shared/providers.ts#PROVIDERS
   < src/main/lantern-types.ts
   < src/main/lantern-host-account.ts#AccountLookup
 
@@ -393,7 +395,7 @@ src/main/lantern-proverlay.ts . service 0442b90dfd9c
   < src/main/lantern-types.ts
   = src/main/lantern-local.ts
 
-src/main/lantern-prs.ts . service 91a0d12ee3bb
+src/main/lantern-prs.ts . service cf28511c8166
 #feature pull-requests
   = src/main/lantern-git.ts
   = src/main/lantern-host-status.ts
@@ -888,8 +890,24 @@ src/main/lantern-plan-fix.ts . service 9314e8316c9a
   < src/shared/lantern-plan-fix.ts#planFixText
   < src/shared/lantern-plan-messages.ts#say
 
-src/main/lantern-host-account.ts . service eca89fb04788
+src/main/lantern-host-account.ts . service 452eeac04aae
 #feature pull-requests
   = src/main/auth/index.ts#injectionFor
   < src/main/auth/env-names.ts#CREDENTIAL_VARS
-  < src/main/lantern-host-credentials.ts#HostCredentials
+  < src/shared/providers.ts#PROVIDER
+
+src/main/lantern-host-drivers.ts . service 380ff5f434e3
+#feature pull-requests
+  < src/main/lantern-host-account.ts#AccountCredentials
+  = src/main/lantern-host-credentials.ts#readHostCredentials
+  = src/main/lantern-host-github.ts#fetchGithubState
+  < src/main/lantern-host-origin.ts#CodeHost
+  = src/main/lantern-host-request.ts#fetchHostState
+  < src/main/lantern-types.ts#LanternPrState
+  < src/shared/providers.ts#CODE_HOST_IDS
+
+src/main/lantern-host-github.ts . gateway ed2d386671b8
+#feature pull-requests
+  < src/main/lantern-host-origin.ts#CodeHost
+  = src/main/lantern-host-request.ts#getReply
+  > ext:github-api

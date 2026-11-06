@@ -91,6 +91,14 @@ test/e2e/pr-review-comments.spec.ts . test 47edbc30971b
   = test/e2e/support/comments.ts
   = test/e2e/support/graph-harness.ts
 
+test/e2e/pr-host-state.spec.ts . test 1efbf92f70f9
+#feature pull-requests
+  = src/main/lantern-host-status.ts
+  = src/main/lantern-prs.ts
+  = test/e2e/support/graph-harness.ts
+  = test/helpers/fake-github.ts
+  = test/helpers/git-repo.ts
+
 test/e2e/pr-review-demo.spec.ts . test 92e083607dac
 #feature review-screen
   = test/e2e/support/graph-harness.ts

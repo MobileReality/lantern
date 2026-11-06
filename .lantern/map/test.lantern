@@ -659,13 +659,24 @@ test/lantern-host-leak.test.ts . test 2ebeb98a1a04
   = test/helpers/git-repo.ts
   = test/helpers/host-world.ts
 
-test/lantern-host-status.test.ts . test 03fe1c9e2564
+test/lantern-host-status.test.ts . test ae156c857644
 #feature pull-requests
   = src/main/lantern-host-status.ts
   = src/main/lantern-host-account.ts#accountLookup
   = test/helpers/auth-world.ts#createAuthWorld
   = src/main/lantern-prs.ts
   = test/helpers/fake-bitbucket.ts
+  = test/helpers/git-repo.ts
+  = test/helpers/host-world.ts
+
+test/lantern-host-github.test.ts . test 2b3db4a1bed0
+#feature pull-requests
+  = src/main/lantern-host-status.ts
+  = src/main/lantern-host-account.ts#accountLookup
+  = src/main/lantern-prs.ts
+  = test/helpers/auth-world.ts#createAuthWorld
+  = test/helpers/fake-bitbucket.ts
+  = test/helpers/fake-github.ts
   = test/helpers/git-repo.ts
   = test/helpers/host-world.ts
 
@@ -2338,7 +2349,7 @@ test/auth-expiry.test.ts . test 408dd4d74393
 #feature integrations
   > src/shared/auth-expiry.ts#expiryState
 
-test/auth-host-detection.test.ts . test 0fbab2760895
+test/auth-host-detection.test.ts . test a5bd8c661b77
 #feature integrations
   > src/main/lantern-host-origin.ts#codeHostOf
   < test/helpers/git-repo.ts#git
@@ -2559,7 +2570,7 @@ test/provider-logos.test.ts . test 1decf58b7c3a
   > src/renderer/lib/provider-logo.ts#providerLogo
   < src/shared/providers.ts#PROVIDERS
 
-test/providers-table.test.ts . test 793aeee4993e
+test/providers-table.test.ts . test 903bbab8c445
 #feature integrations
   > src/shared/providers.ts#PROVIDERS
 

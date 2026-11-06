@@ -32,6 +32,9 @@ test/helpers/diff-text.ts . test 96a23f96c97b
 test/helpers/fake-bitbucket.ts . test d7fa43f9088f
 #feature pull-requests
 
+test/helpers/fake-github.ts . test c8d91501a98e
+#feature pull-requests
+
 test/helpers/fake-claude.ts . test 1de20dedb2eb
 #feature pr-explain
 
@@ -61,11 +64,11 @@ test/helpers/fake-providers.ts . test 8b09b0534518
 test/helpers/fake-tokens.ts . test 5443c9287cee
 #feature integrations
 
-test/helpers/git-repo.ts . test 78f2fdbfd5c0
+test/helpers/git-repo.ts . test e5bc08a9427a
 #feature pull-requests
   > ext:git
 
-test/helpers/host-world.ts . test 747a1fe41018
+test/helpers/host-world.ts . test b47b941befc6
 #feature pull-requests
   = test/helpers/git-repo.ts
 
