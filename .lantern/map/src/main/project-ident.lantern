@@ -1,0 +1,8 @@
+lantern 1
+# src/main/project-ident
+
+src/main/project-ident/index.ts . service 24b935583bd5
+#feature projects-hub
+  < src/main/projectroot.ts#checkoutRoot
+  < src/main/projectroot.ts#linkedWorktreeName
+  < src/main/projectroot.ts#readBranch

@@ -1,0 +1,6 @@
+{
+ "text": {
+  "README.md": "says the demo-sections map is a fictional bookshop with its source files, settled and carrying one section of each type",
+  "README.md @ skills/lantern-setup/scripts/validate.mjs": "the command that shows the map is settled"
+ }
+}

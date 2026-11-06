@@ -1,0 +1,33 @@
+# product areas: groups of features by what users do with them, never by layer or platform
+explore-the-map
+  file-graph
+  macro-view
+  lantern-sections
+build-the-map
+  map-setup
+  map-vocabulary
+  map-sync
+  product-areas
+review-changes
+  pull-requests
+  review-screen
+  review-comments
+  pr-explain
+  pr-flow
+  code-insight
+agent-work
+  agent-runs
+  delegate-runs
+  run-cost
+  skill-installer
+  skill-checks
+  integrations
+  planning
+project-workspace
+  projects-hub
+  serve-web
+  session-monitoring
+  notifications
+  process-memory
+  commands-keymap
+  command-palette

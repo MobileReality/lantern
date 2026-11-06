@@ -1,0 +1,23 @@
+lantern 1
+# skills/lantern-sync
+
+skills/lantern-sync/README.md . skill 224a9eb50a41
+#feature map-sync
+  @ skills/lantern-setup/references/format.md
+  @ skills/lantern-sync/SKILL.md
+  @ skills/lantern-sync/scripts/selftest.mjs
+
+skills/lantern-sync/SKILL.md . skill 06a098cc7462
+#feature map-sync
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/references/format.md
+  @ skills/lantern-setup/references/reason.md
+  @ skills/lantern-setup/scripts/areas.mjs
+  @ skills/lantern-setup/scripts/migrate-model.mjs
+  @ skills/lantern-setup/scripts/model.mjs
+  @ skills/lantern-setup/scripts/prs.mjs
+  @ skills/lantern-setup/scripts/refs.mjs
+  @ skills/lantern-setup/scripts/systems.mjs
+  @ skills/lantern-setup/scripts/validate.mjs
+  @ skills/lantern-sync/references/codex.md
+  @ skills/lantern-sync/scripts/sync.mjs

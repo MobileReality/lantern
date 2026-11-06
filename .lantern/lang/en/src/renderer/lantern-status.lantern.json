@@ -1,0 +1,5 @@
+{
+ "text": {
+  "index.ts": "Fills the map panel's status bar: the map stats (records, relations, source files mapped, missing, unmapped or up to date, each with its icon) and the session indicator, which shows the most urgent session state of the project with a count names the assistant that session runs and, as a hover tip, adds the total session count"
+ }
+}

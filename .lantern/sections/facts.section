@@ -1,0 +1,6 @@
+lantern-section 1
+# facts
+
+item run-electron-clean @ package.json#start
+item skills-source @ scripts/lantern-bundle.mjs#BUNDLE_SKILLS
+item poll-is-authoritative @ src/main/state.ts#reconcile

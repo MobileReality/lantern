@@ -1,0 +1,21 @@
+{
+ "text": {
+  "fix": "Corrige ceci.",
+  "test": "Ajoute un test pour ceci.",
+  "rename": "Renomme ceci.",
+  "simplify": "Simplifie ceci.",
+  "explain": "Explique pourquoi c'est nécessaire.",
+  "remove": "Supprime ceci."
+ },
+ "copy": {
+  "header": "Commentaires de relecture pour",
+  "scope": "Travaille uniquement dans cette pull request : reste sur sa branche et dans le code qu'elle modifie.",
+  "mixed": "Ces commentaires diffèrent. Suis l'instruction de chacun :",
+  "intent": "Intention"
+ },
+ "intent": {
+  "fix": { "label": "Corriger", "instruction": "Modifie le code pour traiter ce commentaire." },
+  "explain": { "label": "Expliquer", "instruction": "Explique ceci sans modifier le code." },
+  "question": { "label": "Question", "instruction": "Réponds à cette question sans modifier le code." }
+ }
+}

@@ -1,0 +1,80 @@
+lantern 1
+# src/renderer/lib/lantern-pixi
+
+src/renderer/lib/lantern-pixi/edge-graphics.ts . component 42b2871e19fb
+#feature file-graph
+  < src/renderer/lib/lanternctx.ts
+  < src/renderer/lib/lanternlayout.ts#EdgeCurve
+
+src/renderer/lib/lantern-pixi/index.ts . component 3b371b3b5ddc
+#feature file-graph
+  = src/renderer/lib/lantern-pixi/edge-graphics.ts
+  = src/renderer/lib/lantern-pixi/macro-graphics.ts#macroGraphics
+  = src/renderer/lib/lantern-pixi/node-graphics.ts
+  = src/renderer/lib/lantern-pixi/open-actions.ts
+  = src/renderer/lib/lantern-pixi/palette.ts
+  = src/renderer/lib/lantern-pixi/relation-graphics.ts#relationGraphics
+  = src/renderer/lib/lantern-pixi/text-quality.ts
+  < src/renderer/lib/lantern-pixi/viewport-size.ts#innerSize
+  = src/renderer/lib/lanternlayout.ts
+  = src/renderer/lib/lanternmacro.ts#blockKindText
+  = src/renderer/lib/lanternmacro.ts#captionOf
+  = src/renderer/lib/lanternmacrocurrent.ts#OPEN_FILE_LABEL
+  < src/renderer/lib/lanternmacrolayout.ts#MacroLayout
+  = src/renderer/lib/lanternmacromarks.ts#markNote
+  = src/renderer/lib/lanternmacromarks.ts#weakNearAlpha
+  = src/renderer/lib/lanternmove.ts
+  < src/renderer/lib/lanternprofile.ts#Profile
+  < src/renderer/lib/lanternprpanel.ts#FileMark
+  < src/renderer/lib/lanternrelview.ts#RelationLayout
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lantern-pixi/macro-graphics.ts . component f7cbb30b31b9
+#feature macro-view
+  = src/renderer/lib/lantern-pixi/edge-graphics.ts#drawArrow
+  = src/renderer/lib/lantern-pixi/edge-graphics.ts#edgeGeometry
+  < src/renderer/lib/lantern-pixi/palette.ts#edgeColor
+  < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+  < src/renderer/lib/lanternlayout.ts#EdgeCurve
+  = src/renderer/lib/lanternmacro.ts#edgeTitle
+  < src/renderer/lib/lanternmacrolabels.ts#EdgeLabel
+  < src/renderer/lib/lanternmacrolayout.ts#MacroLayout
+  < src/renderer/lib/lanternmacromarks.ts#MacroMarks
+  < src/renderer/lib/lanternmacrostyles.ts#FLAT_LINE
+
+src/renderer/lib/lantern-pixi/node-graphics.ts . component 328fa50108b8
+#feature file-graph
+  = src/renderer/lib/file-icons.ts#fileIconUrl
+  = src/renderer/lib/lantern-pixi/open-actions.ts
+  < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+  = src/renderer/lib/lanterncollapse.ts#tileFontSize
+  = src/renderer/lib/lanternlayout.ts
+  = src/renderer/lib/lanternmacro.ts#captionOf
+  < src/renderer/lib/lanternmacrocards.ts#PURPOSE_LINE_H
+  = src/renderer/lib/lanternmacromarks.ts#markCaption
+  < src/renderer/lib/lanternmacrostyles.ts#FLAT_LINE
+  = src/renderer/lib/lanternprofile.ts#Profile
+  < src/renderer/lib/lanternprpanel.ts#FileMark
+  = src/renderer/lib/lanterntile.ts#tileSlots
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lantern-pixi/open-actions.ts . component c2a927bdb69f
+#feature file-graph
+  < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+
+src/renderer/lib/lantern-pixi/palette.ts . util efd6ac83e6b9
+#feature file-graph
+
+src/renderer/lib/lantern-pixi/relation-graphics.ts . component c0080dd4be42
+#feature file-graph
+  = src/renderer/lib/lantern-pixi/edge-graphics.ts#drawEdge
+  < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+  < src/renderer/lib/lanternlayout.ts
+  = src/renderer/lib/lanternprofile.ts#Profile
+  < src/renderer/lib/lanternrelview.ts
+
+src/renderer/lib/lantern-pixi/text-quality.ts . util 6f8fe2e91cc9
+#feature file-graph
+
+src/renderer/lib/lantern-pixi/viewport-size.ts . util 7ef4be94009e
+#feature file-graph

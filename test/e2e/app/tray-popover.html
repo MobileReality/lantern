@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'self'; font-src 'self'; img-src 'self' data:" />
+    <title>Lantern tray popover harness</title>
+    <link rel="stylesheet" href="tray-popover-shell.css" />
+  </head>
+  <body>
+    <div class="menubar" aria-hidden="true"><span class="menubar-icon"></span></div>
+    <iframe id="window" class="window" title="Tray popover" src="tray-popover-frame.html"></iframe>
+    <script src="tray-popover-shell.js"></script>
+  </body>
+</html>

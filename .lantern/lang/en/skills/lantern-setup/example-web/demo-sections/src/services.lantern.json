@@ -1,0 +1,7 @@
+{
+ "text": {
+  "authService.ts": "decides a bookshop user's role from two e-mail lists",
+  "orderService.ts": "moves a sample order through placed, paid, shipped and cancelled",
+  "orderService.ts gotcha": "paying lowers stock through the repository, and cancelling a paid order never restores it"
+ }
+}

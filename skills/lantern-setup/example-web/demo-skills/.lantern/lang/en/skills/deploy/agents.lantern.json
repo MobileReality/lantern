@@ -1,0 +1,6 @@
+{
+ "text": {
+  "verifier.md": "read-only agent that checks a finished rollout",
+  "verifier.md @ skills/deploy/scripts/preflight.mjs": "verify mode"
+ }
+}

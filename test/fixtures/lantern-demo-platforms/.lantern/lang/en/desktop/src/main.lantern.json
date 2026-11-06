@@ -1,0 +1,6 @@
+{
+ "text": {
+  "main.ts": "opens the export window and reads the API",
+  "main.ts < api/src/routes.ts#readingsRoutes": "CSV source"
+ }
+}

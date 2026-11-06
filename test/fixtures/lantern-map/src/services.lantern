@@ -1,0 +1,23 @@
+lantern 1
+# src/services
+
+src/services/customerService.ts . repository 1d4a92a46f4a | customers collection CRUD
+  = src/db.ts#db | customer docs
+  < src/types/customer.ts#Customer
+src/services/discountService.ts . repository 3a54c79b9ead | discount_codes CRUD
+  = src/db.ts#db | discount docs
+  < src/types/orders.ts#DiscountCode
+src/services/mailService.ts . gateway abc9b3df15db | sends order mails via callable function
+  > functions/src/mailer.ts#sendMailProxy | message
+src/services/orderService.ts . service 63297ee1aeb2 | order lifecycle; payment deducts stock
+  = src/db.ts#db | orders docs
+  = src/utils/priceUtils.ts#calculateTotal | prices, discounts
+  = src/services/stockService.ts#getStockByIsbn | stock
+  > src/services/stockService.ts#updateStock | reduced stock
+  < src/types/orders.ts#Order
+src/services/shopSettingsService.ts . repository 23a0e7447a60 | mail relay setting in the hosted database
+  = ext:hosted-database | settings/mailRelay
+src/services/stockService.ts . service edbc828d3cfd | stock levels with change history
+  = src/db.ts#db | books, stock_levels, history docs
+  = src/utils/priceUtils.ts#calculateTotal | prices, discounts
+  < src/types/orders.ts#StockLevel

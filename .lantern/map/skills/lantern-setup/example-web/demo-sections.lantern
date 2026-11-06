@@ -1,0 +1,6 @@
+lantern 1
+# skills/lantern-setup/example-web/demo-sections
+
+skills/lantern-setup/example-web/demo-sections/README.md . skill 678de3a6b2a1
+#feature lantern-sections
+  @ skills/lantern-setup/scripts/validate.mjs

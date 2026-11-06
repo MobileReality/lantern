@@ -1,0 +1,17 @@
+{
+ "text": {
+  "analysis.mjs": "turns a delegate run's calls into tokens, USD and tool-output tokens per phase, per tool and per agent, plus the pass result from the last review verdict of either reviewer type",
+  "baseline.mjs": "builds, validates and compares the versioned baseline file, and refuses to compare files made with different estimators",
+  "phases.mjs": "decides which of brief, work, review or handover each call belongs to from the tools it invokes and the agent type (both reviewer types are review), treating a run of the configured skill linker as neutral",
+  "phases.mjs < skills/lantern-delegate/scripts/delegate-kinds.mjs#REVIEWER_AGENT_TYPES": "names the reviewer agent types whose calls and spawns count as review",
+  "phases.mjs < skills/lantern-delegate/scripts/skill-linker.mjs#isSkillLinkerWord": "tells the configured skill linker's own commands apart",
+  "phases.mjs gotcha": "a call with only neutral tools keeps the previous phase, and a compound command is neutral only when every part is",
+  "prices.mjs": "list prices per model and the USD of one call from its transcript usage, with 5 minute and 1 hour cache writes priced apart",
+  "prices.mjs gotcha": "a model missing from the table counts 0 USD and is reported as an unpriced call",
+  "render.mjs": "prints one baseline as the per-phase, per-tool and per-agent text report, naming the estimators used",
+  "run.mjs < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath": "finds the configured skill linker to pass into the analysis",
+  "run.mjs": "run-cost command entry: prints a run's phase table, writes a baseline with --out, or compares two baselines and exits 1 when the pass result differs",
+  "transcripts.mjs": "reads agent transcripts and meta files from one directory, finds reviewers through parentAgentId and sums tool_result text at bytes/4",
+  "transcripts.mjs gotcha": "reads only plain files inside the given directory and skips symlinks, so a planted link cannot pull in other files"
+ }
+}

@@ -1,0 +1,23 @@
+{
+  "text": {
+    "checks.mjs": "judges each end-to-end check of a delegate run from the mock pull requests, remote branches, script output, the comparison view of a branch record, skills folder and session transcripts, including whether the delegate and the orchestrator each read their own extras in full by the required-skills list of their role and whether the dispatch prompt leaves the orchestrator extra out",
+    "checks.mjs gotcha": "the reviewer-unavailable verdict test is wording based and best effort; informational checks are flagged hard false",
+    "child.mjs": "stops a spawned child by its own pid and waits for a line on its output",
+    "child.mjs gotcha": "refuses pid 1 or lower and a child that already exited, so it can never signal a broadcast pid",
+    "execute.mjs": "runs the map build and orchestrator phases under the cost cap, then checks every project and builds the report",
+    "fake-lantern.mjs": "serves the Bitbucket account over a local socket like the running Lantern, so a delegate run needs no token in a file or variable",
+    "fake-ssh.sh":"serves git over ssh for git@bitbucket.org:e2e/<name>.git from a local bare repository",
+    "mock-bitbucket.mjs": "mocks the Bitbucket repository and pull request REST routes with an in-memory store and a dump route",
+    "panel.mjs": "bundles the pull request panel and local comparison logic with esbuild and loads the pull requests and the branch comparison of a clone",
+    "plan.mjs": "parses the runner arguments and prints the plan with projects, checks, estimate and cost cap",
+    "projects.mjs": "defines the four dummy projects, one with a delegate extra and an orchestrator extra and one with a built-in skill switched off for the delegate, writes the neutral extra skills, and creates each project with a git repo and bare remote, pointing its settings at the fake Lantern socket",
+    "redirect-fetch.mjs": "rewrites fetch calls to the Bitbucket API so they reach the local mock",
+    "report.mjs": "parses result lines, sums cost, derives call budgets, fingerprints the real extensions config before and after the run and renders the pass or fail report",
+    "run.mjs": "entry point that refuses to spend money without --yes, runs the live test and cleans up",
+    "run.mjs gotcha": "spends real money: only --dry-run is free",
+    "session.mjs": "builds the headless claude invocation, runs it with the project's isolated home, strips GitHub, Bitbucket, Atlassian and Lantern-injected credentials from its environment and enforces its timeout",
+    "verify.mjs": "runs the per-project checks the stored delivery calls for on the branch, whose PR record or local branch record is gated by the same verify flags, and, unless told to skip them, the session transcripts",
+    "workspace.mjs": "creates the temp workspace with the mock host, the fake Lantern socket, each project's stored delivery and an isolated home with its own extensions config and delegate permissions, and removes them with the test transcripts",
+    "workspace.mjs gotcha": "deletes session transcript folders under the projects home, only those named after the temp project path"
+  }
+}

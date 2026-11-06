@@ -1,0 +1,6 @@
+{
+  "text": {
+    "index.ts": "Resolves the user keymap and sends a command to a trusted window when its shortcut is pressed, leaving the embedded editor its own keys and the View menu the devtools key.",
+    "index.ts gotcha": "The keymap is cached until refresh is called, so a changed binding does nothing until then."
+  }
+}

@@ -1,0 +1,49 @@
+lantern 1
+# skills/lantern-setup
+
+skills/lantern-setup/README.md . skill 4dfb3b69320d
+#feature map-setup
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/agents/lantern-mapper.md
+  @ skills/lantern-setup/example-web/locales.json
+  @ skills/lantern-setup/example-web/render.mjs
+  @ skills/lantern-setup/references/codex.md
+  @ skills/lantern-setup/references/format.md
+  @ skills/lantern-setup/references/roles.md
+  @ skills/lantern-setup/scripts/check-locales.mjs
+  @ skills/lantern-setup/scripts/cross-platform.mjs
+  @ skills/lantern-setup/scripts/lang-todo.mjs
+  @ skills/lantern-setup/scripts/macro-eval.mjs
+  @ skills/lantern-setup/scripts/migrate-lang.mjs
+  @ skills/lantern-setup/scripts/migrate-model.mjs
+  @ skills/lantern-setup/scripts/prs.mjs
+  @ skills/lantern-setup/scripts/retag.mjs
+  @ skills/lantern-setup/scripts/systems.mjs
+  @ skills/lantern-setup/scripts/validate.mjs
+
+skills/lantern-setup/SKILL.md . skill 486072749145
+#feature map-setup
+  @ skills/lantern-setup/README.md
+  @ skills/lantern-setup/agents/lantern-mapper.md
+  @ skills/lantern-setup/example-web/render.mjs
+  @ skills/lantern-setup/references/codex.md
+  @ skills/lantern-setup/references/format.md
+  @ skills/lantern-setup/references/roles.md
+  @ skills/lantern-setup/scripts/areas.mjs
+  @ skills/lantern-setup/scripts/check-locales.mjs
+  @ skills/lantern-setup/scripts/cross-platform.mjs
+  @ skills/lantern-setup/scripts/enumerate.mjs
+  @ skills/lantern-setup/scripts/fold.mjs
+  @ skills/lantern-setup/scripts/lang-todo.mjs
+  @ skills/lantern-setup/scripts/lang.mjs
+  @ skills/lantern-setup/scripts/macro-eval.mjs
+  @ skills/lantern-setup/scripts/migrate-lang.mjs
+  @ skills/lantern-setup/scripts/migrate-model.mjs
+  @ skills/lantern-setup/scripts/model.mjs
+  @ skills/lantern-setup/scripts/plan.mjs
+  @ skills/lantern-setup/scripts/prs.mjs
+  @ skills/lantern-setup/scripts/refs.mjs
+  @ skills/lantern-setup/scripts/retag.mjs
+  @ skills/lantern-setup/scripts/systems.mjs
+  @ skills/lantern-setup/scripts/validate.mjs
+  @ skills/lantern-sync/SKILL.md

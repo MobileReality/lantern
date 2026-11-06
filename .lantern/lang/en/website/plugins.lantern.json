@@ -1,0 +1,6 @@
+{
+ "text": {
+  "check-links.ts": "Fails the docs build when a relative link in the Markdown points at a missing page, heading or file",
+  "site.ts": "Normalises the base path and site URL, adds the icon and canonical tags and publishes the logo from the docs assets"
+ }
+}

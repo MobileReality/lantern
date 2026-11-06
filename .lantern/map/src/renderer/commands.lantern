@@ -1,0 +1,7 @@
+lantern 1
+# src/renderer/commands
+
+src/renderer/commands/index.ts . state fdc887dd4367
+#feature commands-keymap
+  < src/shared/commands/index.ts#COMMANDS
+  < src/shared/commands/index.ts#isCommandId

@@ -1,0 +1,7 @@
+{
+ "text": {
+  "ship.md": "slash command that deploys the current branch",
+  "ship.md @ skills/deploy/SKILL.md": "load the skill",
+  "ship.md @ skills/deploy/protocol.md": "rollout steps"
+ }
+}

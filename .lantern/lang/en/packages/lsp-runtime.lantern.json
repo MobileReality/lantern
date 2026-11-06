@@ -1,0 +1,5 @@
+{
+  "text": {
+    "package.json": "Pins the private bundled TypeScript language-server runtime dependencies"
+  }
+}

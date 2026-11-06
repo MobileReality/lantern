@@ -1,0 +1,131 @@
+{
+  "usage": {
+    "header": "usage: node bitbucket.mjs <command> [arguments]   (run inside the repository; every command takes --remote <name> when there are several remotes)",
+    "list": "  list [--limit N] [--json]                  open pull requests",
+    "show": "  show <id> [--json]                         one pull request",
+    "create": "  create --title <text> [--body <text> | --body-file <path>] [--target <branch>] [--branch <name>] [--dry-run]   push the current branch (HEAD to <name> with --branch) and open a pull request",
+    "comment": "  comment <id> --body <text> | --body-file <path>   comment on a pull request",
+    "description-block": "  description-block <id> --name <marker> --file <path>   put the file's text in a marked block of the description, replacing an earlier block of that name",
+    "check": "  check [--offline] [--json]                 confirm the account resolves and can write pull requests here; prints where it came from, never a token",
+    "conventions": "  conventions [--json]                       list the templates, skills and saved templates this project already has for pull requests",
+    "template": "  template save pr --file <path> [--force] | show pr   keep or print the project's pull request template",
+    "help": "  help                                       show this text"
+  },
+  "cli": {
+    "unknownCommand": "Unknown or missing command \"{command}\".",
+    "failed": "Failed: {reason}"
+  },
+  "args": {
+    "unknownOption": "Unknown option {option}.",
+    "missingValue": "Option {option} needs a value.",
+    "positionals": "Expected arguments: {expected}.",
+    "noArguments": "(none)",
+    "bodyRequired": "Give the text with exactly one of --body <text> or --body-file <path>.",
+    "bodyUnreadable": "Could not read the text: {reason}",
+    "bodyEmpty": "The text is empty.",
+    "badLimit": "--limit must be a whole number from 1 to {max}."
+  },
+  "check": {
+    "action": {
+      "repository": "Reading {slug}"
+    },
+    "source": {
+      "environment": "the environment",
+      "lantern": "Lantern",
+      "socket": "the Lantern credential socket"
+    },
+    "credentials": "BITBUCKET_EMAIL and BITBUCKET_API_TOKEN resolve (from {source}).",
+    "offline": "The Bitbucket API was not called (--offline).",
+    "scopeOk": "{scope} is granted on {slug}.",
+    "scopeMissing": "The token has no {scope} (granted: {granted}). Mint one with \"Create API token with scopes\", app Bitbucket, scope write:pullrequest, or fix the account in Lantern (command palette, Integrations).",
+    "noScopes": "none reported"
+  },
+  "block": {
+    "required": "Give the block with --name <marker> and --file <path>.",
+    "badName": "\"{name}\" is not a marker name: use lowercase letters, digits, : _ and -, starting with a letter or digit.",
+    "unreadable": "Could not read the block text: {reason}",
+    "empty": "The block text is empty."
+  },
+  "credentials": {
+    "missing": "Missing {names}. Add the Bitbucket account in Lantern (command palette, Integrations); runs started from Lantern then get it for the project. Nothing else needs to be set up.",
+    "reason": {
+      "noAccount": "Lantern has no Bitbucket account yet: add one in Lantern (command palette, Integrations), then choose an account for this project in Integrations.",
+      "chooseAccount": "No Bitbucket account is chosen for this project: choose an account for this project in Integrations (command palette, Integrations).",
+      "storeUnavailable": "Lantern could not read the stored account (its secret store is locked or unavailable); unlock it and try again.",
+      "unknownProject": "This folder is not a project opened in Lantern; open it there.",
+      "notRunning": "Lantern is not running or does not answer; start it.",
+      "refused": "Lantern refused the request."
+    }
+  },
+  "http": {
+    "unreachable": "Could not reach {host}: {reason}",
+    "refused": "{action} was refused ({status}).{hint} {detail}",
+    "hint": {
+      "401": "The account was not accepted; check it in Lantern (command palette, Integrations).",
+      "403": "The account may lack permission for this (pull requests need the read and write pull request scopes).",
+      "404": "Not found, or the account cannot see it."
+    }
+  },
+  "git": {
+    "failed": "{command} failed: {said}",
+    "detachedHead": "Detached HEAD. Check out a branch first.",
+    "noDefaultBranch": "Could not determine the remote's default branch. Pass --target <branch>.",
+    "sameBranch": "Source and target are both \"{branch}\"; there is nothing to review. Work on a branch or pass --target.",
+    "dirtyTree": "The working tree has uncommitted changes to tracked files. Commit them first.",
+    "targetMissing": "Target branch \"{target}\" does not exist on {remote}. Ask the user which branch to target."
+  },
+  "remote": {
+    "noneNamed": "No Bitbucket remote named \"{name}\".",
+    "noneFound": "No remote of this repository points at bitbucket.org.",
+    "severalFound": "Several Bitbucket remotes ({names}); pass --remote <name>."
+  },
+  "pr": {
+    "badId": "\"{id}\" is not a pull request number.",
+    "titleRequired": "Give the pull request a title with --title <text>.",
+    "action": {
+      "list": "Listing pull requests",
+      "show": "Reading pull request #{id}",
+      "comment": "Commenting on pull request #{id}",
+      "update": "Updating pull request #{id}",
+      "lookup": "Looking for an open pull request of this branch",
+      "create": "Opening the pull request"
+    },
+    "row": "#{id}  {title}  ({source} -> {target})  by {author}  {url}",
+    "noneOpen": "No open pull requests.",
+    "unknown": "?",
+    "title": "#{id}: {title}",
+    "field": {
+      "state": "State: {state}",
+      "author": "Author: {author}",
+      "branches": "Branches: {source} -> {target}",
+      "url": "URL: {url}"
+    },
+    "commented": "Commented on pull request #{id}. {url}",
+    "blockWritten": "Wrote the {name} block of pull request #{id}. {url}",
+    "exists": "Pull request #{id} is already open for this branch; no second one was opened. {url}",
+    "created": "Opened pull request #{id}. {url}",
+    "dryRun": "Dry run, nothing pushed or sent. Would push {source} to {remote} and open a pull request into {target} in {workspace}/{repo}:"
+  },
+  "conventions": {
+    "row": "{source}  {path}  {line}",
+    "none": "Nothing found: no pull request template in the repository, no skill about it and no saved template.",
+    "noDescription": "(no description)",
+    "repoLine": "pull request template in the repository",
+    "savedLine": "pull request template saved for this project ({kind})",
+    "source": {
+      "repository": "repository",
+      "skill": "skill",
+      "saved": "saved"
+    }
+  },
+  "template": {
+    "badAction": "The first argument must be one of: {actions}.",
+    "badKind": "The kind \"{kind}\" is not one for Bitbucket; use one of: {kinds}.",
+    "fileRequired": "Give the approved template with --file <path>.",
+    "unreadable": "Could not read the template: {reason}",
+    "empty": "The template file is empty.",
+    "exists": "A template is already saved at {path}; pass --force to replace it.",
+    "saved": "Saved the {kind} template at {path}.",
+    "absent": "No {kind} template is saved for this project."
+  }
+}

@@ -1,0 +1,9 @@
+{
+ "text": {
+  "index.html": "Page shell of the docs site, titled Lantern documentation, with its description and social tags, which loads the app",
+  "package.json": "Dependencies and scripts of the docs site, kept apart from the Electron app",
+  "pnpm-workspace.yaml": "Makes the docs site its own pnpm root so it never joins the app's lockfile",
+  "tsconfig.json": "Type-check settings for the docs site and its build plugins",
+  "vite.config.ts": "Sets the docs site base path and site URL from the environment and registers its build plugins"
+ }
+}

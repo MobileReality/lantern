@@ -1,0 +1,5 @@
+lantern 1
+# src/renderer/themes
+
+src/renderer/themes/lantern-dark.json . style 7b460c33e822
+#feature code-insight

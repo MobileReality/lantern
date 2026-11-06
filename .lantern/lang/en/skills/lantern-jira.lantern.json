@@ -1,0 +1,7 @@
+{
+ "text": {
+  "README.md": "Records what the Jira skill is based on, the credentials it reads and that it stays self-contained, with a user's own Jira skill taking precedence",
+  "SKILL.md": "Directs an agent to read, search, comment on, describe and move Jira tickets with the account added in Lantern, taken from the environment or asked of Lantern, says what to do when the account or a transition is refused, and leaves what a ticket contains to the user's own templates and skills, found with the conventions command",
+  "SKILL.md @ skills/lantern-jira/scripts/jira.mjs": "the one command the agent runs for every ticket action"
+ }
+}

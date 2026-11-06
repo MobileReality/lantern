@@ -1,0 +1,7 @@
+{
+ "text": {
+  "github.mjs": "GitHub remote URL parsing and ssh account lookups",
+  "identity.mjs": "reports and checks the git identity commits go out under, taking the e-mail from the Lantern profile first, and runs one command with that author",
+  "identity.mjs gotcha": "the profile e-mail needs the running Lantern; without it the env file decides, and with neither git config does"
+ }
+}

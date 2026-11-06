@@ -1,0 +1,32 @@
+lantern 1
+# scripts/run-cost
+
+scripts/run-cost/analysis.mjs . pure 6c4e7cf4bd4b
+#feature run-cost
+  < scripts/run-cost/phases.mjs#assignPhases
+  < scripts/run-cost/phases.mjs#isReviewerType
+  < scripts/run-cost/prices.mjs#callUsd
+  < scripts/run-cost/transcripts.mjs#estimateTokens
+scripts/run-cost/baseline.mjs . pure e9e472ccbed9
+#feature run-cost
+  < scripts/run-cost/phases.mjs#PHASES
+  < scripts/run-cost/prices.mjs#USD_ESTIMATOR
+  < scripts/run-cost/transcripts.mjs#TOKEN_ESTIMATOR
+scripts/run-cost/phases.mjs . pure b41761503d99
+#feature run-cost
+  < skills/lantern-delegate/scripts/delegate-kinds.mjs#REVIEWER_AGENT_TYPES
+  < skills/lantern-delegate/scripts/skill-linker.mjs#isSkillLinkerWord
+scripts/run-cost/prices.mjs . pure 95d6dee63605
+#feature run-cost
+scripts/run-cost/render.mjs . pure 45103245a643
+#feature run-cost
+  < scripts/run-cost/phases.mjs#PHASES
+scripts/run-cost/run.mjs . script 881ba9caa22e
+#feature run-cost
+  = scripts/run-cost/analysis.mjs#analyseRun
+  = scripts/run-cost/baseline.mjs#compareBaselines
+  < scripts/run-cost/render.mjs#renderRun
+  = scripts/run-cost/transcripts.mjs#readRunTree
+  < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath
+scripts/run-cost/transcripts.mjs . service 26eb37e3d11e
+#feature run-cost

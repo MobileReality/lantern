@@ -1,0 +1,29 @@
+{
+  "text": {
+    "actions.ts": "Turns a click, a key or a dive into the right selection, the right zoom and the right enter or leave call to the host.",
+    "build.ts": "Builds the map's SVG once for a layout: a shape and its labels for every area, feature, foundation entry and, later, file row.",
+    "camera.ts": "Pure camera maths for the map: fit a rect, zoom around a point, limits, bounds, interpolation and easing.",
+    "chrome.ts": "Creates the map's focusable root with its zoom buttons and the hint line, and the outside systems list docked under it.",
+    "dock.ts": "Works out the outside systems list from the model and the selection (every system with its relation count, or only those a selected block or file talks to, with Show all), draws it as a labelled list of buttons and moves between entries with the arrow keys.",
+    "driver.ts": "Holds the camera of the map, jumps or animates it, honours reduced motion and tells the view when it moved.",
+    "files.ts": "Picks the files a feature lists, the changed, the plan-named, the plan-related and the open ones first, and its strongest relations.",
+    "focus.ts": "Works out what a selection lights up (for an outside system every area, feature and foundation entry that talks to it with relation counts; for a block or a picked file the systems it talks to; for a foundation entry also its linked entries, the features where its platform has files and, apart, the places it only uses), which neighbour an arrow key reaches and which area the camera is inside.",
+    "follow.ts": "Keeps the host's level and the camera in step: enters and leaves areas as the map moves, and moves the map when the host does.",
+    "input.ts": "Turns the wheel, a pinch, a drag and a double click on the map into zoom, pan and click calls, and keeps them from the page.",
+    "keys.ts": "Maps a key press to a map action: zoom, fit, move, pan, dive in, step out or pick.",
+    "layout.ts": "Places the areas, their feature tiles and the foundation band of the product in one world, the same way every time.",
+    "links.ts": "Draws the quiet main-link ribbons, the pull request's touched links and the ribbons to the partners of a selection.",
+    "lod.ts": "Decides from the width a shape has on screen how much detail it shows, and fits or wraps labels to the room they have.",
+    "marks.ts": "Derives from the pull request, the open file, the picked Flow step and the picked plan stage (with the files related to the ones it names) what to light on areas, features, files and outside systems.",
+    "model.ts": "Turns the Macro payload into the areas, features, files, links, foundation entries and outside systems the map draws, with each system's relations counted per area, feature, foundation entry and file.",
+    "mount.ts": "The mount point of the Macro view's areas map: one zoomable map of the whole product that shows more detail the closer you zoom, with the outside systems list under it.",
+    "navigation.ts": "Finds which detail level the view is at and the next area, feature or file for an arrow key.",
+    "paint.ts": "Sets the positions, sizes, opacities and texts of everything on the map for one camera, so labels keep a legible size at every zoom, with a count pill on every shape that talks to the selected outside system and a plan tag on what a picked plan stage names and a quieter one on the files related to them.",
+    "session.ts": "Describes the state the map's parts share: context, model, layout, scene, marks, camera, entered area, focus, picked file and whether the systems list shows all.",
+    "stage.ts": "Switches the Macro host between the canvas and the areas map's own element: mounts the map once, updates it on every repaint and tears it down when the Macro view is left.",
+    "state.ts": "Marks each shape as selected, related, used through relations only, dimmed, lit, being read, in the picked step or named by the picked plan stage (classes taken from the shared style list), and gives it its aria label, naming its relations with a selected outside system and the plan that names it.",
+    "svg.ts": "Small helpers to create SVG elements and set attributes, classes and text only when they change.",
+    "types.ts": "Defines the plain data and callbacks the areas map gets: the payload with the outside systems of each file, the drawn scene, the pull request marks, the plan focus, the open file, the Flow step, the selection, what a selected foundation tile connects to and how to select, enter, leave and open a file.",
+    "view.ts": "Mounts the areas map: builds the model, layout and map, wires input, keys, the outside systems list and resize, repaints on every update and cleans up on destroy."
+  }
+}

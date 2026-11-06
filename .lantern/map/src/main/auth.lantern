@@ -1,0 +1,137 @@
+lantern 1
+# src/main/auth
+
+src/main/auth/accounts.ts . service 696238b70b58
+#feature integrations
+  < src/main/auth/outcome.ts#andThen
+  < src/main/auth/private-file.ts#isRecord
+  < src/main/auth/profiles.ts#ProfileStore
+  < src/main/auth/providers.ts#isProviderId
+  = src/main/auth/status.ts#profileStatus
+  = src/main/auth/token-check.ts#checkToken
+  < src/main/auth/token-manager.ts#ConnectionState
+  < src/shared/auth-expiry.ts#parseExpiryDate
+  < src/shared/auth-input.ts#parseTokenInput
+  < src/shared/auth-kinds.ts#AUTH_ERROR
+  < src/shared/auth-view.ts#AddTokenResult
+  < src/shared/lang/messages.ts#msg
+src/main/auth/bindings.ts . service 3ed41386216a
+#feature integrations
+  < src/main/auth/errors.ts#BindingError
+  < src/main/auth/profiles.ts#ProfileStore
+  = src/main/auth/private-file.ts
+  < src/main/auth/providers.ts#isProviderId
+  < src/shared/auth-kinds.ts#BINDING_CHOICE
+src/main/auth/credential-server.ts . handler cceb09591b42
+#feature integrations
+#see-also src/main/auth/ipc.ts
+  = src/main/auth/index.ts#Auth
+  < src/main/auth/credential-socket.ts#parseCredentialRequest
+  < src/main/auth/env-names.ts#CREDENTIAL_VARS
+  < src/main/auth/providers.ts#ProviderId
+  = src/main/auth/redact.ts#createLog
+  < src/shared/auth-kinds.ts#CREDENTIAL_REFUSAL
+  < src/shared/lang/messages.ts#msg
+src/main/auth/credential-socket.ts . schema 68c6b5d2ea34
+#feature integrations
+  < src/main/auth/providers.ts#isProviderId
+  < src/shared/auth-kinds.ts#CREDENTIAL_REFUSAL
+src/main/auth/electron-cipher.ts . gateway 4e1e63d66c3d
+#feature integrations
+  < src/main/auth/secret-store.ts#Cipher
+  = ext:os-keychain
+src/main/auth/env-names.ts . service 4b567674adb9
+#feature integrations
+  = src/main/lantern-host-credentials.ts#readBoundedFile
+  < src/main/auth/providers.ts#ProviderId
+src/main/auth/errors.ts . schema 29cb3e8e3b48
+#feature integrations
+  < src/shared/auth-kinds.ts#ErrorCodeOf
+src/main/auth/index.ts . service 2989ef7d2556
+#feature integrations
+  = src/main/auth/accounts.ts#createAccounts
+  = src/main/auth/bindings.ts#createBindings
+  = src/main/auth/profiles.ts#createProfileStore
+  = src/main/auth/project-view.ts#projectIntegrations
+  < src/main/auth/providers.ts#ProviderDrivers
+  = src/main/auth/redact.ts#createLog
+  = src/main/auth/secret-store.ts#createSecretStore
+  > src/main/auth/spawn-env.ts#injectionOf
+  = src/main/auth/status.ts#authStatus
+  < src/main/auth/token-check.ts#CheckDeps
+  = src/main/auth/token-manager.ts#createTokenManager
+  < src/shared/auth-kinds.ts#PERSISTENCE
+  < src/shared/lang/messages.ts#msg
+src/main/auth/ipc.ts . handler 5858c63310bd
+#feature integrations
+  < src/main/auth/errors.ts#BindingError
+  = src/main/auth/index.ts#Auth
+  < src/main/auth/private-file.ts#isRecord
+  < src/main/auth/providers.ts#isProviderId
+  < src/shared/auth-kinds.ts#AUTH_ERROR
+  < src/shared/auth-view.ts#AddTokenResult
+  < src/shared/auth.ts#AUTH_ADD_TOKEN_CHANNEL
+  < src/shared/lang/messages.ts#msg
+src/main/auth/known-project.ts . service 5034c167e632
+#feature integrations
+  < src/main/projectroot.ts#resolveRoot
+src/main/auth/outcome.ts . util 3fa5cd5abaf3
+#feature integrations
+src/main/auth/private-file.ts . util 74bf90e88314
+#feature integrations
+  > src/main/atomic-write.ts#writeFileAtomically
+src/main/auth/profiles.ts . repository bf9c35594e59
+#feature integrations
+  = src/main/auth/private-file.ts
+  < src/main/auth/providers.ts#isProviderId
+  < src/shared/auth-kinds.ts#CREDENTIAL_KIND
+src/main/auth/project-view.ts . service d211c23d6e3b
+#feature integrations
+  < src/main/auth/bindings.ts#Bindings
+  = src/main/auth/env-names.ts#namesInEnvironment
+  < src/main/auth/profiles.ts#ProfileStore
+  < src/main/auth/providers.ts#PROVIDERS
+  = src/main/auth/status.ts#profileStatus
+  < src/main/lantern-host-origin.ts#CodeHost
+  < src/shared/auth-kinds.ts#BINDING_CHOICE
+  < src/shared/auth-kinds.ts#CREDENTIAL_SOURCE
+  < src/shared/auth-view.ts#ProjectIntegrations
+src/main/auth/providers.ts . schema bd0c0ec7b78e
+#feature integrations
+  < src/shared/providers.ts#PROVIDERS
+src/main/auth/redact.ts . util 8d0a07c4c825
+#feature integrations
+  < src/shared/lang/messages.ts#msg
+src/main/auth/secret-store.ts . repository 389c5c0e3aa1
+#feature integrations
+  = src/main/auth/private-file.ts
+  < src/shared/auth-kinds.ts#PERSISTENCE
+src/main/auth/spawn-env.ts . pure 7e20fab7d644
+#feature integrations
+  < src/main/auth/env-names.ts#CREDENTIAL_VARS
+  < src/main/auth/providers.ts#PROVIDER_IDS
+  < src/shared/providers.ts#CODE_HOST_IDS
+src/main/auth/status.ts . pure aa4f8e243ef7
+#feature integrations
+  < src/main/auth/bindings.ts#Bindings
+  < src/main/auth/profiles.ts#ProfileStore
+  < src/main/auth/providers.ts#PROVIDERS
+  < src/shared/auth-kinds.ts#ConnectionState
+  < src/shared/auth-view.ts#AuthStatus
+src/main/auth/token-check.ts . gateway 6ab64eae277a
+#feature integrations
+  < src/main/auth/providers.ts#PROVIDERS
+  < src/shared/auth-input.ts#TokenInput
+  < src/shared/auth-kinds.ts#CHECK_FAILURE
+  < src/shared/lang/messages.ts#msg
+  = ext:bitbucket-api
+  = ext:github-api
+  = ext:jira-api
+src/main/auth/token-manager.ts . service 9c71d89cb289
+#feature integrations
+  < src/main/auth/errors.ts#TokenError
+  < src/main/auth/profiles.ts#ProfileStore
+  < src/main/auth/providers.ts#ProviderDrivers
+  < src/main/auth/secret-store.ts#SecretStore
+  < src/shared/auth-kinds.ts#CONNECTION_STATE
+  < src/shared/lang/messages.ts#msg

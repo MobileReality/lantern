@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:" />
+    <title>Lantern skills harness</title>
+    <link rel="stylesheet" href="../../../src/renderer/workspace.css" />
+    <link rel="stylesheet" href="../../../src/renderer/floating.css" />
+  </head>
+  <body>
+    <button id="mic-btn" type="button" hidden><span class="mic-fix-label">Enable mic</span></button>
+    <div id="skills-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <span class="modal-title">✦ Skills</span>
+          <span id="sk-proj" class="modal-proj"></span>
+          <button id="sk-close" class="modal-close" aria-label="Close the skills view" data-tip="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg></button>
+        </div>
+        <div id="sk-body" class="modal-body"></div>
+        <div id="sk-foot" class="modal-foot"></div>
+      </div>
+    </div>
+    <script src="skills-extras-renderer.js"></script>
+  </body>
+</html>

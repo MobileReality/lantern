@@ -1,0 +1,12 @@
+lantern 1
+# skills/lantern-delegate/scripts/github
+
+skills/lantern-delegate/scripts/github/github.mjs . util 3ea7ce965043
+#feature delegate-runs
+skills/lantern-delegate/scripts/github/identity.mjs . script 9ac01b7aa37b
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/git-env.mjs#resolveIdentityVar
+  < skills/lantern-delegate/scripts/github/github.mjs
+  < skills/lantern-delegate/scripts/host.mjs#classifyRemote
+  < skills/lantern-delegate/scripts/lantern-account.mjs#profileEmail
+  < skills/lantern-delegate/scripts/messages.mjs#message

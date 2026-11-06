@@ -1,0 +1,105 @@
+{
+  "git": {
+    "exited": "{command} exited {status}",
+    "exitedAbnormally": "abnormally"
+  },
+  "hostSkill": {
+    "missing": "{skill} is not installed (looked in: {roots}). The delegate opens its pull request through it; install the bundled skills with `pnpm run install-skills -- <project>` in the Lantern repo.",
+    "failed": "{skill} could not run: {reason}"
+  },
+  "preflight": {
+    "source": {
+      "environment": "environment",
+      "lantern": "Lantern",
+      "socket": "the Lantern credential socket"
+    },
+    "bitbucketCredentials": "BITBUCKET_EMAIL and BITBUCKET_API_TOKEN resolve (from {source})",
+    "githubCredentialsOffline": "GITHUB_TOKEN resolves (from {source}; API not called: --no-api)",
+    "githubCredentials": "GITHUB_TOKEN resolves (from {source}), authenticated as {login}",
+    "scopeGranted": "write:pullrequest granted on {repository}",
+    "scopeSkipped": "skipped (--no-api)",
+    "repoVisible": "{repository} is visible to that token",
+    "pushNoPullRequest": "not needed for Delivery push: no pull request is opened, so no host skill or account is required",
+    "badDelivery": "Unsupported --delivery {value}; expected one of: {values}.",
+    "unreadableCheck": "{skill} check printed something that is not JSON: {text}",
+    "hostSkillOk": "{skill} at {script}. Put it in the brief as: Host skill: {skill}",
+    "extraSkillsLine": "the delegate slot of the extensions config resolves: {names}. The delegate gets them from its protocol, which runs required-skills.mjs",
+    "switchedOffSkillsLine": "the {slot} slot of the extensions config switches off: {names}. required-skills.mjs leaves them out of the {slot} list, so nothing demands them",
+    "reviewerExtraSkillsLine": "the reviewer slot of the extensions config resolves: {names}. The reviewer gets them from its agent definition, which runs required-skills.mjs --role reviewer",
+    "identityMismatch": "{problems}. Fix git config (a repo-local `git config user.*`, with the user's agreement) before dispatching.",
+    "identityNoEmail": "no commit e-mail found: the Lantern profile for this project did not give one and GIT_COMMIT_EMAIL is not set, so commits would fall back to git config ({author}). Add the account in Lantern (command palette, Integrations; a GitHub account needs a public e-mail) or set GIT_COMMIT_EMAIL.",
+    "skillLinkerNote": "{path}",
+    "skillLinkerUnusable": "{reason}",
+    "identityFrom": {
+      "profile": "commits authored as {author}, the e-mail from the Lantern profile",
+      "env": "commits authored as {author}, the e-mail from GIT_COMMIT_EMAIL"
+    }
+  },
+  "prCreate": {
+    "badArgument": "Bad argument near \"{argument}\"",
+    "missingTitle": "Missing --title",
+    "gitFailed": "{command} failed: {said}",
+    "detachedHead": "Detached HEAD — check out a branch or pass --branch.",
+    "noDefaultBranch": "Could not determine the default branch. Pass --target.",
+    "skillFailed": "{skill} failed and said nothing.",
+    "badBranch": "The branch \"{branch}\" is not a conventional name: a delegate pushes only to {types} branches.",
+    "identityAdvice": "Tell the user exactly this. Do not edit global git config; a repo-local `git config user.*` only if they agree.",
+    "identityMismatch": "\nIdentity mismatch — nothing was pushed:\n{problems}\n{advice}",
+    "warning": "warning: {warning}{note}",
+    "commitsCorrectNote": " (the commits on the branch are correct; this affects future commits)"
+  },
+  "appendCost": {
+    "badArgument": "Bad argument near \"{argument}\"",
+    "missing": "Missing --{name}",
+    "unreadable": "Could not read the table: {reason}"
+  },
+  "preferences": {
+    "usage": "usage: node preferences.mjs get delivery [--project <dir>]\n       node preferences.mjs set delivery <{values}> [--project <dir>]\nget prints the stored value, or \"unset\" when none is stored.",
+    "unset": "unset",
+    "badKey": "\"{key}\" is not a preference; the only one is {known}.",
+    "badValue": "\"{value}\" is not a delivery; use one of: {values}.",
+    "unreadable": "{file} is not valid JSON ({reason}); fix or remove it, nothing was changed.",
+    "notAnObject": "{file} does not hold a JSON object; nothing was changed.",
+    "storedInvalid": "{file} holds delivery \"{value}\", which is not one of: {values}. Ask the user again and set it.",
+    "saved": "{key} is now {value} ({file})."
+  },
+  "identity": {
+    "partialProfile": "The commit identity has no name or no e-mail; the missing part comes from git config.",
+    "execNeedsCommand": "--exec needs a command.",
+    "source": {
+      "profile": "the Lantern profile chosen for this project",
+      "env": "GIT_COMMIT_EMAIL",
+      "none": "nothing found; git config decides"
+    }
+  },
+  "skillLinker": {
+    "prefixed": "skill linker ({source}): {problem}",
+    "missing": "{path} does not exist, so it is not an executable file.",
+    "notFile": "{path} is neither a file nor a folder.",
+    "notExecutable": "{path} is a file but not executable; give it execute permission.",
+    "noCore": "{path} is executable but the skills repo beside it has no \"core\" folder.",
+    "folderNoExecutable": "The folder {path} holds no executable file, so it has no skill linker.",
+    "folderNoCore": "The folder {path} has executable files but no \"core\" folder beside them, so none is the skill linker.",
+    "folderSeveral": "The folder {path} holds several skill linkers ({names}); enter the path of one of them."
+  },
+  "extensions": {
+    "badSlot": "\"{slot}\" is not an extension slot; use one of: {slots}.",
+    "badName": "\"{name}\" is not a plain skill folder name.",
+    "locked": "\"{name}\" is a core skill and cannot be added as an extra.",
+    "duplicate": "\"{name}\" is listed twice.",
+    "droppedLocked": "Always-on skills listed as extras were dropped: {names}.",
+    "droppedOff": "Skills that cannot be switched off were dropped from the off list: {names}.",
+    "notSwitchable": "\"{name}\" cannot be switched off for the {slot} slot; only the skills that shape how it works can.",
+    "offNotAnObject": "The \"off\" key in {file} must hold an object of slot names and skill lists.",
+    "badSkillLinker": "The skillLinker setting must be an absolute path to the script, not {value}.",
+    "notAList": "The \"{slot}\" slot in {file} must be a list of skill names.",
+    "unreadable": "{file} is not valid JSON ({reason}); fix or remove it, nothing was changed.",
+    "notAnObject": "{file} must hold a JSON object; fix or remove it, nothing was changed.",
+    "damaged": "The extensions config is ignored and treated as empty: {reason}",
+    "projectDamaged": "The project extensions file is ignored and treated as empty; the global extras still apply: {reason}",
+    "projectDroppedLocked": "Always-on skills listed as extras in {file} were dropped: {names}.",
+    "projectNotAFolder": "{folder} is not a folder, so no project extras were written.",
+    "projectUnsafe": "{folder} is not a plain folder or file (a symbolic link, for example), so nothing was written there.",
+    "skipped": "Configured {slot} extra \"{name}\" does not resolve in the skill registry ({roots}); skipped."
+  }
+}

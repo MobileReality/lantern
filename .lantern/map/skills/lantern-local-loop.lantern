@@ -1,0 +1,15 @@
+lantern 1
+# skills/lantern-local-loop
+
+skills/lantern-local-loop/README.md . skill eb5e018ae2e7
+#feature skill-installer
+  @ skills/lantern-local-loop/references/templates.md
+  @ skills/lantern-local-loop/scripts/loop.sh
+skills/lantern-local-loop/SKILL.md . skill a6022737bf98
+#feature skill-installer
+  @ skills/lantern-local-loop/references/templates.md
+  @ skills/lantern-local-loop/scripts/loop.sh
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/scripts/validate.mjs
+  @ skills/lantern-sync/SKILL.md
+  @ skills/lantern-sync/scripts/sync.mjs

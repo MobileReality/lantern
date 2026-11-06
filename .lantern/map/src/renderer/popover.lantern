@@ -1,0 +1,4 @@
+lantern 1
+# src/renderer/popover
+
+src/renderer/popover/index.ts . component 7453170688dc

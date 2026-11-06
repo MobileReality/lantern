@@ -1,0 +1,135 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: transparent;
+  font-family: 'Overpass', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  user-select: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+/* The tint fills the whole window so the system's own rounded corner clips it; a bare
+   strip of native blur would otherwise show wherever a CSS radius misses that curve. */
+body {
+  --kind: var(--notify-waiting);
+  min-height: 100vh;
+  background:
+    radial-gradient(150% 130% at 0% 0%, color-mix(in srgb, var(--kind) 22%, transparent), transparent 62%),
+    color-mix(in srgb, var(--bg) 52%, transparent);
+}
+body[data-kind='done'] { --kind: var(--notify-done); }
+body[data-kind='waiting'] { --kind: var(--notify-waiting); }
+body[data-kind='permission'] { --kind: var(--notify-permission); }
+body[data-kind='error'] { --kind: var(--notify-error); }
+
+#stage { display: block; }
+
+.card {
+  position: relative;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+}
+
+body.still .card,
+body.still .open { transition: none; }
+
+.head { display: flex; align-items: center; gap: 8px; }
+.spacer { flex: 1; }
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 4px 11px 4px 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.mark {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--kind) 40%, transparent);
+  color: color-mix(in srgb, var(--kind) 55%, white);
+}
+.glyph { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.names { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.repo { font-size: 11.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.branch { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.badge[hidden] { display: none; }
+
+.close {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+}
+.close svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.close .track { fill: color-mix(in srgb, var(--text) 10%, transparent); stroke: var(--border); stroke-width: 2; }
+.close .progress { fill: none; stroke: color-mix(in srgb, var(--text) 65%, transparent); stroke-width: 2; stroke-linecap: round; }
+.close .cross { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; opacity: 0.85; transform: rotate(90deg); transform-origin: 16px 16px; }
+.close:hover .track { fill: color-mix(in srgb, var(--text) 18%, transparent); }
+.close:hover .cross { opacity: 1; }
+.close:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 50%; }
+
+.text { display: flex; flex-direction: column; gap: 6px; }
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.context {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 72%, transparent);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  user-select: text;
+}
+
+.open {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  transition: background 0.12s ease-out, transform 0.12s ease-out;
+}
+.open svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.open:hover { background: rgba(255, 255, 255, 0.16); }
+.open:active { transform: scale(0.94); }
+.open:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }

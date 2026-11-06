@@ -1,0 +1,74 @@
+#!/bin/sh
+
+usage() {
+  cat <<'USAGE'
+Usage: lantern [folder] [--compare <base>..<head> | --compare=<base>..<head>]
+
+  lantern              open Lantern
+  lantern .            open the current folder in its own window
+  lantern ~/code/app   open a folder in its own window
+
+  --compare <base>..<head>
+                       open the folder's Lantern tab on a review of <head> against
+                       where it left <base>. Each side is a branch, HEAD or a commit;
+                       leave out <head> (or write @) for the uncommitted changes.
+                       The folder defaults to the current one.
+
+  lantern --compare origin/main             your uncommitted changes
+  lantern --compare origin/main..feat/x     a branch without a pull request
+  lantern ~/code/app --compare main..a1b2c3d
+USAGE
+}
+
+folder=
+compare=
+while [ $# -gt 0 ]; do
+  case $1 in
+    -h | --help) usage; exit 0 ;;
+    --compare) [ $# -ge 2 ] || { usage >&2; exit 2; }; compare=$2; shift ;;
+    --compare=*) compare=${1#--compare=} ;;
+    -) [ -z "$folder" ] || { usage >&2; exit 2; }; folder=./- ;;
+    -*) echo "lantern: unknown option: $1" >&2; usage >&2; exit 2 ;;
+    *) [ -z "$folder" ] || { usage >&2; exit 2; }; folder=$1 ;;
+  esac
+  shift
+done
+if [ -n "$compare" ]; then
+  case $compare in
+    *[!A-Za-z0-9._/@-]*) echo "lantern: not a comparison: $compare" >&2; exit 2 ;;
+  esac
+  [ -n "$folder" ] || folder=.
+fi
+
+dir=
+if [ -n "$folder" ]; then
+  dir=$(CDPATH= cd -- "$folder" 2>/dev/null && pwd -P) || { echo "lantern: no such directory: $folder" >&2; exit 1; }
+fi
+
+self=$0
+while [ -L "$self" ]; do
+  link=$(readlink "$self")
+  case $link in
+    /*) self=$link ;;
+    *) self=$(dirname "$self")/$link ;;
+  esac
+done
+# Packaged layout: Lantern.app/Contents/Resources/cli/lantern
+app=$(CDPATH= cd -- "$(dirname "$self")/../../.." 2>/dev/null && pwd -P)
+
+# Open this exact bundle: several builds can share the bundle id. -n is required
+# because `open --args` drops the arguments when the app is already running.
+launch() {
+  case $app in
+    *.app) exec open -n -a "$app" "$@" ;;
+    *) exec open -n -b com.mobilereality.lantern "$@" ;;
+  esac
+}
+
+if [ -n "$compare" ]; then
+  launch --args "--project=$dir" "--compare=$compare"
+elif [ -n "$dir" ]; then
+  launch --args "--project=$dir"
+else
+  launch
+fi

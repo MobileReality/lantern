@@ -1,0 +1,8 @@
+{
+ "text": {
+  "README.md": "Explains per-change map maintenance and how to run its isolated self-test",
+  "SKILL.md": "Directs targeted remapping of only the files a change touched, PR recording (or, for a branch with no pull request, a local branch record that pr copies into the main checkout at once and a later PR adopts) with a mandatory reason per changed file and an optional (requirable) flow whose steps may link changed files, pr ticks of plan items (refused when the plan or item is missing), verification that also refuses a branch adding model provenance or breaking a plan file it changed, warnings on a partly migrated map, on feature and outside-system vocabulary breaches and on platforms that relate to no other platform (never failing), a re-map that keeps the shared feature and system lists, and cleanup of stray seeded map copies; Codex sessions take the Codex reference route",
+  "SKILL.md @ skills/lantern-setup/scripts/migrate-model.mjs": "the only tool that removes model provenance, once for the whole map",
+  "SKILL.md @ skills/lantern-setup/scripts/systems.mjs": "adds a genuinely new outside system to the shared list"
+ }
+}

@@ -1,0 +1,91 @@
+lantern 1
+# skills/lantern-github/scripts
+
+skills/lantern-github/scripts/args.mjs . util 5cf60c0ded5e
+#feature integrations
+#see-also skills/lantern-bitbucket/scripts/args.mjs skills/lantern-jira/scripts/args.mjs
+  < skills/lantern-github/scripts/http.mjs#SkillError
+  < skills/lantern-github/scripts/messages.mjs#message
+
+skills/lantern-github/scripts/block.mjs . util 82a4ec2cd3c3
+#feature integrations
+#see-also skills/lantern-bitbucket/scripts/block.mjs
+  < skills/lantern-github/scripts/args.mjs#OPTION
+  < skills/lantern-github/scripts/http.mjs#SkillError
+  < skills/lantern-github/scripts/messages.mjs#message
+
+skills/lantern-github/scripts/cli.mjs . handler 435348edec58
+#feature integrations
+  < skills/lantern-github/scripts/args.mjs#parseArgs
+  = skills/lantern-github/scripts/commands.mjs#COMMANDS
+  < skills/lantern-github/scripts/credentials.mjs#readCredentials
+  < skills/lantern-github/scripts/credentials.mjs#sourceOf
+  < skills/lantern-github/scripts/git.mjs#createGit
+  = skills/lantern-github/scripts/github-api.mjs#createGithubApi
+  < skills/lantern-github/scripts/http.mjs#SkillError
+  = skills/lantern-github/scripts/lantern-socket.mjs#completeEnv
+  < skills/lantern-github/scripts/messages.mjs#message
+  < skills/lantern-github/scripts/redact.mjs#createRedactor
+
+skills/lantern-github/scripts/commands.mjs . handler 1048f3069039
+#feature integrations
+  < skills/lantern-github/scripts/args.mjs#readBody
+  < skills/lantern-github/scripts/block.mjs#readBlock
+  < skills/lantern-github/scripts/conventions.mjs#createConventions
+  < skills/lantern-github/scripts/credentials.mjs#SOURCE_MESSAGE
+  < skills/lantern-github/scripts/git.mjs#assertReadyToPublish
+  < skills/lantern-github/scripts/http.mjs#ensureOk
+  < skills/lantern-github/scripts/messages.mjs#message
+  < skills/lantern-github/scripts/remote.mjs#chooseRemote
+
+skills/lantern-github/scripts/conventions.mjs . util ab32fd3c6787
+#feature integrations
+#see-also skills/lantern-bitbucket/scripts/conventions.mjs skills/lantern-jira/scripts/conventions.mjs
+  < skills/lantern-github/scripts/http.mjs#SkillError
+  < skills/lantern-github/scripts/messages.mjs#message
+
+skills/lantern-github/scripts/credentials.mjs . pure b279492480e4
+#feature integrations
+
+skills/lantern-github/scripts/git.mjs . util b79b5851e1c3
+#feature integrations
+#see-also skills/lantern-bitbucket/scripts/git.mjs
+  = ext:git
+  < skills/lantern-github/scripts/http.mjs#SkillError
+  < skills/lantern-github/scripts/messages.mjs#message
+
+skills/lantern-github/scripts/github-api.mjs . gateway 7b361192e032
+#feature integrations
+  = ext:github-api
+  < skills/lantern-github/scripts/http.mjs#createHttp
+
+skills/lantern-github/scripts/github.mjs . script c692763744ad
+#feature integrations
+  = skills/lantern-github/scripts/cli.mjs#run
+
+skills/lantern-github/scripts/http.mjs . util 6682287c04fe
+#feature integrations
+#see-also skills/lantern-bitbucket/scripts/http.mjs skills/lantern-jira/scripts/http.mjs
+  < skills/lantern-github/scripts/messages.mjs#message
+
+skills/lantern-github/scripts/lantern-socket.mjs . gateway d56120b53469
+#feature integrations
+#see-also skills/lantern-bitbucket/scripts/lantern-socket.mjs skills/lantern-jira/scripts/lantern-socket.mjs
+  = src/main/auth/credential-server.ts#createCredentialServer
+  < skills/lantern-github/scripts/messages.mjs#message
+
+skills/lantern-github/scripts/messages.json . config 0e209c335aa6
+#feature integrations
+
+skills/lantern-github/scripts/messages.mjs . util 878de13eddaa
+#feature integrations
+  < skills/lantern-github/scripts/messages.json
+
+skills/lantern-github/scripts/redact.mjs . util 9c651a206512
+#feature integrations
+
+skills/lantern-github/scripts/remote.mjs . util ec5934cf1c94
+#feature integrations
+  = ext:ssh
+  < skills/lantern-github/scripts/http.mjs#SkillError
+  < skills/lantern-github/scripts/messages.mjs#message

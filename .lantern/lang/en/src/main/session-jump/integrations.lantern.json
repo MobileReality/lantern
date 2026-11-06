@@ -1,0 +1,12 @@
+{
+ "text": {
+  "apple-terminal.ts": "Selects the Terminal tab that owns a tty and raises its window through AppleScript.",
+  "ghostty.ts": "Focuses the Ghostty terminal that owns a tty by writing a title marker to it and finding the terminal that shows it through AppleScript, then restores its title.",
+  "ghostty.ts gotcha": "Ghostty exposes no tty, and the automation permission is needed; without it the jump fails.",
+  "iterm2.ts": "Selects the iTerm2 session, tab and window that own a tty through AppleScript.",
+  "kitty.ts": "Focuses the kitty window running a process on a tty through kitty's remote control and brings the app forward.",
+  "kitty.ts gotcha": "Needs allow_remote_control and listen_on in kitty.conf; without a socket the jump fails.",
+  "tmux.ts": "Finds a session's tmux socket and pane from its environment, reads the tty of the client showing it (the newest client when none does) without changing anything, and on request selects the pane and moves that client onto it, best effort.",
+  "tmux.ts gotcha": "The tmux binary is taken from fixed locations, never the session's PATH."
+ }
+}

@@ -1,0 +1,13 @@
+# Codex delegation workflow
+
+Read `authority.md` first. This route replaces the Claude agent-type, Sonnet ladder, Agent-call syntax, automatic shipping, and cleanup instructions in `SKILL.md` and `protocol.md`.
+
+Run preflight with `--provider codex`. Add `--local-only` unless the user explicitly authorized push and pull-request publication. Local-only preflight validates the local base and skills without a remote or network access. Codex preflight resolves skills from the session project's `.agents/skills`, `~/.agents/skills`, and `${CODEX_HOME:-~/.codex}/skills`; it does not require `.claude/agents` or Claude-only skills.
+
+Scope one falsifiable goal per delegate. Create or select a dedicated worktree without discarding local changes. Use the available native collaboration spawn tool with an explicit model that passes the setup skill's `node scripts/model.mjs check <id>` (pick the newest one available) and a supported effort; current Codex collaboration has no custom-agent selector, so no named profile is required. Give the worker the worktree path, one-sentence goal, allowed and forbidden files, repository instructions, the installed `lantern-delegate`, `lantern-sync`, and `lantern-setup` paths, the exact authority limits, and verification commands. Tell it to read this reference, the local authority reference, and the setup Codex mapping reference before editing. Use at most one code implementer in a worktree at a time.
+
+The delegate prepares and verifies the change. It stops ready for each commit unless the user has granted one current-conversation approval for that commit. The parent reads the complete diff and spawns a fresh reviewer on a model that passes the same check, with an explicit read-only instruction, the goal, base, diff scope, checks, and relevant repository rules. Send bounded fixes back to the same implementer and re-verify.
+
+When the project has a map and source edits are still uncommitted, use the sync Codex reference's `status` plus setup refresh and settled-validation path. Use `finish` and `verify` only after an authorized source commit exists. Do not fabricate model provenance.
+
+Push and pull-request stages run only under explicit user authority. The recorded PR delivery (`scripts/preferences.mjs`) never widens it: when publication was authorized, the pull request is opened through the host skill (`lantern-bitbucket` or `lantern-github` from `.agents/skills`) and its credentials come from the environment or the running Lantern, never from a token this skill reads. Atlassian, Rovo, and Jira remain read-only when the user's rules require it, even if credentials are present. Never merge remotely. Keep any worktree with uncommitted changes; report it instead of deleting it.

@@ -1,0 +1,22 @@
+lantern-section 1
+# db
+
+entity books table declared @ db/migrations/001_create_tables.sql#books
+own books @ src/repositories/bookRepository.ts
+field books isbn text declared @ db/migrations/001_create_tables.sql#isbn
+field books title text declared @ db/migrations/001_create_tables.sql#title
+field books price_cents integer declared @ db/migrations/001_create_tables.sql#price_cents
+field books stock integer declared @ db/migrations/001_create_tables.sql#stock
+entity orders table declared @ db/migrations/001_create_tables.sql#orders
+own orders @ src/repositories/orderRepository.ts
+field orders id uuid declared @ db/migrations/001_create_tables.sql#gen_random_uuid
+field orders customer_email text declared @ db/migrations/001_create_tables.sql#customer_email
+field orders status text declared @ db/migrations/001_create_tables.sql#CHECK
+field orders total_cents integer declared @ db/migrations/001_create_tables.sql#total_cents
+entity order_lines table declared @ db/migrations/001_create_tables.sql#order_lines
+own order_lines @ src/repositories/bookRepository.ts
+field order_lines order_id uuid declared @ db/migrations/001_create_tables.sql#order_id
+field order_lines isbn text declared @ db/migrations/001_create_tables.sql#REFERENCES
+field order_lines quantity integer declared @ db/migrations/001_create_tables.sql#quantity
+rel order_lines order_id fk orders @ db/migrations/001_create_tables.sql#REFERENCES
+rel order_lines isbn fk books @ db/migrations/001_create_tables.sql#REFERENCES

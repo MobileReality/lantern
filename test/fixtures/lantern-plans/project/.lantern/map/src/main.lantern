@@ -1,0 +1,19 @@
+lantern 1
+# src/main
+
+src/main/lantern-pr-parse.ts . pure 000000000000
+#feature pull-requests
+  < src/main/lantern-types.ts
+src/main/lantern-prs.ts . service 000000000000
+#feature pull-requests
+  = src/main/lantern-pr-parse.ts
+  < src/main/lantern-types.ts
+src/main/lantern-types.ts . schema 000000000000
+src/main/lantern.ts . service 000000000000
+#feature file-graph
+  = src/main/lantern-prs.ts
+  < src/main/lantern-types.ts
+  = ext:git
+src/main/main.ts . entry 000000000000
+#feature file-graph
+  = src/main/lantern.ts

@@ -1,0 +1,11 @@
+lantern 1
+# skills/lantern-plan-handoff
+
+skills/lantern-plan-handoff/README.md . skill ef6af0046186
+#feature planning
+
+skills/lantern-plan-handoff/SKILL.md . skill 256ee0b34be0
+#feature planning
+  @ skills/lantern-delegate/SKILL.md
+  @ skills/lantern-plan/scripts/plan.mjs
+  @ skills/lantern-sync/scripts/sync.mjs

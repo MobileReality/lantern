@@ -1,0 +1,9 @@
+lantern 1
+# src/renderer/lantern-status
+
+src/renderer/lantern-status/index.ts . component 51cc961fe3b2
+#feature file-graph
+  < src/main/lantern.ts#LanternMap
+  < src/main/provider.ts#Provider
+  < src/renderer/lib/lanternlayout.ts#isMissing
+  < src/renderer/lib/providers.ts#providerLabel

@@ -1,0 +1,21 @@
+{
+ "text": {
+  "fix": "Fix this.",
+  "test": "Add a test for this.",
+  "rename": "Rename this.",
+  "simplify": "Simplify this.",
+  "explain": "Explain why this is needed.",
+  "remove": "Remove this."
+ },
+ "copy": {
+  "header": "Review comments for",
+  "scope": "Work within this pull request only: stay on its branch and inside the code it changes.",
+  "mixed": "These comments differ. Follow the instruction on each one:",
+  "intent": "Intent"
+ },
+ "intent": {
+  "fix": { "label": "Fix", "instruction": "Change the code to address this comment." },
+  "explain": { "label": "Explain", "instruction": "Explain this without changing any code." },
+  "question": { "label": "Question", "instruction": "Answer this question without changing any code." }
+ }
+}

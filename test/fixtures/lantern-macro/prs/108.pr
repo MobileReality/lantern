@@ -1,0 +1,113 @@
+lantern-pr 1
+# 108
+#title feat: open projects in their own windows from a lantern command
+#url https://example.com/org/repo/pull-requests/108
+#branch feat/window-mode
+#base main
+#opened 2026-10-15
+#head 3d9f88e58eaea9f9fd9a3b6bbe2685f2a6ebb7c1
++ src/cli/lantern
++ src/main/cli.ts
++ src/main/windows.ts
++ src/renderer/features/cli-panel.ts
++ src/shared/shell-quote.ts
++ test/cli-panel.test.ts
++ test/cli-script.test.ts
++ test/cli.test.ts
++ test/project-window.test.ts
++ test/windows.test.ts
+~ CONTRIBUTING.md
+~ README.md
+~ package.json
+~ scripts/esbuild.mjs
+~ src/main/main.ts
+~ src/main/popout.ts
+~ src/main/projectroot.ts
+~ src/main/projects.ts
+~ src/preload/workspace.ts
+~ src/renderer/features/load-screen.ts
+~ src/renderer/features/settings.ts
+~ src/renderer/global.d.ts
+~ src/renderer/lib/settings-editor.ts
+~ src/renderer/lib/settings-search.ts
+~ src/renderer/lib/util.ts
+~ src/renderer/settings.css
+~ src/renderer/workspace.css
+~ src/renderer/workspace.html
+~ src/renderer/workspace.ts
+~ test/lantern-bundle.test.ts
+~ test/projectroot.test.ts
+~ test/projects.test.ts
+~ test/settings-dialog.test.ts
+~ test/settings-editor.test.ts
+~ test/sidebar.test.ts
+#order src/main/windows.ts
+#order src/main/cli.ts
+#order src/shared/shell-quote.ts
+#order src/cli/lantern
+#order src/main/projectroot.ts
+#order src/main/projects.ts
+#order src/main/popout.ts
+#order src/main/main.ts
+#order src/preload/workspace.ts
+#order src/renderer/global.d.ts
+#order src/renderer/lib/util.ts
+#order src/renderer/workspace.ts
+#order src/renderer/workspace.html
+#order src/renderer/workspace.css
+#order src/renderer/features/cli-panel.ts
+#order src/renderer/features/settings.ts
+#order src/renderer/features/load-screen.ts
+#order src/renderer/lib/settings-editor.ts
+#order src/renderer/lib/settings-search.ts
+#order src/renderer/settings.css
+#order scripts/esbuild.mjs
+#order package.json
+#order test/windows.test.ts
+#order test/cli.test.ts
+#order test/cli-script.test.ts
+#order test/cli-panel.test.ts
+#order test/project-window.test.ts
+#order test/projects.test.ts
+#order test/projectroot.test.ts
+#order test/lantern-bundle.test.ts
+#order test/settings-dialog.test.ts
+#order test/settings-editor.test.ts
+#order test/sidebar.test.ts
+#order README.md
+#order CONTRIBUTING.md
+#reason src/cli/lantern Gives terminals a command that opens a folder in its own window, launching a new instance so the argument is not dropped.
+#reason src/main/cli.ts Accepts --project only for an existing directory by its real path and never replaces a lantern command it did not install.
+#reason src/main/windows.ts Holds the window registry so one window per real checkout is opened or focused and gets the project's provider.
+#reason src/renderer/features/cli-panel.ts Shows the lantern command state in Settings and tells the user how to replace a foreign command by hand.
+#reason src/shared/shell-quote.ts Single shell quoting helper shared by the main process and the settings panel.
+#reason test/cli-panel.test.ts Covers every state of the command line panel including a foreign command.
+#reason test/cli-script.test.ts Runs the real lantern script against a stub open for spaces, symlinks, the .app launch and the bundle id launch.
+#reason test/cli.test.ts Covers --project validation and that install never overwrites a foreign command.
+#reason test/project-window.test.ts Checks the toolbar keeps the map, Skills, microphone, mode switch and provider selector.
+#reason test/windows.test.ts Covers the window lifecycle: dedupe by root, focus, removal on close, argv, pop-out and resize scoping.
+#reason CONTRIBUTING.md Shows how to try a project window in development without installing the command.
+#reason README.md Documents the lantern command, the project window toolbar and that a foreign command is never replaced.
+#reason package.json Ships the cli folder as an extra resource so the packaged app carries the lantern command.
+#reason scripts/esbuild.mjs Copies the lantern script into the build output and makes it executable.
+#reason src/main/main.ts Delegates window handling to windows.ts, scopes cancel to the run's window and keeps a project window out of the saved list.
+#reason src/main/popout.ts Remembers which window opened each pop-out so closing one window no longer closes another's.
+#reason src/main/projectroot.ts Adds checkoutTop so a folder the user named keeps its own linked worktree as the window key.
+#reason src/main/projects.ts Lists a project that has its own window only while that window is open, so it never lands in the saved sidebar list.
+#reason src/preload/workspace.ts Exposes the command status and install calls to the settings panel.
+#reason src/renderer/features/load-screen.ts Uses the shared el helper instead of a private copy.
+#reason src/renderer/features/settings.ts Adds the Command line panel to the dialog and uses the shared el helper.
+#reason src/renderer/global.d.ts Types the new command status and install bridge calls.
+#reason src/renderer/lib/settings-editor.ts Lets the editor mount extra panels with their own table of contents entries.
+#reason src/renderer/lib/settings-search.ts Makes panels searchable by their keywords next to ordinary settings.
+#reason src/renderer/lib/util.ts Holds the one shared el helper and the macOS check.
+#reason src/renderer/settings.css Styles the panel group and the command line panel.
+#reason src/renderer/workspace.css Turns the sidebar into a compact toolbar in a project window and drags it only on macOS.
+#reason src/renderer/workspace.html Names the microphone button so it stays labelled when the toolbar hides its text.
+#reason src/renderer/workspace.ts Marks a project window, claims its project and wires its provider selector to that project.
+#reason test/lantern-bundle.test.ts Checks every installOnOpen call site passes the project provider instead of counting calls.
+#reason test/projectroot.test.ts Covers checkoutTop for plain folders, subfolders and linked worktrees.
+#reason test/projects.test.ts Checks a windowed project is listed only while open and never saved.
+#reason test/settings-dialog.test.ts Checks the Command line entry opens its panel in the Settings dialog.
+#reason test/settings-editor.test.ts Covers custom panels in the settings editor.
+#reason test/sidebar.test.ts Adds the command status bridge call to the sidebar fixture.

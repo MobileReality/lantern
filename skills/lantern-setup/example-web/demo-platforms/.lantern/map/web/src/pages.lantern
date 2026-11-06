@@ -1,0 +1,6 @@
+lantern 1
+# web/src/pages
+
+web/src/pages/Dashboard.tsx . page e0b3116553c5
+  > web/src/components/StepChart.tsx#StepChart
+  = web/src/api/client.ts#fetchReadings

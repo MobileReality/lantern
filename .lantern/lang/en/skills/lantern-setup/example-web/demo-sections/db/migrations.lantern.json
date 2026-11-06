@@ -1,0 +1,5 @@
+{
+ "text": {
+  "001_create_tables.sql": "creates the books, orders and order_lines tables of the fictional bookshop sample"
+ }
+}

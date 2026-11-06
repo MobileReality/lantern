@@ -1,0 +1,162 @@
+lantern 1
+# src/renderer
+
+src/renderer/svg.d.ts . schema 0f5231031c58
+
+src/renderer/global.d.ts . schema 4f7a1764acba
+  < src/main/cli.ts#CliStatus
+  < src/main/dev-instance.ts#DevInstance
+  < src/main/extensions.ts#ExtensionsPanel
+  < src/main/filecontent.ts
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/main/lantern-prdiff.ts
+  < src/main/lantern-prfile.ts
+  < src/main/lantern.ts
+  < src/main/overlay.ts#CardPrefs
+  < src/main/provider.ts#Provider
+  < src/main/session-notification.ts#NotificationCard
+  < src/main/setup-progress.ts
+  < src/renderer/state.ts
+  < src/shared/code-highlighting.ts
+  < src/shared/memory.ts#FreeMemoryResult
+  < src/shared/memory.ts#MemorySnapshot
+  < src/shared/pr-explain.ts#PrExplainDone
+  < src/shared/project-ident/index.ts#ProjectIdent
+  < src/shared/rtk.ts#RtkStatus
+  < src/shared/settings-registry.ts
+  < src/shared/auth-view.ts#AddTokenResult
+  < src/shared/auth-view.ts#AuthReply
+  < src/shared/providers.ts#ProviderId
+  < src/shared/tray-model.ts#TrayModel
+
+src/renderer/command-palette.css . style dffe98a602f6
+#feature command-palette
+
+src/renderer/lantern-flow.css . style 934625fc4247
+#feature pr-flow
+
+src/renderer/lantern-macroview.css . style 14604f7b1dc4
+#feature macro-view
+
+src/renderer/lantern-plans.css . style 18e809058f89
+#feature planning
+
+src/renderer/lantern-prs.css . style eb97f5d2a154
+#feature pull-requests
+
+src/renderer/lantern-relation.css . style 22c56f6957c8
+#feature file-graph
+
+src/renderer/lantern-review.css . style 39bc1638441d
+#feature review-screen
+
+src/renderer/lantern-sections.css . style b393efd2a26f
+#feature lantern-sections
+
+src/renderer/lantern-select.css . style d9561106c5e3
+#feature review-screen
+
+src/renderer/lantern-setup.css . style ee7ca9584ee0
+#feature map-setup
+
+src/renderer/lantern.css . style 0061226e6a12
+#feature file-graph
+
+src/renderer/memory.css . style 63701ca4d113
+#feature process-memory
+
+src/renderer/overlay.css . style e9b7125fde15
+#feature notifications
+
+src/renderer/overlay.html . entry 92e8cfcd8fd5
+#feature notifications
+  < src/renderer/floating.css
+  < src/renderer/overlay.css
+  < src/renderer/theme.css
+  > src/renderer/overlay.ts
+
+src/renderer/overlay.ts . entry f8eb3b4d6a60
+#feature notifications
+  = src/preload/overlay.ts
+  > src/renderer/tooltip/index.ts#installTooltips
+  > src/renderer/lib/notification-sound.ts#playSound
+  > src/renderer/lib/overlay-cards.ts#mountOverlay
+  < src/renderer/lib/util.ts#byId
+
+src/renderer/settings.css . style 7a4eb2109b6e
+
+src/renderer/state.ts . state b7d0fb62c8e6
+  < src/renderer/lib/editorload.ts
+
+src/renderer/theme.css . style 3095f20e8f5d
+
+src/renderer/tray-popover.css . style 829054adf0cf
+#feature session-monitoring
+
+src/renderer/tray-popover.html . entry 1f4006c611b3
+#feature session-monitoring
+  < src/renderer/theme.css
+  < src/renderer/tray-popover.css
+  > src/renderer/tray-popover.ts
+
+src/renderer/tray-popover.ts . entry 1e4549e11faa
+#feature session-monitoring
+  = src/preload/tray-popover.ts
+  > src/renderer/lib/tray-popover-view.ts#mountTrayPopover
+  < src/renderer/lib/util.ts#byId
+
+src/renderer/workspace.css . style 257df68b2223
+  < src/renderer/theme.css
+
+src/renderer/workspace.html . entry bd9de8e0aee7
+  < src/renderer/command-palette.css
+  < src/renderer/floating.css
+  < src/renderer/lantern-flow.css
+  < src/renderer/lantern-macroview.css
+  < src/renderer/lantern-plans.css
+  < src/renderer/lantern-prs.css
+  < src/renderer/lantern-relation.css
+  < src/renderer/lantern-review.css
+  < src/renderer/lantern-sections.css
+  < src/renderer/lantern-select.css
+  < src/renderer/lantern-setup.css
+  < src/renderer/lantern.css
+  < src/renderer/memory.css
+  < src/renderer/settings.css
+  < src/renderer/workspace.css
+  > src/renderer/workspace.ts
+  < src/renderer/integrations.css
+
+src/renderer/workspace.ts . entry 20c6e8c34375
+  = ext:vscode-serve-web
+  = src/preload/workspace.ts
+  = src/renderer/features/editor-tab.ts
+  = src/renderer/features/provider-control.ts
+  = src/renderer/features/server-load.ts
+  = src/renderer/lib/idle-tabs.ts
+  = src/renderer/lib/project-list-keys.ts
+  = src/renderer/lib/project-release.ts#releaseProject
+  = src/renderer/lib/settings-state.ts
+  = src/renderer/lib/sidebar-row.ts#makeRow
+  = src/renderer/lib/util.ts
+  = src/renderer/command-palette/index.ts#mountPalette
+  = src/renderer/state.ts
+  = src/renderer/tooltip/index.ts#installTooltips
+  = src/shared/commands/index.ts#isCommandId
+  = src/shared/commands/keymap.ts#keyChips
+  = src/shared/commands/keymap.ts#resolveUserKeymap
+  > src/renderer/features/agent-run.ts
+  > src/renderer/features/explain.ts
+  > src/renderer/features/lantern.ts
+  > src/renderer/features/memory.ts
+  > src/renderer/features/settings.ts
+  > src/renderer/features/skills.ts
+  = src/renderer/lib/opened-projects.ts#openedProjects
+  > src/renderer/features/integrations.ts
+  = src/renderer/project-ident/index.ts#mountProjectIdent
+  = src/renderer/commands/index.ts
+
+src/renderer/integrations.css . style 78029c94fea7
+#feature integrations
+
+src/renderer/floating.css . style 235ae7bf4763

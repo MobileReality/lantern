@@ -1,0 +1,7 @@
+# <id> <kind> <glob>...  first matching rule wins; files no rule claims are shared
+web      web      web/**
+backend  backend  api/**
+mobile   mobile   mobile/**
+desktop  desktop  desktop/**
+infra    infra    infra/** .github/**
+watch    other    watch/**

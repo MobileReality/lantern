@@ -1,0 +1,102 @@
+lantern 1
+# scripts/e2e-delegate
+
+scripts/e2e-delegate/checks.mjs . util aefbf3c9dfd3
+#feature skill-checks
+  < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#offEverywhere
+  < skills/lantern-delegate/scripts/check-skill-use.mjs#checkPaths
+  < skills/lantern-delegate/scripts/check-skill-use.mjs#skillReadFindings
+  < skills/lantern-delegate/scripts/delegate-kinds.mjs#REVIEWER_AGENT_TYPES
+  < skills/lantern-delegate/scripts/lint-reviewer.mjs#lintPaths
+  < skills/lantern-delegate/scripts/lint-transcript.mjs#lintPaths
+  < skills/lantern-delegate/scripts/required-skills.mjs#requiredSkills
+  < skills/lantern-delegate/scripts/required-skills.mjs#ROLE
+scripts/e2e-delegate/child.mjs . util 9388c11f1e4a
+#feature skill-checks
+scripts/e2e-delegate/execute.mjs . service f13e95ca1d14
+#feature skill-checks
+  < scripts/e2e-delegate/checks.mjs#result
+  < scripts/e2e-delegate/panel.mjs#bundlePanel
+  < scripts/e2e-delegate/report.mjs#buildReport
+  < scripts/e2e-delegate/session.mjs#runClaude
+  < scripts/e2e-delegate/verify.mjs#verifyProject
+  < scripts/e2e-delegate/workspace.mjs#REPO_ROOT
+  < scripts/e2e-delegate/workspace.mjs#transcriptsHome
+scripts/e2e-delegate/fake-lantern.mjs . util e904f91a2c2f
+#feature skill-checks
+scripts/e2e-delegate/fake-ssh.sh . script eeedda37ee66
+#feature skill-checks
+scripts/e2e-delegate/mock-bitbucket.mjs . script 37457d2bca32
+#feature skill-checks
+scripts/e2e-delegate/panel.mjs . util ff5e501176bc
+#feature skill-checks
+  < src/main/lantern-local.ts#localPrs
+  < src/main/lantern-prs.ts#fetchPrs
+scripts/e2e-delegate/plan.mjs . util 3f35526fc653
+#feature skill-checks
+  < scripts/e2e-delegate/checks.mjs#CHECK_DOCS
+  < scripts/e2e-delegate/projects.mjs#extrasOf
+  < scripts/e2e-delegate/projects.mjs#offOf
+  < scripts/e2e-delegate/projects.mjs#orchestratorExtrasOf
+  < scripts/e2e-delegate/projects.mjs#PROJECTS
+  < scripts/e2e-delegate/report.mjs#planBudgets
+scripts/e2e-delegate/projects.mjs . config 74073d488f47
+#feature skill-checks
+scripts/e2e-delegate/redirect-fetch.mjs . script 711e7d18b82f
+#feature skill-checks
+  > ext:bitbucket-api
+scripts/e2e-delegate/report.mjs . util 9299b8a74264
+#feature skill-checks
+scripts/e2e-delegate/run.mjs . script 844e0378ba34
+#feature skill-checks
+  < scripts/e2e-delegate/child.mjs#stopChild
+  < scripts/e2e-delegate/execute.mjs#executeAll
+  < scripts/e2e-delegate/plan.mjs#parseArgs
+  < scripts/e2e-delegate/report.mjs#fingerprintFile
+  < scripts/e2e-delegate/report.mjs#renderReport
+  < scripts/e2e-delegate/report.mjs#withConfigGuard
+  < scripts/e2e-delegate/workspace.mjs#createWorkspace
+  < skills/lantern-delegate/scripts/extensions.mjs#extensionsPath
+scripts/e2e-delegate/session.mjs . util 89a3ea4350f8
+#feature skill-checks
+  < scripts/e2e-delegate/child.mjs#stopChild
+  < scripts/e2e-delegate/report.mjs#parseResultLines
+scripts/e2e-delegate/verify.mjs . service 4bbaa70b3260
+#feature skill-checks
+  < scripts/e2e-delegate/checks.mjs#checkExtraReadInFull
+  < scripts/e2e-delegate/checks.mjs#checkNoPr
+  < scripts/e2e-delegate/checks.mjs#checkOffSkillNotRead
+  < scripts/e2e-delegate/checks.mjs#checkOrchExtraNotInBrief
+  < scripts/e2e-delegate/checks.mjs#checkOrchExtraReadInFull
+  < scripts/e2e-delegate/checks.mjs#checkPanelRecord
+  < scripts/e2e-delegate/checks.mjs#checkReviewerSkillUse
+  < scripts/e2e-delegate/checks.mjs#checkSyncVerify
+  < scripts/e2e-delegate/panel.mjs#readLocalComparison
+  < scripts/e2e-delegate/panel.mjs#readPanel
+  < scripts/e2e-delegate/projects.mjs#extrasOf
+  < scripts/e2e-delegate/projects.mjs#MAIN_BRANCH
+  < scripts/e2e-delegate/projects.mjs#offOf
+  < scripts/e2e-delegate/projects.mjs#orchestratorExtrasOf
+  < scripts/e2e-delegate/workspace.mjs#fetchMockPrs
+  < skills/lantern-delegate/scripts/preferences.mjs#DELIVERY
+  > skills/lantern-setup/scripts/validate.mjs
+  > skills/lantern-sync/scripts/sync.mjs
+scripts/e2e-delegate/workspace.mjs . service 484caf995580
+#feature skill-checks
+  < scripts/e2e-delegate/checks.mjs#transcriptDirs
+  < scripts/e2e-delegate/child.mjs#stopChild
+  < scripts/e2e-delegate/fake-lantern.mjs#startFakeLantern
+  < scripts/e2e-delegate/projects.mjs#createProject
+  < scripts/e2e-delegate/projects.mjs#extrasOf
+  < scripts/e2e-delegate/projects.mjs#offOf
+  < scripts/e2e-delegate/projects.mjs#orchestratorExtrasOf
+  < scripts/e2e-delegate/projects.mjs#writeExtraSkills
+  < skills/lantern-delegate/scripts/extensions.mjs#setExtensions
+  < skills/lantern-delegate/scripts/extensions.mjs#setSkillLinker
+  < skills/lantern-delegate/scripts/extensions.mjs#setSwitchedOff
+  < skills/lantern-delegate/scripts/permissions.mjs#settingsSnippet
+  < skills/lantern-delegate/scripts/preferences.mjs#setPreference
+  < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath
+  > scripts/e2e-delegate/mock-bitbucket.mjs
+  > scripts/install-skills.mjs

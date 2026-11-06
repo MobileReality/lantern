@@ -1,0 +1,12 @@
+lantern 1
+# skills/lantern-sync/references
+
+skills/lantern-sync/references/authority.md . skill 5d18cd3c2b2b
+#feature map-sync
+skills/lantern-sync/references/codex.md . skill ed27bfb3cb90
+#feature map-sync
+  @ skills/lantern-setup/references/codex.md
+  @ skills/lantern-setup/scripts/plan.mjs
+  @ skills/lantern-setup/scripts/validate.mjs
+  @ skills/lantern-sync/references/authority.md
+  @ skills/lantern-sync/scripts/sync.mjs

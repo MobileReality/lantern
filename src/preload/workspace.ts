@@ -1,0 +1,123 @@
+import { contextBridge, ipcRenderer } from 'electron';
+import type { SettingKey } from '../shared/settings-registry';
+import type { Provider } from '../main/provider';
+import type { PrSides } from '../main/lantern-pr-revisions';
+import {
+  AUTH_ADD_TOKEN_CHANNEL,
+  AUTH_BIND_CHANNEL,
+  AUTH_CHANGED_CHANNEL,
+  AUTH_PROJECT_CHANNEL,
+  AUTH_REMOVE_PROFILE_CHANNEL,
+  AUTH_RENAME_PROFILE_CHANNEL,
+  AUTH_SET_EMAIL_CHANNEL,
+  AUTH_SET_EXPIRY_CHANNEL,
+  AUTH_STATUS_CHANNEL,
+  AUTH_UNBIND_CHANNEL,
+} from '@shared/auth';
+import { MEMORY_FREE_CHANNEL, MEMORY_UPDATE_CHANNEL, MEMORY_WATCH_CHANNEL } from '../shared/memory';
+import { PR_EXPLAIN_CANCEL, PR_EXPLAIN_DONE, PR_EXPLAIN_SAVED, PR_EXPLAIN_START } from '../shared/pr-explain';
+
+type Cb = (...args: any[]) => void;
+
+contextBridge.exposeInMainWorld('ccmws', {
+  info: () => ipcRenderer.invoke('ws:info'),
+  devInstance: () => ipcRenderer.invoke('app:dev-instance'),
+  restartEditor: () => ipcRenderer.invoke('ws:restart-editor'),
+  needEditor: () => ipcRenderer.invoke('ws:need-editor'),
+  projects: () => ipcRenderer.invoke('ws:projects'),
+  addFolder: () => ipcRenderer.invoke('ws:add-folder'),
+  addPath: (dir: string) => ipcRenderer.invoke('ws:add-path', dir),
+  opened: (path: string, name: string) => ipcRenderer.send('ws:opened', { path, name }),
+  hide: (dir: string) => ipcRenderer.invoke('ws:hide', dir),
+  onProjects: (cb: Cb) => ipcRenderer.on('ws:projects', (_e, list) => cb(list)),
+  onInfo: (cb: Cb) => ipcRenderer.on('ws:info', (_e, info) => cb(info)),
+  onOpen: (cb: Cb) => ipcRenderer.on('ws:open', (_e, cwd, project) => cb(cwd, project)),
+  onShowCompare: (cb: (project: string, id: string) => void) => ipcRenderer.on('lantern:show-compare', (_e, { project, id }) => cb(project, id)),
+  cliStatus: () => ipcRenderer.invoke('cli:status'),
+  cliInstall: () => ipcRenderer.invoke('cli:install'),
+  rtkStatus: (project: string | null) => ipcRenderer.invoke('rtk:status', project),
+
+  skillsList: (project: string | null) => ipcRenderer.invoke('skills:list', project),
+  skillsLink: (project: string, names: string[]) => ipcRenderer.invoke('skills:link', { project, names }),
+  skillsUnlink: (project: string, names: string[]) => ipcRenderer.invoke('skills:unlink', { project, names }),
+  extensionsLoad: (project: string | null) => ipcRenderer.invoke('extensions:load', project),
+  extensionsSave: (project: string | null, slot: string, names: string[], off?: string[], scope?: string) => ipcRenderer.invoke('extensions:save', { project, slot, names, off, scope }),
+  extensionsMove: (project: string | null, slot: string, name: string, from: string, to: string) => ipcRenderer.invoke('extensions:move', { project, slot, name, from, to }),
+  extensionsCreate: (project: string | null, slot: string, name: string, content: string, scope?: string) => ipcRenderer.invoke('extensions:create', { project, slot, name, content, scope }),
+  extensionsSkillLinker: (project: string | null, value: string | null) => ipcRenderer.invoke('extensions:skillLinker', { project, value }),
+  extensionsImport: (project: string | null) => ipcRenderer.invoke('extensions:import', { project }),
+  skillsChooseDir: () => ipcRenderer.invoke('skills:choose-dir'),
+  skillsClone: (dir: string, remote?: string) => ipcRenderer.invoke('skills:clone', dir, remote),
+  skillsSync: () => ipcRenderer.invoke('skills:sync'),
+  skillsReveal: () => ipcRenderer.invoke('skills:reveal'),
+  fixMic: () => ipcRenderer.invoke('mic:fix'),
+
+  projectReadFile: (project: string, file: string) => ipcRenderer.invoke('project:read-file', { project, file }),
+  projectIdent: (project: string) => ipcRenderer.invoke('project:ident', project),
+  semanticHighlight: (request: import('../shared/code-highlighting').SemanticHighlightRequest) => ipcRenderer.invoke('code:semantic-highlight', request),
+  lanternPrFile: (project: string, pr: string, file: string) => ipcRenderer.invoke('lantern:pr-file', { project, pr, file }),
+  lanternPrOverlay: (project: string, pr: string, lang?: string) => ipcRenderer.invoke('lantern:pr-overlay', { project, pr, lang }),
+  lanternPrFileDiff: (project: string, pr: string, file: string, sides?: PrSides) => ipcRenderer.invoke('lantern:pr-file-diff', { project, pr, file, sides }),
+
+  explainsList: (project: string) => ipcRenderer.invoke('explains:list', project),
+  explainsRemove: (project: string, name: string) => ipcRenderer.invoke('explains:remove', { project, name }),
+
+  lanternLoad: (project: string, lang?: string, fresh?: boolean) => ipcRenderer.invoke('lantern:load', project, lang, fresh),
+  lanternCoverage: (project: string, fresh?: boolean) => ipcRenderer.invoke('lantern:coverage', project, fresh),
+  lanternStamp: (project: string) => ipcRenderer.invoke('lantern:stamp', project),
+  lanternProgress: (project: string, mode?: 'live' | 'fresh') => ipcRenderer.invoke('lantern:progress', project, mode),
+  lanternCount: (project: string) => ipcRenderer.invoke('lantern:count', project),
+  lanternFetchPrs: (project: string, force?: boolean) => ipcRenderer.invoke('lantern:fetch-prs', project, force),
+  lanternRefreshPrs: (project: string) => ipcRenderer.invoke('lantern:refresh-prs', project),
+  lanternEnterPr: (project: string, pr: string) => ipcRenderer.invoke('lantern:enter-pr', project, pr),
+  lanternCompareRefs: (project: string) => ipcRenderer.invoke('lantern:compare-refs', project),
+  lanternCompareCommits: (project: string, ref: string) => ipcRenderer.invoke('lantern:compare-commits', { project, ref }),
+  lanternCompareStat: (project: string, base: string, head: string) => ipcRenderer.invoke('lantern:compare-stat', { project, base, head }),
+  lanternLocalReasons: (project: string, id: string) => ipcRenderer.invoke('lantern:local-reasons', { project, id }),
+  lanternMacro: (project: string, lang?: string) => ipcRenderer.invoke('lantern:macro', project, lang),
+
+  settingsGet: () => ipcRenderer.invoke('settings:get'),
+  settingsProvider: (project: string) => ipcRenderer.invoke('settings:provider', project),
+  settingsDismissPr: (project: string, id: string) => ipcRenderer.invoke('settings:dismiss-pr', { project, id }),
+  settingsRestorePrs: (project: string) => ipcRenderer.invoke('settings:restore-prs', project),
+  settingsAddLocalReview: (project: string, id: string) => ipcRenderer.invoke('settings:add-local-review', { project, id }),
+  settingsRemoveLocalReview: (project: string, id: string) => ipcRenderer.invoke('settings:remove-local-review', { project, id }),
+  settingsSnapshot: () => ipcRenderer.invoke('settings:snapshot'),
+  settingsUpdate: (key: SettingKey, value: unknown) => ipcRenderer.invoke('settings:update', { key, value }),
+  settingsOpenFile: () => ipcRenderer.invoke('settings:open-file'),
+  onSettingsChanged: (cb: Cb) => ipcRenderer.on('settings:changed', (_e, change) => cb(change)),
+  onCommand: (cb: (id: string) => void) => ipcRenderer.on('command:run', (_e, id) => cb(id)),
+  settingsSetProvider: (project: string, provider: Provider) => ipcRenderer.invoke('settings:set-provider', { project, provider }),
+  onProvider: (cb: Cb) => ipcRenderer.on('settings:provider-changed', (_e, value) => cb(value)),
+  codexHooksStatus: () => ipcRenderer.invoke('codex-hooks:status'),
+  codexHooksInstall: () => ipcRenderer.invoke('codex-hooks:install'),
+  codexHooksUninstall: () => ipcRenderer.invoke('codex-hooks:uninstall'),
+
+  prExplainSaved: (project: string, pr: string, path: string, head: string) => ipcRenderer.invoke(PR_EXPLAIN_SAVED, { project, pr, path, head }),
+  prExplainStart: (project: string, pr: string, path: string) => ipcRenderer.invoke(PR_EXPLAIN_START, { project, pr, path }),
+  prExplainCancel: (project: string, pr: string, path: string) => ipcRenderer.invoke(PR_EXPLAIN_CANCEL, { project, pr, path }),
+  onPrExplainDone: (cb: Cb) => ipcRenderer.on(PR_EXPLAIN_DONE, (_e, done) => cb(done)),
+
+  agentRun: (project: string, kind: string, target?: string) => ipcRenderer.invoke('agent:run', { project, kind, target }),
+  agentCancel: () => ipcRenderer.invoke('agent:cancel'),
+  agentStatus: (project: string | null) => ipcRenderer.invoke('agent:status', project),
+  onAgentEvent: (cb: Cb) => ipcRenderer.on('agent:event', (_e, event) => cb(event)),
+  onAgentStatus: (cb: Cb) => ipcRenderer.on('agent:status-changed', (_e, status) => cb(status)),
+
+  popoutOpen: (tool: string, project: string) => ipcRenderer.invoke('popout:open', { tool, project }),
+
+  authStatus: (project?: string) => ipcRenderer.invoke(AUTH_STATUS_CHANNEL, project),
+  authProject: (project: string) => ipcRenderer.invoke(AUTH_PROJECT_CHANNEL, project),
+  authAddToken: (input: Record<string, unknown>) => ipcRenderer.invoke(AUTH_ADD_TOKEN_CHANNEL, input),
+  authRenameProfile: (profileId: string, nickname: string) => ipcRenderer.invoke(AUTH_RENAME_PROFILE_CHANNEL, { profileId, nickname }),
+  authSetExpiry: (profileId: string, expiresOn: string | null) => ipcRenderer.invoke(AUTH_SET_EXPIRY_CHANNEL, { profileId, expiresOn }),
+  authSetEmail: (profileId: string, email: string | null) => ipcRenderer.invoke(AUTH_SET_EMAIL_CHANNEL, { profileId, email }),
+  authBind: (provider: string, profileId: string, project: string) => ipcRenderer.invoke(AUTH_BIND_CHANNEL, { provider, profileId, project }),
+  authUnbind: (provider: string, project: string) => ipcRenderer.invoke(AUTH_UNBIND_CHANNEL, { provider, project }),
+  authRemoveProfile: (profileId: string, project?: string) => ipcRenderer.invoke(AUTH_REMOVE_PROFILE_CHANNEL, { profileId, project }),
+  onAuthChanged: (cb: Cb) => ipcRenderer.on(AUTH_CHANGED_CHANNEL, (_e, change) => cb(change)),
+
+  memoryWatch: (on: boolean) => ipcRenderer.invoke(MEMORY_WATCH_CHANNEL, on),
+  freeProjectMemory: (project: string) => ipcRenderer.invoke(MEMORY_FREE_CHANNEL, project),
+  onMemoryUpdate: (cb: Cb) => ipcRenderer.on(MEMORY_UPDATE_CHANNEL, (_e, snapshot) => cb(snapshot)),
+});

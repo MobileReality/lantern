@@ -1,0 +1,124 @@
+lantern 1
+# test/e2e
+
+test/e2e/flow-layout.spec.ts . test 271946bc6dd3
+#feature pr-flow
+  < src/renderer/lantern-flow.css
+  = src/renderer/lib/lanternflow.ts#flowHtml
+  = test/fixtures/graph/pr-review-demo.ts#prReviewDemo
+
+test/e2e/graph-macro-areas.spec.ts . test e2dc7142c1c2
+#feature product-areas
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/graph-macro-foundation.spec.ts . test 35c636b38801
+#feature macro-view
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/graph-macro-legend.spec.ts . test cd8e5c5067b4
+#feature macro-view
+  = test/e2e/support/graph-harness.ts#launchGraphHarness
+
+test/e2e/graph-macro-platform-uses.spec.ts . test 29ba7e10682c
+#feature macro-view
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/graph-macro-systems.spec.ts . test 593952fe7774
+#feature macro-view
+  = test/e2e/support/graph-harness.ts#launchGraphHarness
+  = test/e2e/support/overflow.ts#findClippedText
+
+test/e2e/graph-macroview.spec.ts . test e2b1c81155f8
+#feature macro-view
+  = test/e2e/support/graph-harness.ts#launchGraphHarness
+
+test/e2e/graph-macro.spec.ts . test 0f4c5055ed0f
+#feature macro-view
+  = src/renderer/lib/lanternmacro.ts#macroGraph
+  = test/e2e/support/graph-harness.ts
+  = test/fixtures/lantern-macro-own-view.json
+
+test/e2e/graph-navigation.spec.ts . test 7ed46145f408
+#feature file-graph
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/graph-performance.spec.ts . test ae8c54d65587
+#feature file-graph
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/graph-pixi.spec.ts . test 0140b656f39e
+#feature file-graph
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/graph-regression.spec.ts . test bb415efaaf2b
+#feature file-graph
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/integrations-bindings.spec.ts . test 37d96ac1debb
+#feature integrations
+  = test/e2e/support/integrations-harness.ts#launchIntegrationsHarness
+
+test/e2e/integrations.spec.ts . test 4e77b21fb5f6
+#feature integrations
+  = test/e2e/support/integrations-harness.ts#launchIntegrationsHarness
+  = test/e2e/support/overflow.ts#findClippedText
+  < test/helpers/fake-tokens.ts#FAKE_ATLASSIAN_TOKEN_LONG
+
+test/e2e/skills-extras.spec.ts . test 55b79a7cb294
+#feature skill-installer
+  = test/e2e/support/skills-extras-harness.ts#launchSkillsHarness
+
+test/e2e/tray-popover.spec.ts . test f949568c0813
+#feature session-monitoring
+  = test/e2e/support/tray-popover-harness.ts#launchTrayHarness
+  < test/fixtures/tray-groups.ts#manyGroups
+
+test/e2e/lsp-semantic.spec.ts . test 8530fca71fbc
+#feature code-insight
+  < src/renderer/lib/syntax-worker.ts
+  < test/e2e/lsp-app/index.html
+  < test/e2e/lsp-app/main.ts
+  < test/e2e/lsp-app/renderer.ts
+
+test/e2e/pane-overflow.spec.ts . test 19f9901a956e
+#feature review-screen
+  = test/e2e/support/comments.ts
+  = test/e2e/support/graph-harness.ts
+  = test/e2e/support/overflow.ts
+
+test/e2e/pr-review-comments.spec.ts . test 47edbc30971b
+#feature review-comments
+  = test/e2e/support/comments.ts
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/pr-review-demo.spec.ts . test 92e083607dac
+#feature review-screen
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/pr-review-explain.spec.ts . test 74e9fcb9eae6
+#feature pr-explain
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/pr-review-layout.spec.ts . test b31d6d6780c3
+#feature review-screen
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/pr-review-regions.spec.ts . test 508852413011
+#feature review-screen
+  = test/e2e/support/graph-harness.ts
+
+test/e2e/text-select.spec.ts . test 8a3fd3281f11
+#feature review-screen
+  < src/renderer/lantern-select.css
+  = src/renderer/lib/lanternview.ts#mountLanternView
+  = test/fixtures/graph/pr-review-demo.ts#prReviewDemo
+
+test/e2e/tsconfig.json . config b024315ec7d5
+  < playwright.config.ts
+  < src/main/filecontent.ts
+  < src/main/lantern-prfile.ts
+  < src/main/lantern-types.ts
+  < src/main/lantern.ts
+  < src/renderer/global.d.ts
+  < test/helpers/lantern-map.ts
+  < tsconfig.json

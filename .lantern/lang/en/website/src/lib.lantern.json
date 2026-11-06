@@ -1,0 +1,10 @@
+{
+ "text": {
+  "headings.ts": "Lists a Markdown file's headings with the same ids the page gives them, for the sidebar contents and the link check",
+  "links.ts": "Turns a link in the Markdown into a site route, an image, an external link or a repository-only file, and reads and writes hash routes",
+  "pages.ts": "Declares which repository Markdown files are pages of the docs site, with their routes, labels and the site title",
+  "sheets.ts": "Numbers the docs pages and finds the previous and next page",
+  "sources.ts": "Bundles the page Markdown and the logo images from the repository at build time",
+  "useHash.ts": "Gives a component the current URL hash and re-renders it when the hash changes"
+ }
+}

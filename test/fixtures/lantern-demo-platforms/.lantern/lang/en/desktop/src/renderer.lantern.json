@@ -1,0 +1,6 @@
+{
+ "text": {
+  "ExportView.tsx": "date range picker and export button",
+  "ExportView.tsx > desktop/src/main/main.ts#createExportWindow": "export request"
+ }
+}

@@ -1,0 +1,6 @@
+{
+ "text": {
+  "index.ts": "Mounts the problems list in a Lantern panel's bottom bar: a button counting errors, warnings and notices by severity, a popover list above it, keyboard-navigable and sorted by severity with file and line locations (double-click or Enter opens the file), per-row action buttons (with an optional hover tip and pressed state), and short-lived toasts for items flagged to pop up",
+  "index.ts gotcha": "Toasts show once per item id and stay hidden while the list is open; hovering a toast pauses its countdown"
+ }
+}

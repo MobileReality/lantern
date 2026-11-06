@@ -1,0 +1,7 @@
+{
+  "text": {
+    "index.html": "Loads the semantic code preview test surface",
+    "main.ts": "Hosts real semantic highlighting and source provenance behind test IPC",
+    "renderer.ts": "Opens production file or pull request diff dialogs against semantic test IPC"
+  }
+}

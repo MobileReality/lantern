@@ -1,0 +1,11 @@
+{
+ "text": {
+  "index.ts": "Finds the terminal of a Claude session from its id without touching it, through its tmux pane when it runs in tmux, so a card can ask before offering the jump; brings that terminal forward with the integration for its app, or just opens the app when it has none.",
+  "index.ts gotcha": "A terminal in an editor resolves to the editor, but one of the embedded editor resolves to no app.",
+  "shell.ts": "Runs a command with a timeout that gives null on failure, quotes text for AppleScript, lists the processes on a tty and writes a window title to a tty.",
+  "shell.ts gotcha": "The title goes to the tty directly, past tmux, so only the terminal that owns the tty sees it.",
+  "index.ts < src/main/proctree.ts#parsePsTable": "reads the process table to climb from a tty to its app",
+  "index.ts = src/main/session-files.ts#readSessionFiles": "finds the process id of the session by its id",
+  "index.ts = src/main/session-jump/integrations/tmux.ts#clientTty": "reads which tty shows the session's pane"
+ }
+}

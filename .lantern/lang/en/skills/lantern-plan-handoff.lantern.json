@@ -1,0 +1,6 @@
+{
+ "text": {
+  "README.md": "Says the skill is step 7 of planning and has no scripts of its own",
+  "SKILL.md": "Directs handing an approved plan to the delegate skill, writing each brief from an item, and reading item status back from pull request records and the local records of branches with no pull request"
+ }
+}

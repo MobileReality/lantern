@@ -1,0 +1,226 @@
+lantern 1
+# skills/lantern-setup/scripts
+
+skills/lantern-setup/scripts/areas-file.mjs . service 7a5a4f4d99e6
+#feature product-areas
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+
+skills/lantern-setup/scripts/areas-gate.mjs . service 9983d3b89e2c
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-snapshot.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/areas-lookup.mjs . service 3b6a70bef4ff
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-snapshot.mjs
+
+skills/lantern-setup/scripts/areas-project.mjs . service 1084055ab52e
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-file.mjs
+  = skills/lantern-setup/scripts/areas-snapshot.mjs
+  = skills/lantern-setup/scripts/cli-args.mjs
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/areas-propose.mjs . service d02613e17577
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-snapshot.mjs
+
+skills/lantern-setup/scripts/areas-reader.mjs . service e5ad03ef10e6
+#feature product-areas
+
+skills/lantern-setup/scripts/areas-required.mjs . service 7753f36cf2e9
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-file.mjs
+  = skills/lantern-setup/scripts/areas-gate.mjs
+  = skills/lantern-setup/scripts/areas-snapshot.mjs
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/areas-snapshot.mjs . service 36f48ef82caa
+#feature product-areas
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/macro-stats.mjs
+  = skills/lantern-setup/scripts/platforms.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/areas-validate.mjs . service 0122eda87b36
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-file.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/areas.mjs . script c9f94ebc966b
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-gate.mjs
+  = skills/lantern-setup/scripts/areas-lookup.mjs
+  = skills/lantern-setup/scripts/areas-project.mjs
+  = skills/lantern-setup/scripts/areas-propose.mjs
+  = skills/lantern-setup/scripts/areas-reader.mjs
+  = skills/lantern-setup/scripts/areas-required.mjs
+  = skills/lantern-setup/scripts/areas-snapshot.mjs
+  = skills/lantern-setup/scripts/cli-args.mjs
+
+skills/lantern-setup/scripts/check-locales.mjs . script 84318c0f53e1
+#feature file-graph
+  < skills/lantern-setup/example-web/locales.json
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/cli-args.mjs . util 7ba55bb787c6
+#feature map-setup
+
+skills/lantern-setup/scripts/cross-platform.mjs . pure ff13a3f047c8
+#feature map-vocabulary
+  < skills/lantern-setup/scripts/macro-stats.mjs#platformOf
+  < skills/lantern-setup/scripts/platforms.mjs#SHARED
+
+skills/lantern-setup/scripts/enumerate.mjs . script 91f04ba1df8d
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/fold.mjs . script 3d1a2f8e3bdd
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/texts.mjs#LANG_DIR
+
+skills/lantern-setup/scripts/ignore.mjs . util 8251c0ea7603
+
+skills/lantern-setup/scripts/lang-todo.mjs . script a7540a8c9b92
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/platforms.mjs
+  = skills/lantern-setup/scripts/sections.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+
+skills/lantern-setup/scripts/lang.mjs . script b90a1fd799b8
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/lib.mjs . service 3b4b84736a7f
+#feature map-setup
+  < skills/lantern-setup/references/model-floor.json
+  < skills/lantern-setup/references/roles.md
+  = skills/lantern-setup/scripts/ignore.mjs
+
+skills/lantern-setup/scripts/macro-eval.mjs . script bd57bd67d6a0
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/cross-platform.mjs#crossPlatformFindings
+  = skills/lantern-setup/scripts/macro-stats.mjs
+
+skills/lantern-setup/scripts/macro-stats.mjs . service b278de01cda4
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/platforms.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/migrate-lang.mjs . script cf3a165e93d4
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+
+skills/lantern-setup/scripts/migrate-model.mjs . script e999cc609a6f
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs#listMapFiles
+  < skills/lantern-setup/scripts/sections.mjs#SECTIONS_DIR
+  < skills/lantern-setup/scripts/texts.mjs#LANG_DIR
+
+skills/lantern-setup/scripts/model.mjs . script d2bf9b057b43
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/plan-ref.mjs . config 27e23e8e90fe
+#feature planning
+
+skills/lantern-setup/scripts/plan.mjs . script d291967aedd0
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/platforms.mjs
+  = skills/lantern-setup/scripts/retag-plan.mjs#runRetag
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs#loadSystems
+
+skills/lantern-setup/scripts/platforms.mjs . service e6f11a43e2e0
+#feature map-setup
+  = skills/lantern-setup/scripts/ignore.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+
+skills/lantern-setup/scripts/prdescribe.mjs . pure 742d32fedea4
+#feature pull-requests
+  = skills/lantern-setup/scripts/lib.mjs#hasControlCharacter
+
+skills/lantern-setup/scripts/prflow.mjs . pure 319ff70286a7
+#feature pr-flow
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/prs.mjs . script dee8a588cfa8
+#feature pull-requests
+  = skills/lantern-setup/scripts/lib.mjs
+  < skills/lantern-setup/scripts/plan-ref.mjs#PLAN_REF
+  = skills/lantern-setup/scripts/prdescribe.mjs#parseDescribeLines
+  = skills/lantern-setup/scripts/prflow.mjs#parseFlowLines
+
+skills/lantern-setup/scripts/refs.mjs . script 8fb8d41e2991
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/retag-areas.mjs . service f47d2902ea8d
+#feature product-areas
+  = skills/lantern-setup/scripts/areas-file.mjs#parseAreas
+  = skills/lantern-setup/scripts/retag-edit.mjs#rewriteTable
+  = skills/lantern-setup/scripts/texts.mjs
+
+skills/lantern-setup/scripts/retag-edit.mjs . service 8fca00918ef7
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/retag-plan.mjs . service 9d668fc3d7f5
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/macro-stats.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/retag.mjs . script 33d0a65f2832
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/cli-args.mjs
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/retag-areas.mjs#retagAreaLeaf
+  = skills/lantern-setup/scripts/retag-edit.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/sections.mjs . service a342b0af2a48
+#feature lantern-sections
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+
+skills/lantern-setup/scripts/shell.mjs . util 6eaec3b2beb2
+  = ext:git
+
+skills/lantern-setup/scripts/systems.mjs . script 90a37edf65f4
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/cli-args.mjs
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs
+
+skills/lantern-setup/scripts/texts.mjs . service 68f56c63874c
+#feature map-setup
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/validate.mjs . script 4b5ee241c274
+#feature map-setup
+  = skills/lantern-setup/scripts/areas-file.mjs
+  = skills/lantern-setup/scripts/areas-required.mjs#areasRequirement
+  = skills/lantern-setup/scripts/areas-validate.mjs#checkAreas
+  = skills/lantern-setup/scripts/cross-platform.mjs#checkCrossPlatform
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/platforms.mjs
+  = skills/lantern-setup/scripts/prs.mjs
+  = skills/lantern-setup/scripts/sections.mjs
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/vocabulary.mjs#checkVocabulary
+
+skills/lantern-setup/scripts/vocabulary.mjs . service ae5e451f7b63
+#feature map-vocabulary
+  = skills/lantern-setup/scripts/texts.mjs

@@ -1,0 +1,10 @@
+{
+ "text": {
+  "codex.ps1": "Windows Codex hook that forwards the event payload to the local server and always answers with an empty JSON object",
+  "codex.ps1 gotcha": "swallows every error and sends nothing without a readable token file",
+  "codex.ps1 > src/main/server.ts": "POST /codex/event",
+  "codex.sh": "macOS and Linux Codex hook that forwards the event payload to the local server and always answers with an empty JSON object",
+  "codex.sh gotcha": "exits 0 and drops the payload when the token file or curl is missing; token passes via heredoc, not argv",
+  "codex.sh > src/main/server.ts": "POST /codex/event"
+ }
+}

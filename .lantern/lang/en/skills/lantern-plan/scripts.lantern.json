@@ -1,0 +1,27 @@
+{
+ "text": {
+  "messages.json": "Every message the plan scripts and the app's plan parser print, grouped as errors, warnings, output lines and nouns, plus the text of the app's plan strip, stage view, full-window bar and column divider, and of the question modal and the text copied for the agent, and the Copy plan text button with the words of the plan as plain text, and the text of the plan problems fix (the text handed to an agent, the copy and fix buttons and their running, done and failed states), with {placeholders}",
+  "plan-approval.mjs": "Judges each plan section as pending, approved or stale by its digest, and whether the whole plan is approved",
+  "plan-check.mjs": "Checks a plan against the map: every area, feature and file it names must exist, a file deleted since only warns, and a new file must be absent from the map and carry a purpose; a question's touches and flow files are held to the same names",
+  "plan-edit.mjs": "Applies plan changes: new plans, added lines with assigned ids, a question's explanation, flow and touches, section approvals and the verified mark",
+  "plan-flow.mjs": "Reads the flow lines of a question (story, step, below, file) into stories, one line at a time, with the same grammar and limits as a pull request's flow",
+  "plan-format.mjs": "Defines the lantern-plan format once: header, folder, patterns, limits and the names of tags, sections, kinds and states",
+  "plan-gate.mjs": "Opens the planning gate only when the map validates as settled and the planning skills are installed",
+  "plan-git.mjs": "Derives a pull request's or a local branch record's merged, open or closed state from git the way the app does, and finds records on remote branches",
+  "plan-handoff.mjs": "Decides which plan items to give to delegates next, or which questions to ask first, and summarises the next step",
+  "plan-impact.mjs": "Computes dependents, dependencies, two hops out by default, and their feature and area counts from the map's relations",
+  "plan-io.mjs": "Resolves, reads and writes plan files, refusing a write that would not parse back",
+  "plan-links.mjs": "Collects the pull request records, and the local records of branches with no pull request, that tick a plan's items, from the tree and the remote branches, with their states",
+  "plan-map.mjs": "Loads the map's records, features, areas and relation indexes that the plan scripts query",
+  "plan-messages.mjs": "Reads messages.json and fills a message by its code; also the code tables and the one exit-code table",
+  "plan-model.mjs": "Holds the empty plan, the section and item lists and the text check shared by the plan scripts",
+  "plan-parse.mjs": "Parses a plan file line by line into a plan object, including the touches, explanation and flow of a question, skipping unknown tags and refusing stray lines",
+  "plan-run.mjs": "Runs a plan script with --json and returns its report, or the first line of why it could not run",
+  "plan-shape.mjs": "Checks a plan is complete: required parts, stage and item order, an acceptance check and a touch on every item, and a step in every flow story",
+  "plan-status.mjs": "Derives each item's status (planned, in progress, implemented, verified) and the next stage from pull request states",
+  "plan-write.mjs": "Writes a plan in canonical layout, a question's extra lines included, and computes the digest of a section",
+  "plan.mjs": "Command line of the planning skills: gate, new, add (with explain and flow), impact, check, show, approve, verified, status, handoff",
+  "planning-skills.mjs": "Lists the planning skills, what to read before each step, and which of them are installed",
+  "selftest.mjs": "Runs the plan commands end to end in a throwaway git repository, from gate to a merged pull request and a verified item"
+ }
+}

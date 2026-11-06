@@ -1,0 +1,5 @@
+lantern 1
+# skills/lantern-local-loop/scripts
+
+skills/lantern-local-loop/scripts/loop.sh . script e89577fe55b7
+#feature skill-installer

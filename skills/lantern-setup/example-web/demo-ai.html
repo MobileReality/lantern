@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>demo-ai (fictional) map</title>
+<style>
+:root {
+    --bg: #e9edf1;
+    --panel: #f5f7f9;
+    --surface: #fbfcfd;
+    --ink: #14212b;
+    --ink-2: #4a5b68;
+    --ink-3: #7b8b97;
+    --rule: #cbd4db;
+    --edge: #2b3f4f;
+    --k-send: #0072b2;
+    --k-take: #c4520a;
+    --k-both: #a8377a;
+    --glow: #d98300;
+    --glow-soft: rgba(217, 131, 0, 0.18);
+    --l-edge: #6a4fa3;
+    --l-presentation: #12777a;
+    --l-domain: #2f52b0;
+    --l-ai: #2f7d32;
+    --l-data: #a3376a;
+    --l-support: #6b7883;
+    --l-system: #8a5a2b;
+    --band: 0.07;
+    --shadow: 0 1px 2px rgba(20, 33, 43, 0.12);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #0c141a;
+        --panel: #111c23;
+        --surface: #16232c;
+        --ink: #e6edf1;
+        --ink-2: #9db0bc;
+        --ink-3: #6b8090;
+        --rule: #243541;
+        --edge: #8fb0c4;
+        --k-send: #56b4e9;
+        --k-take: #e8743b;
+        --k-both: #e58bc0;
+        --glow: #ffb422;
+        --glow-soft: rgba(255, 180, 34, 0.22);
+        --l-edge: #a58be0;
+        --l-presentation: #3fc0c2;
+        --l-domain: #7c9bf0;
+        --l-ai: #6fcf76;
+        --l-data: #e07aa9;
+        --l-support: #8fa0ac;
+        --l-system: #d3a26a;
+        --band: 0.09;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+}
+:root[data-theme="dark"] {
+    --bg: #0c141a;
+    --panel: #111c23;
+    --surface: #16232c;
+    --ink: #e6edf1;
+    --ink-2: #9db0bc;
+    --ink-3: #6b8090;
+    --rule: #243541;
+    --edge: #8fb0c4;
+    --k-send: #56b4e9;
+    --k-take: #e8743b;
+    --k-both: #e58bc0;
+    --glow: #ffb422;
+    --glow-soft: rgba(255, 180, 34, 0.22);
+    --l-edge: #a58be0;
+    --l-presentation: #3fc0c2;
+    --l-domain: #7c9bf0;
+    --l-ai: #6fcf76;
+    --l-data: #e07aa9;
+    --l-support: #8fa0ac;
+    --l-system: #d3a26a;
+    --band: 0.09;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 13px/1.45 var(--sans);
+    display: grid;
+    grid-template-columns: 292px minmax(0, 1fr);
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
+
+aside {
+    background: var(--panel);
+    border-right: 1px solid var(--rule);
+    height: 100vh;
+    overflow-y: auto;
+    padding: 22px 18px 28px;
+    position: sticky;
+    top: 0;
+}
+.brand { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+h1 { font: 600 24px/1.1 var(--serif); margin: 0; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.sub { color: var(--ink-2); margin: 4px 0 0; }
+.theme {
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--ink-2);
+    flex: none;
+}
+.tools { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex: none; }
+select.theme { font-family: inherit; }
+.stats { display: flex; gap: 14px; margin: 16px 0 0; padding: 12px 0; border-block: 1px solid var(--rule); }
+.stats div { display: flex; flex-direction: column; }
+.stats b { font: 600 20px/1 var(--serif); font-variant-numeric: tabular-nums; }
+.stats span { color: var(--ink-3); font-size: 11px; margin-top: 3px; }
+.stats .wip b { color: var(--glow); }
+
+h2 {
+    font: 600 10.5px/1 var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin: 22px 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+h2 button { border: 0; background: none; font-size: 11px; text-transform: none; letter-spacing: 0; color: var(--ink-2); padding: 0; text-decoration: underline; }
+
+.search {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 6px 9px;
+    color: var(--ink);
+    font: 12.5px var(--mono);
+    margin-top: 16px;
+}
+.search::placeholder { color: var(--ink-3); font-family: var(--sans); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 2px 9px 2px 7px;
+    font-size: 12px;
+}
+.chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.chip em { font-style: normal; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--bg); }
+.chip[aria-pressed="true"] i { background: var(--bg); }
+.chip[aria-pressed="true"] em { color: inherit; opacity: 0.8; }
+.chip.wip { --c: var(--glow); }
+.chip.wip[aria-pressed="true"] { color: #1d1300; }
+
+.dirs { display: flex; flex-direction: column; }
+.dir {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border: 0;
+    background: none;
+    text-align: left;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font: 12px var(--mono);
+    color: var(--ink-2);
+    width: 100%;
+}
+.dir span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dir em { font-style: normal; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.dir:hover { background: var(--surface); }
+.dir[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.dir[aria-pressed="true"] em { color: inherit; opacity: 0.7; }
+
+.detail {
+    margin-top: 18px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--c, var(--rule));
+    border-radius: 6px;
+    padding: 12px 13px;
+    box-shadow: var(--shadow);
+}
+.detail.wip { border-color: var(--glow); box-shadow: 0 0 0 3px var(--glow-soft); }
+.detail .path { font: 600 12.5px/1.35 var(--mono); overflow-wrap: anywhere; }
+.detail .role { display: inline-block; margin: 8px 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c); font-weight: 700; }
+.detail .state { display: block; margin-top: 6px; font-size: 12px; color: var(--ink-2); }
+.detail.wip .state { color: var(--glow); font-weight: 600; }
+.detail p { margin: 8px 0 0; font: 15px/1.35 var(--serif); }
+.detail .feature { display: inline-block; margin-top: 8px; padding: 1px 8px; border: 1px solid var(--rule); border-radius: 999px; font: 11.5px var(--mono); color: var(--ink-2); }
+.detail .gotcha { margin: 8px 0 0; padding: 4px 8px; border-left: 3px solid var(--glow); background: var(--surface); font: 12.5px/1.4 var(--sans); color: var(--ink); }
+.detail .gotcha b { font: 700 10px var(--sans); text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); display: block; }
+.detail .hash { margin-top: 8px; font: 11px var(--mono); color: var(--ink-3); }
+.detail h3 { font: 700 10px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); margin: 14px 0 5px; }
+.detail ul { list-style: none; padding: 0; margin: 0; }
+.detail li { padding: 2px 0; font-size: 12px; }
+.detail li button { border: 0; background: none; padding: 0; font: 12px var(--mono); text-align: left; color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 2px; overflow-wrap: anywhere; }
+.detail li button:hover { text-decoration-color: var(--ink); }
+.detail li .sym { color: var(--ink-3); font-family: var(--mono); }
+.detail li .lab { color: var(--ink-2); display: block; padding-left: 16px; font-size: 11.5px; }
+.detail li .g { display: inline-block; width: 16px; color: var(--ink-3); font-family: var(--mono); }
+.detail .close { float: right; border: 0; background: none; color: var(--ink-3); font-size: 16px; line-height: 1; padding: 0 2px; }
+.kind-scope { color: var(--ink-3); font-size: 12px; margin: 6px 0 0; }
+.detail .none { color: var(--ink-3); font-size: 12px; }
+.fb { text-decoration: underline dotted var(--ink-3); text-underline-offset: 3px; }
+.fb sup { font: 600 9px var(--mono); color: var(--ink-3); margin-left: 3px; text-transform: uppercase; }
+
+.legend { display: grid; gap: 7px; }
+.legend div { display: flex; align-items: center; gap: 9px; color: var(--ink-2); font-size: 12px; }
+.legend svg { flex: none; }
+
+main { min-width: 0; padding: 0 0 40px; overflow-x: auto; }
+#graph { display: block; }
+.empty { padding: 60px 30px; font: 18px var(--serif); color: var(--ink-2); }
+
+.band { fill: var(--c); opacity: var(--band); }
+.colname { font: 600 18px var(--serif); fill: var(--ink); }
+.colcap { font: 11.5px var(--sans); fill: var(--ink-3); }
+.grp { font: 600 9.5px var(--mono); fill: var(--ink-3); letter-spacing: 0.04em; }
+.grprule { stroke: var(--rule); stroke-width: 1; }
+
+.node { cursor: pointer; }
+.node rect.box { fill: var(--surface); stroke: var(--rule); stroke-width: 1; }
+.node rect.bar { fill: var(--c); }
+.node text { font: 11.5px var(--mono); fill: var(--ink); pointer-events: none; }
+.node:hover rect.box { stroke: var(--c); }
+.node.sys rect.box { stroke-dasharray: 3 3; fill: transparent; }
+.node.sys text { fill: var(--ink-2); }
+.node.dim { opacity: 0.22; }
+.node.wip.dim { opacity: 0.65; }
+.node.sel rect.box { stroke: var(--ink); stroke-width: 2; }
+.node.wip rect.box { stroke: var(--glow); stroke-width: 1.6; filter: drop-shadow(0 0 5px var(--glow)); }
+.node.wip rect.bar { fill: var(--glow); }
+.node.wip-add rect.box { stroke-dasharray: 4 2; }
+.node.wip-del text.name { text-decoration: line-through; fill: var(--ink-3); }
+.node.wip-del rect.box { opacity: 0.7; }
+.badge rect { fill: var(--glow); }
+.badge text { fill: #1d1300; font: 700 9.5px var(--mono); }
+
+.edge { fill: none; stroke: var(--k-send); stroke-width: 1; opacity: 0.32; }
+.edge.k-take { stroke: var(--k-take); stroke-dasharray: 6 4; }
+.edge.k-both { stroke: var(--k-both); stroke-dasharray: 10 3 2 3; }
+.edge.hot { opacity: 1; stroke-width: 2.4; }
+.edge.off { opacity: 0.05; }
+.kswatch { flex: none; }
+.kswatch path { fill: none; stroke-width: 2.4; }
+.kswatch .k-send { stroke: var(--k-send); }
+.kswatch .k-take { stroke: var(--k-take); stroke-dasharray: 6 4; }
+.kswatch .k-both { stroke: var(--k-both); stroke-dasharray: 10 3 2 3; }
+.chip.k-send { --c: var(--k-send); }
+.chip.k-take { --c: var(--k-take); }
+.chip.k-both { --c: var(--k-both); }
+.detail li .g.k-send { color: var(--k-send); }
+.detail li .g.k-take { color: var(--k-take); }
+.detail li .g.k-both { color: var(--k-both); }
+
+@media (max-width: 900px) {
+    body { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .edge, .node { transition: opacity 0.12s; }
+}
+</style>
+</head>
+<body>
+<aside id="side"></aside>
+<main><svg id="graph" role="img"></svg></main>
+<script id="lantern-data" type="application/json">{"project":"demo-ai (fictional)","nodes":[{"path":"src/ai/agentLoop.ts","dir":"src/ai","marker":".","owner":null,"role":"ai","hash":"ee35b6dc7806","feature":null,"seeAlso":[]},{"path":"src/ai/embeddingRetriever.ts","dir":"src/ai","marker":".","owner":null,"role":"ai","hash":"8bac30039c62","feature":null,"seeAlso":[]},{"path":"src/ai/guardrails.ts","dir":"src/ai","marker":".","owner":null,"role":"ai","hash":"e86bff83537a","feature":null,"seeAlso":[]},{"path":"src/ai/llmClient.ts","dir":"src/ai","marker":".","owner":null,"role":"ai","hash":"f0be140b62d1","feature":null,"seeAlso":[]},{"path":"src/ai/promptBuilder.ts","dir":"src/ai","marker":".","owner":null,"role":"ai","hash":"4a363cab30e3","feature":null,"seeAlso":[]},{"path":"src/api/chatHandler.ts","dir":"src/api","marker":".","owner":null,"role":"handler","hash":"d7b858cae320","feature":null,"seeAlso":[]},{"path":"src/pages/ChatPage.tsx","dir":"src/pages","marker":".","owner":null,"role":"page","hash":"23719bcb150e","feature":null,"seeAlso":[]},{"path":"src/services/ticketRepository.ts","dir":"src/services","marker":".","owner":null,"role":"repository","hash":"cdea3bdd6435","feature":null,"seeAlso":[]},{"path":"src/services/ticketService.ts","dir":"src/services","marker":".","owner":null,"role":"service","hash":"5252e266f19d","feature":null,"seeAlso":[]},{"path":"src/types/ticket.ts","dir":"src/types","marker":".","owner":null,"role":"schema","hash":"209065237e6e","feature":null,"seeAlso":[]}],"relations":[{"from":"src/ai/agentLoop.ts","arrow":"=","to":"src/ai/llmClient.ts","ext":null,"symbol":"complete","key":"src/ai/agentLoop.ts = src/ai/llmClient.ts#complete"},{"from":"src/ai/agentLoop.ts","arrow":"=","to":"src/ai/promptBuilder.ts","ext":null,"symbol":"buildMessages","key":"src/ai/agentLoop.ts = src/ai/promptBuilder.ts#buildMessages"},{"from":"src/ai/agentLoop.ts","arrow":"=","to":"src/ai/embeddingRetriever.ts","ext":null,"symbol":"retrieveContext","key":"src/ai/agentLoop.ts = src/ai/embeddingRetriever.ts#retrieveContext"},{"from":"src/ai/agentLoop.ts","arrow":">","to":"src/ai/guardrails.ts","ext":null,"symbol":"checkAnswer","key":"src/ai/agentLoop.ts > src/ai/guardrails.ts#checkAnswer"},{"from":"src/ai/agentLoop.ts","arrow":"=","to":"src/services/ticketService.ts","ext":null,"symbol":"findTicketStatus","key":"src/ai/agentLoop.ts = src/services/ticketService.ts#findTicketStatus"},{"from":"src/ai/agentLoop.ts","arrow":"\u003c","to":"src/services/ticketService.ts","ext":null,"symbol":"listTickets","key":"src/ai/agentLoop.ts \u003c src/services/ticketService.ts#listTickets"},{"from":"src/ai/agentLoop.ts","arrow":"\u003c","to":"src/types/ticket.ts","ext":null,"symbol":"Triage","key":"src/ai/agentLoop.ts \u003c src/types/ticket.ts#Triage"},{"from":"src/ai/embeddingRetriever.ts","arrow":"=","to":null,"ext":"embeddings-api","symbol":null,"key":"src/ai/embeddingRetriever.ts = ext:embeddings-api"},{"from":"src/ai/embeddingRetriever.ts","arrow":"=","to":null,"ext":"vector-store","symbol":null,"key":"src/ai/embeddingRetriever.ts = ext:vector-store"},{"from":"src/ai/guardrails.ts","arrow":"\u003c","to":"src/types/ticket.ts","ext":null,"symbol":"Triage","key":"src/ai/guardrails.ts \u003c src/types/ticket.ts#Triage"},{"from":"src/ai/llmClient.ts","arrow":"=","to":null,"ext":"anthropic-api","symbol":null,"key":"src/ai/llmClient.ts = ext:anthropic-api"},{"from":"src/ai/promptBuilder.ts","arrow":"\u003c","to":"src/types/ticket.ts","ext":null,"symbol":"Ticket","key":"src/ai/promptBuilder.ts \u003c src/types/ticket.ts#Ticket"},{"from":"src/api/chatHandler.ts","arrow":"=","to":"src/ai/agentLoop.ts","ext":null,"symbol":"runAgent","key":"src/api/chatHandler.ts = src/ai/agentLoop.ts#runAgent"},{"from":"src/api/chatHandler.ts","arrow":">","to":"src/services/ticketService.ts","ext":null,"symbol":"openTicketFromTriage","key":"src/api/chatHandler.ts > src/services/ticketService.ts#openTicketFromTriage"},{"from":"src/pages/ChatPage.tsx","arrow":"=","to":"src/api/chatHandler.ts","ext":null,"symbol":"postChat","key":"src/pages/ChatPage.tsx = src/api/chatHandler.ts#postChat"},{"from":"src/services/ticketRepository.ts","arrow":"=","to":null,"ext":"postgres","symbol":null,"key":"src/services/ticketRepository.ts = ext:postgres"},{"from":"src/services/ticketRepository.ts","arrow":"\u003c","to":"src/types/ticket.ts","ext":null,"symbol":"Ticket","key":"src/services/ticketRepository.ts \u003c src/types/ticket.ts#Ticket"},{"from":"src/services/ticketService.ts","arrow":"\u003c","to":"src/ai/agentLoop.ts","ext":null,"symbol":"AgentReply","key":"src/services/ticketService.ts \u003c src/ai/agentLoop.ts#AgentReply"},{"from":"src/services/ticketService.ts","arrow":"=","to":"src/ai/guardrails.ts","ext":null,"symbol":"validateTriage","key":"src/services/ticketService.ts = src/ai/guardrails.ts#validateTriage"},{"from":"src/services/ticketService.ts","arrow":"=","to":"src/services/ticketRepository.ts","ext":null,"symbol":"saveTicket","key":"src/services/ticketService.ts = src/services/ticketRepository.ts#saveTicket"},{"from":"src/services/ticketService.ts","arrow":"\u003c","to":"src/services/ticketRepository.ts","ext":null,"symbol":"loadTickets","key":"src/services/ticketService.ts \u003c src/services/ticketRepository.ts#loadTickets"}],"features":[],"primary":"en","texts":{"en":{"r":{"src/ai/agentLoop.ts":"tool-use loop that answers a question and proposes a triage","src/ai/agentLoop.ts = src/ai/llmClient.ts#complete":"prompt and tool results in, reply out","src/ai/agentLoop.ts = src/ai/promptBuilder.ts#buildMessages":"question, context, tickets","src/ai/agentLoop.ts = src/ai/embeddingRetriever.ts#retrieveContext":"question in, passages out","src/ai/agentLoop.ts > src/ai/guardrails.ts#checkAnswer":"answer to check","src/ai/agentLoop.ts = src/services/ticketService.ts#findTicketStatus":"the find_ticket_status tool","src/ai/agentLoop.ts \u003c src/services/ticketService.ts#listTickets":"open tickets for the prompt","src/ai/embeddingRetriever.ts":"embeds the question and fetches similar passages","src/ai/embeddingRetriever.ts = ext:embeddings-api":"question embedding","src/ai/embeddingRetriever.ts = ext:vector-store":"nearest passages","src/ai/guardrails.ts":"rejects unsafe answers and malformed triage","src/ai/llmClient.ts":"the one place the model is called","src/ai/llmClient.ts = ext:anthropic-api":"Messages API","src/ai/promptBuilder.ts":"assembles the system prompt and message list","src/api/chatHandler.ts":"POST /api/chat: runs the agent, opens a ticket","src/api/chatHandler.ts = src/ai/agentLoop.ts#runAgent":"question in, answer and triage out","src/api/chatHandler.ts > src/services/ticketService.ts#openTicketFromTriage":"model triage","src/pages/ChatPage.tsx":"the chat screen that shows the answer","src/pages/ChatPage.tsx = src/api/chatHandler.ts#postChat":"question and answer","src/services/ticketRepository.ts":"tickets stored in Postgres","src/services/ticketRepository.ts = ext:postgres":"tickets table","src/services/ticketService.ts":"opens tickets from validated model triage","src/services/ticketService.ts \u003c src/ai/agentLoop.ts#AgentReply":"the model output it consumes","src/services/ticketService.ts = src/ai/guardrails.ts#validateTriage":"triage checked before use","src/types/ticket.ts":"ticket and triage shapes shared by the demo"},"f":{}}},"lang":"en","locales":{"en":{"lang.name":"English","lang.label":"Language","page.title":"{project} map","graph.aria":"Architecture graph","theme.toLight":"Light theme","theme.toDark":"Dark theme","brand.sub":"Architecture map, one node per source file","stats.files":"of {total} files","stats.relations":"of {total} relations","stats.wip":"in progress","search.placeholder":"Find a file or purpose","filter.relation":"Relation","filter.role":"Role","filter.progress":"Progress","filter.directory":"Directory","filter.clear":"clear","filter.wip":"only files in progress","dir.root":"(project root)","empty.filters":"No file matches these filters. Clear a role or directory to bring files back.","system.ghost":"not in the map","system.external":"external","kind.send":"sends data into","kind.take":"takes data from","kind.both":"both ways","kind.scopeAll":"Counts and filter follow each relation's own arrow. Pick a file to see them from its side.","kind.scopeSelected":"Counts and filter are from the side of {file}: takes data from = arrives at it, sends data into = leaves it.","detail.close":"Close details","detail.hash":"hash {hash}","detail.send":"Sends data into","detail.take":"Takes data from","detail.both":"Both ways","detail.usedBy":"Used by","detail.none":"No relations recorded for this file.","state.rest":"At rest — mapped and confirmed","state.changed":"Being changed","state.changedBy":"Being changed by @{owner}","state.added":"Being added","state.addedBy":"Being added by @{owner}","state.removed":"Being removed","state.removedBy":"Being removed by @{owner}","legend.title":"How to read it","legend.send":"blue, solid: sends data into (>)","legend.take":"orange, dashed: takes data from (\u003c)","legend.both":"pink, dash-dot: both ways (=)","legend.overview":"Faint lines are the overview. Pick a file and its own relations turn bold, coloured from that file's side: blue leaves it, orange arrives at it, pink goes both ways. Everything else fades.","legend.marks":"~ being changed, + being added (dashed), − being removed (struck through)","legend.outside":"outside system, not in the repo","layer.edge.name":"Entry points","layer.edge.cap":"where input arrives","layer.presentation.name":"Presentation","layer.presentation.cap":"what the user sees","layer.domain.name":"Domain","layer.domain.cap":"what decides","layer.ai.name":"AI","layer.ai.cap":"what a model produces","layer.data.name":"Data","layer.data.cap":"what fetches and stores","layer.support.name":"Support","layer.support.cap":"config, tests, helpers","layer.system.name":"Outside","layer.system.cap":"systems the code talks to","role.test.name":"test","role.test.desc":"Checks other code; never ships in the runtime.","role.script.name":"script","role.script.desc":"A command run by hand or by CI; the app never imports it.","role.migration.name":"migration","role.migration.desc":"An ordered, one-way change to a persistent schema or its data.","role.config.name":"config","role.config.desc":"Values that tune the app or its tooling.","role.entry.name":"entry","role.entry.desc":"Starts a process or bundle: bootstraps and mounts the app.","role.route.name":"route","role.route.desc":"Maps an address to the code that handles it.","role.middleware.name":"middleware","role.middleware.desc":"A step wrapped around a handler chain (guards, auth, logging).","role.handler.name":"handler","role.handler.desc":"Answers one external input: parses it, calls the domain, shapes the reply.","role.page.name":"page","role.page.desc":"A screen the user navigates to.","role.component.name":"component","role.component.desc":"A reusable piece of UI: inputs in, markup out.","role.state.name":"state","role.state.desc":"One shared runtime store many parts of the app read and write.","role.hook.name":"hook","role.hook.desc":"Reusable stateful UI logic with no markup.","role.style.name":"style","role.style.desc":"Presentation rules with no behaviour.","role.ai.name":"ai","role.ai.desc":"Has a model produce output: LLM and agent calls, prompts, embeddings and retrieval, guardrails.","role.repository.name":"repository","role.repository.desc":"Persistence access for one kind of domain object.","role.gateway.name":"gateway","role.gateway.desc":"A client wrapping an external system or third-party API.","role.service.name":"service","role.service.desc":"An application operation that carries out one use case.","role.model.name":"model","role.model.desc":"A domain object with identity and behaviour.","role.schema.name":"schema","role.schema.desc":"The shape of data with no behaviour: types, DTOs, validation.","role.pure.name":"pure","role.pure.desc":"Domain logic as pure functions, no side effects.","role.util.name":"util","role.util.desc":"Domain-agnostic helper that fits any project.","role.other.name":"other","role.other.desc":"Fits none of the other roles; a human should look.","filter.feature":"Feature","group.by":"Group by","group.dir":"directory","group.feature":"feature","feature.none":"(no feature)","detail.feature":"Feature","detail.gotcha":"Gotcha","text.fallback":"Not translated yet; shown in {lang}","detail.seeAlso":"Easily confused with"},"pl":{"lang.name":"Polski","lang.label":"Język","page.title":"Mapa {project}","graph.aria":"Graf architektury","theme.toLight":"Jasny motyw","theme.toDark":"Ciemny motyw","brand.sub":"Mapa architektury, jeden węzeł na plik źródłowy","stats.files":"z {total} plików","stats.relations":"z {total} relacji","stats.wip":"w toku","search.placeholder":"Szukaj pliku lub celu","filter.relation":"Relacja","filter.role":"Rola","filter.progress":"Postęp","filter.directory":"Katalog","filter.clear":"wyczyść","filter.wip":"tylko pliki w toku","dir.root":"(katalog główny)","empty.filters":"Żaden plik nie pasuje do filtrów. Wyczyść rolę lub katalog, aby przywrócić pliki.","system.ghost":"brak na mapie","system.external":"zewnętrzny","kind.send":"wysyła dane do","kind.take":"pobiera dane z","kind.both":"w obie strony","kind.scopeAll":"Liczniki i filtr idą za strzałką każdej relacji. Wybierz plik, aby zobaczyć je z jego strony.","kind.scopeSelected":"Liczniki i filtr są z perspektywy {file}: pobiera dane z = dochodzi do niego, wysyła dane do = z niego wychodzi.","detail.close":"Zamknij szczegóły","detail.hash":"hash {hash}","detail.send":"Wysyła dane do","detail.take":"Pobiera dane z","detail.both":"W obie strony","detail.usedBy":"Używany przez","detail.none":"Brak zapisanych relacji dla tego pliku.","state.rest":"W spoczynku — zmapowany i potwierdzony","state.changed":"W trakcie zmiany","state.changedBy":"W trakcie zmiany przez @{owner}","state.added":"W trakcie dodawania","state.addedBy":"W trakcie dodawania przez @{owner}","state.removed":"W trakcie usuwania","state.removedBy":"W trakcie usuwania przez @{owner}","legend.title":"Jak to czytać","legend.send":"niebieska, ciągła: wysyła dane do (>)","legend.take":"pomarańczowa, kreskowana: pobiera dane z (\u003c)","legend.both":"różowa, kreska-kropka: w obie strony (=)","legend.overview":"Blade linie to przegląd. Wybierz plik, a jego relacje pogrubią się i przyjmą kolor z perspektywy tego pliku: niebieska wychodzi z niego, pomarańczowa do niego dochodzi, różowa biegnie w obie strony. Reszta blednie.","legend.marks":"~ zmieniany, + dodawany (kreskowany), − usuwany (przekreślony)","legend.outside":"system zewnętrzny, poza repozytorium","layer.edge.name":"Punkty wejścia","layer.edge.cap":"skąd wchodzą dane","layer.presentation.name":"Prezentacja","layer.presentation.cap":"co widzi użytkownik","layer.domain.name":"Domena","layer.domain.cap":"co podejmuje decyzje","layer.ai.name":"AI","layer.ai.cap":"co tworzy model","layer.data.name":"Dane","layer.data.cap":"co pobiera i zapisuje","layer.support.name":"Wsparcie","layer.support.cap":"konfiguracja, testy, pomocnicze","layer.system.name":"Na zewnątrz","layer.system.cap":"systemy, z którymi kod się łączy","role.test.name":"testy","role.test.desc":"Sprawdza inny kod; nie trafia do działającej aplikacji.","role.script.name":"skrypt","role.script.desc":"Polecenie uruchamiane ręcznie lub w CI; aplikacja go nie importuje.","role.migration.name":"migracja","role.migration.desc":"Uporządkowana, jednokierunkowa zmiana schematu lub danych w bazie.","role.config.name":"konfiguracja","role.config.desc":"Wartości ustawiające aplikację lub jej narzędzia.","role.entry.name":"wejście","role.entry.desc":"Uruchamia proces lub paczkę: startuje i montuje aplikację.","role.route.name":"routing","role.route.desc":"Mapuje adres na kod, który go obsługuje.","role.middleware.name":"middleware","role.middleware.desc":"Krok owijający łańcuch handlerów (strażnicy, autoryzacja, logi).","role.handler.name":"handler","role.handler.desc":"Odpowiada na jedno wejście z zewnątrz: parsuje je, woła domenę, składa odpowiedź.","role.page.name":"strona","role.page.desc":"Ekran, do którego przechodzi użytkownik.","role.component.name":"komponent","role.component.desc":"Wielokrotnego użytku element interfejsu: dane na wejściu, znaczniki na wyjściu.","role.state.name":"stan","role.state.desc":"Jeden współdzielony magazyn stanu, który czyta i zapisuje wiele części aplikacji.","role.hook.name":"hook","role.hook.desc":"Wielokrotnie używana logika ze stanem, bez znaczników.","role.style.name":"styl","role.style.desc":"Reguły prezentacji bez zachowania.","role.ai.name":"ai","role.ai.desc":"Zleca modelowi wytworzenie wyniku: wywołania LLM i agentów, prompty, embeddingi i wyszukiwanie, zabezpieczenia.","role.repository.name":"repozytorium","role.repository.desc":"Dostęp do bazy dla jednego rodzaju obiektów domenowych.","role.gateway.name":"brama","role.gateway.desc":"Klient opakowujący system zewnętrzny lub API firm trzecich.","role.service.name":"serwis","role.service.desc":"Operacja aplikacyjna realizująca jeden przypadek użycia.","role.model.name":"model","role.model.desc":"Obiekt domenowy z tożsamością i zachowaniem.","role.schema.name":"schemat","role.schema.desc":"Kształt danych bez zachowania: typy, DTO, walidacja.","role.pure.name":"czysta funkcja","role.pure.desc":"Logika domenowa jako czyste funkcje, bez efektów ubocznych.","role.util.name":"narzędzie","role.util.desc":"Pomocnik niezależny od domeny, pasujący do każdego projektu.","role.other.name":"inne","role.other.desc":"Nie pasuje do żadnej roli; warto, by człowiek to obejrzał.","filter.feature":"Funkcja","group.by":"Grupuj według","group.dir":"katalogu","group.feature":"funkcji","feature.none":"(bez funkcji)","detail.feature":"Funkcja","detail.gotcha":"Pułapka","text.fallback":"Brak tłumaczenia; pokazano w języku: {lang}","detail.seeAlso":"Łatwo pomylić z"}}}</script>
+<script>
+(function () {
+    'use strict';
+    var DATA = JSON.parse(document.getElementById('lantern-data').textContent);
+
+    var LOCALES = DATA.locales;
+    var LANGS = Object.keys(LOCALES);
+    function t(key, vars) {
+        var table = LOCALES[state.lang] || {};
+        var s = table[key] !== undefined ? table[key] : LOCALES.en[key];
+        if (s === undefined) return key;
+        return s.replace(/\{(\w+)\}/g, function (m, k) { return vars && vars[k] !== undefined ? vars[k] : m; });
+    }
+    function roleName(r) { var k = 'role.' + r + '.name'; var v = t(k); return v === k ? r : v; }
+    function roleDesc(r) { var k = 'role.' + r + '.desc'; var v = t(k); return v === k ? '' : v; }
+
+    var PRIMARY = DATA.primary;
+    function mapText(kind, key) {
+        var own = DATA.texts[state.lang];
+        if (own && own[kind][key]) return { s: own[kind][key], fb: false };
+        var main = DATA.texts[PRIMARY];
+        var s = main && main[kind][key];
+        return s ? { s: s, fb: state.lang !== PRIMARY } : { s: '', fb: false };
+    }
+    function fbTitle() { return t('text.fallback', { lang: (LOCALES[PRIMARY] && LOCALES[PRIMARY]['lang.name']) || PRIMARY }); }
+    function textHtml(x) {
+        return x.fb ? '<span class="fb" title="' + esc(fbTitle()) + '">' + esc(x.s) + '<sup>' + esc(PRIMARY) + '</sup></span>' : esc(x.s);
+    }
+    function textPlain(x) { return x.fb ? x.s + ' [' + PRIMARY + ']' : x.s; }
+    function purposeOf(n) { return mapText('r', n.path); }
+
+    var LAYERS = [
+        { id: 'edge', roles: ['entry', 'route', 'middleware', 'handler'] },
+        { id: 'presentation', roles: ['page', 'component', 'hook', 'state', 'style'] },
+        { id: 'domain', roles: ['service', 'model', 'schema', 'pure'] },
+        { id: 'ai', roles: ['ai'] },
+        { id: 'data', roles: ['repository', 'gateway'] },
+        { id: 'support', roles: ['config', 'util', 'test', 'script', 'migration', 'other'] },
+        { id: 'system', roles: [] }
+    ];
+    function layerName(l) { return t('layer.' + l.id + '.name'); }
+    function layerCap(l) { return t('layer.' + l.id + '.cap'); }
+    var LAYER_OF = {};
+    LAYERS.forEach(function (l) { l.roles.forEach(function (r) { LAYER_OF[r] = l; }); });
+    var LAYER_BY_ID = {};
+    LAYERS.forEach(function (l) { LAYER_BY_ID[l.id] = l; });
+    var FALLBACK = LAYER_BY_ID.support;
+
+    var NS = 'http' + '://www.w3.org/2000/svg';
+    var byPath = {};
+    DATA.nodes.forEach(function (n) { byPath[n.path] = n; });
+
+    function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+    function layerOf(node) { return LAYER_OF[node.role] || FALLBACK; }
+    function base(p) { return p.slice(p.lastIndexOf('/') + 1); }
+    function isWip(n) { return n.marker !== '.'; }
+    var KIND = { '>': 'send', '<': 'take', '=': 'both' };
+    var FLIP = { '>': '<', '<': '>', '=': '=' };
+    var KIND_KEY = { '>': 'send', '<': 'take', '=': 'both' };
+
+    var HAS_FEATURES = DATA.features.length > 0;
+    var NO_FEATURE = '-';
+    var state = { roles: [], dirs: [], features: [], group: 'dir', kinds: [], q: '', wip: false, sel: null, theme: null, lang: DATA.lang };
+
+    function readHash() {
+        var s = { roles: [], dirs: [], features: [], group: 'dir', kinds: [], q: '', wip: false, sel: null, theme: null, lang: DATA.lang };
+        location.hash.replace(/^#/, '').split('&').forEach(function (part) {
+            if (!part) return;
+            var i = part.indexOf('=');
+            var k = i === -1 ? part : part.slice(0, i);
+            var v = i === -1 ? '' : decodeURIComponent(part.slice(i + 1));
+            if (k === 'roles') s.roles = v ? v.split(',') : [];
+            else if (k === 'kinds') s.kinds = v ? v.split(',').filter(function (x) { return x === '>' || x === '<' || x === '='; }) : [];
+            else if (k === 'dirs') s.dirs = v ? v.split(',') : [];
+            else if (k === 'features') s.features = v ? v.split(',') : [];
+            else if (k === 'group') s.group = v === 'feature' && HAS_FEATURES ? 'feature' : 'dir';
+            else if (k === 'q') s.q = v;
+            else if (k === 'wip') s.wip = v === '1';
+            else if (k === 'sel') s.sel = byPath[v] ? v : null;
+            else if (k === 'theme') s.theme = v === 'dark' || v === 'light' ? v : null;
+            else if (k === 'lang') s.lang = Object.prototype.hasOwnProperty.call(LOCALES, v) ? v : DATA.lang;
+        });
+        return s;
+    }
+    function writeHash() {
+        var parts = [];
+        if (state.roles.length) parts.push('roles=' + state.roles.map(encodeURIComponent).join(','));
+        if (state.kinds.length) parts.push('kinds=' + state.kinds.map(encodeURIComponent).join(','));
+        if (state.dirs.length) parts.push('dirs=' + state.dirs.map(encodeURIComponent).join(','));
+        if (state.features.length) parts.push('features=' + state.features.map(encodeURIComponent).join(','));
+        if (state.group !== 'dir') parts.push('group=' + state.group);
+        if (state.q) parts.push('q=' + encodeURIComponent(state.q));
+        if (state.wip) parts.push('wip=1');
+        if (state.sel) parts.push('sel=' + encodeURIComponent(state.sel));
+        if (state.theme) parts.push('theme=' + state.theme);
+        if (state.lang !== DATA.lang) parts.push('lang=' + encodeURIComponent(state.lang));
+        history.replaceState(null, '', parts.length ? '#' + parts.join('&') : location.pathname + location.search);
+    }
+
+    function inDirs(n) {
+        if (!state.dirs.length) return true;
+        return state.dirs.some(function (d) {
+            return d === '.' ? n.dir === '.' : n.dir === d || n.dir.indexOf(d + '/') === 0;
+        });
+    }
+    function visible(n) {
+        if (state.roles.length && state.roles.indexOf(n.role) === -1) return false;
+        if (!inDirs(n)) return false;
+        if (state.features.length && state.features.indexOf(n.feature || NO_FEATURE) === -1) return false;
+        if (state.wip && !isWip(n)) return false;
+        if (state.q && n.path.toLowerCase().indexOf(state.q.toLowerCase()) === -1 &&
+            purposeOf(n).s.toLowerCase().indexOf(state.q.toLowerCase()) === -1) return false;
+        return true;
+    }
+
+    var incoming = {};
+    DATA.relations.forEach(function (r) {
+        if (r.to) (incoming[r.to] = incoming[r.to] || []).push(r);
+    });
+
+    var wipCount = DATA.nodes.filter(isWip).length;
+    var roleCounts = {};
+    DATA.nodes.forEach(function (n) { roleCounts[n.role] = (roleCounts[n.role] || 0) + 1; });
+    var featureCounts = {};
+    DATA.nodes.forEach(function (n) { var f = n.feature || NO_FEATURE; featureCounts[f] = (featureCounts[f] || 0) + 1; });
+    function groupKey(n) {
+        if (state.group === 'feature') return n.feature || t('feature.none');
+        return n.dir;
+    }
+    function relativeArrow(r, sel) {
+        if (!sel) return r.arrow;
+        if (r.from === sel) return r.arrow;
+        if (r.to === sel) return FLIP[r.arrow];
+        return null;
+    }
+    function countKinds(sel) {
+        var counts = { '>': 0, '<': 0, '=': 0 };
+        DATA.relations.forEach(function (r) {
+            var a = relativeArrow(r, sel);
+            if (a) counts[a] += 1;
+        });
+        return counts;
+    }
+    var globalKindCounts = countKinds(null);
+    var dirCounts = {};
+    DATA.nodes.forEach(function (n) { dirCounts[n.dir] = (dirCounts[n.dir] || 0) + 1; });
+    var dirList = Object.keys(dirCounts).sort(function (a, b) {
+        if (a === '.') return -1;
+        if (b === '.') return 1;
+        return a < b ? -1 : 1;
+    });
+
+    var side = document.getElementById('side');
+    var svg = document.getElementById('graph');
+    var shown = { nodes: 0, edges: 0 };
+    var edgeEls = [];
+    var edgeLayer = null;
+    var nodeEls = {};
+
+    function layout() {
+        var vis = DATA.nodes.filter(visible);
+        var visSet = {};
+        vis.forEach(function (n) { visSet[n.path] = true; });
+        var edges = [];
+        var systems = {};
+        DATA.relations.forEach(function (r) {
+            if (!visSet[r.from]) return;
+            if (state.kinds.length && state.kinds.indexOf(relativeArrow(r, state.sel)) === -1) return;
+            if (r.to && !byPath[r.to]) {
+                systems['?' + r.to] = { key: '?' + r.to, name: r.to, ghost: true };
+                edges.push({ r: r, toKey: '?' + r.to });
+            } else if (r.to) {
+                if (!visSet[r.to]) return;
+                edges.push({ r: r, toKey: r.to });
+            } else {
+                systems['ext:' + r.ext] = { key: 'ext:' + r.ext, name: r.ext, ghost: false };
+                edges.push({ r: r, toKey: 'ext:' + r.ext });
+            }
+        });
+
+        var cols = LAYERS.map(function (l) { return { layer: l, items: [] }; });
+        var colOf = {};
+        LAYERS.forEach(function (l, i) { colOf[l.id] = cols[i]; });
+        vis.forEach(function (n) { colOf[layerOf(n).id].items.push({ node: n, key: n.path, label: base(n.path), dir: groupKey(n) }); });
+        Object.keys(systems).sort().forEach(function (k) {
+            var s = systems[k];
+            colOf.system.items.push({ sys: s, key: k, label: s.name, dir: s.ghost ? t('system.ghost') : t('system.external') });
+        });
+        cols = cols.filter(function (c) { return c.items.length; });
+        cols.forEach(function (c) {
+            c.items.sort(function (a, b) {
+                if (a.dir !== b.dir) return a.dir < b.dir ? -1 : 1;
+                return a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
+            });
+        });
+
+        var PAD = 28, GAP = 60, TOP = 78, PITCH = 26, NH = 22, GH = 24, GG = 10;
+        var x = PAD;
+        var pos = {};
+        var maxY = TOP;
+        cols.forEach(function (c) {
+            var longest = c.items.reduce(function (m, it) { return Math.max(m, it.label.length); }, 8);
+            c.w = Math.max(150, Math.min(260, Math.round(longest * 6.9 + 44)));
+            c.x = x;
+            x += c.w + GAP;
+            var y = TOP, last = null;
+            c.groups = [];
+            c.items.forEach(function (it) {
+                if (it.dir !== last) {
+                    if (last !== null) y += GG;
+                    c.groups.push({ dir: it.dir, y: y });
+                    y += GH;
+                    last = it.dir;
+                }
+                pos[it.key] = { x: c.x, y: y, w: c.w, h: NH, col: c, item: it };
+                y += PITCH;
+            });
+            c.bottom = y;
+            maxY = Math.max(maxY, y);
+        });
+        var width = x - GAP + PAD + 44;
+        var height = maxY + 24;
+        return { cols: cols, pos: pos, edges: edges, width: width, height: height, count: vis.length };
+    }
+
+    function el(name, attrs, parent) {
+        var e = document.createElementNS(NS, name);
+        Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+        if (parent) parent.appendChild(e);
+        return e;
+    }
+
+    function truncLeft(s, n) { return s.length > n ? '…' + s.slice(s.length - n + 1) : s; }
+    function truncRight(s, n) { return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+
+    function edgePath(a, b) {
+        var ay = a.y + a.h / 2, by = b.y + b.h / 2;
+        if (a.col === b.col) {
+            var x1 = a.x + a.w;
+            var bulge = 16 + Math.min(34, Math.abs(ay - by) * 0.1);
+            return 'M' + x1 + ',' + ay + ' C' + (x1 + bulge) + ',' + ay + ' ' + (x1 + bulge) + ',' + by + ' ' + x1 + ',' + by;
+        }
+        var right = b.x > a.x;
+        var xa = right ? a.x + a.w : a.x;
+        var xb = right ? b.x : b.x + b.w;
+        var d = (xb - xa) / 2;
+        return 'M' + xa + ',' + ay + ' C' + (xa + d) + ',' + ay + ' ' + (xb - d) + ',' + by + ' ' + xb + ',' + by;
+    }
+
+    function drawGraph() {
+        var L = layout();
+        shown.nodes = L.count;
+        shown.edges = L.edges.length;
+        svg.textContent = '';
+        edgeEls = [];
+        nodeEls = {};
+        var stale = svg.parentNode.querySelector('.empty');
+        if (stale) stale.remove();
+        if (!L.count) {
+            svg.setAttribute('width', 0);
+            svg.setAttribute('height', 0);
+            var msg = document.createElement('div');
+            msg.className = 'empty';
+            msg.textContent = t('empty.filters');
+            svg.parentNode.insertBefore(msg, svg);
+            return;
+        }
+        svg.setAttribute('viewBox', '0 0 ' + L.width + ' ' + L.height);
+        svg.setAttribute('width', L.width);
+        svg.setAttribute('height', L.height);
+        svg.style.width = '100%';
+        svg.style.maxWidth = L.width + 'px';
+        svg.style.minWidth = Math.min(L.width, 1000) + 'px';
+        svg.style.height = 'auto';
+
+        L.cols.forEach(function (c) {
+            var g = el('g', { style: '--c: var(--l-' + c.layer.id + ')' }, svg);
+            el('rect', { 'class': 'band', x: c.x - 10, y: 10, width: c.w + 20, height: c.bottom - 4, rx: 8 }, g);
+            var colText = el('text', { 'class': 'colname', x: c.x, y: 38 }, g);
+            colText.textContent = layerName(c.layer);
+            var cap = el('text', { 'class': 'colcap', x: c.x, y: 56 }, g);
+            cap.textContent = layerCap(c.layer);
+            c.groups.forEach(function (gr) {
+                el('line', { 'class': 'grprule', x1: c.x, x2: c.x + c.w, y1: gr.y + 6, y2: gr.y + 6 }, g);
+                var gt = el('text', { 'class': 'grp', x: c.x, y: gr.y + 19 }, g);
+                gt.textContent = truncLeft(gr.dir, Math.floor(c.w / 5.9));
+            });
+        });
+
+        edgeLayer = el('g', {}, svg);
+        L.edges.forEach(function (e) {
+            var a = L.pos[e.r.from], b = L.pos[e.toKey];
+            var p = el('path', { 'class': 'edge k-' + KIND[e.r.arrow], d: edgePath(a, b) }, edgeLayer);
+            var title = el('title', {}, p);
+            var label = mapText('r', e.r.key);
+            title.textContent = e.r.from + ' ' + e.r.arrow + ' ' + (e.r.to || 'ext:' + e.r.ext) + (e.r.symbol ? '#' + e.r.symbol : '') + (label.s ? ' | ' + textPlain(label) : '');
+            edgeEls.push({ el: p, from: e.r.from, to: e.toKey, arrow: e.r.arrow });
+        });
+
+        var nodeLayer = el('g', {}, svg);
+        Object.keys(L.pos).forEach(function (key) {
+            var p = L.pos[key], it = p.item, n = it.node;
+            var cls = 'node';
+            if (!n) cls += ' sys';
+            if (n && isWip(n)) {
+                cls += ' wip';
+                if (n.marker === '+') cls += ' wip-add';
+                if (n.marker === '-') cls += ' wip-del';
+            }
+            var g = el('g', { 'class': cls, transform: 'translate(' + p.x + ',' + p.y + ')', style: '--c: var(--l-' + (n ? layerOf(n).id : 'system') + ')', tabindex: 0, role: 'button' }, nodeLayer);
+            var tt = el('title', {}, g);
+            tt.textContent = n ? n.path + '\n' + roleName(n.role) + ' — ' + textPlain(purposeOf(n)) : it.label;
+            el('rect', { 'class': 'box', width: p.w, height: p.h, rx: 3 }, g);
+            if (n) el('rect', { 'class': 'bar', width: 4, height: p.h, rx: 1.5 }, g);
+            var badgeW = 0;
+            if (n && isWip(n)) {
+                var bt = n.marker + (n.owner ? '@' + n.owner : '');
+                var shownBt = truncRight(bt, 12);
+                badgeW = shownBt.length * 6 + 10;
+                var bg = el('g', { 'class': 'badge', transform: 'translate(' + (p.w - badgeW - 3) + ',3)' }, g);
+                el('rect', { width: badgeW, height: p.h - 6, rx: 2 }, bg);
+                var btx = el('text', { x: 5, y: 12 }, bg);
+                btx.textContent = shownBt;
+            }
+            var room = Math.floor((p.w - 20 - badgeW) / 6.9);
+            var txt = el('text', { 'class': 'name', x: n ? 12 : 8, y: 15 }, g);
+            txt.textContent = truncRight(it.label, room);
+            nodeEls[key] = g;
+            g.addEventListener('mouseenter', function () { focusOn(key); });
+            g.addEventListener('mouseleave', function () { focusOn(state.sel); });
+            g.addEventListener('focus', function () { focusOn(key); });
+            g.addEventListener('blur', function () { focusOn(state.sel); });
+            if (n) {
+                g.addEventListener('click', function () { select(state.sel === key ? null : key); });
+                g.addEventListener('keydown', function (ev) {
+                    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(state.sel === key ? null : key); }
+                });
+            }
+        });
+        focusOn(state.sel);
+    }
+
+    function focusOn(key) {
+        var live = key && nodeEls[key] ? key : null;
+        var near = {};
+        if (live) {
+            near[live] = true;
+            edgeEls.forEach(function (e) {
+                if (e.from === live) near[e.to] = true;
+                if (e.to === live) near[e.from] = true;
+            });
+        }
+        edgeEls.forEach(function (e) {
+            var hot = live && (e.from === live || e.to === live);
+            var arrow = hot && e.to === live && e.from !== live ? FLIP[e.arrow] : e.arrow;
+            e.el.setAttribute('class', 'edge k-' + KIND[arrow] + (hot ? ' hot' : live ? ' off' : ''));
+            if (hot) edgeLayer.appendChild(e.el);
+        });
+        Object.keys(nodeEls).forEach(function (k) {
+            var cls = nodeEls[k].getAttribute('class').replace(/ (dim|sel)\b/g, '');
+            if (live && !near[k]) cls += ' dim';
+            if (k === state.sel) cls += ' sel';
+            nodeEls[k].setAttribute('class', cls);
+        });
+    }
+
+    function relLine(rel, glyph, target, mapped, kind) {
+        var targetHtml = mapped
+            ?'<button data-go="' + esc(target) + '">' + esc(base(target)) + '</button>'
+            : '<span>' + esc(target) + '</span>';
+        var sym = rel.symbol ? '<span class="sym">#' + esc(rel.symbol) + '</span>' : '';
+        var label = mapText('r', rel.key);
+        var lab = label.s ? '<span class="lab">' + textHtml(label) + '</span>' : '';
+        return '<li><span class="g k-' + KIND[kind] + '">' + glyph + '</span>' + targetHtml + sym + lab + '</li>';
+    }
+
+    function noteHtml(n) {
+        var out = '';
+        if (n.feature) out += '<span class="feature" title="' + esc(textPlain(mapText('f', n.feature))) + '">' + esc(t('detail.feature')) + ': ' + esc(n.feature) + '</span>';
+        var gotcha = mapText('r', n.path + ' gotcha');
+        if (gotcha.s) out += '<div class="gotcha"><b>' + esc(t('detail.gotcha')) + '</b>' + textHtml(gotcha) + '</div>';
+        if (n.seeAlso.length) {
+            var rows = n.seeAlso.map(function (p) {
+                return byPath[p] ? '<li><button data-go="' + esc(p) + '">' + esc(p) + '</button></li>' : '<li><span>' + esc(p) + '</span></li>';
+            });
+            var why = mapText('r', n.path + ' see-also');
+            out += '<h3>' + esc(t('detail.seeAlso')) + '</h3><ul>' + rows.join('') + '</ul>' +
+                (why.s ? '<div class="none">' + textHtml(why) + '</div>' : '');
+        }
+        return out;
+    }
+
+    function detailHtml() {
+        var n = state.sel && byPath[state.sel];
+        if (!n) return '';
+        var layer = layerOf(n);
+        var out = DATA.relations.filter(function (r) { return r.from === n.path; });
+        var inn = incoming[n.path] || [];
+        function group(title, arrow, glyph) {
+            var rows = out.filter(function (r) { return r.arrow === arrow; }).map(function (r) {
+                return relLine(r, glyph, r.to || 'ext:' + r.ext, r.to && byPath[r.to], arrow);
+            });
+            return rows.length ? '<h3>' + esc(title) + '</h3><ul>' + rows.join('') + '</ul>' : '';
+        }
+        var usedBy = inn.map(function (r) {
+            return relLine(r, r.arrow === '>' ? '→' : r.arrow === '<' ? '←' : '⇄', r.from, true, FLIP[r.arrow]);
+        });
+        var STATE_KEY = { '.': 'rest', '~': 'changed', '+': 'added', '-': 'removed' };
+        var sk = 'state.' + STATE_KEY[n.marker] + (n.marker !== '.' && n.owner ? 'By' : '');
+        var stateText = t(sk, { owner: n.owner });
+        var body = group(t('detail.send'), '>', '→') + group(t('detail.take'), '<', '←') + group(t('detail.both'), '=', '⇄') +
+            (usedBy.length ? '<h3>' + esc(t('detail.usedBy')) + '</h3><ul>' + usedBy.join('') + '</ul>' : '');
+        if (!body) body = '<p class="none">' + esc(t('detail.none')) + '</p>';
+        return '<section class="detail' + (isWip(n) ? ' wip' : '') + '" style="--c: var(--l-' + layer.id + ')">' +
+            '<button class="close" data-go="" aria-label="' + esc(t('detail.close')) + '">×</button>' +
+            '<div class="path">' + esc(n.path) + '</div>' +
+            '<span class="role" title="' + esc(roleDesc(n.role)) + '">' + esc(roleName(n.role)) + ' · ' + esc(layerName(layer)) + '</span>' +
+            '<span class="state">' + esc(stateText) + '</span>' +
+            '<p>' + textHtml(purposeOf(n)) + '</p>' + noteHtml(n) +
+            '<div class="hash">' + esc(t('detail.hash', { hash: n.hash })) + '</div>' + body + '</section>';
+    }
+
+    function clearBtn(what) { return '<button data-clear="' + what + '">' + esc(t('filter.clear')) + '</button>'; }
+
+    function drawSide() {
+        var roleChips = LAYERS.map(function (l) {
+            var chips = l.roles.filter(function (r) { return roleCounts[r]; }).map(function (r) {
+                return '<button class="chip" style="--c: var(--l-' + l.id + ')" data-role="' + r + '" title="' + esc(roleDesc(r)) + '" aria-pressed="' + (state.roles.indexOf(r) !== -1) + '"><i></i>' + esc(roleName(r)) + ' <em>' + roleCounts[r] + '</em></button>';
+            });
+            return chips.join('');
+        }).join('');
+        var unknown = Object.keys(roleCounts).filter(function (r) { return !LAYER_OF[r]; }).map(function (r) {
+            return '<button class="chip" style="--c: var(--l-support)" data-role="' + r + '" aria-pressed="' + (state.roles.indexOf(r) !== -1) + '"><i></i>' + esc(r) + ' <em>' + roleCounts[r] + '</em></button>';
+        }).join('');
+        var kindCounts = state.sel ? countKinds(state.sel) : globalKindCounts;
+        var kindScope = state.sel ? t('kind.scopeSelected', { file: base(state.sel) }) : t('kind.scopeAll');
+        var kindChips = ['>', '<', '='].map(function (k) {
+            return '<button class="chip k-' + KIND[k] + '" data-kind="' + esc(k) + '" title="' + esc(kindScope) + '" aria-pressed="' + (state.kinds.indexOf(k) !== -1) + '"><i></i>' + esc(t('kind.' + KIND_KEY[k])) + ' <em>' + kindCounts[k] + '</em></button>';
+        }).join('');
+        var dirs = dirList.map(function (d) {
+            var depth = d === '.' ? 0 : d.split('/').length - 1;
+            var label = d === '.' ? t('dir.root') : base(d);
+            return '<button class="dir" data-dir="' + esc(d) + '" aria-pressed="' + (state.dirs.indexOf(d) !== -1) + '" title="' + esc(d) + '" style="padding-left:' + (6 + depth * 10) + 'px"><span>' + esc(label) + '</span><em>' + dirCounts[d] + '</em></button>';
+        }).join('');
+        var featureChips = DATA.features.map(function (f) {
+            return '<button class="chip" style="--c: var(--ink-2)" data-feature="' + esc(f) + '" title="' + esc(textPlain(mapText('f', f))) + '" aria-pressed="' + (state.features.indexOf(f) !== -1) + '"><i></i>' + esc(f) + ' <em>' + (featureCounts[f] || 0) + '</em></button>';
+        }).join('') + (featureCounts[NO_FEATURE] ? '<button class="chip" style="--c: var(--ink-3)" data-feature="' + NO_FEATURE + '" aria-pressed="' + (state.features.indexOf(NO_FEATURE) !== -1) + '"><i></i>' + esc(t('feature.none')) + ' <em>' + featureCounts[NO_FEATURE] + '</em></button>' : '');
+        var featureBlock = !HAS_FEATURES ? '' :
+            '<h2>' + esc(t('filter.feature')) + ' ' + clearBtn('features') + '</h2><div class="chips">' + featureChips + '</div>' +
+            '<h2>' + esc(t('group.by')) + '</h2><div class="chips">' +
+            ['dir', 'feature'].map(function (g) {
+                return '<button class="chip" style="--c: var(--ink-2)" data-group="' + g + '" aria-pressed="' + (state.group === g) + '"><i></i>' + esc(t('group.' + g)) + '</button>';
+            }).join('') + '</div>';
+        var themeLabel = (state.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark' ? t('theme.toLight') : t('theme.toDark');
+        var langOptions = LANGS.map(function (c) {
+            return '<option value="' + esc(c) + '"' + (c === state.lang ? ' selected' : '') + '>' + esc(LOCALES[c]['lang.name'] || c) + '</option>';
+        }).join('');
+        side.innerHTML =
+            '<div class="brand"><div><h1>' + esc(DATA.project) + '</h1><p class="sub">' + esc(t('brand.sub')) + '</p></div>' +
+            '<div class="tools"><button class="theme" id="theme">' + esc(themeLabel) + '</button>' +
+            '<select class="theme" id="lang" aria-label="' + esc(t('lang.label')) + '">' + langOptions + '</select></div></div>' +
+            '<div class="stats"><div><b id="n-files">' + shown.nodes + '</b><span>' + esc(t('stats.files', { total: DATA.nodes.length })) + '</span></div>' +
+            '<div><b id="n-rel">' + shown.edges + '</b><span>' + esc(t('stats.relations', { total: DATA.relations.length })) + '</span></div>' +
+            '<div class="wip"><b>' + wipCount + '</b><span>' + esc(t('stats.wip')) + '</span></div></div>' +
+            detailHtml() +
+            '<input class="search" id="q" type="search" placeholder="' + esc(t('search.placeholder')) + '" value="' + esc(state.q) + '" aria-label="' + esc(t('search.placeholder')) + '">' +
+            '<h2>' + esc(t('filter.relation')) + ' ' + clearBtn('kinds') + '</h2><div class="chips">' + kindChips + '</div>' +
+            '<p class="kind-scope">' + esc(kindScope) + '</p>' +
+            '<h2>' + esc(t('filter.role')) + ' ' + clearBtn('roles') + '</h2><div class="chips">' + roleChips + unknown + '</div>' +
+            featureBlock +
+            '<h2>' + esc(t('filter.progress')) + '</h2><div class="chips"><button class="chip wip" data-wip="1" aria-pressed="' + state.wip + '"><i></i>' + esc(t('filter.wip')) + ' <em>' + wipCount + '</em></button></div>' +
+            '<h2>' + esc(t('filter.directory')) + ' ' + clearBtn('dirs') + '</h2><div class="dirs">' + dirs + '</div>' +
+            '<h2>' + esc(t('legend.title')) + '</h2><div class="legend">' +
+            '<div><svg class="kswatch" width="34" height="10"><path class="k-send" d="M1,5 H33"/></svg>' + esc(t('legend.send')) + '</div>' +
+            '<div><svg class="kswatch" width="34" height="10"><path class="k-take" d="M1,5 H33"/></svg>' + esc(t('legend.take')) + '</div>' +
+            '<div><svg class="kswatch" width="34" height="10"><path class="k-both" d="M1,5 H33"/></svg>' + esc(t('legend.both')) + '</div>' +
+            '<div>' + esc(t('legend.overview')) + '</div>' +
+            '<div><svg width="34" height="16"><rect x="1" y="2" width="32" height="12" rx="2" fill="none" stroke="var(--glow)" stroke-width="1.6" style="filter:drop-shadow(0 0 3px var(--glow))"/></svg>' + esc(t('legend.marks')) + '</div>' +
+            '<div><svg width="34" height="16"><rect x="1" y="2" width="32" height="12" rx="2" fill="none" stroke="var(--ink-3)" stroke-dasharray="3 3"/></svg>' + esc(t('legend.outside')) + '</div>' +
+            '</div>';
+    }
+
+    function select(key) {
+        state.sel = key;
+        refresh(state.kinds.length > 0);
+        if (key && nodeEls[key]) {
+            var r = nodeEls[key].getBoundingClientRect();
+            if (r.top < 0 || r.bottom > innerHeight) nodeEls[key].scrollIntoView({ block: 'center' });
+        }
+    }
+
+    function refresh(redrawGraph) {
+        if (redrawGraph !== false) drawGraph();
+        else focusOn(state.sel);
+        var keepScroll = side.scrollTop;
+        drawSide();
+        side.scrollTop = keepScroll;
+        applyTheme();
+        document.title = t('page.title', { project: DATA.project });
+        document.documentElement.lang = state.lang;
+        svg.setAttribute('aria-label', t('graph.aria'));
+        writeHash();
+    }
+
+    function applyTheme() {
+        if (state.theme) document.documentElement.setAttribute('data-theme', state.theme);
+        else document.documentElement.removeAttribute('data-theme');
+    }
+
+    function toggle(list, v) {
+        var i = list.indexOf(v);
+        if (i === -1) list.push(v); else list.splice(i, 1);
+    }
+
+    side.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('button');
+        if (!btn) return;
+        if (btn.hasAttribute('data-role')) { toggle(state.roles, btn.getAttribute('data-role')); refresh(); }
+        else if (btn.hasAttribute('data-kind')) { toggle(state.kinds, btn.getAttribute('data-kind')); refresh(); }
+        else if (btn.hasAttribute('data-dir')) { toggle(state.dirs, btn.getAttribute('data-dir')); refresh(); }
+        else if (btn.hasAttribute('data-feature')) { toggle(state.features, btn.getAttribute('data-feature')); refresh(); }
+        else if (btn.hasAttribute('data-group')) { state.group = btn.getAttribute('data-group'); refresh(); }
+        else if (btn.hasAttribute('data-wip')) { state.wip = !state.wip; refresh(); }
+        else if (btn.hasAttribute('data-clear')) { state[btn.getAttribute('data-clear')] = []; refresh(); }
+        else if (btn.hasAttribute('data-go')) { select(btn.getAttribute('data-go') || null); }
+        else if (btn.id === 'theme') {
+            var dark = (state.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+            state.theme = dark ? 'light' : 'dark';
+            refresh(false);
+        }
+    });
+    side.addEventListener('change', function (ev) {
+        if (ev.target.id !== 'lang') return;
+        state.lang = ev.target.value;
+        refresh();
+        document.getElementById('lang').focus();
+    });
+    side.addEventListener('input', function (ev) {
+        if (ev.target.id !== 'q') return;
+        state.q = ev.target.value;
+        var pos = ev.target.selectionStart;
+        refresh();
+        var q = document.getElementById('q');
+        q.focus();
+        q.setSelectionRange(pos, pos);
+    });
+    addEventListener('hashchange', function () { state = readHash(); refresh(); });
+
+    state = readHash();
+    refresh();
+})();
+</script>
+</body>
+</html>

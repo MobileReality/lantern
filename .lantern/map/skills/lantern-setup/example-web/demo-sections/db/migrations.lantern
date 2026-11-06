@@ -1,0 +1,5 @@
+lantern 1
+# skills/lantern-setup/example-web/demo-sections/db/migrations
+
+skills/lantern-setup/example-web/demo-sections/db/migrations/001_create_tables.sql . migration 58be81093e66
+#feature lantern-sections

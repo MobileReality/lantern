@@ -1,0 +1,6 @@
+{
+  "text": {
+    "index.ts": "Lists the languages Claude can write in and their codes, and declares the Languages settings: the map language and the explainer language, both automatic by default; picks are lowercase names, and a capitalised pick from the old selector still counts.",
+    "index.ts gotcha": "Automatic is a setting value, not a language, so a user can pick english on purpose."
+  }
+}

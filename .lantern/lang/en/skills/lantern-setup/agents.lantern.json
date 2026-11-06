@@ -1,0 +1,13 @@
+{
+ "text": {
+  "lantern-mapper.md": "pinned Sonnet 5.5 worker that maps one chunk of a project in one plain command shape an unattended run accepts, tagging features, naming outside systems from the shared lists and linking network calls and deploy files to the handler or service entry in the repository",
+  "lantern-mapper.md @ skills/lantern-setup/SKILL.md": "the Map rules it follows",
+  "lantern-mapper.md @ skills/lantern-setup/references/format.md": "record and text format",
+  "lantern-mapper.md @ skills/lantern-setup/references/roles.md": "role vocabulary",
+  "lantern-mapper.md @ skills/lantern-setup/scripts/fold.mjs": "moves records written under a .claude folder into place",
+  "lantern-mapper.md @ skills/lantern-setup/scripts/model.mjs": "checks its own model id first",
+  "lantern-mapper.md @ skills/lantern-setup/scripts/plan.mjs": "lists its chunk with hashes",
+  "lantern-mapper.md @ skills/lantern-setup/scripts/refs.mjs": "reference candidates for markdown files",
+  "lantern-mapper.md @ skills/lantern-setup/scripts/systems.mjs": "the only way to a new outside system"
+ }
+}

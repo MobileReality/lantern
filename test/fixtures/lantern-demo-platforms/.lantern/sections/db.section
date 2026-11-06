@@ -1,0 +1,8 @@
+lantern-section 1
+# db
+#platform backend
+
+entity readings table declared @ infra/main.tf#readings
+own readings @ api/src/repositories/readingRepository.ts
+field readings userId string declared @ api/src/repositories/readingRepository.ts#Reading
+field readings bpm number inferred @ api/src/repositories/readingRepository.ts#bpm

@@ -1,0 +1,29 @@
+{
+ "text": {
+  "agent.mjs": "runs one headless claude call with what is left of the cost cap and turns a spend over the cap or a budget stop into a cap failure",
+  "areas-checks.mjs": "Judge a finished areas fixture by scripts only: sources untouched, map settled, the tree passes the areas check, and a new feature is placed or left under To assign with the tree intact",
+  "areas-fake.mjs": "Write the good or broken answer a model would give for the areas fixture: a passing tree, or a feature placed in an area or left out when the tree is full",
+  "areas-fixtures.mjs": "Build the neutral 12-feature shop with a settled map of 121 records and a five-area, seven-area or layer-named tree",
+  "areas-slices.mjs": "Define the areas slices of lantern-vocabulary: a free fixture check, then paid agent steps that write the tree and place a new feature with and without room",
+  "extra-skills.mjs": "Check offline that each role's required-skills list is its fixed skills plus its slot once each, that the handover gate is green with full reads and no extra line in the brief and red when a slot skill is not read in full, and that the delegate skill files run the list command, name no fixed skill, keep the skill linker to the brief's Conventions block",
+  "fake-agent.mjs":"stands in for the claude binary offline: performs the skill's map, re-map, retag or delegate steps with its scripts, following the project's stored PR delivery, and reports a cost",
+  "fake-agent.mjs gotcha": "stops with error_max_budget_usd before touching anything when its cost passes the budget, like claude does",
+  "fixtures.mjs": "builds the tiny fixture project, writes a settled map deterministically and runs the setup and sync scripts against it",
+  "lantern-areas-find.mjs": "List every file of a given name under a directory, searching subdirectories, in sorted order",
+  "lantern-areas-checks.mjs": "Judge a finished lantern-areas fixture by scripts only: sources and records untouched, map settled and strict, the tree passes the areas check and the blind lookup, or the flat view is said in the report",
+  "lantern-areas-fake.mjs": "Write the good or broken answer a model would give for each lantern-areas project: the right tree with its lookup files, a layered or misleading one, or an eighth area",
+  "lantern-areas-fixtures.mjs": "Build the five neutral lantern-areas projects (good, trap, small, old-map retag, overflow) with settled maps and deterministic sources",
+  "lantern-areas-reader.mjs": "Stand in for the blind readers offline: answer each lookup packet with the area whose purpose shares the most words with the feature text",
+  "lantern-areas-slices.mjs": "Define the lantern-areas check: five free fixture slices that prove each judge can fail, then five isolated paid agent slices",
+  "lantern-areas-specs.mjs": "Hold the data of the shop and studio projects: features with their texts, the right tree, the misleading and layered trees, and the coupling lines",
+  "prompts.mjs": "holds the prompts the paid slices send: map the project, re-map after a change, and retag an untidy map, write the areas tree, and add a feature to it",
+  "report.mjs": "builds the per-skill report from the slice outcomes and renders PASS or FAIL per slice with the spend and exit code",
+  "run.mjs": "command entry that checks one skill in slices, offline by default, takes the delegate delivery to test, prints the plan with the cost cap before any paid run and the macro-eval tables",
+  "run.mjs gotcha": "--live spends real usage: only the offline default and --dry-run are free",
+  "slices.mjs": "defines the cheap slices of lantern-setup, lantern-sync, lantern-delegate and lantern-vocabulary: free checks first, then paid agent steps judged by the skill's own gates; the delegate run checks the delivery and the account taken from the fake Lantern socket",
+  "vocab-checks.mjs": "judges a finished fixture by scripts only: strict validation, shared feature ids across clients, canonical outside systems, kept records and macro-eval before and after",
+  "vocab-fake.mjs": "writes the good or broken answer a model would give for each vocabulary fixture, using the setup and retag scripts",
+  "vocab-fixtures.mjs": "builds the three neutral vocabulary projects: two clients of one capability, a project with no channels, and one with a prebuilt untidy map",
+  "vocab-slices.mjs": "defines the lantern-vocabulary check: three free fixture slices that prove the judge can fail, then three isolated paid agent slices, plus the areas slices"
+ }
+}

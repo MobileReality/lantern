@@ -1,0 +1,9 @@
+{
+ "text": {
+  "ticketRepository.ts": "tickets stored in Postgres",
+  "ticketRepository.ts = ext:postgres": "tickets table",
+  "ticketService.ts": "opens tickets from validated model triage",
+  "ticketService.ts < src/ai/agentLoop.ts#AgentReply": "the model output it consumes",
+  "ticketService.ts = src/ai/guardrails.ts#validateTriage": "triage checked before use"
+ }
+}

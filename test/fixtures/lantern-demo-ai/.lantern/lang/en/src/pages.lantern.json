@@ -1,0 +1,6 @@
+{
+ "text": {
+  "ChatPage.tsx": "the chat screen that shows the answer",
+  "ChatPage.tsx = src/api/chatHandler.ts#postChat": "question and answer"
+ }
+}

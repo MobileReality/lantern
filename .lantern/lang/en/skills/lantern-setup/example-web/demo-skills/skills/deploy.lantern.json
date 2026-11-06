@@ -1,0 +1,11 @@
+{
+ "text": {
+  "SKILL.md": "fixture planner entry point for a release",
+  "SKILL.md @ skills/lantern-setup/example-web/demo-skills/skills/commit/SKILL.md": "for the release commit",
+  "SKILL.md @ skills/lantern-setup/example-web/demo-skills/skills/deploy/agents/verifier.md": "hands the rollout over",
+  "SKILL.md @ skills/lantern-setup/example-web/demo-skills/skills/deploy/protocol.md": "the delegate reads this first",
+  "SKILL.md @ skills/lantern-setup/example-web/demo-skills/skills/deploy/scripts/preflight.mjs": "step one",
+  "protocol.md": "fixture steps the delegate follows during the rollout",
+  "protocol.md @ skills/lantern-setup/example-web/demo-skills/skills/deploy/scripts/rollback.sh": "on a failed stage"
+ }
+}

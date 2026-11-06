@@ -1,0 +1,6 @@
+{
+ "text": {
+  "bookRepository.ts": "reads books and lowers their stock",
+  "orderRepository.ts": "reads, inserts and updates orders"
+ }
+}

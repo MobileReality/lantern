@@ -1,0 +1,14 @@
+{
+ "text": {
+  "title": "How an order moves",
+  "machine order": "status column of an orders row",
+  "state order placed": "created, not paid yet",
+  "state order paid": "payment taken and stock lowered",
+  "state order shipped": "handed to the carrier; nothing can change it",
+  "state order cancelled": "closed by a manager",
+  "tr order placed paid": "the customer pays; stock goes down",
+  "tr order paid shipped": "a clerk marks it shipped",
+  "tr order placed cancelled": "a manager cancels before payment",
+  "tr order paid cancelled": "a manager cancels after payment; stock is not put back"
+ }
+}

@@ -1,0 +1,8 @@
+{
+ "text": {
+  "bundle-fixtures.ts": "builds temp bundles, git repos, homes and skill linkers for the install tests",
+  "process-guard.ts": "kill wrapper that refuses to signal pids 0, 1 and -1",
+  "rtk-fixtures.ts": "writes fake rtk scripts, settings files and a tree hash for the RTK tests",
+  "process-guard.ts gotcha": "throws for pid 0, 1 and -1 unless the signal is 0, so a faked child pid cannot signal every process"
+ }
+}

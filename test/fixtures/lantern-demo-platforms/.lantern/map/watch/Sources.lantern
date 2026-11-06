@@ -1,0 +1,7 @@
+lantern 1
+# watch/Sources
+
+watch/Sources/HeartRateView.swift . component 70750c95c5a0
+watch/Sources/WatchApp.swift . entry a77740120222
+  > mobile/src/sync/syncQueue.ts#enqueueReading
+  > watch/Sources/HeartRateView.swift#HeartRateView

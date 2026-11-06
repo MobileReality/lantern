@@ -1,0 +1,8 @@
+{
+ "text": {
+  "format.ts": "Turns the collected review comments into the plain text pasted to an agent: a neutral header naming the pull request, the instruction to stay within it, a short preamble when the intents differ, then each item's path and lines, fenced code, comment and the instruction of its intent, in file order",
+  "intent.ts": "Decides which intent a comment is copied with (its own, else the Copy all default, else fix) and keeps that default per project in local storage",
+  "model.ts": "Defines one review comment (file or line range, quoted code, chosen text, optional intent, comment) and reads saved ones back, dropping any that are malformed and ignoring an intent it does not know",
+  "store.ts": "Keeps the fix requests of one pull request, with add, edit, remove and change listeners, saved per project and pull request in local storage"
+ }
+}

@@ -1,0 +1,30 @@
+lantern 1
+# website/src/components
+
+website/src/components/MarkdownPage.tsx . component 151bc02032a8
+  < website/src/lib/links.ts#resolveLink
+  < website/src/lib/pages.ts#findPageByFile
+  < website/src/lib/sources.ts#imageUrlFor
+
+website/src/components/NotFound.tsx . component a009baa19a22
+  < website/src/lib/links.ts#hashFor
+  < website/src/lib/pages.ts#HOME_ROUTE
+  < website/src/lib/sheets.ts#sheetLabel
+
+website/src/components/Pager.tsx . component bf35fb9f2a0b
+  < website/src/lib/links.ts#hashFor
+  < website/src/lib/sheets.ts#neighbours
+
+website/src/components/Prose.tsx . component 4cdd5a0cab90
+  > website/src/components/MarkdownPage.tsx#MarkdownPage
+  < website/src/lib/sheets.ts#sheetNumber
+
+website/src/components/SheetHeader.tsx . component a672d143e33e
+  < website/src/lib/pages.ts#Page
+
+website/src/components/Sidebar.tsx . component b607edf0119f
+  < website/src/lib/headings.ts#tocHeadings
+  < website/src/lib/links.ts#hashFor
+  < website/src/lib/pages.ts#PAGES
+  < website/src/lib/sheets.ts#sheetNumber
+  < website/src/lib/sources.ts#markdownFor

@@ -1,0 +1,9 @@
+{
+  "text": {
+    "lantern-macro-areas-payload.json": "Pins the macro payload with areas for the pinned fixture map: the view, feature texts, the outside systems of each file, four areas with their details and a feature left to assign.",
+    "lantern-macro-lab.json": "Pins the generated Orchard Market evaluation project: its files, relations, features, platforms (one of them infrastructure, two chat bots of one kind), Macro payload with six areas, their foundation links, platforms and the platforms that reach them, seven outside systems with counts from 2 to 11 (the shared foundation talks to four), and a pull request with its Flow.",
+    "lantern-macro-own-view.json": "Pins the macro view derived from this repository's own map: 15 blocks, 67 edges, 15 outside systems.",
+    "lantern-macro-sizes.json": "Pins the generated small (Pocket Library, 4 areas) and large (Harbour Freight, 7 areas) evaluation projects: files, relations, features, platforms and Macro payload.",
+    "tray-groups.ts": "Builds synthetic projects with sessions in every state, with a long name and path, an empty list and thirty crowded ones, and turns them into the popover model with notifications on or off."
+  }
+}

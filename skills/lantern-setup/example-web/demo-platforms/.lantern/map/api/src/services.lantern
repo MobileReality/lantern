@@ -1,0 +1,5 @@
+lantern 1
+# api/src/services
+
+api/src/services/readingService.ts . service b658f3658503
+  = api/src/repositories/readingRepository.ts#ReadingRepository

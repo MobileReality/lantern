@@ -1,0 +1,1034 @@
+{
+ "recordCount": 546,
+ "testCount": 200,
+ "blocks": [
+  {
+   "id": "lantern-map",
+   "files": 81
+  },
+  {
+   "id": "delegate-runs",
+   "files": 56
+  },
+  {
+   "id": "core:desktop",
+   "files": 40
+  },
+  {
+   "id": "code-insight",
+   "files": 30
+  },
+  {
+   "id": "skill-installer",
+   "files": 21
+  },
+  {
+   "id": "pull-requests",
+   "files": 19
+  },
+  {
+   "id": "serve-web",
+   "files": 16
+  },
+  {
+   "id": "notifications",
+   "files": 15
+  },
+  {
+   "id": "process-memory",
+   "files": 15
+  },
+  {
+   "id": "core:shared",
+   "files": 11
+  },
+  {
+   "id": "core:skills",
+   "files": 11
+  },
+  {
+   "id": "lantern-sections",
+   "files": 11
+  },
+  {
+   "id": "session-monitoring",
+   "files": 8
+  },
+  {
+   "id": "agent-runs",
+   "files": 6
+  },
+  {
+   "id": "projects-hub",
+   "files": 6
+  }
+ ],
+ "edges": [
+  {
+   "from": "lantern-map",
+   "to": "core:desktop",
+   "count": 32,
+   "arrows": {
+    ">": 1,
+    "<": 8,
+    "=": 23,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "pull-requests",
+   "to": "lantern-map",
+   "count": 18,
+   "arrows": {
+    ">": 0,
+    "<": 10,
+    "=": 8,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "lantern-map",
+   "to": "pull-requests",
+   "count": 17,
+   "arrows": {
+    ">": 1,
+    "<": 4,
+    "=": 8,
+    "@": 4
+   },
+   "strong": true
+  },
+  {
+   "from": "lantern-sections",
+   "to": "lantern-map",
+   "count": 16,
+   "arrows": {
+    ">": 0,
+    "<": 13,
+    "=": 3,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "pull-requests",
+   "to": "code-insight",
+   "count": 16,
+   "arrows": {
+    ">": 1,
+    "<": 7,
+    "=": 8,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "delegate-runs",
+   "to": "lantern-map",
+   "count": 13,
+   "arrows": {
+    ">": 2,
+    "<": 0,
+    "=": 0,
+    "@": 11
+   },
+   "strong": true
+  },
+  {
+   "from": "agent-runs",
+   "to": "core:desktop",
+   "count": 12,
+   "arrows": {
+    ">": 1,
+    "<": 6,
+    "=": 5,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "core:desktop",
+   "to": "code-insight",
+   "count": 12,
+   "arrows": {
+    ">": 3,
+    "<": 4,
+    "=": 5,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "lantern-map",
+   "to": "delegate-runs",
+   "count": 12,
+   "arrows": {
+    ">": 1,
+    "<": 10,
+    "=": 1,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "code-insight",
+   "to": "core:desktop",
+   "count": 11,
+   "arrows": {
+    ">": 1,
+    "<": 1,
+    "=": 9,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "core:desktop",
+   "to": "lantern-map",
+   "count": 11,
+   "arrows": {
+    ">": 1,
+    "<": 5,
+    "=": 5,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "core:desktop",
+   "to": "process-memory",
+   "count": 11,
+   "arrows": {
+    ">": 1,
+    "<": 7,
+    "=": 3,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "core:desktop",
+   "to": "notifications",
+   "count": 9,
+   "arrows": {
+    ">": 2,
+    "<": 2,
+    "=": 5,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "projects-hub",
+   "to": "core:desktop",
+   "count": 9,
+   "arrows": {
+    ">": 0,
+    "<": 5,
+    "=": 4,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "serve-web",
+   "to": "core:desktop",
+   "count": 9,
+   "arrows": {
+    ">": 1,
+    "<": 4,
+    "=": 4,
+    "@": 0
+   },
+   "strong": true
+  },
+  {
+   "from": "core:desktop",
+   "to": "agent-runs",
+   "count": 7,
+   "arrows": {
+    ">": 2,
+    "<": 0,
+    "=": 5,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "projects-hub",
+   "count": 7,
+   "arrows": {
+    ">": 1,
+    "<": 2,
+    "=": 4,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "serve-web",
+   "count": 7,
+   "arrows": {
+    ">": 0,
+    "<": 2,
+    "=": 5,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "core:desktop",
+   "count": 7,
+   "arrows": {
+    ">": 0,
+    "<": 7,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "lantern-map",
+   "to": "lantern-sections",
+   "count": 7,
+   "arrows": {
+    ">": 0,
+    "<": 2,
+    "=": 5,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "pull-requests",
+   "count": 6,
+   "arrows": {
+    ">": 0,
+    "<": 3,
+    "=": 3,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "lantern-map",
+   "count": 6,
+   "arrows": {
+    ">": 1,
+    "<": 5,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "delegate-runs",
+   "to": "skill-installer",
+   "count": 6,
+   "arrows": {
+    ">": 1,
+    "<": 1,
+    "=": 0,
+    "@": 4
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "session-monitoring",
+   "count": 5,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 5,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "code-insight",
+   "count": 5,
+   "arrows": {
+    ">": 3,
+    "<": 2,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "process-memory",
+   "to": "serve-web",
+   "count": 5,
+   "arrows": {
+    ">": 0,
+    "<": 5,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "skill-installer",
+   "to": "core:desktop",
+   "count": 5,
+   "arrows": {
+    ">": 0,
+    "<": 2,
+    "=": 3,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "notifications",
+   "count": 4,
+   "arrows": {
+    ">": 0,
+    "<": 4,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "notifications",
+   "to": "session-monitoring",
+   "count": 4,
+   "arrows": {
+    ">": 2,
+    "<": 1,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "process-memory",
+   "to": "core:desktop",
+   "count": 4,
+   "arrows": {
+    ">": 1,
+    "<": 1,
+    "=": 2,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "pull-requests",
+   "to": "core:desktop",
+   "count": 4,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 4,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "skill-installer",
+   "to": "lantern-map",
+   "count": 4,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 0,
+    "@": 4
+   },
+   "strong": false
+  },
+  {
+   "from": "code-insight",
+   "to": "pull-requests",
+   "count": 3,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 2,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "skill-installer",
+   "count": 3,
+   "arrows": {
+    ">": 2,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "pull-requests",
+   "count": 3,
+   "arrows": {
+    ">": 1,
+    "<": 2,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "lantern-map",
+   "to": "agent-runs",
+   "count": 3,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 3,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "lantern-map",
+   "to": "code-insight",
+   "count": 3,
+   "arrows": {
+    ">": 1,
+    "<": 2,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "notifications",
+   "to": "core:desktop",
+   "count": 3,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 2,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "projects-hub",
+   "to": "code-insight",
+   "count": 3,
+   "arrows": {
+    ">": 2,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "session-monitoring",
+   "to": "core:desktop",
+   "count": 3,
+   "arrows": {
+    ">": 0,
+    "<": 3,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "agent-runs",
+   "to": "code-insight",
+   "count": 2,
+   "arrows": {
+    ">": 2,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "agent-runs",
+   "to": "lantern-map",
+   "count": 2,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "delegate-runs",
+   "count": 2,
+   "arrows": {
+    ">": 2,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:skills",
+   "to": "lantern-map",
+   "count": 2,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 0,
+    "@": 2
+   },
+   "strong": false
+  },
+  {
+   "from": "lantern-map",
+   "to": "core:skills",
+   "count": 2,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 2,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "lantern-map",
+   "to": "skill-installer",
+   "count": 2,
+   "arrows": {
+    ">": 1,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "projects-hub",
+   "to": "session-monitoring",
+   "count": 2,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 2,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "session-monitoring",
+   "to": "agent-runs",
+   "count": 2,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 2,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "agent-runs",
+   "to": "skill-installer",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "code-insight",
+   "to": "agent-runs",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "code-insight",
+   "to": "core:shared",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "delegate-runs",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:desktop",
+   "to": "lantern-sections",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "lantern-sections",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "process-memory",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "serve-web",
+   "count": 1,
+   "arrows": {
+    ">": 1,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "core:shared",
+   "to": "skill-installer",
+   "count": 1,
+   "arrows": {
+    ">": 1,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "delegate-runs",
+   "to": "pull-requests",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "process-memory",
+   "to": "agent-runs",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "process-memory",
+   "to": "projects-hub",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "projects-hub",
+   "to": "agent-runs",
+   "count": 1,
+   "arrows": {
+    ">": 1,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "projects-hub",
+   "to": "lantern-map",
+   "count": 1,
+   "arrows": {
+    ">": 1,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "projects-hub",
+   "to": "process-memory",
+   "count": 1,
+   "arrows": {
+    ">": 1,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "projects-hub",
+   "to": "skill-installer",
+   "count": 1,
+   "arrows": {
+    ">": 1,
+    "<": 0,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "session-monitoring",
+   "to": "notifications",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "skill-installer",
+   "to": "agent-runs",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 0,
+    "=": 1,
+    "@": 0
+   },
+   "strong": false
+  },
+  {
+   "from": "skill-installer",
+   "to": "delegate-runs",
+   "count": 1,
+   "arrows": {
+    ">": 0,
+    "<": 1,
+    "=": 0,
+    "@": 0
+   },
+   "strong": false
+  }
+ ],
+ "crossBlockRelations": 360,
+ "external": [
+  {
+   "system": "git",
+   "blocks": [
+    {
+     "block": "code-insight",
+     "count": 2
+    },
+    {
+     "block": "core:skills",
+     "count": 2
+    },
+    {
+     "block": "lantern-map",
+     "count": 1
+    },
+    {
+     "block": "pull-requests",
+     "count": 1
+    },
+    {
+     "block": "skill-installer",
+     "count": 2
+    }
+   ]
+  },
+  {
+   "system": "claude-code-cli",
+   "blocks": [
+    {
+     "block": "agent-runs",
+     "count": 1
+    },
+    {
+     "block": "session-monitoring",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "vscode-serve-web",
+   "blocks": [
+    {
+     "block": "core:desktop",
+     "count": 1
+    },
+    {
+     "block": "serve-web",
+     "count": 2
+    }
+   ]
+  },
+  {
+   "system": "bitbucket-api",
+   "blocks": [
+    {
+     "block": "delegate-runs",
+     "count": 4
+    }
+   ]
+  },
+  {
+   "system": "claude-cli",
+   "blocks": [
+    {
+     "block": "lantern-map",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "claude-code-extension",
+   "blocks": [
+    {
+     "block": "serve-web",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "codex-cli",
+   "blocks": [
+    {
+     "block": "agent-runs",
+     "count": 2
+    }
+   ]
+  },
+  {
+   "system": "codex-hooks-config",
+   "blocks": [
+    {
+     "block": "notifications",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "codex-sessions",
+   "blocks": [
+    {
+     "block": "session-monitoring",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "github-api",
+   "blocks": [
+    {
+     "block": "delegate-runs",
+     "count": 3
+    }
+   ]
+  },
+  {
+   "system": "macos-process-tools",
+   "blocks": [
+    {
+     "block": "process-memory",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "osascript",
+   "blocks": [
+    {
+     "block": "projects-hub",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "pnpm",
+   "blocks": [
+    {
+     "block": "code-insight",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "rtk-cli",
+   "blocks": [
+    {
+     "block": "delegate-runs",
+     "count": 1
+    }
+   ]
+  },
+  {
+   "system": "vtsls",
+   "blocks": [
+    {
+     "block": "code-insight",
+     "count": 1
+    }
+   ]
+  }
+ ]
+}

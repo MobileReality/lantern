@@ -1,0 +1,10 @@
+{
+  "name": "@lantern/lsp-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@vtsls/language-server": "0.3.0",
+    "vscode-jsonrpc": "8.2.1"
+  }
+}

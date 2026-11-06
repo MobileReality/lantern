@@ -1,0 +1,16 @@
+{
+ "text": {
+  "title": "Who may do what",
+  "intro": "Every endpoint lists the roles it accepts and the router asks one guard before running it.",
+  "role customer": "anyone whose e-mail is on no staff list",
+  "role clerk": "shop staff who pack and ship orders",
+  "role manager": "the owner, who can also cancel orders",
+  "res place-order": "POST /orders",
+  "res pay-order": "POST /orders/:id/pay",
+  "res ship-order": "POST /orders/:id/ship",
+  "res cancel-order": "POST /orders/:id/cancel",
+  "cell customer pay-order": "the order id is not compared with the caller's e-mail, so any signed-in customer can pay any order",
+  "source email-lists": "two hard-coded e-mail lists give clerk and manager; everyone else is a customer",
+  "guard require-role": "true when the caller's role is in the endpoint's list; the router calls it before the service"
+ }
+}

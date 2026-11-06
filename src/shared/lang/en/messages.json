@@ -1,0 +1,448 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "rename": "Rename"
+  },
+  "overview": {
+    "open": "Overview",
+    "close": "Close overview",
+    "label": "Macro view overview"
+  },
+  "counts": {
+    "accounts": { "one": "{count} account", "other": "{count} accounts" }
+  },
+  "tray": {
+    "label": "Lantern sessions",
+    "title": "Lantern",
+    "needsYou": { "one": "{count} needs you", "other": "{count} need you" },
+    "quiet": "Nothing needs you",
+    "section": { "needs": "Needs you", "working": "Working", "finished": "Finished", "rest": "Other" },
+    "state": {
+      "permission": "needs approval",
+      "failed": "failed",
+      "idle": "waiting for you",
+      "running": "working",
+      "done": "finished",
+      "shell": "finished · task running",
+      "stopped": "stopped",
+      "unknown": "state unknown",
+      "unavailable": "status unavailable",
+      "ended": "closed",
+      "open": "no session"
+    },
+    "sessions": { "one": "{count} session", "other": "{count} sessions" },
+    "emptyTitle": "No projects yet",
+    "emptyHint": "Open a folder in Lantern and its Claude and Codex sessions show up here.",
+    "openWorkspace": "Open workspace",
+    "clearFinished": "Clear finished",
+    "more": "More",
+    "testNotification": "Test notification",
+    "quit": "Quit Lantern"
+  },
+  "auth": {
+    "storageFailed": "Lantern could not store the token securely on this computer. Nothing was saved.",
+    "unexpected": "Something went wrong inside Lantern. Nothing was saved.",
+    "unreachable": "Lantern could not reach its own settings. Nothing was saved.",
+    "input": {
+      "token": "Paste the whole token, without spaces or line breaks.",
+      "email": "Enter the email address of your Atlassian account.",
+      "commitEmail": "Enter a valid email address, or leave it empty.",
+      "site": "Use the address of your Jira site, like https://your-company.atlassian.net.",
+      "nickname": "Use a name of up to {max} characters.",
+      "expiresOn": "Enter the date as year-month-day, like 2026-12-31."
+    },
+    "check": {
+      "unauthorizedToken": "{provider} rejected this token. Check that you pasted all of it and that it has not expired or been revoked.",
+      "unauthorizedEmail": "{provider} rejected this email and token. Check the email address, that you pasted all of the token, and that it has not expired or been revoked.",
+      "forbidden": "{provider} accepted the sign-in but refused the request. The token may lack the access it needs, or your organisation may block it.",
+      "unavailable": "{provider} is not available right now (status {status}). Try again in a few minutes.",
+      "timeout": "{provider} did not answer within {seconds} seconds. Check your connection and try again.",
+      "network": "Could not reach {provider}. Check your connection, and the site address if you entered one, then try again.",
+      "malformed": "{provider} answered with something Lantern did not expect. Nothing was saved.",
+      "malformedStatus": "{provider} answered with something Lantern did not expect (status {status}). Nothing was saved."
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "intro": "The accounts Lantern uses to open pull requests and read tickets. Paste a token once: it is checked, stored encrypted on this computer, and never shown again.",
+    "close": {
+      "title": "Close (Esc)",
+      "label": "Close integrations"
+    },
+    "loadError": "Lantern could not read the accounts. Close this window and open it again.",
+    "memoryOnly": "This computer has no secure storage Lantern can use, so accounts are kept only until you quit Lantern.",
+    "group": {
+      "code-host": "Code hosts",
+      "tracker": "Tickets"
+    },
+    "role": {
+      "code-host": "Code host",
+      "tracker": "Tickets"
+    },
+    "provider": {
+      "add": "Add account",
+      "addLabel": "Add a {provider} account",
+      "accountsLabel": "{provider} accounts",
+      "empty": {
+        "code-host": "No {provider} accounts yet. Add one to let Lantern and your agents open pull requests as you.",
+        "tracker": "No {provider} accounts yet. Add one to let Lantern and your agents read and update tickets."
+      }
+    },
+    "announce": {
+      "added": "Added {name}.",
+      "updated": "Updated {name}.",
+      "removed": "Removed {name}.",
+      "notRemoved": "Could not remove {name}."
+    },
+    "failure": {
+      "unknownProfile": "That account no longer exists.",
+      "renameFallback": "Could not rename the account.",
+      "expiryInvalid": "Pick a real date.",
+      "expiryProvider": "The provider reports this expiry itself, so it cannot be changed here.",
+      "expiryFallback": "Could not change the expiry.",
+      "emailInvalid": "Enter a valid email address, or clear the field to remove it.",
+      "emailFallback": "Could not change the email."
+    },
+    "projects": {
+      "title": "Projects",
+      "note": "Which account each open project uses. Every project can use any account you added, whatever its remote. The provider of the origin remote and Jira use your only account automatically; with several, or for any other provider, pick one per project.",
+      "empty": "Open a project to choose the accounts it uses.",
+      "jump": "Choose accounts per project",
+      "jumpTitle": "Go to the projects below to choose which account each one uses",
+      "remote": "Remote",
+      "noRemote": "No {hosts} origin remote found, so nothing is suggested. Choose an account below for each provider this project will use.",
+      "suggested": "Suggested: {provider}, from the origin remote",
+      "shadowed": "The chosen account is not used: the variable below is already set in the environment Lantern was started from, and it wins. Unset it and restart Lantern to use the chosen account.",
+      "choose": "Choose an account…",
+      "unlink": "Unlink",
+      "unlinkTitle": "Stop pinning an account to {project}",
+      "selectLabel": "{provider} account for {project}",
+      "setInEnvironment": "Set in the environment:",
+      "back": "All projects",
+      "backTitle": "Back to the list of projects",
+      "openTile": "{project}: {state}"
+    },
+    "tile": {
+      "attention": "Needs attention",
+      "connected": "{providers} connected",
+      "none": "Nothing connected yet"
+    },
+    "binding": {
+      "bound": "Chosen for this project",
+      "default": "Your only {provider} account, used by default",
+      "choose": "Choose a {provider} account for this project",
+      "unused": "This project does not use {provider} yet. Choose an account to use it here.",
+      "none": "No {provider} account yet. Add one, then choose it for this project."
+    },
+    "winner": {
+      "environment": "Runs use the variable already set in the environment Lantern was started from.",
+      "lantern": "Runs started from Lantern use this account.",
+      "none": "Runs get no credential for it yet."
+    },
+    "expiry": {
+      "none": "No expiry set",
+      "noneTitle": "No expiry date is known for this token",
+      "on": "Expires {date}",
+      "titleOn": "Expires on {date}",
+      "tomorrow": "Expires tomorrow",
+      "inDays": { "one": "Expires in {count} day", "other": "Expires in {count} days" },
+      "today": "Expired today",
+      "ago": { "one": "Expired {count} day ago", "other": "Expired {count} days ago" },
+      "titleExpired": "Expired on {date}",
+      "providerReported": "reported by the provider"
+    },
+    "account": {
+      "added": "Added {date}",
+      "problem": {
+        "expired": "The stored token is missing. Remove this account and add it again.",
+        "unavailable": "Secure storage could not be read. Unlock your keychain or sign-in and reopen Lantern."
+      },
+      "nameLabel": "Account name",
+      "renameLabel": "Rename {name}",
+      "setExpiry": "Set expiry",
+      "changeExpiry": "Change expiry",
+      "setExpiryLabel": "Set expiry for {name}",
+      "changeExpiryLabel": "Change expiry for {name}",
+      "noExpiry": "No expiry",
+      "emailLine": "Commit email",
+      "emailNone": "None set. Commits use the email from your Git configuration.",
+      "setEmail": "Add email",
+      "changeEmail": "Change email",
+      "setEmailLabel": "Add the commit email for {name}",
+      "changeEmailLabel": "Change the commit email for {name}",
+      "emailFieldLabel": "Commit email",
+      "noEmail": "No email",
+      "expiresOnLabel": "Token expires on",
+      "pickDate": "Pick the date the token expires.",
+      "remove": "Remove",
+      "removeConfirm": "Click again to remove",
+      "removeTitle": "Remove {name} and forget its token"
+    },
+    "chip": {
+      "chooseAccount": "no account chosen",
+      "noAccount": "no account yet",
+      "group": "Integrations",
+      "icon": "{provider}: {account}. Click to change.",
+      "iconMissing": "{provider}: {account}. Click to choose an account for this project in Integrations."
+    },
+    "form": {
+      "title": "Add a {provider} account",
+      "helpLabel": "How to create a {provider} token",
+      "submit": "Check and save",
+      "checking": "Checking with {provider}…",
+      "saveFailed": "Lantern could not save this account.",
+      "tokenHint": "Stored encrypted on this computer. Lantern never shows it again.",
+      "nickname": {
+        "label": "Name (optional)",
+        "placeholder": "e.g. Work laptop",
+        "hint": "Tells your accounts apart. Defaults to the login."
+      },
+      "expiresOn": {
+        "label": "Token expires on (optional)",
+        "hintReported": "{provider} reports this for fine-grained tokens. Fill it in for a classic one.",
+        "hintWarned": "Lantern warns you {days} days before this date."
+      },
+      "commitEmail": {
+        "label": "Commit email (optional)",
+        "placeholder": "you@company.com",
+        "hint": "Runs commit under this address. Left empty, Lantern uses the public email GitHub reports, if any."
+      },
+      "email": {
+        "label": "Atlassian email",
+        "placeholder": "you@company.com"
+      },
+      "apiToken": {
+        "label": "API token",
+        "placeholder": "ATATT…"
+      }
+    },
+    "help": {
+      "title": "Where to create the token",
+      "github": {
+        "steps": [
+          "Create a fine-grained token while signed in as the account that should open the pull requests.",
+          "Repository access: the repositories you work on.",
+          "Permissions: Pull requests = Read and write, Contents = Read. Metadata = Read is added for you.",
+          "A classic token works too: tick repo."
+        ],
+        "token": {
+          "label": "Personal access token",
+          "placeholder": "github_pat_…"
+        }
+      },
+      "bitbucket": {
+        "steps": [
+          "Choose Create API token with scopes, and pick the app Bitbucket.",
+          "Tick read:user, read:repository, read:pullrequest and write:pullrequest (Atlassian shows each with :bitbucket added).",
+          "Enter the email address of the same Atlassian account."
+        ]
+      },
+      "jira": {
+        "steps": [
+          "Choose Create API token, without scopes. Lantern calls your Jira site address directly, which scoped tokens do not allow.",
+          "There is nothing to tick: the token acts as you, with your Jira permissions.",
+          "Site address: the one in your browser when Jira is open, like https://your-company.atlassian.net."
+        ],
+        "site": {
+          "label": "Jira site address",
+          "placeholder": "https://your-company.atlassian.net"
+        }
+      }
+    }
+  },
+  "logs": {
+    "prefix": "[auth]",
+    "tokenCheckFailed": "{provider} token check failed: {reason}",
+    "tokenCheckFailedStatus": "{provider} token check failed: {reason} (status {status})",
+    "accountAdded": "added {provider} account {login}",
+    "accountUpdated": "updated {provider} account {login}",
+    "tokenNotStored": "could not store the {provider} token",
+    "noCredential": "no {provider} credential for {login}",
+    "runCanUse": "a run for {project} can use the {provider} account {login}",
+    "stateChanged": "profile {profileId} is now {state}",
+    "signInNotDeleted": "could not delete the stored sign-in of {profileId}",
+    "refreshFailed": "refresh failed for {profileId}",
+    "signInUnreadable": "stored sign-in of {profileId} is unreadable",
+    "rotatedNotStored": "could not store the rotated sign-in of {profileId}",
+    "tokenUnreadable": "stored token of {profileId} is unreadable",
+    "credentialSocketReady": "credential socket ready at {path}",
+    "credentialSocketFailed": "credential socket could not start at {path}",
+    "credentialSocketBusy": "credential socket path {path} is taken by a file that is not a socket",
+    "credentialServed": "served the {provider} account to a request from {project}",
+    "credentialRefused": "refused a {provider} credential request: {reason}"
+  },
+  "permissionConsent": {
+    "message": "Let Lantern allow Claude's delegate commands in {project}?",
+    "detail": "Lantern would add rules to this project's .claude/settings.local.json (a file git ignores) so background delegates can run git status, commit, fetch, push to feat, fix, docs and chore branches, and Lantern's skill scripts without asking each time. It also lets them reset a worktree to origin/<branch>. Nothing is written if you decline, and you are not asked again for this project.",
+    "allow": "Allow",
+    "decline": "Don't allow"
+  },
+  "micPatch": {
+    "message": "Enable the microphone in the Claude Code extension?",
+    "detail": "Lantern would edit extension.js inside the Claude Code extension in ~/.vscode-server/extensions, a file that belongs to a third party, and keep a copy of the original next to it (extension.js.ccm-bak). The change removes the check that turns voice input off in a remote editor. It can stop working or break the extension when the extension updates, and Anthropic does not endorse it. Nothing is changed if you cancel.",
+    "enable": "Patch the extension",
+    "cancel": "Cancel"
+  },
+  "serverLicense": {
+    "message": "Accept the VS Code server licence to use the editor?",
+    "detail": "Lantern's editor runs Microsoft's VS Code server on your machine. Microsoft requires you to accept its licence terms before it runs, so Lantern does not accept them for you.\n\nIn short: the server is free to use but is not open source; it is licensed for use with VS Code, and Microsoft may collect usage data as described in its terms. Read the full text at {url}\n\nYour answer is kept for your user account. If you decline, the editor stays off and you can retry from the editor tab.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "read": "Read the licence"
+  },
+  "hostStatus": {
+    "noAccount": "Host status unavailable, so a declined pull request may still show as open: add your {provider} account in Lantern (command palette, Integrations).",
+    "failed": "Host status unavailable: the request to {provider} failed, so a declined pull request may still show as open."
+  },
+  "extensions": {
+    "problem": {
+      "badName": "{name} is not a valid skill name.",
+      "locked": "{name} is always on, so it cannot be an extra.",
+      "duplicate": "{name} is listed twice.",
+      "notSwitchable": "{name} cannot be switched off here."
+    },
+    "droppedLocked": "Always-on skills listed as extras were dropped: {names}.",
+    "droppedOff": "Skills that cannot be switched off were dropped from the off list: {names}.",
+    "offNotObject": "The off setting in {file} must be an object with a list of skill names per slot.",
+    "unreadable": "{file} cannot be read: {reason}",
+    "invalidJson": "{file} is not valid JSON: {reason}",
+    "notObject": "{file} must hold a JSON object.",
+    "slotNotList": "The {slot} slot must be a list of skill names.",
+    "unknownSlot": "Unknown slot: {slot}.",
+    "linkerProblem": {
+      "missing": "{path} does not exist, so it is not an executable file.",
+      "notFile": "{path} is neither a file nor a folder.",
+      "notExecutable": "{path} is a file but not executable; give it execute permission.",
+      "noCore": "{path} is executable but the skills repo beside it has no \"core\" folder.",
+      "folderNoExecutable": "The folder {path} holds no executable file, so it has no skill linker.",
+      "folderNoCore": "The folder {path} has executable files but no \"core\" folder beside them, so none is the skill linker.",
+      "folderSeveral": "The folder {path} holds several skill linkers ({names}); enter the path of one of them."
+    },
+    "skillLinkerPath": "The skillLinker setting must be an absolute path to the script, not {value}.",
+    "importUnreadable": "The list {file} could not be read: {reason}",
+    "importBadSlot": "The {slot} list in {file} must be a list of skill names.",
+    "noProject": "Open a project first: the skill is written into its .claude/skills folder.",
+    "badSkill": "A skill needs a name and its content as text.",
+    "skillExists": "The skill {name} already exists in this project, so nothing was written. Leave the content empty to only add it.",
+    "emptyContent": "{name} is not installed yet, so give it content.",
+    "unknownScope": "Unknown scope: {scope}.",
+    "noProjectScope": "Open a project first: project skills are kept in its .claude folder.",
+    "moveMissing": "{name} is not attached to {slot} as {scope}.",
+    "projectDroppedLocked": "Always-on skills listed as extras in {file} were dropped: {names}.",
+    "projectNotAFolder": "{folder} is not a folder, so no project skills were written.",
+    "projectUnsafe": "{folder} is not a plain folder or file (a symbolic link, for example), so nothing was written there.",
+    "projectNotIgnored": "Git does not ignore {file} and Lantern could not exclude it, so nothing was saved. Add it to .gitignore or .git/info/exclude."
+  },
+  "skillsExtras": {
+    "tabs": {
+      "project": "Project skills",
+      "lantern": "Lantern skills",
+      "linker": "Skill linker"
+    },
+    "slot": {
+      "delegate": "Delegate",
+      "orchestrator": "Orchestrator",
+      "reviewer": "Reviewer"
+    },
+    "locked": "Always on",
+    "lockedTip": "Lantern needs this skill to work, so it cannot be switched off.",
+    "on": "On",
+    "off": "Off",
+    "switchTip": "Click to switch it off or on for this slot. It stays installed; a run just stops reading it.",
+    "switchLabel": "Use {name} in the {slot} slot",
+    "refresh": "Refresh",
+    "projectNeedsRepoTitle": "Nothing to link yet",
+    "projectNeedsRepo":"Linking skills needs the skills repo. Set its location on the Skill linker tab. Lantern skills works without it.",
+    "openLinker": "Open Skill linker",
+    "cloneNeedsRemote": "Cloning is off until you enter the remote URL of your skills repo above. To use a checkout you already have, type its path below and press Apply.",
+    "missing": "Not installed, so it is skipped when a run starts.",
+    "addSkill": "Add skill",
+    "addSkillLabel": "Add a skill to the {slot} slot",
+    "roles": {
+      "label": "Role",
+      "hint": {
+        "delegate": "Read in full by every delegate before it starts work.",
+        "orchestrator": "Read by the session that hands tasks out to delegates.",
+        "reviewer": "Read in full by the reviewer before it judges a change."
+      }
+    },
+    "attached": {
+      "title": "Attached to {role}",
+      "list": "Skills attached to {role}",
+      "empty": "Nothing attached to {role} yet. Pick a skill on the right.",
+      "hint": "Arrows move, Delete detaches, Enter changes the scope.",
+      "hintGlobal": "Arrows move, Delete detaches.",
+      "detach": "Detach",
+      "detachLabel": "Detach {name} from {role}",
+      "notInstalled": "Not installed"
+    },
+    "scope": {
+      "attachAs": "Attach as",
+      "global": "Global",
+      "project": "This project",
+      "globalTip": "Applies in every project.",
+      "projectTip": "Applies only in this project and stays out of git.",
+      "moveLabel": "{name} is attached as {scope}. Move it to {other}."
+    },
+    "attach": {
+      "title": "Add to {role}",
+      "list": "Skills you can attach to {role}",
+      "search": "Search skills",
+      "searchLabel": "Search skills to attach to {role}",
+      "action": "Attach",
+      "label": "Attach {name} to {role} as {scope}",
+      "attachedAs": "Attached, {scope}",
+      "attachedLabel": "{name} is already attached to {role} as {scope}",
+      "attachedPlain": "Attached",
+      "attachedPlainLabel": "{name} is already attached to {role}",
+      "labelPlain": "Attach {name} to {role}",
+      "noMatch": "No skill matches \"{query}\".",
+      "none": "No skills are installed yet. Add one below, or set the Skill linker.",
+      "builtIn": "Built in",
+      "builtInTip": "Lantern ships this skill and every run already uses it, so it cannot be attached.",
+      "builtInNote": "Skills that ship with Lantern are always on and cannot be attached."
+    },
+    "builtIn": {
+      "toggle": "Built in ({count})",
+      "label": "Built-in skills for {role}"
+    },
+    "announce": {
+      "attached": "Attached {name} to {role} ({scope}).",
+      "detached": "Detached {name} from {role}.",
+      "moved": "{name} is now {scope} for {role}."
+    },
+    "step": {
+      "title": "Add a skill to {slot}",
+      "scope": "Attach as",
+      "hint": "Writes .claude/skills/<name>/SKILL.md in this project and adds the name to the role. Leave the content empty to add a skill that is already installed.",
+      "name": "Name",
+      "namePlaceholder": "my-skill",
+      "nameRequired": "Give the skill a name.",
+      "content": "Content",
+      "contentPlaceholder": "---\nname: my-skill\ndescription: When to use it\n---\n\nThe skill text.",
+      "save": "Save",
+      "back": "Back"
+    },
+    "loadFailed": "Extras could not be loaded.",
+    "saveFailed": "Extras could not be saved: {reason}",
+    "skillLinker": {
+      "title": "Skill linker",
+      "label": "Skill linker path",
+      "hint": "The script that links skills into a project. Enter the absolute path of the script or of the repo folder that holds it, or leave it empty to use the one in the Skills repo.",
+      "state": {
+        "initialized": "Initialized",
+        "unset": "Not set",
+        "invalid": "Path not found, not executable, or no skills repo beside it."
+      },
+      "fromRepo": "Using {path} (from Skills repo)",
+      "placeholder": "/path/to/skill-linker",
+      "save": "Save path",
+      "clear": "Clear path"
+    },
+    "import": {
+      "button": "Import list",
+      "hint": "Pick a JSON file with delegate, orchestrator, reviewer and skillLinker. It fills the Lantern skills slots and the skill linker path; skills already there and always-on ones are skipped."
+    }
+  }
+}

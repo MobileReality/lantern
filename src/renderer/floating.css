@@ -1,0 +1,66 @@
+.lt-tip[popover],
+.lt-pop[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  color: var(--text);
+}
+.lt-tip[popover]:not(:popover-open),
+.lt-pop[popover]:not(:popover-open) { display: none; }
+
+.lt-tip[popover] {
+  max-width: min(360px, calc(100vw - 16px));
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bg) 60%, #000);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+.lt-tip-keys { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: 1px; }
+.lt-tip-keys kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 2px 5px 1px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--sidebar);
+  color: var(--muted);
+  font: inherit;
+  line-height: 12px;
+  text-align: center;
+}
+
+:where(.lt-pop) { padding: 0; border: 0; background: transparent; }
+.lt-pop[popover] { position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; }
+.lt-pop[popover][data-placement='top-start'] { position-area: block-start span-inline-end; margin-block: 6px; }
+.lt-pop[popover][data-placement='top-end'] { position-area: block-start span-inline-start; margin-block: 6px; }
+.lt-pop[popover][data-placement='bottom-start'] { position-area: block-end span-inline-end; margin-block: 4px; }
+.lt-pop[popover][data-placement='bottom-stretch'] { position-area: block-end; width: calc(anchor-size(width) - 16px); margin-block: 4px; }
+
+.lt-tip[popover],
+.lt-pop[popover] {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 70ms ease-out, translate 70ms ease-out, display 70ms allow-discrete, overlay 70ms allow-discrete;
+}
+.lt-tip[popover] { transition-duration: 50ms; }
+.lt-tip[popover]:not(:popover-open),
+.lt-pop[popover]:not(:popover-open) { opacity: 0; pointer-events: none; }
+.lt-tip[popover]:not(:popover-open),
+.lt-pop[popover][data-placement^='top']:not(:popover-open) { translate: 0 3px; }
+.lt-pop[popover][data-placement^='bottom']:not(:popover-open) { translate: 0 -3px; }
+@starting-style {
+  .lt-tip[popover]:popover-open,
+  .lt-pop[popover][data-placement^='top']:popover-open { opacity: 0; translate: 0 3px; }
+  .lt-pop[popover][data-placement^='bottom']:popover-open { opacity: 0; translate: 0 -3px; }
+}
+.lt-tip[popover].is-instant { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .lt-tip[popover],
+  .lt-pop[popover] { transition: none; }
+}

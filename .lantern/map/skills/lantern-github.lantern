@@ -1,0 +1,11 @@
+lantern 1
+# skills/lantern-github
+
+skills/lantern-github/README.md . skill 5b35bbf636c1
+#feature integrations
+
+skills/lantern-github/SKILL.md . skill cb8180165de5
+#feature integrations
+  @ ext:github-api
+  @ skills/lantern-commit/SKILL.md
+  @ skills/lantern-github/scripts/github.mjs

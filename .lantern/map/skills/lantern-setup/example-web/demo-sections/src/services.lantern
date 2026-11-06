@@ -1,0 +1,13 @@
+lantern 1
+# skills/lantern-setup/example-web/demo-sections/src/services
+
+skills/lantern-setup/example-web/demo-sections/src/services/authService.ts . service bf9adf1f4c22
+#feature lantern-sections
+  < skills/lantern-setup/example-web/demo-sections/src/types/order.ts#Role
+skills/lantern-setup/example-web/demo-sections/src/services/orderService.ts . service 2a339066bca7
+#feature lantern-sections
+  = skills/lantern-setup/example-web/demo-sections/src/repositories/bookRepository.ts#decrementStock
+  = skills/lantern-setup/example-web/demo-sections/src/repositories/orderRepository.ts#findOrder
+  = skills/lantern-setup/example-web/demo-sections/src/repositories/orderRepository.ts#insertOrder
+  = skills/lantern-setup/example-web/demo-sections/src/repositories/orderRepository.ts#setStatus
+  < skills/lantern-setup/example-web/demo-sections/src/types/order.ts#Order

@@ -1,0 +1,8 @@
+lantern 1
+# src/main/commands
+
+src/main/commands/index.ts . service 7947f4e2ddfe
+#feature commands-keymap
+  < src/shared/commands/keymap.ts#commandForInput
+  < src/shared/commands/keymap.ts#resolveUserKeymap
+  < src/shared/platform.ts#PlatformName

@@ -1,0 +1,19 @@
+lantern 1
+# test/e2e/lsp-app
+
+test/e2e/lsp-app/index.html . test c8002f51ee54
+  < src/renderer/lantern-prs.css
+  < src/renderer/lantern.css
+  < src/renderer/workspace.css
+  > test/e2e/lsp-app/renderer.ts
+test/e2e/lsp-app/main.ts . test 332eed015db8
+  = ext:git
+  = src/main/filecontent.ts
+  = src/main/lsp/semantic-service.ts
+  = src/main/lsp/source-provenance.ts
+  > test/e2e/lsp-app/index.html
+test/e2e/lsp-app/renderer.ts . test 16e50ff05b81
+  < src/shared/code-highlighting.ts
+  = src/preload/workspace.ts
+  > src/renderer/lib/codemodal.ts
+  > src/renderer/lib/prdiffmodal.ts

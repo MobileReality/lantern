@@ -1,0 +1,6 @@
+{
+ "text": {
+  "client.ts": "HTTP client for the readings API",
+  "client.ts = api/src/routes.ts#readingsRoutes": "GET /readings"
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "text": {
+  "App.tsx": "Picks the docs page from the URL hash, sets the title, scrolls to anchors and lays out the sidebar, page header, content, pager and a footer with the licence and the not-affiliated line",
+  "main.tsx": "Mounts the docs site and loads its fonts and stylesheets",
+  "vite-env.d.ts": "Brings Vite's client types into the docs site"
+ }
+}

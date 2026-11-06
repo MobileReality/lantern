@@ -1,0 +1,10 @@
+{
+ "text": {
+  "web": "Dashboard site",
+  "backend": "Readings API",
+  "mobile": "Phone app",
+  "desktop": "Export tool",
+  "infra": "AWS and CI",
+  "watch": "Smartwatch"
+ }
+}

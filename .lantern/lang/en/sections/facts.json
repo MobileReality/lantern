@@ -1,0 +1,9 @@
+{
+ "text": {
+  "title": "Good to know",
+  "item run-electron-clean": "Electron's start script unsets ELECTRON_RUN_AS_NODE, else the app starts as plain Node",
+  "item skills-source": "skills/ is the source of truth; opening a project in the app (or install-skills) copies sixteen bundled skills (the Lantern skills including the complex Opus and Fable delegates, the five planning skills, the ones a delegate works by and the three default integration skills) and the delegate, complex-delegate and mapper agents into its .claude, adding their paths to the repo-local .git/info/exclude when git does not ignore them, or installing directly outside any git repo",
+  "item poll-is-authoritative": "each successful poll replaces the session list, read from Claude's own session files or, when those are unusable, from `claude agents --json --all`; no hook feeds state any more",
+  "item poll-is-authoritative note": "a failed poll marks sessions unavailable instead of dropping them, and the first poll after startup or recovery notifies nothing"
+ }
+}

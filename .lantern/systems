@@ -1,0 +1,20 @@
+# outside systems the project talks to, one id per line; written by systems.mjs, never by hand
+bitbucket-api
+claude-code-cli
+claude-code-extension
+codex-cli
+codex-hooks-config
+codex-sessions
+git
+github-api
+jira-api
+kitty
+macos-process-tools
+os-keychain
+osascript
+pnpm
+rtk-cli
+ssh
+tmux
+vscode-serve-web
+vtsls

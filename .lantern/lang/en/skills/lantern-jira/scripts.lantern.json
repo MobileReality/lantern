@@ -1,0 +1,30 @@
+{
+ "text": {
+  "adf.mjs": "turns plain text into Atlassian Document Format paragraphs, line breaks and bullet lists, and reads a document back as text",
+  "args.mjs": "parses a command's positionals and options against its table and reads the comment text from an option or a file",
+  "args.mjs gotcha": "A byte-identical copy lives in the other two integration skills, pinned by a test, so change all three.",
+  "args.mjs see-also": "each integration skill keeps its own copy because a skill may import only from its own folder",
+  "cli.mjs": "runs one command: checks usage, completes missing credentials from Lantern, calls Jira and prints every line through the redactor with an exit code",
+  "cli.mjs = skills/lantern-jira/scripts/lantern-socket.mjs#completeEnv": "asks Lantern for the account only when no email or token is set",
+  "cli.mjs < skills/lantern-jira/scripts/credentials.mjs#readCredentials": "site, email and token from the environment",
+  "commands.mjs": "the command table and the Jira actions behind it: get, search, comment, describe, list transitions and move to a named status, plus the offline conventions and template commands",
+  "conventions.mjs": "lists the issue templates, the user's own skills about tickets and the saved templates by name and path only, and saves or prints a project template",
+  "conventions.mjs gotcha": "Never reads a template or skill body beyond the description line, and refuses to replace a saved template without force.",
+  "conventions.mjs see-also": "byte-identical copies in the other two integration skills, pinned by a test",
+  "commands.mjs gotcha": "A transition matches the transition's name or its target status, so ask for the available ones before guessing.",
+  "credentials.mjs": "names the three variables Lantern injects, lists the missing ones, validates the https site URL, derives the secrets to mask and declares what to ask Lantern for",
+  "http.mjs": "sends JSON requests with a timeout and turns a refusal into an error that carries the redacted start of the body",
+  "http.mjs gotcha": "The body is redacted before it is cut, so a token straddling the limit leaves no fragment.",
+  "http.mjs see-also": "byte-identical copies in the other two integration skills, pinned by a test",
+  "jira-api.mjs": "Jira calls with basic auth and English responses, sent through the Atlassian gateway by cloud id first and falling back to the site URL when the gateway answers 401 or the cloud id is unknown",
+  "jira-api.mjs = ext:jira-api": "issue, search and transition requests",
+  "jira.mjs": "entry that runs the Jira skill's command line",
+  "lantern-socket.mjs": "asks the running Lantern over its local socket for the project's account when the environment has none, keeping the answer in memory",
+  "lantern-socket.mjs gotcha": "The environment always wins: a single required variable set means the socket is never contacted.",
+  "lantern-socket.mjs see-also": "byte-identical copies in the other two integration skills, pinned by a test",
+  "lantern-socket.mjs = src/main/auth/credential-server.ts#createCredentialServer": "sends the working directory and provider, reads the variables or the refusal",
+  "messages.json": "every sentence the Jira skill prints",
+  "messages.mjs": "looks up a message by dotted key and fills its placeholders, returning the key when missing",
+  "redact.mjs": "masks known secrets in any form, Authorization header values and credentials inside URLs"
+ }
+}

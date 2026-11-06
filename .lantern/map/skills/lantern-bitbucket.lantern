@@ -1,0 +1,11 @@
+lantern 1
+# skills/lantern-bitbucket
+
+skills/lantern-bitbucket/README.md . skill f43c8b41efc3
+#feature integrations
+
+skills/lantern-bitbucket/SKILL.md . skill e384efd944be
+#feature integrations
+  @ ext:bitbucket-api
+  @ skills/lantern-commit/SKILL.md
+  @ skills/lantern-bitbucket/scripts/bitbucket.mjs

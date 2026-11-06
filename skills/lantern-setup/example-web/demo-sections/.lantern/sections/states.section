@@ -1,0 +1,12 @@
+lantern-section 1
+# states
+
+machine order @ src/types/order.ts#OrderStatus
+state order placed initial @ src/services/orderService.ts#placeOrder
+state order paid @ src/services/orderService.ts#payOrder
+state order shipped terminal @ src/services/orderService.ts#shipOrder
+state order cancelled terminal @ src/services/orderService.ts#cancelOrder
+tr order placed paid @ src/services/orderService.ts#payOrder
+tr order paid shipped @ src/services/orderService.ts#shipOrder
+tr order placed cancelled @ src/services/orderService.ts#cancelOrder
+tr order paid cancelled @ src/services/orderService.ts#cancelOrder

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:" />
+    <title>Lantern integrations harness</title>
+    <link rel="stylesheet" href="../../../src/renderer/workspace.css" />
+    <link rel="stylesheet" href="../../../src/renderer/lantern.css" />
+    <link rel="stylesheet" href="../../../src/renderer/integrations.css" />
+  </head>
+  <body>
+    <aside id="sidebar">
+      <button id="open-integrations" type="button">Integrations</button>
+      <div id="projects"></div>
+    </aside>
+    <main id="main">
+      <div class="lt-panel" style="position: absolute; inset: 0">
+        <div class="lt-statusbar" id="lantern-bar"></div>
+      </div>
+    </main>
+    <script src="integrations-renderer.js"></script>
+  </body>
+</html>

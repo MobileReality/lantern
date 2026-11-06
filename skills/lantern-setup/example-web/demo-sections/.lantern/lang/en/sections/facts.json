@@ -1,0 +1,9 @@
+{
+ "text": {
+  "title": "Worth knowing",
+  "item stock-not-restored": "Cancelling a paid order does not give the copies back to the shelf.",
+  "item stock-not-restored note": "decrementStock runs when an order is paid and nothing reverses it",
+  "item order-total-zero": "A new order is stored with a total of zero cents.",
+  "item order-total-zero note": "placeOrder never adds up the lines, so the total stays 0 until something else sets it"
+ }
+}

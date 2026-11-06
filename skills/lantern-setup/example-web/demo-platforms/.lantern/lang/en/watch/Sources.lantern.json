@@ -1,0 +1,7 @@
+{
+ "text": {
+  "HeartRateView.swift": "big heart-rate number on the watch face",
+  "WatchApp.swift": "watch app: samples heart rate and steps",
+  "WatchApp.swift > mobile/src/sync/syncQueue.ts#enqueueReading": "samples over Bluetooth"
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "text": {
+  "explore-the-map": "Seeing how a project fits together, from single files up to features and the notes under the map.",
+  "build-the-map": "Creating the map, grouping its features into product areas, and keeping names and contents true as the project changes.",
+  "review-changes": "Reading and judging code changes: pull requests, their files, flows and explanations, comments on lines, and code views.",
+  "agent-work": "Handing work to Claude agents: runs, their cost, the accounts they use, and the skills they follow.",
+  "project-workspace": "Opening projects in the app and watching Claude sessions, notifications and memory use while working in them."
+ }
+}

@@ -1,0 +1,6 @@
+lantern 1
+# skills/deploy/agents
+
+skills/deploy/agents/verifier.md . skill 7ab5a72eabc2
+  @ skills/deploy/references/checklist.md
+  @ skills/deploy/scripts/preflight.mjs

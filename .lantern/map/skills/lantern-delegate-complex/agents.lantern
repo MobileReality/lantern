@@ -1,0 +1,24 @@
+lantern 1
+# skills/lantern-delegate-complex/agents
+
+skills/lantern-delegate-complex/agents/lantern-delegate-complex-fable-high.md . skill 8ccb69808ef9
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate-complex/agents/lantern-delegate-complex-fable-medium.md . skill 6b59c87f79b3
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate-complex/agents/lantern-delegate-complex-fable-xhigh.md . skill ab180e897ce0
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate-complex/agents/lantern-delegate-complex-opus-high.md . skill fd24475d230f
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate-complex/agents/lantern-delegate-complex-opus-medium.md . skill 5115e0d60404
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate-complex/agents/lantern-delegate-complex-opus-xhigh.md . skill 926a5e5b2e79
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate-complex/agents/reviewer-complex.md . skill b94b72a18360
+#feature delegate-runs
+  @ skills/lantern-delegate/scripts/required-skills.mjs

@@ -1,0 +1,10 @@
+{
+ "text": {
+  "MarkdownPage.tsx": "Renders a repository Markdown file as sanitised, highlighted HTML with links rewritten to site routes and images resolved",
+  "NotFound.tsx": "Tells the reader there is no page at this address and lists the pages to pick instead",
+  "Pager.tsx": "Links to the previous and next page of the docs",
+  "Prose.tsx": "Wraps a page's Markdown in the article that numbers its sections",
+  "SheetHeader.tsx": "Shows the source file of the current page above its text",
+  "Sidebar.tsx": "Lists the docs pages and the headings of the current one beside the pulsing lantern mark, collapsing into a menu on a phone"
+ }
+}

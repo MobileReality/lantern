@@ -1,0 +1,6 @@
+{
+ "text": {
+  "README.md": "Says the skill covers steps 5 and 6 of planning and has no scripts of its own",
+  "SKILL.md": "Directs showing a plan one section at a time and recording only the user's explicit approvals, then the plan-level approval, and sends answers pasted from Lantern to the stages skill"
+ }
+}

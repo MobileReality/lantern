@@ -1,0 +1,10 @@
+lantern 1
+# skills/lantern-plan-stages
+
+skills/lantern-plan-stages/README.md . skill bd568d3af879
+#feature planning
+
+skills/lantern-plan-stages/SKILL.md . skill 7ede9785d567
+#feature planning
+  @ skills/lantern-plan-review/SKILL.md
+  @ skills/lantern-plan/scripts/plan.mjs

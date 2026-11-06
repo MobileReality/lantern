@@ -1,0 +1,11 @@
+lantern 1
+# .
+
+.eslintrc.json . config 8718a2681208 | eslint rules, prettier as error
+.prettierrc.json . config 99a67f2cf74a | prettier formatting options
+deploy.json . config 17eeb45e77aa | hosting SPA rewrite + api deploy
+  < api/package.json | predeploy build
+package.json . config 6b189743f983 | web app deps and build scripts
+postcss.config.mjs . config d25110650db5 | postcss plugins: tailwind, autoprefixer
+tailwind.config.js . config cc7bfaa6c104 | tailwind content globs, preflight off
+tsconfig.json . config ce2b1d2ea16f | TS compiler options for src

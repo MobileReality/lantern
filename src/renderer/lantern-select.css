@@ -1,0 +1,9 @@
+.pr-title, .pr-meta, .pr-summary, .pr-desc-lines li,
+.pr-file .pr-path, .pr-file .pr-reason,
+.lt-reason-text, .lt-explain-text,
+.rv-code, .rv-code .cl .code,
+.lt-flow-title, .lt-flow-text, .lt-flow-old del, .lt-flow-new strong, .lt-flow-file, .lt-flow-note, .lt-flow-reason,
+.lt-detail p, .lt-detail .gotcha, .lt-prsum p { user-select: text; }
+
+.lt-planpane .pl-panel, .lt-planpane .pl-pick, .lt-planpane .pl-qopen, .lt-planpane .pl-fold { user-select: text; -webkit-user-select: text; }
+.lt-planpane .pl-copy-plan, .lt-planpane .pl-copy, .lt-planpane .pr-back, .lt-planpane .pl-clear, .lt-planpane .pl-progress { user-select: none; -webkit-user-select: none; }

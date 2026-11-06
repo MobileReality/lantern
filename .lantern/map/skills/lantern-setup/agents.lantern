@@ -1,0 +1,13 @@
+lantern 1
+# skills/lantern-setup/agents
+
+skills/lantern-setup/agents/lantern-mapper.md . skill 212c1ee6a22d
+#feature map-setup
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/references/format.md
+  @ skills/lantern-setup/references/roles.md
+  @ skills/lantern-setup/scripts/fold.mjs
+  @ skills/lantern-setup/scripts/model.mjs
+  @ skills/lantern-setup/scripts/plan.mjs
+  @ skills/lantern-setup/scripts/refs.mjs
+  @ skills/lantern-setup/scripts/systems.mjs

@@ -1,0 +1,8 @@
+lantern 1
+# skills/lantern-delegate-complex
+
+skills/lantern-delegate-complex/SKILL.md . skill f10fe7d42312
+#feature delegate-runs
+  @ skills/lantern-delegate/SKILL.md
+  @ skills/lantern-delegate/protocol.md
+  @ skills/lantern-delegate/scripts/preflight.mjs

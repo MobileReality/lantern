@@ -1,0 +1,13 @@
+{
+ "text": {
+  "title": "Shop database",
+  "intro": "Three tables created by the one migration; the checks and keys live in the database, not in the code.",
+  "entity books": "what the shop sells, one row per ISBN",
+  "field books stock": "copies on the shelf; paying an order lowers it",
+  "entity orders": "one row per customer order",
+  "field orders status": "one of placed, paid, shipped, cancelled; the database refuses any other value",
+  "entity order_lines": "which books an order holds and how many",
+  "rel order_lines order_id orders": "deleting an order that has lines is refused",
+  "rel order_lines isbn books": "a line must point at a book that exists"
+ }
+}

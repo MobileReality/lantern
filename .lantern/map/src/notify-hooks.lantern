@@ -1,0 +1,9 @@
+lantern 1
+# src/notify-hooks
+
+src/notify-hooks/codex.ps1 . script 851e1da5217a
+#feature notifications
+  > src/main/server.ts
+src/notify-hooks/codex.sh . script 57464f3efaae
+#feature notifications
+  > src/main/server.ts

@@ -1,0 +1,65 @@
+lantern-plan 1
+# plan-on-the-map
+#title Show a plan's stages and progress on the Lantern map
+#opened 2026-10-26
+
+#goal Lantern reads the plans under .lantern/plans and shows each plan's stages, open questions and item progress.
+#goal A selected stage lights up the features and files it changes on the macro view.
+
+#scope-in Read plan files and the pull requests that tick their items, in the main process.
+#scope-in A stage list with its open questions and item status.
+#scope-in Highlight a selected stage's impact on the macro view.
+#scope-out Planning, approving or editing a plan from the app; the lantern-plan skill does that.
+
+#impact area explore-the-map Plans are read where the map is read and drawn over it.
+#impact area review-changes A plan's items are ticked by pull requests, so the PR objects feed it.
+#impact feature macro-view The stage impact is drawn as a highlight on the macro view.
+#impact feature pull-requests PR objects carry the plan item they tick.
+#impact file src/main/lantern-prs.ts Item status comes from the PR states this file derives.
+#impact file src/main/lantern.ts The map loader hands the plans to the renderer next to the map.
+#impact new src/main/lantern-plans.ts Loads every plan file with the pull requests that tick its items.
+
+#stage s1 Read plans in the main process
+#item s1.1 Load every plan with the pull requests that tick its items
+#touch file src/main/lantern-prs.ts
+#touch file src/main/lantern.ts
+#touch new src/main/lantern-plans.ts
+#accept A test loads a repo with one plan and two PRs and gets one open and one merged item.
+#item s1.2 Hand the plans to the renderer next to the map
+#touch file src/main/main.ts
+#accept The renderer receives the plan list when a project opens, and an empty list without plans.
+#question s1.q1 Do plans on other branches show, or only the checked-out one?
+#touch file src/main/lantern.ts
+#answer jun Only the checked-out branch for now.
+
+#stage s2 Show the plan on the map
+#item s2.1 List a plan's stages with their questions and item status
+#touch feature macro-view
+#touch file src/renderer/lib/macroview/model.ts
+#accept A stage with an unanswered question reads as blocked in the stage list.
+#item s2.2 Highlight what a selected stage changes
+#touch file src/renderer/lib/macroview/marks.ts
+#accept Selecting stage s1 marks the files s1 touches and nothing else.
+#question s2.q1 Does the stage list sit in the review pane or beside the macro view?
+#touch file src/renderer/lib/macroview/mount.ts
+#explain The review pane is the narrow column of the pull request review; the macro view is the large map beside it.
+#explain A list in the pane scrolls away with the review, while a list beside the map stays in view as you pick a stage.
+#story Reader opens a plan on the map
+#step actor Reader
+#step action opens
+#step subject a plan
+#file src/renderer/lib/macroview/mount.ts
+#below interaction sees the stages beside the map
+#below consequence the list sits in the review pane => the list sits beside the map
+
+#risk Reading plans from many branches could multiply the git scans; stay on the checked-out branch.
+#risk A plan edited after approval must show as changed, not as approved.
+
+#approved title jun 2026-10-26 2d9198d66d04
+#approved goal jun 2026-10-26 052183f97b30
+#approved scope jun 2026-10-26 2eb98e31a52d
+#approved impact jun 2026-10-26 4bb954a64d8f
+#approved s1 jun 2026-10-26 180d87a4c49c
+#approved s2 jun 2026-10-26 4ac8600e4447
+#approved risks jun 2026-10-26 4022fd4c7568
+#approved plan jun 2026-10-27

@@ -1,0 +1,5 @@
+lantern-section 1
+# facts
+
+item stock-not-restored @ src/services/orderService.ts#cancelOrder src/repositories/bookRepository.ts#decrementStock
+item order-total-zero @ src/services/orderService.ts#placeOrder

@@ -1,0 +1,15 @@
+lantern 1
+# skills/lantern-setup/example-web/demo-sections/src/api
+
+skills/lantern-setup/example-web/demo-sections/src/api/guards.ts . middleware 5b68f46d6b3c
+#feature lantern-sections
+  = skills/lantern-setup/example-web/demo-sections/src/services/authService.ts#roleFor
+  < skills/lantern-setup/example-web/demo-sections/src/types/order.ts#Role
+skills/lantern-setup/example-web/demo-sections/src/api/routes.ts . route 67bbd8643613
+#feature lantern-sections
+  = skills/lantern-setup/example-web/demo-sections/src/api/guards.ts#requireRole
+  = skills/lantern-setup/example-web/demo-sections/src/services/orderService.ts#cancelOrder
+  = skills/lantern-setup/example-web/demo-sections/src/services/orderService.ts#payOrder
+  = skills/lantern-setup/example-web/demo-sections/src/services/orderService.ts#placeOrder
+  = skills/lantern-setup/example-web/demo-sections/src/services/orderService.ts#shipOrder
+  < skills/lantern-setup/example-web/demo-sections/src/types/order.ts#Role

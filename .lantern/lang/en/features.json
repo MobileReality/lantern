@@ -1,0 +1,31 @@
+{
+ "text": {
+  "session-monitoring": "watching Claude Code sessions across VS Code windows",
+  "notifications": "overlay cards for finished or waiting sessions, the notifications setting and old hook cleanup",
+  "projects-hub": "project list and workspace shell",
+  "file-graph": "browsing the project as a graph of files and their relations, with platform tabs, search, filters and a detail panel",
+  "lantern-sections": "rbac, states, db and facts blocks under the map",
+  "pull-requests": "pull request records, their open or merged state from the host, the list, the card with its description and changed-file highlighting",
+  "serve-web": "embedded VS Code serve-web server and editor tab",
+  "agent-runs": "launching and tracking Claude agents and subagents",
+  "code-insight": "reading code and diffs with syntax and semantic highlighting and change explainers",
+  "skill-installer": "installing and listing Claude Code skills",
+  "delegate-runs": "delegated worktree runs: preflight, permissions, pull request creation and checks of what a delegate did",
+  "process-memory": "read-only view of the memory Lantern's process tree uses, by category, project and process",
+  "macro-view": "the Macro view: feature blocks, the links between them and the outside systems, and what a pull request touches",
+  "product-areas": "product areas, the top level of the Macro view that groups features, and the areas file with its quality checks",
+  "map-setup": "building and refreshing the map: the setup skill, its progress screen, language choice and validation",
+  "map-vocabulary": "keeping feature and outside-system names consistent: retag, the systems list and the vocabulary checks",
+  "map-sync": "keeping the map true after each change and recording the pull request in it",
+  "skill-checks": "checking the bundled skills on small fixture projects, offline or end to end against a mock host",
+  "review-screen": "the pull request review screen: file list, file or diff pane and graph with draggable dividers and hideable areas",
+  "review-comments": "inline comments on code and diff lines and the fix requests collected for an agent",
+  "pr-explain": "asking Claude to explain what changed in one pull request file",
+  "pr-flow": "the Flow view: plain stories of who does what in a pull request and what changes for them",
+  "run-cost": "measuring what a delegate run costs per phase, tool and agent, and comparing it with a baseline",
+  "planning": "planning a change as a plan file: impact computed from the map, stages with questions, approval by section, and item progress ticked by pull requests",
+  "integrations": "accounts for GitHub, Bitbucket and Jira added with a pasted token, the account each project uses, and the credentials handed to agents and delegate scripts",
+  "commands-keymap": "the command table shared by main and renderer, shortcuts matched in main on every window and user bindings in settings, and the app menu items built from the same table",
+  "command-palette": "the command palette dialog that lists and runs the registered commands with their shortcuts and recent use, the sidebar Search commands field that opens it, and the explain.open and explain.popout commands it can run"
+ }
+}

@@ -1,0 +1,8 @@
+{
+ "text": {
+  "title": "Readings store",
+  "entity readings": "one row per sample from a watch or phone",
+  "field readings userId": "partition key",
+  "field readings bpm": "heart rate, absent for step-only samples"
+ }
+}

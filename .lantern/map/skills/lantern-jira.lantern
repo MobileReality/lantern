@@ -1,0 +1,10 @@
+lantern 1
+# skills/lantern-jira
+
+skills/lantern-jira/README.md . skill a3b527a20b19
+#feature integrations
+
+skills/lantern-jira/SKILL.md . skill 2a518a414573
+#feature integrations
+  @ ext:jira-api
+  @ skills/lantern-jira/scripts/jira.mjs

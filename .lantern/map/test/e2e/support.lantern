@@ -1,0 +1,36 @@
+lantern 1
+# test/e2e/support
+
+test/e2e/support/comments.ts . test 10a03085057c
+#feature review-comments
+
+test/e2e/support/graph-harness.ts . test d436772c80cd
+  < src/renderer/lib/syntax-worker.ts
+  < test/e2e/app/renderer.ts
+  = test/e2e/app/main.cjs
+  > scripts/material-file-icons.mjs
+  > test/e2e/app/index.html
+
+test/e2e/support/integrations-harness.ts . test 98b5ae56d657
+#feature integrations
+  < scripts/aliases.cjs#sourceAliases
+  < src/preload/workspace.ts
+  < test/helpers/fake-providers.ts#startFakeProviders
+  > test/e2e/app/integrations-main.ts
+  > test/e2e/app/integrations-renderer.ts
+
+test/e2e/support/skills-extras-harness.ts . test 5b4d999930e5
+#feature skill-installer
+  < src/preload/workspace.ts
+  > test/e2e/app/skills-extras-main.ts
+  > test/e2e/app/skills-extras-renderer.ts
+
+test/e2e/support/tray-popover-harness.ts . test ea7204fb7ef6
+#feature session-monitoring
+  < scripts/aliases.cjs#sourceAliases
+  < src/shared/tray-model.ts#TrayModel
+  > test/e2e/app/tray-popover-main.cjs
+  > test/e2e/app/tray-popover-renderer.ts
+
+test/e2e/support/overflow.ts . test 72fc9d9b1d56
+#feature review-screen

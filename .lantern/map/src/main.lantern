@@ -1,0 +1,895 @@
+lantern 1
+# src/main
+
+src/main/agent-codex.ts . ai 5b036441d81b
+#feature agent-runs
+  < src/main/agent.ts#AgentEvent
+  < src/main/provider.ts#isSessionId
+  = ext:codex-cli
+
+src/main/agent-request.ts . middleware b637e59060f6
+#feature agent-runs
+  < src/main/agent.ts#AgentKind
+  < src/shared/lantern-plan-fix.ts#isPlanFixTarget
+
+src/main/agent.ts . ai 1d87dd0a869d
+#feature agent-runs
+  = src/main/auth/spawn-env.ts#applyInjection
+  = src/main/agent-codex.ts
+  = src/main/claude-bin.ts
+  = src/main/lantern-run-gate.ts
+  = src/main/lantern-texts.ts
+  = src/main/metadir.ts#ensureLocalDir
+  > src/main/prockill.ts#killChildTree
+  < src/main/provider.ts
+  < src/shared/languages/index.ts#languageCode
+  < src/shared/project-data.ts#EXPLAINS_DIR
+  < src/shared/project-data.ts#PROJECT_DATA_DIR
+  = scripts/lantern-bundle.mjs
+  < skills/lantern-setup/agents/lantern-mapper.md
+  = skills/lantern-setup/scripts/areas.mjs
+  = ext:claude-code-cli
+  = ext:codex-cli
+  = src/main/lantern-plan-fix.ts#planFixPrompt
+  < src/shared/lantern-plan-messages.ts#say
+
+src/main/app-menu.ts . pure 01e3b2c293c6
+#feature commands-keymap
+  < src/shared/commands/index.ts#COMMANDS
+  < src/shared/commands/keymap.ts#accelerator
+
+src/main/atomic-write.ts . util 37ce00d629df
+
+src/main/bundle.ts . service 053ccd160c7b
+#feature skill-installer
+  = src/main/agent.ts
+  < src/main/provider.ts#Provider
+  = scripts/lantern-bundle.mjs
+  < src/shared/config.ts#DEV_PROFILE
+
+src/main/claude-bin.ts . service 48bdda2e03a8
+#feature agent-runs
+
+src/main/claude-poll.ts . service 08d47300a4c0
+#feature session-monitoring
+  < src/main/scanner.ts#SessionSnapshot
+
+src/main/cli.ts . service 0c9d341d2209
+#feature projects-hub
+  < src/shared/shell-quote.ts#shellQuote
+  = ext:osascript
+  < src/shared/local-review.ts#parseCompareSpec
+
+src/main/codex-event.ts . pure c8f0209ad3c4
+#feature session-monitoring
+  < src/main/provider.ts#isSessionId
+
+src/main/codex-hooks.ts . service 9e11a91b6093
+#feature notifications
+  < src/main/codex-event.ts#CODEX_EVENTS
+  < src/notify-hooks/codex.ps1
+  < src/notify-hooks/codex.sh
+  < src/shared/config.ts#PORT
+  = ext:codex-hooks-config
+
+src/main/codex-scanner.ts . service 53630cbde005
+#feature session-monitoring
+  < src/main/provider.ts#isSessionId
+  < ext:codex-sessions
+
+src/main/codex-turns.ts . state b1e8df963ffb
+#feature session-monitoring
+  < src/main/codex-event.ts#CodexHookEvent
+
+src/main/dev-instance.ts . service 1653e98c243d
+
+src/main/devserver-guard.ts . middleware f07ceb1f435f
+
+src/main/devserver.ts . handler 909dbffe3d9d
+  = src/main/devserver-guard.ts#refusalFor
+  < src/shared/config.ts#DEV_PROFILE
+  < src/shared/config.ts#PORT
+
+src/main/editor-demand.ts . service 9c14ed5ef322
+#feature serve-web
+
+src/main/explains.ts . repository 612ec778ddae
+#feature code-insight
+  = src/main/metadir.ts
+  < src/shared/project-data.ts#EXPLAINS_NAME
+
+src/main/extensions-ignore.ts . service b2e425fbe813
+#feature skill-installer
+  = scripts/lantern-bundle.mjs#ensureIgnored
+  = src/main/extensions.ts#loadExtensionsPanel
+  < src/main/extensions.ts#projectExtensionsPath
+  < src/main/extensions.ts#projectRootFor
+  < src/shared/extension-slots.ts#EXTENSIONS_FILE
+  < src/shared/extension-slots.ts#EXTENSIONS_FOLDER
+  < src/shared/lang/messages.ts#msg
+
+src/main/extensions-ipc.ts . handler ceae8e8424b7
+#feature skill-installer
+  = src/main/extensions-ignore.ts#guardProjectFile
+  = src/main/extensions.ts#createExtensionSkill
+  = src/main/extensions.ts#importExtensionsList
+  = src/main/extensions.ts#loadExtensionsPanel
+  = src/main/extensions.ts#moveExtension
+  = src/main/extensions.ts#saveExtensionsSlot
+  = src/main/extensions.ts#saveSkillLinker
+  < src/shared/extension-slots.ts#EXTENSION_SCOPE
+
+src/main/extensions.ts . service 76636e152e1d
+#feature skill-installer
+  < src/shared/extension-problem.ts#extraProblemMessage
+  < src/shared/extension-problem.ts#offProblemMessage
+  < src/shared/extension-slots.ts#EXTENSION_SCOPE
+  < src/shared/extension-slots.ts#extraProblem
+  < src/shared/extension-slots.ts#isExtensionScope
+  < src/shared/extension-slots.ts#isLockedSkill
+  < src/shared/extension-slots.ts#mergeExtras
+  < src/shared/extension-slots.ts#OFF_KEY
+  < src/shared/lang/messages.ts#msg
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#alwaysOnSkills
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#BUNDLED_SKILLS
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#switchableSkills
+  < skills/lantern-delegate/scripts/extensions.mjs#projectRootOf
+  < skills/lantern-delegate/scripts/skill-linker.mjs#resolveSkillLinker
+  < skills/lantern-delegate/scripts/skill-linker.mjs#resolveLinkerPath
+
+src/main/filecontent.ts . service cdd4322abaa0
+#feature code-insight
+  = src/main/lsp/source-provenance.ts
+  < src/shared/code-highlighting.ts
+  < src/shared/code-preview.ts
+
+src/main/hook-cleanup.ts . service 93ab40d0f80a
+#feature notifications
+  = src/main/atomic-write.ts#writeFileAtomically
+
+src/main/hooks.ts . service e15a93bf9c04
+#feature notifications
+  = src/main/hook-cleanup.ts#removeInstalledHooks
+  < src/shared/config.ts
+
+src/main/lantern-areas.ts . service 13d2f54f2601
+#feature product-areas
+  < src/main/lantern-texts.ts#LangStore
+
+src/main/lantern-batch.ts . util 5086a2a4626a
+
+src/main/lantern-cache.ts . util 507ce092b779
+
+src/main/lantern-describe-parse.ts . pure 4895b6c08285
+#feature pull-requests
+  < src/shared/control-characters.ts#hasControlCharacter
+  < src/main/lantern-types.ts
+
+src/main/lantern-enumerate.ts . service cfe32c766db2
+#feature map-setup
+  = src/main/lantern-batch.ts
+  = src/main/lantern-ignore.ts
+  < scripts/lantern-bundle.mjs
+
+src/main/lantern-flow-parse.ts . pure dcda799708e6
+#feature pr-flow
+  < src/shared/control-characters.ts#hasControlCharacter
+  = src/main/lantern-parse.ts#decodePath
+  < src/main/lantern-types.ts#LanternFlowStory
+
+src/main/lantern-git.ts . gateway 38b1cd7ee2d4
+#feature pull-requests
+  = ext:git
+
+src/main/lantern-host-credentials.ts . service 2b383882e31b
+#feature pull-requests
+
+src/main/lantern-host-origin.ts . service 21874dfed584
+#feature pull-requests
+  = src/main/lantern-git.ts
+  < src/shared/providers.ts#CODE_HOST_IDS
+  = ext:ssh
+
+src/main/lantern-host-request.ts . gateway 354fac4f5ce6
+#feature pull-requests
+  < src/shared/control-characters.ts#hasControlCharacter
+  < src/main/lantern-host-credentials.ts#HostCredentials
+  < src/main/lantern-host-origin.ts#BitbucketRepo
+  > ext:bitbucket-api
+
+src/main/lantern-host-status.ts . service 39fb8272e40b
+#feature pull-requests
+  = src/main/lantern-batch.ts
+  = src/main/lantern-host-credentials.ts#readHostCredentials
+  = src/main/lantern-host-origin.ts#bitbucketRepoOf
+  = src/main/lantern-host-request.ts#fetchHostState
+  < src/main/lantern-types.ts
+  < src/main/lantern-host-account.ts#AccountLookup
+
+src/main/lantern-ignore.ts . util 792c7e34b6dd
+
+src/main/lantern-macro-areas-read.ts . service dcf81b4d4a84
+#feature product-areas
+  = src/main/lantern-areas.ts#loadAreas
+  = src/main/lantern-macro-areas.ts#deriveMacroAreas
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-parse.ts#ParsedRecord
+  < src/main/lantern-platforms.ts#PlatformRule
+  < src/main/lantern-texts.ts#LangStore
+
+src/main/lantern-macro-areas.ts . pure 9236329f594a
+#feature product-areas
+  < src/main/lantern-areas.ts#LanternArea
+  = src/main/lantern-macro-foundation.ts#foundationLinksOf
+  = src/main/lantern-macro-foundation.ts#platformUsesOf
+  = src/main/lantern-macro.ts#deriveMacroView
+  < src/main/lantern-parse.ts#ParsedRecord
+  < src/main/lantern-platforms.ts#PlatformRule
+  = src/shared/lantern-main-links.ts#selectMainLinks
+  = src/shared/lantern-names.ts#blockName
+
+src/main/lantern-macro-files.ts . pure fd32acc75659
+#feature macro-view
+  = src/main/lantern-macro.ts#deriveMacroView
+
+src/main/lantern-macro-foundation.ts . pure bde15ae1a618
+#feature macro-view
+  < src/main/lantern-macro.ts#MacroEdge
+  < src/main/lantern-parse.ts#ParsedRecord
+  < src/main/lantern-platforms.ts#PlatformRule
+  = src/main/lantern-platforms.ts#resolvePlatform
+  < src/main/lantern-types.ts#Arrow
+  = src/shared/lantern-names.ts#isFoundationId
+
+src/main/lantern-macro-hint.ts . pure fc8dde3c2ceb
+#feature product-areas
+  < src/main/lantern-macro-areas-read.ts#MacroAreasPart
+  < src/main/lantern-parse.ts#ParsedRecord
+
+src/main/lantern-macro-load.ts . service b2e0e05ab719
+#feature macro-view
+  < src/main/lantern-macro-areas-read.ts#MacroAreasPart
+  < src/main/lantern-macro-files.ts#BlockByPath
+  < src/main/lantern-macro-systems.ts#SystemsByPath
+  < src/main/lantern-macro.ts#MIN_STRONG_EDGE
+  < src/main/lantern-macro.ts#MacroView
+
+src/main/lantern-macro-systems.ts . pure aa16be1545eb
+#feature macro-view
+  < src/main/lantern-parse.ts#ParsedRecord
+
+src/main/lantern-macro.ts . pure 2570aaa65f0f
+#feature macro-view
+  < src/main/lantern-parse.ts#ParsedRecord
+  = src/main/lantern-platforms.ts#resolvePlatform
+  < src/main/lantern-types.ts#Arrow
+
+src/main/lantern-nodes.ts . pure 91e6b9113999
+#feature file-graph
+  = src/main/lantern-parse.ts
+  = src/main/lantern-texts.ts
+  < src/main/lantern-types.ts
+
+src/main/lantern-parse.ts . pure be48a88e53fb
+#feature file-graph
+  < src/main/lantern-types.ts
+
+src/main/lantern-plan-state.ts . pure 9cd36f6e04fe
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#ITEM_STATUS
+  < src/main/lantern-parse.ts#encodePath
+  < src/main/lantern-plan-types.ts
+  < src/main/lantern-types.ts#LanternPrState
+
+src/main/lantern-plan-types.ts . schema 4c713a976fd4
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#TARGET_KIND
+  < src/main/lantern-types.ts#LanternFlowStory
+
+src/main/lantern-plan-view-types.ts . schema 7bf6ec1e7e5e
+#feature planning
+  < src/main/lantern-plan-types.ts
+  < src/main/lantern-types.ts#LanternPrState
+
+src/main/lantern-plan-view.ts . pure 50aba7489ba7
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#ITEM_STATUS
+  = src/main/lantern-plan.ts#planItemStatuses
+  < src/main/lantern-plan-view-types.ts
+  < src/main/lantern-types.ts#LanternPr
+
+src/main/lantern-plan.ts . pure cb1980e7bc93
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#TAG
+  < src/main/lantern-parse.ts#decodePath
+  < src/main/lantern-plan-state.ts
+  < src/main/lantern-plan-types.ts
+  < src/shared/lantern-plan-messages.ts#say
+  < skills/lantern-plan/scripts/plan-flow.mjs#createFlowReader
+
+src/main/lantern-plans.ts . service 85b9960dac93
+#feature planning
+  = src/main/lantern-plan-view.ts#planView
+  < src/main/lantern-plan-view-types.ts
+  = src/main/lantern-plan.ts#parsePlanFile
+  < src/main/lantern-types.ts#LanternPr
+  < src/shared/lantern-plan-fix.ts#brokenPlan
+
+src/main/lantern-platforms.ts . service 303770b687bf
+#feature file-graph
+  = src/main/lantern-ignore.ts
+  < src/main/lantern-texts.ts
+  < src/main/lantern-types.ts
+
+src/main/lantern-pr-cache.ts . service a9712e7e5e25
+#feature pull-requests
+  = src/main/lantern-batch.ts#mapInBatches
+  = src/main/lantern-git.ts#git
+  < src/main/lantern-pr-parse.ts#PR_DIR
+
+src/main/lantern-pr-parse.ts . pure c50c203d8348
+#feature pull-requests
+  < src/shared/control-characters.ts#hasControlCharacter
+  < skills/lantern-plan/scripts/plan-format.mjs#PLAN_REF
+  = src/main/lantern-describe-parse.ts#parseDescribeLines
+  = src/main/lantern-flow-parse.ts#parseFlowLines
+  = src/main/lantern-parse.ts
+  < src/main/lantern-types.ts
+  < src/shared/reason.ts#REASON_MAX_CHARS
+
+src/main/lantern-pr-remote.ts . service 7715ea0227e3
+#feature pull-requests
+  = src/main/lantern-batch.ts
+  = src/main/lantern-git.ts
+  = src/main/lantern-pr-parse.ts
+
+src/main/lantern-pr-revisions.ts . service eab97f4bd90c
+#feature pull-requests
+  = src/main/lantern-git.ts
+  = src/main/lantern-pr-remote.ts#listRemoteBranches
+  = src/main/lantern-prs.ts
+  < src/main/lantern-types.ts
+
+src/main/lantern-pr-warm.ts . service e401dc39af3b
+#feature pull-requests
+  < src/main/lantern-host-status.ts#hostStatus
+  = src/main/lantern-pr-revisions.ts#resolvePrRevisions
+  = src/main/lantern-prs.ts
+
+src/main/lantern-prdiff.ts . service d586bd1258f6
+#feature pull-requests
+  = src/main/filecontent.ts
+  = src/main/lantern-git.ts
+  = src/main/lantern-prs.ts
+  = src/main/lantern-pr-revisions.ts
+  = src/main/lsp/source-provenance.ts
+  < src/main/lantern-types.ts
+  < src/shared/code-preview.ts
+  < src/shared/code-highlighting.ts
+  = src/main/lantern-local.ts
+
+src/main/lantern-prfile.ts . service 78d431dbf73d
+#feature pull-requests
+  = src/main/filecontent.ts
+  = src/main/lantern-git.ts
+  = src/main/lantern-prs.ts
+  = src/main/lantern-pr-revisions.ts
+  = src/main/lsp/source-provenance.ts
+  < src/main/lantern-types.ts
+  < src/shared/code-preview.ts
+  < src/shared/code-highlighting.ts
+  = src/main/lantern-local.ts
+
+src/main/lantern-proverlay.ts . service 0442b90dfd9c
+#feature pull-requests
+  = src/main/lantern-batch.ts
+  = src/main/lantern-git.ts
+  = src/main/lantern-nodes.ts
+  = src/main/lantern-parse.ts
+  < src/main/lantern-pr-remote.ts
+  = src/main/lantern-platforms.ts
+  = src/main/lantern-prs.ts
+  = src/main/lantern-texts.ts
+  < src/main/lantern-types.ts
+  = src/main/lantern-local.ts
+
+src/main/lantern-prs.ts . service 91a0d12ee3bb
+#feature pull-requests
+  = src/main/lantern-git.ts
+  = src/main/lantern-host-status.ts
+  = src/main/lantern-pr-cache.ts#createRefCache
+  = src/main/lantern-pr-parse.ts
+  = src/main/lantern-pr-remote.ts
+  < src/main/lantern-pr-revisions.ts#PrRevisions
+  < src/main/lantern-types.ts
+
+src/main/lantern-run-gate.ts . service 64842994cbf5
+#feature agent-runs
+
+src/main/lantern-sections.ts . service d0c2fd5f3432
+#feature lantern-sections
+  = src/main/lantern-parse.ts
+  < src/main/lantern-texts.ts
+  < src/main/lantern-types.ts
+
+src/main/lantern-stamp.ts . service 1fff989778cd
+#feature file-graph
+  = src/main/lantern-batch.ts
+  < src/main/lantern-host-status.ts
+  < src/shared/project-data.ts
+
+src/main/lantern-texts.ts . service 18029fc1c004
+#feature file-graph
+  = src/main/lantern-batch.ts
+  < src/main/lantern-cache.ts
+  = src/main/lantern-parse.ts
+  < src/main/lantern-types.ts
+
+src/main/lantern-types.ts . model 10ebbc6c5b7b
+#feature file-graph
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  < src/shared/lantern-plan-fix.ts#LanternBrokenPlan
+
+src/main/lantern.ts . service ce57c170d070
+#feature file-graph
+  = src/main/lantern-batch.ts
+  = src/main/lantern-cache.ts
+  = src/main/lantern-enumerate.ts
+  = src/main/lantern-macro-areas-read.ts#readMacroAreas
+  = src/main/lantern-macro-files.ts#macroBlocksByPath
+  = src/main/lantern-macro-hint.ts#areasHintPart
+  = src/main/lantern-macro-systems.ts#macroSystemsByPath
+  < src/main/lantern-macro-load.ts#MacroData
+  = src/main/lantern-macro.ts#deriveMacroView
+  = src/main/lantern-parse.ts
+  = src/main/lantern-plans.ts#loadPlans
+  = src/main/lantern-platforms.ts
+  = src/main/lantern-pr-warm.ts#fetchAndWarmPrs
+  = src/main/lantern-prs.ts
+  = src/main/lantern-sections.ts
+  = src/main/lantern-nodes.ts
+  = src/main/lantern-texts.ts
+  < src/main/lantern-types.ts
+
+src/main/main.ts . entry 226dba95d239
+  = src/main/editor-demand.ts#createEditorDemand
+  = src/main/serveweb-license.ts#createServerLicenseConsent
+  = src/main/bundle.ts#setPermissionConsent
+  = src/main/permission-consent.ts#createPermissionConsent
+  = src/main/mic-consent.ts#enableMicrophone
+  = src/main/auth/index.ts#createAuth
+  = src/main/auth/credential-server.ts#createCredentialServer
+  = src/main/auth/credential-socket.ts#credentialSocketPath
+  = src/main/auth/known-project.ts#knownProject
+  = src/main/auth/electron-cipher.ts#electronCipher
+  = src/main/auth/env-names.ts#namesInProjectFiles
+  = src/main/auth/ipc.ts#registerAuthIpc
+  = src/main/lantern-host-origin.ts#codeHostOf
+  < src/main/projectroot.ts#resolveRoot
+  = src/main/agent-request.ts#registeredProject
+  = src/main/agent-request.ts#safeAgentRequest
+  = src/main/cli.ts
+  = src/main/dev-instance.ts
+  = src/main/claude-poll.ts#createPoller
+  = src/main/hook-cleanup.ts#runCleanups
+  = src/main/session-notification.ts#deliverTransitionCard
+  = src/main/session-notification.ts#sampleCard
+  < src/main/projectroot.ts#readBranch
+  = src/main/project-ident/index.ts#projectIdent
+  < src/main/session-context.ts#readTranscript
+  < src/shared/settings-notifications.ts#SOUND_SETTING_FOR_KIND
+  = src/main/codex-hooks.ts
+  = src/main/codex-scanner.ts#scanCodex
+  < src/main/provider.ts#isProvider
+  = src/main/server.ts
+  > src/main/hooks.ts
+  = src/main/state.ts
+  = src/main/scanner.ts
+  = src/main/serveweb.ts
+  = src/main/webview-permissions.ts#isPermissionGranted
+  = src/main/projects.ts
+  = src/main/app-menu.ts
+  = src/main/tray-popover.ts
+  = src/main/tray-menu.ts
+  < src/shared/tray-model.ts#buildTrayModel
+  < src/shared/tray-action.ts#TrayAction
+  = src/main/skills.ts
+  = src/main/extensions-ipc.ts#registerExtensionsIpc
+  = src/main/filecontent.ts
+  = src/main/lantern-prdiff.ts
+  = src/main/lantern-prfile.ts
+  = src/main/lantern-proverlay.ts
+  = src/main/lantern-pr-warm.ts#enterPr
+  = src/main/lantern-pr-warm.ts#refreshPrData
+  = src/main/lantern-pr-warm.ts#warmPrs
+  = src/main/lantern-macro-load.ts#readRegisteredMacro
+  = src/main/lantern.ts
+  = src/main/lantern-stamp.ts
+  = src/main/setup-progress.ts
+  = src/main/setup-state.ts
+  = src/main/explains.ts
+  = src/main/metadir.ts#onMigrationProblem
+  = src/main/agent.ts
+  > src/main/bundle.ts
+  > src/main/popout.ts
+  = src/main/settings.ts
+  = src/main/settings-store.ts
+  < src/main/languages/index.ts#resolveLanguage
+  > src/main/devserver.ts
+  = src/main/notifier.ts
+  > src/main/overlay.ts
+  = src/main/notifycard.ts
+  = src/main/lsp/semantic-service.ts
+  = src/main/lsp/runtime-path.ts
+  = src/main/rtk-status.ts#rtkStatus
+  < src/shared/code-highlighting.ts
+  < src/shared/config.ts
+  < src/shared/app-identity.ts#userDataDir
+  = src/main/windows.ts
+  = src/main/memory-free.ts#createProjectRelease
+  = src/main/memory-service.ts#createMemoryService
+  < src/shared/memory.ts#MEMORY_FREE_CHANNEL
+  < src/shared/memory.ts#MEMORY_WATCH_CHANNEL
+  = src/main/pr-explain.ts#createPrExplainService
+  < src/shared/pr-explain.ts#PR_EXPLAIN_START
+  < src/shared/pr-explain.ts#PR_EXPLAIN_CANCEL
+  < src/shared/pr-explain.ts#PR_EXPLAIN_SAVED
+  < src/shared/pr-explain.ts#PR_EXPLAIN_DONE
+  < src/shared/settings-registry.ts
+  < src/preload/workspace.ts
+  < src/renderer/workspace.html
+  = src/main/lantern-local.ts
+  = src/main/local-reasons.ts#createLocalReasonsService
+  = src/main/session-jump/index.ts#jumpToSession
+  = src/main/session-jump/index.ts#canJumpToSession
+  = src/main/lantern-host-account.ts#accountLookup
+  = src/main/lantern-host-status.ts#hostStatus
+  = src/main/commands/index.ts#createCommandKeys
+  < src/shared/commands/index.ts#CommandId
+  < src/shared/platform.ts#platformName
+
+src/main/memory-attribute.ts . pure a21577f26876
+#feature process-memory
+  < src/main/proctree.ts#descendantsOf
+  < src/main/projectroot.ts#isWithin
+  < src/shared/memory.ts#MemoryKind
+
+src/main/memory-classify.ts . pure 86d8f779bb1b
+#feature process-memory
+  < src/shared/memory.ts#MemoryKind
+
+src/main/memory-collect.ts . service a7a287d963f8
+#feature process-memory
+  = src/main/memory-attribute.ts#attributeProjects
+  = src/main/memory-classify.ts#classifyProcess
+  = src/main/memory-parse.ts
+  < src/main/proctree.ts#descendantsOf
+  < src/shared/memory.ts#MemoryKind
+  = ext:macos-process-tools
+
+src/main/memory-free.ts . service cc5e45c71192
+#feature process-memory
+  = src/main/agent-request.ts#registeredProject
+  = src/main/memory-collect.ts
+  < src/main/memory-service.ts#MEMORY_SUPPORTED_PLATFORMS
+  > src/main/prockill.ts#terminatePids
+  < src/main/proctree.ts#descendantsOf
+  < src/shared/memory.ts#FreeMemoryResult
+
+src/main/memory-parse.ts . pure fee0f91741cd
+#feature process-memory
+  < src/main/proctree.ts#ProcRow
+
+src/main/memory-sampler.ts . service 29feef901770
+#feature process-memory
+  < src/main/memory-collect.ts#MemorySample
+  < src/shared/memory.ts#MEMORY_SAMPLE_INTERVAL_MS
+
+src/main/memory-service.ts . service d3601701e7b3
+#feature process-memory
+  = src/main/memory-collect.ts#collectMemory
+  = src/main/memory-sampler.ts#createSampler
+  = src/main/memory-summary.ts#summarize
+  = src/main/memory-watch.ts#createMemoryWatch
+
+src/main/memory-summary.ts . pure 54b44149442a
+#feature process-memory
+  < src/main/memory-collect.ts#MemorySample
+  < src/shared/memory.ts#isOldAndLarge
+
+src/main/memory-watch.ts . handler a3e01899d75c
+#feature process-memory
+  < src/shared/memory.ts#MEMORY_UPDATE_CHANNEL
+
+src/main/metadir-migrate.ts . service 37bc96391b1d
+#feature code-insight
+  < src/shared/project-data.ts#PROJECT_DATA_DIR
+
+src/main/metadir.ts . repository e7e35364a1a0
+#feature code-insight
+  = src/main/metadir-migrate.ts
+  < src/shared/project-data.ts
+
+src/main/mic-consent.ts . service 1cbbdd388def
+#feature serve-web
+
+src/main/notifier.ts . service 7f363fe056e0
+#feature notifications
+  = src/main/hook-cleanup.ts#isLegacyNotifierCommand
+  = src/main/hook-cleanup.ts#removeInstalledHooks
+  < src/shared/config.ts
+
+src/main/notifycard.ts . pure e144cf5bbcec
+#feature notifications
+  = src/main/subagent.ts
+
+src/main/overlay.ts . service 56ac8a99105f
+#feature notifications
+  < src/main/session-notification.ts#NotificationCard
+  < src/preload/overlay.ts
+  < src/renderer/overlay.html
+  < src/shared/settings-notifications.ts#NotificationPosition
+
+src/main/permission-consent.ts . service 9c6dcc47eafe
+#feature skill-installer
+
+src/main/popout.ts . service 4b5f08c9ba7c
+#feature code-insight
+  < src/renderer/workspace.html
+
+src/main/pr-explain-prompt.ts . ai 6ddf8d3ce1c3
+#feature pr-explain
+  < src/main/lantern-types.ts#LanternPrFileKind
+
+src/main/pr-explain-request.ts . middleware 65e689d7723e
+#feature pr-explain
+  = src/main/agent-request.ts#registeredProject
+  = src/main/filecontent.ts#isEscaping
+  = src/main/lantern-prs.ts#loadPrsDetailed
+  < src/main/lantern-types.ts
+  < src/shared/pr-explain.ts
+
+src/main/pr-explain-run.ts . ai 8e6823b70458
+#feature pr-explain
+  < src/main/pr-explain-prompt.ts#PR_EXPLAIN_MODEL
+  > src/main/prockill.ts#killChildTree
+  < src/main/prockill.ts#isSignalablePid
+  = ext:claude-code-cli
+
+src/main/pr-explain-sections.ts . pure 019257740c22
+#feature pr-explain
+  < src/main/pr-explain-prompt.ts#cleanExplanation
+  < src/shared/pr-explain.ts
+
+src/main/pr-explain-store.ts . repository 8bb4d3e3457f
+#feature pr-explain
+  > src/main/atomic-write.ts#writeFileAtomically
+  < src/shared/pr-explain.ts
+
+src/main/pr-explain.ts . service 4d80200d00db
+#feature pr-explain
+  = src/main/lantern-prdiff.ts#readPrFileDiff
+  = src/main/lantern-prfile.ts#readPrFile
+  = src/main/pr-explain-prompt.ts#buildPrExplainPrompt
+  = src/main/pr-explain-request.ts#resolvePrTarget
+  = src/main/pr-explain-run.ts#startOneShot
+  = src/main/pr-explain-sections.ts#resolveExplanation
+  = src/main/pr-explain-store.ts#createPrExplainStore
+  < src/shared/pr-explain.ts
+
+src/main/prockill.ts . util 330af0492743
+  = src/main/proctree.ts
+
+src/main/proctree.ts . pure fde7a8aeace4
+#feature serve-web
+
+src/main/projectroot.ts . service 26ab035f1ebc
+#feature projects-hub
+  = src/main/subagent.ts
+
+src/main/projects.ts . service ec471cb994e8
+#feature projects-hub
+  = src/main/metadir.ts#writeDataFile
+  = src/main/state.ts
+  = src/main/projectroot.ts
+  < src/main/provider.ts#Provider
+  < src/main/settings.ts#provider
+
+src/main/provider.ts . pure 714b2a8b2a0b
+
+src/main/rtk-status.ts . service 3ed572649287
+  = skills/lantern-delegate/scripts/rtk-detect.mjs#detectRtk
+  = src/main/agent-request.ts#registeredProject
+  < src/shared/rtk.ts#RtkStatus
+
+src/main/scanner.ts . gateway 18ee6227c788
+#feature session-monitoring
+  = src/main/agent.ts#resolveBin
+  = src/main/claude-bin.ts#planLaunch
+  = ext:claude-code-cli
+  < src/main/session-files.ts#readSessionFiles
+
+src/main/server.ts . handler 73dc74717b18
+#feature session-monitoring
+  < src/shared/config.ts
+  = src/main/codex-event.ts
+  = src/main/state.ts
+
+src/main/serveweb-failure.ts . pure 012f37ae6ce7
+#feature serve-web
+
+src/main/serveweb-launch.ts . pure 190dae082020
+#feature serve-web
+
+src/main/serveweb-license.ts . service 38a85a457793
+#feature serve-web
+
+src/main/serveweb-parse.ts . pure 19d4d23e32ce
+#feature serve-web
+
+src/main/serveweb-port.ts . service 4c51ebb9dd28
+#feature serve-web
+  = src/main/prockill.ts#portListener
+  = src/main/serveweb-reclaim.ts#ReclaimOutcome
+
+src/main/serveweb-probe.ts . gateway 1bf07150d5a1
+#feature serve-web
+  = src/main/serveweb-parse.ts
+  = ext:vscode-serve-web
+
+src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
+#feature serve-web
+  = src/main/prockill.ts
+  = src/main/proctree.ts
+
+src/main/serveweb-settings.ts . service 95c6102e988e
+#feature serve-web
+
+src/main/serveweb.ts . service 537a2a51ceff
+#feature serve-web
+  = src/main/serveweb-failure.ts
+  = src/main/serveweb-launch.ts
+  = src/main/serveweb-license.ts
+  = src/main/serveweb-parse.ts
+  = src/main/serveweb-port.ts
+  = src/main/serveweb-probe.ts
+  > src/main/prockill.ts
+  = src/main/serveweb-reclaim.ts
+  = src/main/serveweb-settings.ts
+  = ext:vscode-serve-web
+  < src/shared/config.ts#DEV_PROFILE
+
+src/main/session-context.ts . service 72eb08df7ba2
+#feature notifications
+  < src/main/state.ts#NoticeKind
+  < ext:claude-code-cli
+
+src/main/session-notification.ts . service b7989b78e9a6
+#feature notifications
+  < src/main/projectroot.ts#readBranch
+  = src/main/session-context.ts#describeNotice
+  < src/main/state.ts#NoticeKind
+  < src/shared/settings-notifications.ts#NOTIFICATION_KINDS
+
+src/main/settings-model.ts . pure 48ec349c2cce
+  < src/shared/settings-registry.ts
+  < src/shared/settings-schema.ts#SettingSchema
+  < src/shared/commands/index.ts#isCommandId
+  < src/shared/commands/key-syntax.ts#isDispatchableKey
+  < src/shared/commands/key-syntax.ts#normalizeKey
+
+src/main/settings-store.ts . repository 91c6f1eb4177
+  = src/main/atomic-write.ts#writeFileAtomically
+  = src/main/settings-model.ts
+  < src/shared/settings-registry.ts
+
+src/main/settings.ts . repository 6fc255561de0
+  > src/main/agent.ts
+  < src/main/provider.ts#isProvider
+  < src/shared/local-review.ts#isLocalId
+
+src/main/setup-progress.ts . service c5a1019d5a43
+#feature map-setup
+  = src/main/agent.ts
+  = src/main/lantern-stamp.ts
+  = skills/lantern-setup/scripts/plan.mjs
+
+src/main/setup-state.ts . service 7dbff2739a68
+#feature map-setup
+  = src/main/agent.ts
+  = src/main/lantern-texts.ts
+  < src/main/setup-progress.ts
+  < src/main/settings.ts
+
+src/main/skill-scripts.d.ts . schema b8e3daf0c47f
+  < skills/lantern-delegate/scripts/bundled-skills.mjs
+  < skills/lantern-delegate/scripts/extensions.mjs
+  < skills/lantern-delegate/scripts/skill-linker.mjs
+  < skills/lantern-plan/scripts/plan-format.mjs
+  < src/shared/rtk.ts#RtkStatus
+  < skills/lantern-plan/scripts/plan-flow.mjs
+
+src/main/skills.ts . service cbcd36680f1f
+#feature skill-installer
+  < skills/lantern-delegate/scripts/skill-linker.mjs#SKILLS_REPO_ENV
+  < src/main/provider.ts#providerSkillsDir
+  = ext:git
+  < scripts/lantern-bundle.mjs#SKILL_MARKER
+
+src/main/state.ts . state 3d173dde395a
+#feature session-monitoring
+  < src/main/codex-event.ts#CodexHookEvent
+  = src/main/codex-turns.ts
+  < src/main/provider.ts#Provider
+  < src/main/scanner.ts#SessionSnapshot
+
+src/main/subagent.ts . pure 5e2a765e84ea
+#feature session-monitoring
+
+src/main/tray-menu.ts . pure 37b54f67396b
+#feature session-monitoring
+
+src/main/tray-placement.ts . pure 223c2d1798d2
+#feature session-monitoring
+
+src/main/tray-popover.ts . service a13152f10000
+#feature session-monitoring
+  < src/main/tray-placement.ts#popoverBounds
+  < src/preload/tray-popover.ts
+  < src/renderer/tray-popover.html
+  < src/shared/tray-action.ts#parseTrayAction
+  < src/shared/tray-model.ts#TrayModel
+
+src/main/windows.ts . service 20aef71a20de
+#feature projects-hub
+  > src/main/bundle.ts#installOnOpen
+  = src/main/popout.ts
+  > src/main/projects.ts
+  < src/main/projectroot.ts#checkoutTop
+  < src/renderer/workspace.html
+  < src/main/cli.ts
+  = src/main/settings.ts
+  > src/preload/workspace.ts
+
+src/main/webview-permissions.ts . service a8d4b567a662
+#feature serve-web
+
+src/main/lantern-local.ts . service 0bd236388a6b
+#feature pull-requests
+  = src/main/filecontent.ts#regularFileInside
+  = src/main/lantern-git.ts#git
+  < src/main/lantern-parse.ts#decodePath
+  < src/main/lantern-pr-parse.ts#parseBranchRecord
+  < src/main/lantern-pr-remote.ts#REMOTE_PREFIX
+  = src/main/lantern-prs.ts#resolveCommit
+  < src/main/lantern-types.ts
+  < src/main/local-reasons.ts#ReasonLookup
+  < src/shared/local-review.ts
+
+src/main/local-reasons.ts . ai 443d5385c652
+#feature pull-requests
+  = src/main/lantern-git.ts#git
+  = src/main/lantern-local.ts
+  = src/main/lantern-prdiff.ts#readPrFileDiff
+  < src/main/lantern-types.ts#LanternPrFile
+  < src/main/pr-explain-prompt.ts#PR_EXPLAIN_MODEL
+  < src/main/pr-explain-prompt.ts#safeLanguage
+  < src/shared/reason.ts#REASON_MAX_CHARS
+  < src/shared/reason.ts#REASON_RULE
+  = src/main/pr-explain-run.ts#startOneShot
+
+src/main/session-files.ts . gateway 16ea69618c80
+#feature session-monitoring
+  < ext:claude-code-cli
+
+src/main/lantern-plan-fix.ts . service 9314e8316c9a
+#feature planning
+  = src/main/lantern-plan.ts#parsePlanFile
+  < src/shared/lantern-plan-fix.ts#planFixText
+  < src/shared/lantern-plan-messages.ts#say
+
+src/main/lantern-host-account.ts . service eca89fb04788
+#feature pull-requests
+  = src/main/auth/index.ts#injectionFor
+  < src/main/auth/env-names.ts#CREDENTIAL_VARS
+  < src/main/lantern-host-credentials.ts#HostCredentials

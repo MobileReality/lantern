@@ -1,0 +1,8 @@
+{
+ "text": {
+  "SKILL.md": "Offers an Opus or Fable delegate for a heavy task only after the user answered a Sonnet, Opus or Fable question, then dispatches the delegate that does the whole run, map included, with the matching reviewer; states only what differs from the Sonnet delegate skill",
+  "SKILL.md @ skills/lantern-delegate/SKILL.md": "read in full first: the gate, brief template, map gate, cost and clean-up come from it",
+  "SKILL.md @ skills/lantern-delegate/protocol.md": "the delegate follows it, with its Opus and Fable delegates section",
+  "SKILL.md @ skills/lantern-delegate/scripts/preflight.mjs": "the one dispatch gate, shared with the Sonnet delegate"
+ }
+}

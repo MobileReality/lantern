@@ -1,0 +1,169 @@
+lantern 1
+# src/renderer/lib/macroview
+
+src/renderer/lib/macroview/actions.ts . service 62309b0e45e9
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#SYSTEM_KEY
+  = src/renderer/lib/macroview/follow.ts#fitAll
+  = src/renderer/lib/macroview/navigation.ts#moveFocus
+  < src/renderer/lib/macroview/session.ts#Session
+
+src/renderer/lib/macroview/build.ts . component 5af52fc08cb4
+#feature macro-view
+  < src/renderer/lib/file-icons.ts#fileIconUrl
+  < src/renderer/lib/lanternmacro.ts#FOUNDATION_KEY
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+  < src/renderer/lib/macroview/layout.ts#MacroViewLayout
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+  = src/renderer/lib/macroview/svg.ts#el
+
+src/renderer/lib/macroview/camera.ts . util aa0de11152e9
+#feature macro-view
+
+src/renderer/lib/macroview/chrome.ts . component 1aba267d184d
+#feature macro-view
+  = src/renderer/lib/macroview/dock.ts#createDock
+
+src/renderer/lib/macroview/dock.ts . component 887254286d41
+#feature macro-view
+  = src/renderer/lib/lanternmacro.ts#plural
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+  = src/renderer/lib/macroview/files.ts#nameOf
+  < src/renderer/lib/macroview/focus.ts#Related
+  < src/renderer/lib/macroview/marks.ts#MacroViewMarks
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+
+src/renderer/lib/macroview/driver.ts . util 825c926b28b7
+#feature macro-view
+  = src/renderer/lib/macroview/camera.ts#fitCamera
+
+src/renderer/lib/macroview/files.ts . pure 16ccd298310b
+#feature macro-view
+  < src/renderer/lib/macroview/marks.ts#MacroViewMarks
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+
+src/renderer/lib/macroview/focus.ts . pure 0726c70ef5bf
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#FOUNDATION_KEY
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  < src/renderer/lib/lanternmacrofoundation.ts#FoundationFocus
+  < src/renderer/lib/macroview/camera.ts#worldRect
+  < src/renderer/lib/macroview/layout.ts#MacroViewLayout
+  = src/renderer/lib/macroview/lod.ts#featuresWeight
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+  < src/renderer/lib/macroview/model.ts#ModelSystem
+
+src/renderer/lib/macroview/follow.ts . service 920aaa574719
+#feature macro-view
+  = src/renderer/lib/macroview/focus.ts#areaUnderView
+  < src/renderer/lib/macroview/session.ts#Session
+
+src/renderer/lib/macroview/input.ts . util 8e5847ba13b2
+#feature macro-view
+  < src/renderer/lib/macroview/camera.ts#WHEEL_SENSITIVITY
+
+src/renderer/lib/macroview/keys.ts . pure 89e77996a1e3
+#feature macro-view
+  < src/renderer/lib/macroview/focus.ts#Direction
+
+src/renderer/lib/macroview/layout.ts . pure 977c8b6b92e6
+#feature macro-view
+  < src/renderer/lib/macroview/camera.ts#unionOf
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+
+src/renderer/lib/macroview/links.ts . component 7c45843768f8
+#feature macro-view
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+  < src/renderer/lib/macroview/build.ts#Scene
+  < src/renderer/lib/macroview/marks.ts#MacroViewMarks
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+  = src/renderer/lib/macroview/svg.ts#el
+
+src/renderer/lib/macroview/lod.ts . pure 5a9f1a5096cb
+#feature macro-view
+  < src/renderer/lib/macroview/camera.ts#clamp
+
+src/renderer/lib/macroview/marks.ts . pure 0b38bbccfa05
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#SYSTEM_KEY
+  < src/renderer/lib/macroview/model.ts#MacroViewModel
+  < src/renderer/lib/macroview/types.ts#MacroViewContext
+
+src/renderer/lib/macroview/model.ts . pure 05a9e5bb2c14
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#blockKey
+  < src/renderer/lib/lanternmacronames.ts#blockName
+  < src/renderer/lib/macroview/types.ts#AreasPayload
+
+src/renderer/lib/macroview/mount.ts . component adae4625e4c3
+#feature macro-view
+  = src/renderer/lib/macroview/view.ts#createMacroView
+  < src/renderer/lib/macroview/types.ts#MacroViewContext
+
+src/renderer/lib/macroview/navigation.ts . pure 50f6f000093a
+#feature macro-view
+  < src/renderer/lib/macroview/build.ts#Scene
+  = src/renderer/lib/macroview/focus.ts#nearestInDirection
+  < src/renderer/lib/macroview/layout.ts#MacroViewLayout
+  = src/renderer/lib/macroview/lod.ts#levelOf
+
+src/renderer/lib/macroview/paint.ts . component e0609570d571
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#plural
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+  = src/renderer/lib/macroview/build.ts#addFileRows
+  < src/renderer/lib/macroview/camera.ts#clamp
+  < src/renderer/lib/macroview/files.ts#relationRows
+  < src/renderer/lib/macroview/layout.ts#AREA_HEADER
+  = src/renderer/lib/macroview/lod.ts#fitLabel
+  < src/renderer/lib/macroview/marks.ts#MacroViewMarks
+  = src/renderer/lib/macroview/svg.ts#placeText
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/macroview/session.ts . schema 54a4717a5126
+#feature macro-view
+  < src/renderer/lib/macroview/build.ts#Scene
+  < src/renderer/lib/macroview/driver.ts#CameraDriver
+  < src/renderer/lib/macroview/marks.ts#MacroViewMarks
+  < src/renderer/lib/macroview/types.ts#MacroViewContext
+
+src/renderer/lib/macroview/stage.ts . state 7b2e77ecec56
+#feature macro-view
+  = src/renderer/lib/macroview/mount.ts#mountMacroView
+  < src/renderer/lib/macroview/types.ts#MacroViewContext
+
+src/renderer/lib/macroview/state.ts . component d44a950bfa17
+#feature macro-view
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+  < src/renderer/lib/macroview/build.ts#Scene
+  < src/renderer/lib/macroview/focus.ts#Related
+  < src/renderer/lib/macroview/marks.ts#MacroViewMarks
+  = src/renderer/lib/macroview/svg.ts#setFlag
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/macroview/svg.ts . util 0ae52c537770
+#feature macro-view
+  < src/renderer/lib/macroview/camera.ts#Rect
+
+src/renderer/lib/macroview/types.ts . schema 323b3ef47165
+#feature macro-view
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  < src/renderer/lib/lanternmacrocurrent.ts#OpenFileBlock
+  < src/renderer/lib/lanternmacrofoundation.ts#FoundationFocus
+  < src/renderer/lib/lanternmacromarks.ts#MacroPrView
+  < src/renderer/lib/lanternplanfocus.ts#PlanFocus
+
+src/renderer/lib/macroview/view.ts . component 8d5bed940bf0
+#feature macro-view
+  = src/renderer/lib/macroview/actions.ts#run
+  = src/renderer/lib/macroview/build.ts#createScene
+  = src/renderer/lib/macroview/dock.ts#dockView
+  = src/renderer/lib/macroview/driver.ts#createCameraDriver
+  = src/renderer/lib/macroview/follow.ts#followHost
+  = src/renderer/lib/macroview/input.ts#attachInput
+  = src/renderer/lib/macroview/paint.ts#paintScene
+  < src/renderer/lib/macroview/session.ts#Session
+  = src/renderer/lib/macroview/state.ts#applyState
+  = src/renderer/lib/macroview/types.ts#MacroViewContext

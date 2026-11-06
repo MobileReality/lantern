@@ -1,0 +1,12 @@
+lantern 1
+# skills/lantern-delegate/references
+
+skills/lantern-delegate/references/authority.md . skill 5d18cd3c2b2b
+#feature delegate-runs
+skills/lantern-delegate/references/codex.md . skill f0d023d1a8c7
+#feature delegate-runs
+  @ skills/lantern-delegate/references/authority.md
+  @ skills/lantern-delegate/scripts/preflight.mjs
+  @ skills/lantern-setup/references/codex.md
+  @ skills/lantern-setup/scripts/model.mjs
+  @ skills/lantern-sync/references/codex.md

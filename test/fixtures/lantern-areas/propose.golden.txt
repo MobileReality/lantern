@@ -1,0 +1,77 @@
+FEATURES (8; core:* blocks excluded: core:service)
+  accounts  2 file(s)
+    platforms: portal 1, service 1
+    partners:  reports 4
+    systems:   object-store
+  catalog  2 file(s)
+    platforms: portal 1, service 1
+    partners:  orders 8
+    systems:   none
+  invoices  2 file(s)
+    platforms: portal 1, service 1
+    partners:  payments 6
+    systems:   mail-relay, payment-gateway
+  orders  2 file(s)
+    platforms: portal 1, service 1
+    partners:  catalog 8, payments 4, shipping 2
+    systems:   payment-gateway
+  payments  2 file(s)
+    platforms: portal 1, service 1
+    partners:  invoices 6, orders 4, returns 1
+    systems:   payment-gateway
+  reports  2 file(s)
+    platforms: portal 1, service 1
+    partners:  accounts 4
+    systems:   object-store
+  returns  2 file(s)
+    platforms: portal 1, service 1
+    partners:  shipping 3, payments 1
+    systems:   mail-relay
+  shipping  2 file(s)
+    platforms: portal 1, service 1
+    partners:  returns 3, orders 2
+    systems:   mail-relay
+
+FEATURE-TO-FEATURE WEIGHTS (only lines are used; file pairs and per-size are printed for comparison)
+  pair                                             lines  file-pairs  per-size
+  catalog - orders                                     8           2  4.000
+  invoices - payments                                  6           2  3.000
+  accounts - reports                                   4           2  2.000
+  orders - payments                                    4           1  2.000
+  returns - shipping                                   3           1  1.500
+  orders - shipping                                    2           1  1.000
+  payments - returns                                   1           1  0.500
+
+CANDIDATE GROUPS (unnamed; coupling is not product function, so overrule a group and name the areas yourself)
+  4 groups, 75% of feature-to-feature lines stay inside
+    group-1  keeps 100% of the lines that touch it inside; 2 feature(s): accounts, reports
+      shared outside systems: object-store
+    group-2  keeps 57% of the lines that touch it inside; 2 feature(s): catalog, orders
+    group-3  keeps 55% of the lines that touch it inside; 2 feature(s): invoices, payments
+      shared outside systems: payment-gateway
+    group-4  keeps 50% of the lines that touch it inside; 2 feature(s): returns, shipping
+      shared outside systems: mail-relay
+  5 groups, 64% of feature-to-feature lines stay inside
+    group-1  keeps 100% of the lines that touch it inside; 2 feature(s): accounts, reports
+      shared outside systems: object-store
+    group-2  keeps 57% of the lines that touch it inside; 2 feature(s): catalog, orders
+    group-3  keeps 55% of the lines that touch it inside; 2 feature(s): invoices, payments
+      shared outside systems: payment-gateway
+    group-4  keeps 0% of the lines that touch it inside; 1 feature(s): returns
+    group-5  keeps 0% of the lines that touch it inside; 1 feature(s): shipping
+  6 groups, 50% of feature-to-feature lines stay inside
+    group-1  keeps 0% of the lines that touch it inside; 1 feature(s): accounts
+    group-2  keeps 57% of the lines that touch it inside; 2 feature(s): catalog, orders
+    group-3  keeps 55% of the lines that touch it inside; 2 feature(s): invoices, payments
+      shared outside systems: payment-gateway
+    group-4  keeps 0% of the lines that touch it inside; 1 feature(s): reports
+    group-5  keeps 0% of the lines that touch it inside; 1 feature(s): returns
+    group-6  keeps 0% of the lines that touch it inside; 1 feature(s): shipping
+  7 groups, 29% of feature-to-feature lines stay inside
+    group-1  keeps 0% of the lines that touch it inside; 1 feature(s): accounts
+    group-2  keeps 57% of the lines that touch it inside; 2 feature(s): catalog, orders
+    group-3  keeps 0% of the lines that touch it inside; 1 feature(s): invoices
+    group-4  keeps 0% of the lines that touch it inside; 1 feature(s): payments
+    group-5  keeps 0% of the lines that touch it inside; 1 feature(s): reports
+    group-6  keeps 0% of the lines that touch it inside; 1 feature(s): returns
+    group-7  keeps 0% of the lines that touch it inside; 1 feature(s): shipping

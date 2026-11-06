@@ -1,0 +1,6 @@
+{
+ "text": {
+  "readings.ts": "parses reading requests and shapes replies",
+  "readings.ts = api/src/services/readingService.ts#saveReading": "validated reading"
+ }
+}

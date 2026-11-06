@@ -1,0 +1,6 @@
+{
+ "text": {
+  "title": "Worth knowing",
+  "item offline-first": "The watch never talks to the API; it hands samples to the phone, which uploads them later"
+ }
+}

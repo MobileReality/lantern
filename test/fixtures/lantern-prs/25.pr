@@ -1,0 +1,11 @@
+lantern-pr 1
+# 25
+#title feat: bundle the skill language
+#url https://example.com/org/repo/pull-requests/25
+#branch feat/lantern-bundled-skill-language
+#base main
+#opened 2026-09-29
+#head 7ed95a9c1b2d3e4f5061728394a5b6c7d8e9f001
++ docs/my%20notes%20%2350.md
++ src/new.ts
+~ src/main/lantern.ts

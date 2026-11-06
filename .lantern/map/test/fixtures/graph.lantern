@@ -1,0 +1,44 @@
+lantern 1
+# test/fixtures/graph
+
+test/fixtures/graph/areas-pr-demo.ts . test 2b5af6811595
+#feature product-areas
+  < src/main/filecontent.ts
+  < src/main/lantern-prdiff.ts
+  < src/main/lantern-prfile.ts
+  < src/main/lantern.ts
+  < test/fixtures/lantern-macro-areas-payload.json
+  = test/helpers/lantern-map.ts
+
+test/fixtures/graph/graph-fixtures.ts . test f9eaeeb47e37
+  < src/main/lantern.ts
+  = test/helpers/lantern-map.ts
+
+test/fixtures/graph/macro-lab-demo.ts . test 06eec1150f60
+#feature macro-view
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/main/lantern-types.ts#LanternNode
+  < test/fixtures/lantern-macro-lab.json
+  = test/helpers/lantern-map.ts
+
+test/fixtures/graph/macro-sized-demo.ts . test ca02b52bcc25
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#MACRO_MIN_FILES
+  = test/helpers/lantern-map.ts
+  = test/helpers/macroview-world.ts#macroViewWorld
+
+test/fixtures/graph/pr-review-demo.ts . test dc29af014837
+  < src/main/filecontent.ts
+  < src/main/lantern-prdiff.ts
+  < src/main/lantern-prfile.ts
+  < src/main/lantern.ts
+  = test/helpers/lantern-map.ts
+
+test/fixtures/graph/scenarios.json . config 4986c076e715
+
+test/fixtures/graph/macro-sizes-demo.ts . test 7d71dd78b0c5
+#feature macro-view
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/main/lantern-types.ts#LanternNode
+  < test/fixtures/lantern-macro-sizes.json
+  = test/helpers/lantern-map.ts

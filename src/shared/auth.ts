@@ -1,0 +1,10 @@
+export const AUTH_STATUS_CHANNEL = 'auth:status';
+export const AUTH_PROJECT_CHANNEL = 'auth:project';
+export const AUTH_BIND_CHANNEL = 'auth:bind';
+export const AUTH_UNBIND_CHANNEL = 'auth:unbind';
+export const AUTH_REMOVE_PROFILE_CHANNEL = 'auth:remove-profile';
+export const AUTH_ADD_TOKEN_CHANNEL = 'auth:add-token';
+export const AUTH_RENAME_PROFILE_CHANNEL = 'auth:rename-profile';
+export const AUTH_SET_EXPIRY_CHANNEL = 'auth:set-expiry';
+export const AUTH_SET_EMAIL_CHANNEL = 'auth:set-email';
+export const AUTH_CHANGED_CHANNEL = 'auth:changed';

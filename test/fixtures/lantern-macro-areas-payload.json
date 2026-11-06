@@ -1,0 +1,2731 @@
+{
+  "view": {
+    "recordCount": 489,
+    "testCount": 176,
+    "blocks": [
+      {
+        "id": "lantern-map",
+        "files": 80
+      },
+      {
+        "id": "delegate-runs",
+        "files": 45
+      },
+      {
+        "id": "core:desktop",
+        "files": 36
+      },
+      {
+        "id": "code-insight",
+        "files": 30
+      },
+      {
+        "id": "skills-management",
+        "files": 21
+      },
+      {
+        "id": "pull-requests",
+        "files": 18
+      },
+      {
+        "id": "serve-web",
+        "files": 16
+      },
+      {
+        "id": "notifications",
+        "files": 15
+      },
+      {
+        "id": "core:shared",
+        "files": 11
+      },
+      {
+        "id": "core:skills",
+        "files": 11
+      },
+      {
+        "id": "lantern-sections",
+        "files": 11
+      },
+      {
+        "id": "session-monitoring",
+        "files": 8
+      },
+      {
+        "id": "agent-runs",
+        "files": 6
+      },
+      {
+        "id": "projects-hub",
+        "files": 5
+      }
+    ],
+    "edges": [
+      {
+        "from": "lantern-map",
+        "to": "core:desktop",
+        "count": 32,
+        "arrows": {
+          ">": 1,
+          "<": 8,
+          "=": 23,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "pull-requests",
+        "to": "lantern-map",
+        "count": 18,
+        "arrows": {
+          ">": 0,
+          "<": 10,
+          "=": 8,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "lantern-map",
+        "to": "pull-requests",
+        "count": 17,
+        "arrows": {
+          ">": 1,
+          "<": 4,
+          "=": 8,
+          "@": 4
+        },
+        "strong": true
+      },
+      {
+        "from": "lantern-sections",
+        "to": "lantern-map",
+        "count": 16,
+        "arrows": {
+          ">": 0,
+          "<": 13,
+          "=": 3,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "pull-requests",
+        "to": "code-insight",
+        "count": 16,
+        "arrows": {
+          ">": 1,
+          "<": 7,
+          "=": 8,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "delegate-runs",
+        "to": "lantern-map",
+        "count": 13,
+        "arrows": {
+          ">": 2,
+          "<": 0,
+          "=": 0,
+          "@": 11
+        },
+        "strong": true
+      },
+      {
+        "from": "agent-runs",
+        "to": "core:desktop",
+        "count": 12,
+        "arrows": {
+          ">": 1,
+          "<": 6,
+          "=": 5,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "core:desktop",
+        "to": "code-insight",
+        "count": 12,
+        "arrows": {
+          ">": 3,
+          "<": 4,
+          "=": 5,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "lantern-map",
+        "to": "delegate-runs",
+        "count": 12,
+        "arrows": {
+          ">": 1,
+          "<": 10,
+          "=": 1,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "code-insight",
+        "to": "core:desktop",
+        "count": 11,
+        "arrows": {
+          ">": 1,
+          "<": 1,
+          "=": 9,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "core:desktop",
+        "to": "lantern-map",
+        "count": 11,
+        "arrows": {
+          ">": 1,
+          "<": 5,
+          "=": 5,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "core:desktop",
+        "to": "notifications",
+        "count": 9,
+        "arrows": {
+          ">": 2,
+          "<": 2,
+          "=": 5,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "projects-hub",
+        "to": "core:desktop",
+        "count": 9,
+        "arrows": {
+          ">": 0,
+          "<": 5,
+          "=": 4,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "serve-web",
+        "to": "core:desktop",
+        "count": 9,
+        "arrows": {
+          ">": 1,
+          "<": 4,
+          "=": 4,
+          "@": 0
+        },
+        "strong": true
+      },
+      {
+        "from": "core:desktop",
+        "to": "serve-web",
+        "count": 7,
+        "arrows": {
+          ">": 0,
+          "<": 2,
+          "=": 5,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "core:desktop",
+        "count": 7,
+        "arrows": {
+          ">": 0,
+          "<": 7,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "lantern-map",
+        "to": "lantern-sections",
+        "count": 7,
+        "arrows": {
+          ">": 0,
+          "<": 2,
+          "=": 5,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:desktop",
+        "to": "agent-runs",
+        "count": 6,
+        "arrows": {
+          ">": 2,
+          "<": 0,
+          "=": 4,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:desktop",
+        "to": "projects-hub",
+        "count": 6,
+        "arrows": {
+          ">": 1,
+          "<": 2,
+          "=": 3,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:desktop",
+        "to": "pull-requests",
+        "count": 6,
+        "arrows": {
+          ">": 0,
+          "<": 3,
+          "=": 3,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "lantern-map",
+        "count": 6,
+        "arrows": {
+          ">": 1,
+          "<": 5,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "delegate-runs",
+        "to": "skills-management",
+        "count": 6,
+        "arrows": {
+          ">": 1,
+          "<": 1,
+          "=": 0,
+          "@": 4
+        },
+        "strong": false
+      },
+      {
+        "from": "core:desktop",
+        "to": "session-monitoring",
+        "count": 5,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 5,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "code-insight",
+        "count": 5,
+        "arrows": {
+          ">": 3,
+          "<": 2,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "skills-management",
+        "to": "core:desktop",
+        "count": 5,
+        "arrows": {
+          ">": 0,
+          "<": 2,
+          "=": 3,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "notifications",
+        "count": 4,
+        "arrows": {
+          ">": 0,
+          "<": 4,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "notifications",
+        "to": "session-monitoring",
+        "count": 4,
+        "arrows": {
+          ">": 2,
+          "<": 1,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "pull-requests",
+        "to": "core:desktop",
+        "count": 4,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 4,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "skills-management",
+        "to": "lantern-map",
+        "count": 4,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 0,
+          "@": 4
+        },
+        "strong": false
+      },
+      {
+        "from": "core:desktop",
+        "to": "skills-management",
+        "count": 3,
+        "arrows": {
+          ">": 2,
+          "<": 0,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "pull-requests",
+        "count": 3,
+        "arrows": {
+          ">": 1,
+          "<": 2,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "lantern-map",
+        "to": "agent-runs",
+        "count": 3,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 3,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "lantern-map",
+        "to": "code-insight",
+        "count": 3,
+        "arrows": {
+          ">": 1,
+          "<": 2,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "notifications",
+        "to": "core:desktop",
+        "count": 3,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 2,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "projects-hub",
+        "to": "code-insight",
+        "count": 3,
+        "arrows": {
+          ">": 2,
+          "<": 0,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "session-monitoring",
+        "to": "core:desktop",
+        "count": 3,
+        "arrows": {
+          ">": 0,
+          "<": 3,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "agent-runs",
+        "to": "code-insight",
+        "count": 2,
+        "arrows": {
+          ">": 2,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "agent-runs",
+        "to": "lantern-map",
+        "count": 2,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "code-insight",
+        "to": "pull-requests",
+        "count": 2,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 2,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:skills",
+        "to": "lantern-map",
+        "count": 2,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 0,
+          "@": 2
+        },
+        "strong": false
+      },
+      {
+        "from": "lantern-map",
+        "to": "core:skills",
+        "count": 2,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 2,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "lantern-map",
+        "to": "skills-management",
+        "count": 2,
+        "arrows": {
+          ">": 1,
+          "<": 1,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "projects-hub",
+        "to": "session-monitoring",
+        "count": 2,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 2,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "session-monitoring",
+        "to": "agent-runs",
+        "count": 2,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 2,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "agent-runs",
+        "to": "skills-management",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "code-insight",
+        "to": "agent-runs",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "code-insight",
+        "to": "core:shared",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:desktop",
+        "to": "lantern-sections",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "delegate-runs",
+        "count": 1,
+        "arrows": {
+          ">": 1,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "lantern-sections",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "serve-web",
+        "count": 1,
+        "arrows": {
+          ">": 1,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "core:shared",
+        "to": "skills-management",
+        "count": 1,
+        "arrows": {
+          ">": 1,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "delegate-runs",
+        "to": "pull-requests",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "projects-hub",
+        "to": "agent-runs",
+        "count": 1,
+        "arrows": {
+          ">": 1,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "projects-hub",
+        "to": "lantern-map",
+        "count": 1,
+        "arrows": {
+          ">": 1,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "projects-hub",
+        "to": "skills-management",
+        "count": 1,
+        "arrows": {
+          ">": 1,
+          "<": 0,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "session-monitoring",
+        "to": "notifications",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 1,
+          "=": 0,
+          "@": 0
+        },
+        "strong": false
+      },
+      {
+        "from": "skills-management",
+        "to": "agent-runs",
+        "count": 1,
+        "arrows": {
+          ">": 0,
+          "<": 0,
+          "=": 1,
+          "@": 0
+        },
+        "strong": false
+      }
+    ],
+    "crossBlockRelations": 330,
+    "external": [
+      {
+        "system": "git",
+        "blocks": [
+          {
+            "block": "code-insight",
+            "count": 2
+          },
+          {
+            "block": "core:skills",
+            "count": 2
+          },
+          {
+            "block": "lantern-map",
+            "count": 1
+          },
+          {
+            "block": "pull-requests",
+            "count": 1
+          },
+          {
+            "block": "skills-management",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "system": "claude-code-cli",
+        "blocks": [
+          {
+            "block": "agent-runs",
+            "count": 1
+          },
+          {
+            "block": "session-monitoring",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "vscode-serve-web",
+        "blocks": [
+          {
+            "block": "core:desktop",
+            "count": 1
+          },
+          {
+            "block": "serve-web",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "system": "bitbucket-api",
+        "blocks": [
+          {
+            "block": "delegate-runs",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "system": "claude-cli",
+        "blocks": [
+          {
+            "block": "lantern-map",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "claude-code-extension",
+        "blocks": [
+          {
+            "block": "serve-web",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "codex-cli",
+        "blocks": [
+          {
+            "block": "agent-runs",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "system": "codex-hooks-config",
+        "blocks": [
+          {
+            "block": "notifications",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "codex-sessions",
+        "blocks": [
+          {
+            "block": "session-monitoring",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "github-api",
+        "blocks": [
+          {
+            "block": "delegate-runs",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "system": "osascript",
+        "blocks": [
+          {
+            "block": "projects-hub",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "pnpm",
+        "blocks": [
+          {
+            "block": "code-insight",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "system": "vtsls",
+        "blocks": [
+          {
+            "block": "code-insight",
+            "count": 1
+          }
+        ]
+      }
+    ]
+  },
+  "texts": {
+    "agent-runs": "starting agent sessions and following what they print",
+    "code-insight": "reading and highlighting the code of a file next to the graph",
+    "delegate-runs": "handing a task to a background agent and tracking its branch",
+    "lantern-map": "the map of the project, drawn as a graph of files and relations",
+    "lantern-sections": "project-wide notes shown below the graph",
+    "notifications": "telling the user when an agent needs attention",
+    "projects-hub": "listing the projects and opening one of them",
+    "pull-requests": "listing pull requests and marking what each one touches",
+    "serve-web": "running the editor of a project in the browser",
+    "session-monitoring": "watching which sessions are busy, idle or waiting",
+    "skills-management": "installing and refreshing the skills of a project"
+  },
+  "blockByPath": {
+    "package.json": "core:shared",
+    "packages/lsp-runtime/package.json": "code-insight",
+    "playwright.config.ts": "core:shared",
+    "pnpm-workspace.yaml": "core:shared",
+    "scripts/e2e-delegate/checks.mjs": "delegate-runs",
+    "scripts/e2e-delegate/child.mjs": "delegate-runs",
+    "scripts/e2e-delegate/execute.mjs": "delegate-runs",
+    "scripts/e2e-delegate/fake-ssh.sh": "delegate-runs",
+    "scripts/e2e-delegate/mock-bitbucket.mjs": "delegate-runs",
+    "scripts/e2e-delegate/panel.mjs": "delegate-runs",
+    "scripts/e2e-delegate/plan.mjs": "delegate-runs",
+    "scripts/e2e-delegate/projects.mjs": "delegate-runs",
+    "scripts/e2e-delegate/redirect-fetch.mjs": "delegate-runs",
+    "scripts/e2e-delegate/report.mjs": "delegate-runs",
+    "scripts/e2e-delegate/run.mjs": "delegate-runs",
+    "scripts/e2e-delegate/session.mjs": "delegate-runs",
+    "scripts/e2e-delegate/verify.mjs": "delegate-runs",
+    "scripts/e2e-delegate/workspace.mjs": "delegate-runs",
+    "scripts/esbuild.mjs": "core:shared",
+    "scripts/fuses.js": "core:shared",
+    "scripts/install-skills.mjs": "skills-management",
+    "scripts/lantern-bundle.d.mts": "skills-management",
+    "scripts/lantern-bundle.mjs": "skills-management",
+    "scripts/lsp-runtime.mjs": "code-insight",
+    "scripts/make-icon.js": "core:shared",
+    "scripts/material-file-icons.mjs": "code-insight",
+    "scripts/patch-claude-mic.js": "serve-web",
+    "scripts/pr-review-demo.mjs": "pull-requests",
+    "scripts/skill-test/agent.mjs": "lantern-map",
+    "scripts/skill-test/fake-agent.mjs": "lantern-map",
+    "scripts/skill-test/fixtures.mjs": "lantern-map",
+    "scripts/skill-test/report.mjs": "lantern-map",
+    "scripts/skill-test/run.mjs": "lantern-map",
+    "scripts/skill-test/slices.mjs": "lantern-map",
+    "skills/sample-skill/README.md": "skills-management",
+    "skills/sample-skill/SKILL.md": "skills-management",
+    "skills/code-reviewer/README.md": "skills-management",
+    "skills/code-reviewer/SKILL.md": "skills-management",
+    "skills/lantern-commit/README.md": "skills-management",
+    "skills/lantern-commit/SKILL.md": "skills-management",
+    "skills/lantern-delegate/agents/lantern-delegate-high.md": "delegate-runs",
+    "skills/lantern-delegate/agents/lantern-delegate-low.md": "delegate-runs",
+    "skills/lantern-delegate/agents/lantern-delegate-medium.md": "delegate-runs",
+    "skills/lantern-delegate/agents/lantern-delegate-xhigh.md": "delegate-runs",
+    "skills/lantern-delegate/agents/reviewer.md": "delegate-runs",
+    "skills/lantern-delegate/protocol.md": "delegate-runs",
+    "skills/lantern-delegate/README.md": "delegate-runs",
+    "skills/lantern-delegate/references/authority.md": "delegate-runs",
+    "skills/lantern-delegate/references/codex.md": "delegate-runs",
+    "skills/lantern-delegate/scripts/bitbucket/credentials.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/bitbucket/pr-create.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/bundled-skills.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/check-skill-use.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/cost-block.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/credentials.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/github/credentials.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/github/github.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/github/identity.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/github/pr-create.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/host.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/init-local.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/lint-reviewer.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/lint-skill-reads.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/lint-transcript.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/permissions.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/pr-append-cost.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/pr-create.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/preflight.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/split-command.mjs": "delegate-runs",
+    "skills/lantern-delegate/scripts/skill-linker.mjs": "delegate-runs",
+    "skills/lantern-delegate/SKILL.md": "delegate-runs",
+    "skills/lantern-example/README.md": "skills-management",
+    "skills/lantern-example/SKILL.md": "skills-management",
+    "skills/lantern-setup/agents/lantern-mapper.md": "lantern-map",
+    "skills/lantern-setup/example-web/demo-ai.html": "lantern-map",
+    "skills/lantern-setup/example-web/demo-ai/README.md": "lantern-map",
+    "skills/lantern-setup/example-web/demo-platforms.html": "lantern-map",
+    "skills/lantern-setup/example-web/demo-platforms/README.md": "lantern-map",
+    "skills/lantern-setup/example-web/demo-skills.html": "lantern-map",
+    "skills/lantern-setup/example-web/demo-skills/CLAUDE.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/commit/SKILL.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/deploy/agents/verifier.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/deploy/protocol.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/deploy/references/checklist.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/deploy/scripts/preflight.mjs": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/deploy/scripts/rollback.sh": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/skills/deploy/SKILL.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/docs/guide.md": "core:skills",
+    "skills/lantern-setup/example-web/demo-skills/README.md": "core:skills",
+    "skills/lantern-setup/example-web/index.html": "lantern-map",
+    "skills/lantern-setup/example-web/locales.json": "lantern-map",
+    "skills/lantern-setup/example-web/render.mjs": "lantern-map",
+    "skills/lantern-setup/example-web/sections.html": "lantern-sections",
+    "skills/lantern-setup/example-web/template.html": "lantern-map",
+    "skills/lantern-setup/README.md": "lantern-map",
+    "skills/lantern-setup/references/authority.md": "lantern-map",
+    "skills/lantern-setup/references/codex.md": "lantern-map",
+    "skills/lantern-setup/references/format.md": "lantern-map",
+    "skills/lantern-setup/references/model-floor.json": "lantern-map",
+    "skills/lantern-setup/references/roles.md": "lantern-map",
+    "skills/lantern-setup/scripts/check-locales.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/enumerate.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/ignore.mjs": "core:skills",
+    "skills/lantern-setup/scripts/lang-todo.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/lang.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/lib.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/migrate-lang.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/migrate-model.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/model.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/plan.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/platforms.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/prs.mjs": "pull-requests",
+    "skills/lantern-setup/scripts/refs.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/sections.mjs": "lantern-sections",
+    "skills/lantern-setup/scripts/texts.mjs": "lantern-map",
+    "skills/lantern-setup/scripts/validate.mjs": "lantern-map",
+    "skills/lantern-setup/SKILL.md": "lantern-map",
+    "skills/lantern-sync/README.md": "lantern-map",
+    "skills/lantern-sync/references/authority.md": "lantern-map",
+    "skills/lantern-sync/references/codex.md": "lantern-map",
+    "skills/lantern-sync/scripts/sync.mjs": "lantern-map",
+    "skills/lantern-sync/SKILL.md": "lantern-map",
+    "skills/lantern-local-loop/README.md": "skills-management",
+    "skills/lantern-local-loop/references/templates.md": "skills-management",
+    "skills/lantern-local-loop/scripts/loop.sh": "skills-management",
+    "skills/lantern-local-loop/SKILL.md": "skills-management",
+    "skills/lantern-no-comments/README.md": "skills-management",
+    "skills/lantern-no-comments/SKILL.md": "skills-management",
+    "src/main/agent-codex.ts": "agent-runs",
+    "src/main/agent-request.ts": "agent-runs",
+    "src/main/agent.ts": "agent-runs",
+    "src/main/app-menu.ts": "core:desktop",
+    "src/main/atomic-write.ts": "core:desktop",
+    "src/main/bundle.ts": "skills-management",
+    "src/main/claude-bin.ts": "agent-runs",
+    "src/main/claude-poll.ts": "session-monitoring",
+    "src/main/cli.ts": "projects-hub",
+    "src/main/codex-event.ts": "session-monitoring",
+    "src/main/codex-hooks.ts": "notifications",
+    "src/main/codex-scanner.ts": "session-monitoring",
+    "src/main/codex-turns.ts": "session-monitoring",
+    "src/main/devserver.ts": "core:desktop",
+    "src/main/explains.ts": "code-insight",
+    "src/main/filecontent.ts": "code-insight",
+    "src/main/hook-cleanup.ts": "notifications",
+    "src/main/hooks.ts": "notifications",
+    "src/main/lantern-batch.ts": "core:desktop",
+    "src/main/lantern-cache.ts": "core:desktop",
+    "src/main/lantern-enumerate.ts": "lantern-map",
+    "src/main/lantern-git.ts": "pull-requests",
+    "src/main/lantern-ignore.ts": "core:desktop",
+    "src/main/lantern-nodes.ts": "lantern-map",
+    "src/main/lantern-parse.ts": "lantern-map",
+    "src/main/lantern-platforms.ts": "lantern-map",
+    "src/main/lantern-pr-parse.ts": "pull-requests",
+    "src/main/lantern-pr-remote.ts": "pull-requests",
+    "src/main/lantern-pr-revisions.ts": "pull-requests",
+    "src/main/lantern-prdiff.ts": "pull-requests",
+    "src/main/lantern-prfile.ts": "pull-requests",
+    "src/main/lantern-proverlay.ts": "pull-requests",
+    "src/main/lantern-prs.ts": "pull-requests",
+    "src/main/lantern-sections.ts": "lantern-sections",
+    "src/main/lantern-stamp.ts": "lantern-map",
+    "src/main/lantern-texts.ts": "lantern-map",
+    "src/main/lantern-types.ts": "lantern-map",
+    "src/main/lantern.ts": "lantern-map",
+    "src/main/lsp/lsp-client.ts": "code-insight",
+    "src/main/lsp/runtime-path.ts": "code-insight",
+    "src/main/lsp/semantic-service.ts": "code-insight",
+    "src/main/lsp/snapshot-root.ts": "code-insight",
+    "src/main/lsp/source-provenance.ts": "code-insight",
+    "src/main/main.ts": "core:desktop",
+    "src/main/metadir.ts": "code-insight",
+    "src/main/notifier.ts": "notifications",
+    "src/main/notifycard.ts": "notifications",
+    "src/main/overlay.ts": "notifications",
+    "src/main/popout.ts": "code-insight",
+    "src/main/prockill.ts": "core:desktop",
+    "src/main/proctree.ts": "serve-web",
+    "src/main/projectroot.ts": "projects-hub",
+    "src/main/projects.ts": "projects-hub",
+    "src/main/provider.ts": "core:desktop",
+    "src/main/review.ts": "code-insight",
+    "src/main/scanner.ts": "session-monitoring",
+    "src/main/server.ts": "session-monitoring",
+    "src/main/serveweb-failure.ts": "serve-web",
+    "src/main/serveweb-launch.ts": "serve-web",
+    "src/main/serveweb-parse.ts": "serve-web",
+    "src/main/serveweb-port.ts": "serve-web",
+    "src/main/serveweb-probe.ts": "serve-web",
+    "src/main/serveweb-reclaim.ts": "serve-web",
+    "src/main/serveweb-settings.ts": "serve-web",
+    "src/main/serveweb.ts": "serve-web",
+    "src/main/session-notification.ts": "notifications",
+    "src/main/settings-model.ts": "core:desktop",
+    "src/main/settings-store.ts": "core:desktop",
+    "src/main/settings.ts": "core:desktop",
+    "src/main/setup-progress.ts": "lantern-map",
+    "src/main/setup-state.ts": "lantern-map",
+    "src/main/skills.ts": "skills-management",
+    "src/main/state.ts": "session-monitoring",
+    "src/main/subagent.ts": "session-monitoring",
+    "src/main/windows.ts": "projects-hub",
+    "src/notify-hooks/codex.ps1": "notifications",
+    "src/notify-hooks/codex.sh": "notifications",
+    "src/preload/overlay.ts": "notifications",
+    "src/preload/workspace.ts": "core:desktop",
+    "src/renderer/features/agent-run.ts": "agent-runs",
+    "src/renderer/features/cli-panel.ts": "core:desktop",
+    "src/renderer/features/editor-tab.ts": "serve-web",
+    "src/renderer/features/explain.ts": "code-insight",
+    "src/renderer/features/hub.ts": "projects-hub",
+    "src/renderer/features/lantern.ts": "lantern-map",
+    "src/renderer/features/load-screen.ts": "serve-web",
+    "src/renderer/features/provider-control.ts": "agent-runs",
+    "src/renderer/features/review.ts": "code-insight",
+    "src/renderer/features/server-load.ts": "serve-web",
+    "src/renderer/features/settings.ts": "core:desktop",
+    "src/renderer/features/skills-state.ts": "skills-management",
+    "src/renderer/features/skills.ts": "skills-management",
+    "src/renderer/global.d.ts": "core:desktop",
+    "src/renderer/lantern-prs.css": "pull-requests",
+    "src/renderer/lantern-relation.css": "lantern-map",
+    "src/renderer/lantern-sections.css": "lantern-sections",
+    "src/renderer/lantern-setup.css": "lantern-map",
+    "src/renderer/lantern.css": "lantern-map",
+    "src/renderer/lib/codemodal.ts": "code-insight",
+    "src/renderer/lib/codeview.ts": "code-insight",
+    "src/renderer/lib/diffcollapse.ts": "code-insight",
+    "src/renderer/lib/diffview.ts": "code-insight",
+    "src/renderer/lib/editorload.ts": "serve-web",
+    "src/renderer/lib/explain.ts": "code-insight",
+    "src/renderer/lib/file-icon-manifest.json": "core:desktop",
+    "src/renderer/lib/file-icons.ts": "core:desktop",
+    "src/renderer/lib/file-label.ts": "core:desktop",
+    "src/renderer/lib/graph-navigation.ts": "lantern-map",
+    "src/renderer/lib/idle-tabs.ts": "serve-web",
+    "src/renderer/lib/langselect.ts": "core:desktop",
+    "src/renderer/lib/lantern-pixi/edge-graphics.ts": "lantern-map",
+    "src/renderer/lib/lantern-pixi/index.ts": "lantern-map",
+    "src/renderer/lib/lantern-pixi/node-graphics.ts": "lantern-map",
+    "src/renderer/lib/lantern-pixi/open-actions.ts": "lantern-map",
+    "src/renderer/lib/lantern-pixi/palette.ts": "lantern-map",
+    "src/renderer/lib/lantern-pixi/relation-graphics.ts": "lantern-map",
+    "src/renderer/lib/lantern-pixi/text-quality.ts": "lantern-map",
+    "src/renderer/lib/lanterncollapse.ts": "lantern-map",
+    "src/renderer/lib/lanternctx.ts": "lantern-map",
+    "src/renderer/lib/lanterndetail.ts": "lantern-map",
+    "src/renderer/lib/lanternhead.ts": "lantern-map",
+    "src/renderer/lib/lanternlayout.ts": "lantern-map",
+    "src/renderer/lib/lanternlock.ts": "lantern-map",
+    "src/renderer/lib/lanternmove.ts": "core:desktop",
+    "src/renderer/lib/lanternoverlay.ts": "pull-requests",
+    "src/renderer/lib/lanternprofile.ts": "lantern-map",
+    "src/renderer/lib/lanternpronly.ts": "pull-requests",
+    "src/renderer/lib/lanternprpanel.ts": "pull-requests",
+    "src/renderer/lib/lanternprs.ts": "pull-requests",
+    "src/renderer/lib/lanternrelview.ts": "lantern-map",
+    "src/renderer/lib/lanternscope.ts": "lantern-map",
+    "src/renderer/lib/lanternsections/common.ts": "lantern-sections",
+    "src/renderer/lib/lanternsections/controller.ts": "lantern-sections",
+    "src/renderer/lib/lanternsections/db.ts": "lantern-sections",
+    "src/renderer/lib/lanternsections/facts.ts": "lantern-sections",
+    "src/renderer/lib/lanternsections/rbac.ts": "lantern-sections",
+    "src/renderer/lib/lanternsections/registry.ts": "lantern-sections",
+    "src/renderer/lib/lanternsections/states.ts": "lantern-sections",
+    "src/renderer/lib/lanternside.ts": "lantern-map",
+    "src/renderer/lib/lanterntabs.ts": "lantern-map",
+    "src/renderer/lib/lanterntile.ts": "lantern-map",
+    "src/renderer/lib/lanternview.ts": "lantern-map",
+    "src/renderer/lib/maplang.ts": "lantern-map",
+    "src/renderer/lib/modalsteps.ts": "pull-requests",
+    "src/renderer/lib/modalreason.ts": "pull-requests",
+    "src/renderer/lib/prdiffmodal.ts": "pull-requests",
+    "src/renderer/lib/project-list-keys.ts": "core:desktop",
+    "src/renderer/lib/providers.ts": "core:desktop",
+    "src/renderer/lib/semantic-highlight.ts": "code-insight",
+    "src/renderer/lib/semantic-limit-notice.ts": "code-insight",
+    "src/renderer/lib/settings-editor.ts": "core:desktop",
+    "src/renderer/lib/settings-search.ts": "core:desktop",
+    "src/renderer/lib/settings-state.ts": "core:desktop",
+    "src/renderer/lib/setupprogress.ts": "lantern-map",
+    "src/renderer/lib/setuprun.ts": "lantern-map",
+    "src/renderer/lib/setupscreen.ts": "lantern-map",
+    "src/renderer/lib/symbolfind.ts": "code-insight",
+    "src/renderer/lib/syntax-client.ts": "code-insight",
+    "src/renderer/lib/syntax-highlighting.ts": "code-insight",
+    "src/renderer/lib/syntax-theme.ts": "code-insight",
+    "src/renderer/lib/syntax-worker.ts": "code-insight",
+    "src/renderer/lib/util.ts": "core:desktop",
+    "src/renderer/overlay.css": "notifications",
+    "src/renderer/overlay.html": "notifications",
+    "src/renderer/overlay.ts": "notifications",
+    "src/renderer/settings.css": "core:desktop",
+    "src/renderer/state.ts": "core:desktop",
+    "src/renderer/themes/lantern-dark.json": "code-insight",
+    "src/renderer/workspace.css": "core:desktop",
+    "src/renderer/workspace.html": "core:desktop",
+    "src/renderer/workspace.ts": "core:desktop",
+    "src/shared/code-highlighting.ts": "code-insight",
+    "src/shared/code-preview.ts": "code-insight",
+    "src/shared/config.ts": "notifications",
+    "src/shared/settings-graph.ts": "core:desktop",
+    "src/shared/settings-notifications.ts": "notifications",
+    "src/shared/settings-registry.ts": "core:desktop",
+    "src/shared/settings-schema.ts": "core:desktop",
+    "src/shared/settings-tabs.ts": "serve-web",
+    "src/shared/shell-quote.ts": "core:desktop",
+    "test/e2e/app/harness.css": "core:shared",
+    "test/e2e/tsconfig.json": "core:shared",
+    "test/fixtures/graph/scenarios.json": "core:shared",
+    "tsconfig.json": "core:shared",
+    "vitest.config.ts": "core:shared"
+  },
+  "systemsByPath": {
+    "packages/lsp-runtime/package.json": [
+      {
+        "system": "git",
+        "count": 2
+      },
+      {
+        "system": "pnpm",
+        "count": 1
+      },
+      {
+        "system": "vtsls",
+        "count": 1
+      }
+    ],
+    "scripts/e2e-delegate/checks.mjs": [
+      {
+        "system": "bitbucket-api",
+        "count": 4
+      },
+      {
+        "system": "github-api",
+        "count": 3
+      }
+    ],
+    "scripts/install-skills.mjs": [
+      {
+        "system": "git",
+        "count": 2
+      }
+    ],
+    "scripts/patch-claude-mic.js": [
+      {
+        "system": "vscode-serve-web",
+        "count": 2
+      },
+      {
+        "system": "claude-code-extension",
+        "count": 1
+      }
+    ],
+    "scripts/pr-review-demo.mjs": [
+      {
+        "system": "git",
+        "count": 1
+      }
+    ],
+    "scripts/skill-test/agent.mjs": [
+      {
+        "system": "claude-cli",
+        "count": 1
+      },
+      {
+        "system": "git",
+        "count": 1
+      }
+    ],
+    "skills/lantern-setup/example-web/demo-skills/CLAUDE.md": [
+      {
+        "system": "git",
+        "count": 2
+      }
+    ],
+    "src/main/agent-codex.ts": [
+      {
+        "system": "codex-cli",
+        "count": 2
+      },
+      {
+        "system": "claude-code-cli",
+        "count": 1
+      }
+    ],
+    "src/main/claude-poll.ts": [
+      {
+        "system": "claude-code-cli",
+        "count": 1
+      },
+      {
+        "system": "codex-sessions",
+        "count": 1
+      }
+    ],
+    "src/main/cli.ts": [
+      {
+        "system": "osascript",
+        "count": 1
+      }
+    ],
+    "src/main/codex-hooks.ts": [
+      {
+        "system": "codex-hooks-config",
+        "count": 1
+      }
+    ],
+    "src/main/main.ts": [
+      {
+        "system": "vscode-serve-web",
+        "count": 1
+      }
+    ]
+  },
+  "minStrongEdge": 8,
+  "areas": {
+    "level0": {
+      "areas": [
+        {
+          "id": "project-map",
+          "name": "Project map",
+          "purpose": "mapping a project and reading its code",
+          "features": [
+            "lantern-map",
+            "lantern-sections",
+            "code-insight"
+          ],
+          "files": 121,
+          "platforms": [
+            {
+              "platform": "desktop",
+              "files": 75
+            },
+            {
+              "platform": "skills",
+              "files": 37
+            },
+            {
+              "platform": "shared",
+              "files": 9
+            }
+          ],
+          "uses": []
+        },
+        {
+          "id": "pull-request-review",
+          "name": "Pull request review",
+          "purpose": "following pull requests and the agents that open them",
+          "features": [
+            "pull-requests",
+            "delegate-runs"
+          ],
+          "files": 63,
+          "platforms": [
+            {
+              "platform": "skills",
+              "files": 32
+            },
+            {
+              "platform": "desktop",
+              "files": 16
+            },
+            {
+              "platform": "shared",
+              "files": 15
+            }
+          ],
+          "uses": []
+        },
+        {
+          "id": "agent-sessions",
+          "name": "Agent sessions",
+          "purpose": "watching what the agents are doing and being told when they stop",
+          "features": [
+            "agent-runs",
+            "session-monitoring",
+            "notifications"
+          ],
+          "files": 29,
+          "platforms": [
+            {
+              "platform": "desktop",
+              "files": 29
+            }
+          ],
+          "uses": [
+            {
+              "platform": "shared",
+              "count": 9,
+              "arrows": {
+                ">": 0,
+                "<": 4,
+                "=": 5,
+                "@": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "workspace-setup",
+          "name": "Workspace setup",
+          "purpose": "setting up projects, skills and the editor",
+          "features": [
+            "projects-hub",
+            "skills-management"
+          ],
+          "files": 26,
+          "platforms": [
+            {
+              "platform": "skills",
+              "files": 14
+            },
+            {
+              "platform": "desktop",
+              "files": 9
+            },
+            {
+              "platform": "shared",
+              "files": 3
+            }
+          ],
+          "uses": []
+        }
+      ],
+      "toAssign": {
+        "id": "to-assign",
+        "name": "To assign",
+        "features": [
+          "serve-web"
+        ],
+        "files": 16,
+        "platforms": [
+          {
+            "platform": "desktop",
+            "files": 15
+          },
+          {
+            "platform": "shared",
+            "files": 1
+          }
+        ],
+        "uses": []
+      },
+      "foundation": [
+        {
+          "id": "core:desktop",
+          "files": 36
+        },
+        {
+          "id": "core:shared",
+          "files": 11
+        },
+        {
+          "id": "core:skills",
+          "files": 11
+        }
+      ],
+      "links": [
+        {
+          "from": "pull-request-review",
+          "to": "project-map",
+          "count": 47
+        },
+        {
+          "from": "project-map",
+          "to": "pull-request-review",
+          "count": 31
+        },
+        {
+          "from": "workspace-setup",
+          "to": "project-map",
+          "count": 8
+        },
+        {
+          "from": "pull-request-review",
+          "to": "workspace-setup",
+          "count": 6
+        },
+        {
+          "from": "agent-sessions",
+          "to": "project-map",
+          "count": 4
+        },
+        {
+          "from": "project-map",
+          "to": "agent-sessions",
+          "count": 4
+        },
+        {
+          "from": "workspace-setup",
+          "to": "agent-sessions",
+          "count": 4
+        },
+        {
+          "from": "project-map",
+          "to": "workspace-setup",
+          "count": 2
+        },
+        {
+          "from": "agent-sessions",
+          "to": "workspace-setup",
+          "count": 1
+        }
+      ],
+      "foundationLinks": [
+        {
+          "from": "project-map",
+          "to": "core:desktop",
+          "count": 43,
+          "arrows": {
+            ">": 2,
+            "<": 9,
+            "=": 32,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:desktop",
+          "to": "project-map",
+          "count": 24,
+          "arrows": {
+            ">": 4,
+            "<": 10,
+            "=": 10,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:desktop",
+          "to": "agent-sessions",
+          "count": 20,
+          "arrows": {
+            ">": 4,
+            "<": 2,
+            "=": 14,
+            "@": 0
+          }
+        },
+        {
+          "from": "agent-sessions",
+          "to": "core:desktop",
+          "count": 18,
+          "arrows": {
+            ">": 1,
+            "<": 10,
+            "=": 7,
+            "@": 0
+          }
+        },
+        {
+          "from": "workspace-setup",
+          "to": "core:desktop",
+          "count": 14,
+          "arrows": {
+            ">": 0,
+            "<": 7,
+            "=": 7,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:shared",
+          "to": "project-map",
+          "count": 12,
+          "arrows": {
+            ">": 4,
+            "<": 8,
+            "=": 0,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:desktop",
+          "to": "workspace-setup",
+          "count": 9,
+          "arrows": {
+            ">": 3,
+            "<": 2,
+            "=": 4,
+            "@": 0
+          }
+        },
+        {
+          "from": "to-assign",
+          "to": "core:desktop",
+          "count": 9,
+          "arrows": {
+            ">": 1,
+            "<": 4,
+            "=": 4,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:desktop",
+          "to": "to-assign",
+          "count": 7,
+          "arrows": {
+            ">": 0,
+            "<": 2,
+            "=": 5,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:shared",
+          "to": "core:desktop",
+          "count": 7,
+          "arrows": {
+            ">": 0,
+            "<": 7,
+            "=": 0,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:desktop",
+          "to": "pull-request-review",
+          "count": 6,
+          "arrows": {
+            ">": 0,
+            "<": 3,
+            "=": 3,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:shared",
+          "to": "agent-sessions",
+          "count": 4,
+          "arrows": {
+            ">": 0,
+            "<": 4,
+            "=": 0,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:shared",
+          "to": "pull-request-review",
+          "count": 4,
+          "arrows": {
+            ">": 2,
+            "<": 2,
+            "=": 0,
+            "@": 0
+          }
+        },
+        {
+          "from": "pull-request-review",
+          "to": "core:desktop",
+          "count": 4,
+          "arrows": {
+            ">": 0,
+            "<": 0,
+            "=": 4,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:skills",
+          "to": "project-map",
+          "count": 2,
+          "arrows": {
+            ">": 0,
+            "<": 0,
+            "=": 0,
+            "@": 2
+          }
+        },
+        {
+          "from": "project-map",
+          "to": "core:skills",
+          "count": 2,
+          "arrows": {
+            ">": 0,
+            "<": 0,
+            "=": 2,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:shared",
+          "to": "to-assign",
+          "count": 1,
+          "arrows": {
+            ">": 1,
+            "<": 0,
+            "=": 0,
+            "@": 0
+          }
+        },
+        {
+          "from": "core:shared",
+          "to": "workspace-setup",
+          "count": 1,
+          "arrows": {
+            ">": 1,
+            "<": 0,
+            "=": 0,
+            "@": 0
+          }
+        },
+        {
+          "from": "project-map",
+          "to": "core:shared",
+          "count": 1,
+          "arrows": {
+            ">": 0,
+            "<": 1,
+            "=": 0,
+            "@": 0
+          }
+        }
+      ],
+      "mainLinks": [
+        {
+          "a": "project-map",
+          "b": "pull-request-review",
+          "count": 78
+        },
+        {
+          "a": "project-map",
+          "b": "workspace-setup",
+          "count": 10
+        }
+      ],
+      "systems": {
+        "project-map": [
+          {
+            "system": "git",
+            "count": 3
+          },
+          {
+            "system": "claude-cli",
+            "count": 1
+          },
+          {
+            "system": "pnpm",
+            "count": 1
+          },
+          {
+            "system": "vtsls",
+            "count": 1
+          }
+        ],
+        "pull-request-review": [
+          {
+            "system": "bitbucket-api",
+            "count": 4
+          },
+          {
+            "system": "github-api",
+            "count": 3
+          },
+          {
+            "system": "git",
+            "count": 1
+          }
+        ],
+        "agent-sessions": [
+          {
+            "system": "claude-code-cli",
+            "count": 2
+          },
+          {
+            "system": "codex-cli",
+            "count": 2
+          },
+          {
+            "system": "codex-hooks-config",
+            "count": 1
+          },
+          {
+            "system": "codex-sessions",
+            "count": 1
+          }
+        ],
+        "workspace-setup": [
+          {
+            "system": "git",
+            "count": 2
+          },
+          {
+            "system": "osascript",
+            "count": 1
+          }
+        ],
+        "to-assign": [
+          {
+            "system": "vscode-serve-web",
+            "count": 2
+          },
+          {
+            "system": "claude-code-extension",
+            "count": 1
+          }
+        ]
+      }
+    },
+    "details": {
+      "project-map": {
+        "blocks": [
+          {
+            "id": "lantern-map",
+            "files": 80
+          },
+          {
+            "id": "code-insight",
+            "files": 30
+          },
+          {
+            "id": "lantern-sections",
+            "files": 11
+          }
+        ],
+        "edges": [
+          {
+            "from": "lantern-sections",
+            "to": "lantern-map",
+            "count": 16,
+            "arrows": {
+              ">": 0,
+              "<": 13,
+              "=": 3,
+              "@": 0
+            },
+            "strong": true
+          },
+          {
+            "from": "lantern-map",
+            "to": "lantern-sections",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 2,
+              "=": 5,
+              "@": 0
+            },
+            "strong": false
+          },
+          {
+            "from": "lantern-map",
+            "to": "code-insight",
+            "count": 3,
+            "arrows": {
+              ">": 1,
+              "<": 2,
+              "=": 0,
+              "@": 0
+            },
+            "strong": false
+          }
+        ],
+        "foundationLinks": [
+          {
+            "from": "lantern-map",
+            "to": "core:desktop",
+            "count": 32,
+            "arrows": {
+              ">": 1,
+              "<": 8,
+              "=": 23,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "code-insight",
+            "count": 12,
+            "arrows": {
+              ">": 3,
+              "<": 4,
+              "=": 5,
+              "@": 0
+            }
+          },
+          {
+            "from": "code-insight",
+            "to": "core:desktop",
+            "count": 11,
+            "arrows": {
+              ">": 1,
+              "<": 1,
+              "=": 9,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "lantern-map",
+            "count": 11,
+            "arrows": {
+              ">": 1,
+              "<": 5,
+              "=": 5,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "core:desktop",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 7,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "lantern-map",
+            "count": 6,
+            "arrows": {
+              ">": 1,
+              "<": 5,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "code-insight",
+            "count": 5,
+            "arrows": {
+              ">": 3,
+              "<": 2,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:skills",
+            "to": "lantern-map",
+            "count": 2,
+            "arrows": {
+              ">": 0,
+              "<": 0,
+              "=": 0,
+              "@": 2
+            }
+          },
+          {
+            "from": "lantern-map",
+            "to": "core:skills",
+            "count": 2,
+            "arrows": {
+              ">": 0,
+              "<": 0,
+              "=": 2,
+              "@": 0
+            }
+          },
+          {
+            "from": "code-insight",
+            "to": "core:shared",
+            "count": 1,
+            "arrows": {
+              ">": 0,
+              "<": 1,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "lantern-sections",
+            "count": 1,
+            "arrows": {
+              ">": 0,
+              "<": 1,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "lantern-sections",
+            "count": 1,
+            "arrows": {
+              ">": 0,
+              "<": 1,
+              "=": 0,
+              "@": 0
+            }
+          }
+        ],
+        "featurePlatforms": {
+          "code-insight": [
+            {
+              "platform": "desktop",
+              "files": 27
+            },
+            {
+              "platform": "shared",
+              "files": 3
+            }
+          ],
+          "lantern-map": [
+            {
+              "platform": "desktop",
+              "files": 39
+            },
+            {
+              "platform": "skills",
+              "files": 35
+            },
+            {
+              "platform": "shared",
+              "files": 6
+            }
+          ],
+          "lantern-sections": [
+            {
+              "platform": "desktop",
+              "files": 9
+            },
+            {
+              "platform": "skills",
+              "files": 2
+            }
+          ]
+        },
+        "featureUses": {
+          "lantern-sections": [
+            {
+              "platform": "shared",
+              "count": 8,
+              "arrows": {
+                ">": 0,
+                "<": 3,
+                "=": 5,
+                "@": 0
+              }
+            }
+          ]
+        },
+        "mainLinks": [
+          {
+            "a": "lantern-map",
+            "b": "lantern-sections",
+            "count": 23
+          }
+        ],
+        "stubs": [
+          {
+            "id": "pull-request-review",
+            "name": "Pull request review",
+            "out": 31,
+            "in": 47,
+            "count": 78
+          },
+          {
+            "id": "workspace-setup",
+            "name": "Workspace setup",
+            "out": 2,
+            "in": 8,
+            "count": 10
+          },
+          {
+            "id": "agent-sessions",
+            "name": "Agent sessions",
+            "out": 4,
+            "in": 4,
+            "count": 8
+          }
+        ],
+        "systems": [
+          {
+            "system": "git",
+            "count": 3
+          },
+          {
+            "system": "claude-cli",
+            "count": 1
+          },
+          {
+            "system": "pnpm",
+            "count": 1
+          },
+          {
+            "system": "vtsls",
+            "count": 1
+          }
+        ]
+      },
+      "pull-request-review": {
+        "blocks": [
+          {
+            "id": "delegate-runs",
+            "files": 45
+          },
+          {
+            "id": "pull-requests",
+            "files": 18
+          }
+        ],
+        "edges": [
+          {
+            "from": "delegate-runs",
+            "to": "pull-requests",
+            "count": 1,
+            "arrows": {
+              ">": 0,
+              "<": 1,
+              "=": 0,
+              "@": 0
+            },
+            "strong": false
+          }
+        ],
+        "foundationLinks": [
+          {
+            "from": "core:shared",
+            "to": "core:desktop",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 7,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "pull-requests",
+            "count": 6,
+            "arrows": {
+              ">": 0,
+              "<": 3,
+              "=": 3,
+              "@": 0
+            }
+          },
+          {
+            "from": "pull-requests",
+            "to": "core:desktop",
+            "count": 4,
+            "arrows": {
+              ">": 0,
+              "<": 0,
+              "=": 4,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "pull-requests",
+            "count": 3,
+            "arrows": {
+              ">": 1,
+              "<": 2,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "delegate-runs",
+            "count": 1,
+            "arrows": {
+              ">": 1,
+              "<": 0,
+              "=": 0,
+              "@": 0
+            }
+          }
+        ],
+        "featurePlatforms": {
+          "delegate-runs": [
+            {
+              "platform": "skills",
+              "files": 31
+            },
+            {
+              "platform": "shared",
+              "files": 14
+            }
+          ],
+          "pull-requests": [
+            {
+              "platform": "desktop",
+              "files": 16
+            },
+            {
+              "platform": "shared",
+              "files": 1
+            },
+            {
+              "platform": "skills",
+              "files": 1
+            }
+          ]
+        },
+        "featureUses": {},
+        "mainLinks": [
+          {
+            "a": "delegate-runs",
+            "b": "pull-requests",
+            "count": 1
+          }
+        ],
+        "stubs": [
+          {
+            "id": "project-map",
+            "name": "Project map",
+            "out": 47,
+            "in": 31,
+            "count": 78
+          },
+          {
+            "id": "workspace-setup",
+            "name": "Workspace setup",
+            "out": 6,
+            "in": 0,
+            "count": 6
+          }
+        ],
+        "systems": [
+          {
+            "system": "bitbucket-api",
+            "count": 4
+          },
+          {
+            "system": "github-api",
+            "count": 3
+          },
+          {
+            "system": "git",
+            "count": 1
+          }
+        ]
+      },
+      "agent-sessions": {
+        "blocks": [
+          {
+            "id": "notifications",
+            "files": 15
+          },
+          {
+            "id": "session-monitoring",
+            "files": 8
+          },
+          {
+            "id": "agent-runs",
+            "files": 6
+          }
+        ],
+        "edges": [
+          {
+            "from": "notifications",
+            "to": "session-monitoring",
+            "count": 4,
+            "arrows": {
+              ">": 2,
+              "<": 1,
+              "=": 1,
+              "@": 0
+            },
+            "strong": false
+          },
+          {
+            "from": "session-monitoring",
+            "to": "agent-runs",
+            "count": 2,
+            "arrows": {
+              ">": 0,
+              "<": 0,
+              "=": 2,
+              "@": 0
+            },
+            "strong": false
+          },
+          {
+            "from": "session-monitoring",
+            "to": "notifications",
+            "count": 1,
+            "arrows": {
+              ">": 0,
+              "<": 1,
+              "=": 0,
+              "@": 0
+            },
+            "strong": false
+          }
+        ],
+        "foundationLinks": [
+          {
+            "from": "agent-runs",
+            "to": "core:desktop",
+            "count": 12,
+            "arrows": {
+              ">": 1,
+              "<": 6,
+              "=": 5,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "notifications",
+            "count": 9,
+            "arrows": {
+              ">": 2,
+              "<": 2,
+              "=": 5,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "core:desktop",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 7,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "agent-runs",
+            "count": 6,
+            "arrows": {
+              ">": 2,
+              "<": 0,
+              "=": 4,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "session-monitoring",
+            "count": 5,
+            "arrows": {
+              ">": 0,
+              "<": 0,
+              "=": 5,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "notifications",
+            "count": 4,
+            "arrows": {
+              ">": 0,
+              "<": 4,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "notifications",
+            "to": "core:desktop",
+            "count": 3,
+            "arrows": {
+              ">": 0,
+              "<": 1,
+              "=": 2,
+              "@": 0
+            }
+          },
+          {
+            "from": "session-monitoring",
+            "to": "core:desktop",
+            "count": 3,
+            "arrows": {
+              ">": 0,
+              "<": 3,
+              "=": 0,
+              "@": 0
+            }
+          }
+        ],
+        "featurePlatforms": {
+          "agent-runs": [
+            {
+              "platform": "desktop",
+              "files": 6
+            }
+          ],
+          "notifications": [
+            {
+              "platform": "desktop",
+              "files": 15
+            }
+          ],
+          "session-monitoring": [
+            {
+              "platform": "desktop",
+              "files": 8
+            }
+          ]
+        },
+        "featureUses": {
+          "agent-runs": [
+            {
+              "platform": "shared",
+              "count": 5,
+              "arrows": {
+                ">": 0,
+                "<": 0,
+                "=": 5,
+                "@": 0
+              }
+            }
+          ],
+          "notifications": [
+            {
+              "platform": "shared",
+              "count": 4,
+              "arrows": {
+                ">": 0,
+                "<": 4,
+                "=": 0,
+                "@": 0
+              }
+            }
+          ]
+        },
+        "mainLinks": [
+          {
+            "a": "notifications",
+            "b": "session-monitoring",
+            "count": 5
+          },
+          {
+            "a": "agent-runs",
+            "b": "session-monitoring",
+            "count": 2
+          }
+        ],
+        "stubs": [
+          {
+            "id": "project-map",
+            "name": "Project map",
+            "out": 4,
+            "in": 4,
+            "count": 8
+          },
+          {
+            "id": "workspace-setup",
+            "name": "Workspace setup",
+            "out": 1,
+            "in": 4,
+            "count": 5
+          }
+        ],
+        "systems": [
+          {
+            "system": "claude-code-cli",
+            "count": 2
+          },
+          {
+            "system": "codex-cli",
+            "count": 2
+          },
+          {
+            "system": "codex-hooks-config",
+            "count": 1
+          },
+          {
+            "system": "codex-sessions",
+            "count": 1
+          }
+        ]
+      },
+      "workspace-setup": {
+        "blocks": [
+          {
+            "id": "skills-management",
+            "files": 21
+          },
+          {
+            "id": "projects-hub",
+            "files": 5
+          }
+        ],
+        "edges": [
+          {
+            "from": "projects-hub",
+            "to": "skills-management",
+            "count": 1,
+            "arrows": {
+              ">": 1,
+              "<": 0,
+              "=": 0,
+              "@": 0
+            },
+            "strong": false
+          }
+        ],
+        "foundationLinks": [
+          {
+            "from": "projects-hub",
+            "to": "core:desktop",
+            "count": 9,
+            "arrows": {
+              ">": 0,
+              "<": 5,
+              "=": 4,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "core:desktop",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 7,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "projects-hub",
+            "count": 6,
+            "arrows": {
+              ">": 1,
+              "<": 2,
+              "=": 3,
+              "@": 0
+            }
+          },
+          {
+            "from": "skills-management",
+            "to": "core:desktop",
+            "count": 5,
+            "arrows": {
+              ">": 0,
+              "<": 2,
+              "=": 3,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "skills-management",
+            "count": 3,
+            "arrows": {
+              ">": 2,
+              "<": 0,
+              "=": 1,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "skills-management",
+            "count": 1,
+            "arrows": {
+              ">": 1,
+              "<": 0,
+              "=": 0,
+              "@": 0
+            }
+          }
+        ],
+        "featurePlatforms": {
+          "projects-hub": [
+            {
+              "platform": "desktop",
+              "files": 5
+            }
+          ],
+          "skills-management": [
+            {
+              "platform": "skills",
+              "files": 14
+            },
+            {
+              "platform": "desktop",
+              "files": 4
+            },
+            {
+              "platform": "shared",
+              "files": 3
+            }
+          ]
+        },
+        "featureUses": {},
+        "mainLinks": [
+          {
+            "a": "projects-hub",
+            "b": "skills-management",
+            "count": 1
+          }
+        ],
+        "stubs": [
+          {
+            "id": "project-map",
+            "name": "Project map",
+            "out": 8,
+            "in": 2,
+            "count": 10
+          },
+          {
+            "id": "pull-request-review",
+            "name": "Pull request review",
+            "out": 0,
+            "in": 6,
+            "count": 6
+          },
+          {
+            "id": "agent-sessions",
+            "name": "Agent sessions",
+            "out": 4,
+            "in": 1,
+            "count": 5
+          }
+        ],
+        "systems": [
+          {
+            "system": "git",
+            "count": 2
+          },
+          {
+            "system": "osascript",
+            "count": 1
+          }
+        ]
+      },
+      "to-assign": {
+        "blocks": [
+          {
+            "id": "serve-web",
+            "files": 16
+          }
+        ],
+        "edges": [],
+        "foundationLinks": [
+          {
+            "from": "serve-web",
+            "to": "core:desktop",
+            "count": 9,
+            "arrows": {
+              ">": 1,
+              "<": 4,
+              "=": 4,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:desktop",
+            "to": "serve-web",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 2,
+              "=": 5,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "core:desktop",
+            "count": 7,
+            "arrows": {
+              ">": 0,
+              "<": 7,
+              "=": 0,
+              "@": 0
+            }
+          },
+          {
+            "from": "core:shared",
+            "to": "serve-web",
+            "count": 1,
+            "arrows": {
+              ">": 1,
+              "<": 0,
+              "=": 0,
+              "@": 0
+            }
+          }
+        ],
+        "featurePlatforms": {
+          "serve-web": [
+            {
+              "platform": "desktop",
+              "files": 15
+            },
+            {
+              "platform": "shared",
+              "files": 1
+            }
+          ]
+        },
+        "featureUses": {},
+        "mainLinks": [],
+        "stubs": [],
+        "systems": [
+          {
+            "system": "vscode-serve-web",
+            "count": 2
+          },
+          {
+            "system": "claude-code-extension",
+            "count": 1
+          }
+        ]
+      }
+    }
+  }
+}

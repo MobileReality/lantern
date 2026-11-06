@@ -1,0 +1,4 @@
+lantern 1
+# db/migrations
+
+db/migrations/001_create_tables.sql . migration 58be81093e66

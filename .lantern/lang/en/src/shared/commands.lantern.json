@@ -1,0 +1,11 @@
+{
+  "text": {
+    "index.ts": "Registers command groups, the palette among them, into typed command ids, rejecting duplicate, malformed or mis-prefixed ids and shortcuts without mod or an F-key, and looks commands up by id.",
+    "index.ts gotcha": "The command id type holds only because the prefix and duplicate checks run when the module loads.",
+    "key-syntax.ts": "Normalizes a shortcut string into ordered modifiers plus one printable character or F-key, and tells whether a key is safe to dispatch, which needs mod or an F-key.",
+    "key-syntax.ts gotcha": "Keys such as space or up are rejected because a key event could never match them.",
+    "keymap-settings.ts": "Declares the Keyboard shortcuts category: the list of key and command entries layered over the default shortcuts.",
+    "keymap.ts": "Resolves default and user shortcut bindings into key-to-command and command-to-key maps, matches key presses to commands for a platform, and formats shortcuts as per-platform labels and chips (symbols on mac, words on windows and linux), menu accelerators and ARIA strings.",
+    "nodes.ts": "Declares the command groups: palette, settings, projects, editor, Lantern map (open, refresh, problems), explain (open, pop-out), memory, integrations and skills commands, with their titles, default shortcuts and menu flags."
+  }
+}

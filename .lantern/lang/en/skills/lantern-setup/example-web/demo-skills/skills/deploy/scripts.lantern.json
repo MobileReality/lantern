@@ -1,0 +1,8 @@
+{
+ "text": {
+  "preflight.mjs": "fixture check that refuses a release from a dirty tree or without a rollback tag",
+  "preflight.mjs > ext:git": "status and tag list",
+  "rollback.sh": "fixture script that checks out the previous release tag",
+  "rollback.sh > ext:git": "checks out the tag"
+ }
+}

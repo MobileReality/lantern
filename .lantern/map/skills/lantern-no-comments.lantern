@@ -1,0 +1,7 @@
+lantern 1
+# skills/lantern-no-comments
+
+skills/lantern-no-comments/README.md . skill ec40124ddda7
+#feature skill-installer
+skills/lantern-no-comments/SKILL.md . skill ce8e91d6cfce
+#feature skill-installer

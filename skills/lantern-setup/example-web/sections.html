@@ -1,0 +1,394 @@
+<style>
+#sx { border-top: 1px solid var(--rule); margin: 8px 28px 0; padding: 26px 0 0; max-width: 1180px; }
+.sx-nav { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 8px; margin: 0 0 18px; }
+.sx-nav b { font: 600 10.5px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-right: 6px; }
+.sx-nav button, .sx-up { border: 1px solid var(--rule); background: var(--surface); border-radius: 999px; padding: 3px 11px; font-size: 12px; color: var(--ink); }
+.sx-nav button:hover, .sx-up:hover { border-color: var(--ink-2); }
+.sx-block { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; margin: 0 0 18px; box-shadow: var(--shadow); }
+.sx-block > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 12px; padding: 14px 18px; }
+.sx-block > summary::-webkit-details-marker { display: none; }
+.sx-block > summary::before { content: '▸'; color: var(--ink-3); font-size: 12px; width: 10px; transition: transform 0.12s; }
+.sx-block[open] > summary::before { transform: rotate(90deg); }
+.sx-kind { font: 700 10px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
+.sx-block h2 { all: unset; font: 600 21px/1.15 var(--serif); color: var(--ink); }
+.sx-count { color: var(--ink-3); font-size: 12px; margin-left: auto; }
+.sx-body { padding: 0 18px 18px 40px; }
+.sx-intro { font: 15px/1.45 var(--serif); margin: 0 0 14px; max-width: 72ch; color: var(--ink); }
+.sx-body h3 { font: 700 10px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); margin: 20px 0 8px; }
+.sx-id { font: 600 12.5px var(--mono); color: var(--ink); }
+.sx-note { color: var(--ink-2); font-size: 12.5px; }
+.sx-cites { display: inline-flex; flex-wrap: wrap; gap: 4px; vertical-align: middle; }
+.sx-cite { border: 1px solid var(--rule); background: var(--surface); border-radius: 4px; padding: 0 6px; font: 11px/1.6 var(--mono); color: var(--ink-2); max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+.sx-cite span { color: var(--ink-3); }
+.sx-cite:hover { border-color: var(--k-send); color: var(--ink); }
+.sx-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.sx-list li { display: grid; grid-template-columns: minmax(120px, max-content) minmax(0, 1fr); gap: 2px 14px; align-items: baseline; }
+.sx-list li > div { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.sx-table-wrap { overflow-x: auto; }
+.sx-table { border-collapse: collapse; font-size: 12.5px; min-width: 100%; }
+.sx-table th, .sx-table td { border: 1px solid var(--rule); padding: 7px 9px; text-align: left; vertical-align: top; background: var(--surface); }
+.sx-table thead th { background: var(--panel); font-weight: 600; }
+.sx-table th .sx-note { display: block; font-weight: 400; margin-top: 2px; max-width: 26ch; }
+.sx-table th .sx-cites { margin-top: 4px; }
+.sx-table th .sx-cite { overflow-wrap: normal; }
+.sx-matrix td { min-width: 120px; }
+.sx-cell { border: 0; background: none; padding: 0; display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--sans); color: var(--ink); }
+.sx-cell i { font-style: normal; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; color: var(--bg); }
+.sx-cell.allow i { background: var(--l-presentation); }
+.sx-cell.deny i { background: var(--l-data); }
+.sx-cell.cond i { background: var(--glow); color: #1d1300; }
+.sx-cell:hover { text-decoration: underline; }
+.sx-matrix td .sx-note { display: block; margin-top: 4px; font-size: 11.5px; line-height: 1.35; }
+.sx-none { color: var(--ink-3); }
+.sx-machine { margin: 0 0 22px; }
+.sx-machine h4 { font: 600 16px var(--serif); margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.sx-diagram { display: block; margin: 12px 0 8px; max-width: 100%; height: auto; }
+.sx-st rect { fill: var(--surface); stroke: var(--edge); stroke-width: 1.2; }
+.sx-st rect.inner { fill: none; }
+.sx-st text { font: 12px var(--mono); fill: var(--ink); }
+.sx-st.initial rect.outer { stroke-width: 2.2; }
+.sx-arc { fill: none; stroke: var(--edge); stroke-width: 1.3; }
+.sx-dot { fill: var(--edge); }
+.sx-num circle { fill: var(--panel); stroke: var(--edge); stroke-width: 1; }
+.sx-num text { font: 700 10px var(--sans); fill: var(--ink); text-anchor: middle; }
+.sx-flag { font: 700 9.5px var(--sans); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); border: 1px solid var(--rule); border-radius: 3px; padding: 0 4px; margin-left: 6px; }
+.sx-n { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--edge); font: 700 10px var(--sans); }
+.sx-entities { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+.sx-entity { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--l-data); border-radius: 6px; padding: 12px 13px; scroll-margin-top: 12px; }
+.sx-entity.flash { box-shadow: 0 0 0 3px var(--glow-soft); }
+.sx-entity header { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.sx-entity header .sx-id { font-size: 14px; margin-right: auto; }
+.sx-badge { font: 600 10px var(--sans); text-transform: uppercase; letter-spacing: 0.06em; border-radius: 3px; padding: 1px 5px; border: 1px solid var(--rule); color: var(--ink-2); }
+.sx-badge.inferred { border-style: dashed; }
+.sx-badge.declared { border-color: var(--ink-2); color: var(--ink); }
+.sx-entity > p { margin: 6px 0 8px; font: 14px/1.35 var(--serif); }
+.sx-fields { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+.sx-fields td { border-top: 1px solid var(--rule); padding: 4px 6px 4px 0; vertical-align: top; }
+.sx-fields td:first-child { white-space: nowrap; }
+.sx-fields button { border: 0; background: none; padding: 0; font: 12px var(--mono); color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 2px; }
+.sx-fields button:hover { text-decoration-color: var(--ink); }
+.sx-fields .sx-type { font: 11.5px var(--mono); color: var(--k-take); overflow-wrap: normal; word-break: keep-all; }
+.sx-fields .inferred-mark { color: var(--ink-3); font-size: 10px; margin-left: 3px; }
+.sx-rels { list-style: none; padding: 0; margin: 8px 0 0; font-size: 12px; display: grid; gap: 4px; }
+.sx-go { border: 0; background: none; padding: 0; font: 600 12px var(--mono); color: var(--k-send); text-decoration: underline; text-underline-offset: 2px; }
+.sx-rels .sx-note { display: block; padding-left: 16px; }
+.sx-meta { margin-top: 8px; font-size: 11.5px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.sx-facts { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.sx-facts li { border-left: 3px solid var(--glow); padding: 2px 0 2px 12px; }
+.sx-facts p { margin: 0; font: 15px/1.4 var(--serif); }
+.sx-facts .sx-note { display: block; margin: 3px 0 5px; }
+@media (max-width: 900px) {
+    #sx { margin: 8px 16px 0; }
+    .sx-body { padding: 0 14px 16px; }
+    .sx-list li { grid-template-columns: 1fr; }
+    .sx-entities { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sx-block > summary::before { transition: none; }
+}
+</style>
+<script id="lantern-sections" type="application/json">__SECTIONS__</script>
+<script>
+(function () {
+    'use strict';
+    var S = JSON.parse(document.getElementById('lantern-sections').textContent);
+    var G = JSON.parse(document.getElementById('lantern-data').textContent);
+    var root = document.getElementById('sx');
+    var NS = 'http' + '://www.w3.org/2000/svg';
+    var lang = G.lang;
+    var known = {};
+    G.nodes.forEach(function (n) { known[n.path] = true; });
+
+    function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+    function t(key, vars) {
+        var table = S.locales[lang] || {};
+        var s = table[key] !== undefined ? table[key] : S.locales.en[key];
+        if (s === undefined) return key;
+        return s.replace(/\{(\w+)\}/g, function (m, k) { return vars && vars[k] !== undefined ? vars[k] : m; });
+    }
+    function readLang() {
+        var m = /(?:^#|&)lang=([^&]*)/.exec(location.hash);
+        var v = m ? decodeURIComponent(m[1]) : G.lang;
+        return Object.prototype.hasOwnProperty.call(G.locales, v) ? v : G.lang;
+    }
+    function text(sec, key) {
+        var own = S.texts[lang] && S.texts[lang][sec.id];
+        if (own && own[key]) return { s: own[key], fb: false };
+        var main = S.texts[S.primary] && S.texts[S.primary][sec.id];
+        var s = main && main[key];
+        return s ? { s: s, fb: lang !== S.primary } : { s: '', fb: false };
+    }
+    function textHtml(x) {
+        if (!x.fb) return esc(x.s);
+        var name = (G.locales[S.primary] && G.locales[S.primary]['lang.name']) || S.primary;
+        var title = ((G.locales[lang] || {})['text.fallback'] || G.locales.en['text.fallback']).replace('{lang}', name);
+        return '<span class="fb" title="' + esc(title) + '">' + esc(x.s) + '<sup>' + esc(S.primary) + '</sup></span>';
+    }
+    function note(sec, key, tag) {
+        var x = text(sec, key);
+        return x.s ? '<' + (tag || 'span') + ' class="sx-note">' + textHtml(x) + '</' + (tag || 'span') + '>' : '';
+    }
+    function base(p) { return p.slice(p.lastIndexOf('/') + 1); }
+    function citeBtn(c) {
+        var label = c[0] + (c[1] ? '#' + c[1] : '');
+        return '<button class="sx-cite" data-path="' + esc(c[0]) + '" title="' + esc(t('sec.cite', { file: label })) + '">' +
+            esc(base(c[0])) + (c[1] ? '<wbr><span>#' + esc(c[1]) + '</span>' : '') + '</button>';
+    }
+    function cites(item) { return '<span class="sx-cites">' + item.c.map(citeBtn).join('') + '</span>'; }
+    function of(sec, kind) { return sec.items.filter(function (i) { return i.k === kind; }); }
+    function first(item) { return item.c.length ? item.c[0][0] : ''; }
+
+    function titleOf(sec) {
+        var x = text(sec, 'title');
+        return x.s ? textHtml(x) : esc(t('sec.type.' + sec.type));
+    }
+    function countOf(sec) {
+        if (sec.type === 'rbac') return t('sec.count.rbac', { roles: of(sec, 'role').length, res: of(sec, 'res').length });
+        if (sec.type === 'states') return t('sec.count.states', { machines: of(sec, 'machine').length, states: of(sec, 'state').length });
+        if (sec.type === 'db') return t('sec.count.db', { entities: of(sec, 'entity').length, fields: of(sec, 'field').length });
+        return t('sec.count.facts', { items: of(sec, 'item').length });
+    }
+    function listRows(sec, items) {
+        return '<ul class="sx-list">' + items.map(function (i) {
+            return '<li><span class="sx-id">' + esc(i.a[Object.keys(i.a)[0]]) + '</span><div>' + note(sec, i.key) + cites(i) + '</div></li>';
+        }).join('') + '</ul>';
+    }
+
+    function rbac(sec) {
+        var roles = of(sec, 'role'), res = of(sec, 'res');
+        var cells = {};
+        of(sec, 'cell').forEach(function (c) { cells[c.a.role + ' ' + c.a.res] = c; });
+        var glyph = { allow: '✓', deny: '✕', cond: '?' };
+        var head = '<tr><th scope="col" class="sx-note">' + esc(t('sec.rbac.corner')) + '</th>' + res.map(function (r) {
+            return '<th scope="col"><span class="sx-id">' + esc(r.a.res) + '</span>' + note(sec, r.key) + cites(r) + '</th>';
+        }).join('') + '</tr>';
+        var body = roles.map(function (r) {
+            return '<tr><th scope="row"><span class="sx-id">' + esc(r.a.role) + '</span>' + note(sec, r.key) + cites(r) + '</th>' + res.map(function (x) {
+                var c = cells[r.a.role + ' ' + x.a.res];
+                if (!c) return '<td class="sx-none">' + esc(t('sec.rbac.none')) + '</td>';
+                var all = c.c.map(function (p) { return p[0] + (p[1] ? '#' + p[1] : ''); }).join(', ');
+                return '<td><button class="sx-cell ' + esc(c.a.access) + '" data-path="' + esc(first(c)) + '" title="' + esc(t('sec.cite', { file: all })) + '"><i aria-hidden="true">' + glyph[c.a.access] + '</i>' +
+                    esc(t('sec.rbac.' + c.a.access)) + '</button>' + note(sec, c.key) + '</td>';
+            }).join('') + '</tr>';
+        }).join('');
+        var out = '';
+        if (of(sec, 'source').length) out += '<h3>' + esc(t('sec.rbac.source')) + '</h3>' + listRows(sec, of(sec, 'source'));
+        if (roles.length && res.length) out += '<h3>' + esc(t('sec.rbac.matrix')) + '</h3><div class="sx-table-wrap"><table class="sx-table sx-matrix"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>';
+        if (of(sec, 'guard').length) out += '<h3>' + esc(t('sec.rbac.guards')) + '</h3>' + listRows(sec, of(sec, 'guard'));
+        return out;
+    }
+
+    function diagram(machine, states, trs) {
+        var PAD = 26, GAP = 64, H = 32, LEVEL = 20;
+        var x = PAD, pos = {};
+        states.forEach(function (s) {
+            var w = Math.max(92, s.a.state.length * 7.4 + 26);
+            pos[s.a.state] = { x: x, w: w, cx: x + w / 2, s: s };
+            x += w + GAP;
+        });
+        var width = x - GAP + PAD;
+        var index = {};
+        states.forEach(function (s, i) { index[s.a.state] = i; });
+        var up = 0, down = 0;
+        var arcs = trs.map(function (tr, n) {
+            var a = pos[tr.a.from], b = pos[tr.a.to];
+            if (!a || !b) return null;
+            var span = Math.abs(index[tr.a.to] - index[tr.a.from]);
+            var forward = index[tr.a.to] > index[tr.a.from];
+            var lift = LEVEL + LEVEL * Math.max(0, span - 1) * 0.9;
+            if (forward) up = Math.max(up, lift); else down = Math.max(down, lift);
+            return { n: n + 1, a: a, b: b, forward: forward, self: span === 0, lift: lift };
+        }).filter(Boolean);
+        var top = 18 + up + 10, height = top + H + down + 28;
+        var svg = '<svg class="sx-diagram" viewBox="0 0 ' + width + ' ' + height + '" width="' + width + '" height="' + height + '" role="img" aria-label="' + esc(t('sec.states.diagram', { machine: machine })) + '">' +
+            '<defs><marker id="sx-arrow-' + esc(machine) + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="sx-dot" d="M0,0 L10,5 L0,10 z"/></marker></defs>';
+        var mid = top + H / 2;
+        arcs.forEach(function (arc) {
+            var d, lx, ly;
+            if (arc.self) {
+                var sx = arc.a.cx - 12, ex = arc.a.cx + 12;
+                d = 'M' + sx + ',' + top + ' C' + (sx - 10) + ',' + (top - 34) + ' ' + (ex + 10) + ',' + (top - 34) + ' ' + ex + ',' + top;
+                lx = arc.a.cx; ly = top - 28;
+            } else if (arc.forward) {
+                var x1 = arc.a.cx + 10, x2 = arc.b.cx - 10, y = top - arc.lift * 1.6;
+                d = 'M' + x1 + ',' + top + ' C' + x1 + ',' + y + ' ' + x2 + ',' + y + ' ' + x2 + ',' + top;
+                lx = (x1 + x2) / 2; ly = top - arc.lift * 1.2;
+            } else {
+                var bx1 = arc.a.cx - 10, bx2 = arc.b.cx + 10, by = top + H + arc.lift * 1.6;
+                d = 'M' + bx1 + ',' + (top + H) + ' C' + bx1 + ',' + by + ' ' + bx2 + ',' + by + ' ' + bx2 + ',' + (top + H);
+                lx = (bx1 + bx2) / 2; ly = top + H + arc.lift * 1.2;
+            }
+            svg += '<path class="sx-arc" d="' + d + '" marker-end="url(#sx-arrow-' + esc(machine) + ')"/>' +
+                '<g class="sx-num"><circle cx="' + lx + '" cy="' + ly + '" r="8"/><text x="' + lx + '" y="' + (ly + 3.5) + '">' + arc.n + '</text></g>';
+        });
+        states.forEach(function (s) {
+            var p = pos[s.a.state];
+            var initial = s.f.indexOf('initial') !== -1, terminal = s.f.indexOf('terminal') !== -1;
+            svg += '<g class="sx-st' + (initial ? ' initial' : '') + '">';
+            if (initial) svg += '<circle class="sx-dot" cx="' + (p.x - 16) + '" cy="' + mid + '" r="4"/><path class="sx-arc" d="M' + (p.x - 12) + ',' + mid + ' H' + (p.x - 1) + '" marker-end="url(#sx-arrow-' + esc(machine) + ')"/>';
+            svg += '<rect class="outer" x="' + p.x + '" y="' + top + '" width="' + p.w + '" height="' + H + '" rx="15"/>';
+            if (terminal) svg += '<rect class="inner" x="' + (p.x + 3) + '" y="' + (top + 3) + '" width="' + (p.w - 6) + '" height="' + (H - 6) + '" rx="12"/>';
+            svg += '<text x="' + p.cx + '" y="' + (mid + 4) + '" text-anchor="middle">' + esc(s.a.state) + '</text></g>';
+        });
+        return svg + '</svg>';
+    }
+
+    function states(sec) {
+        return of(sec, 'machine').map(function (m) {
+            var id = m.a.machine;
+            var st = of(sec, 'state').filter(function (s) { return s.a.machine === id; });
+            var trs = of(sec, 'tr').filter(function (tr) { return tr.a.machine === id; });
+            var flags = function (s) {
+                return s.f.map(function (f) { return '<span class="sx-flag">' + esc(t('sec.states.' + f)) + '</span>'; }).join('');
+            };
+            var stRows = st.map(function (s) {
+                return '<tr><td><span class="sx-id">' + esc(s.a.state) + '</span>' + flags(s) + '</td><td>' + note(sec, s.key) + '</td><td>' + cites(s) + '</td></tr>';
+            }).join('');
+            var trRows = trs.map(function (tr, n) {
+                return '<tr><td><span class="sx-n">' + (n + 1) + '</span></td><td><span class="sx-id">' + esc(tr.a.from) + ' → ' + esc(tr.a.to) + '</span></td><td>' + note(sec, tr.key) + '</td><td>' + cites(tr) + '</td></tr>';
+            }).join('');
+            return '<div class="sx-machine"><h4><span class="sx-id">' + esc(id) + '</span>' + note(sec, m.key) + cites(m) + '</h4>' +
+                (st.length ? diagram(id, st, trs) : '') +
+                '<div class="sx-table-wrap"><table class="sx-table"><thead><tr><th>' + esc(t('sec.states.state')) + '</th><th>' + esc(t('sec.states.meaning')) + '</th><th>' + esc(t('sec.files')) + '</th></tr></thead><tbody>' + stRows + '</tbody></table></div>' +
+                (trs.length ? '<h3>' + esc(t('sec.states.transitions')) + '</h3><div class="sx-table-wrap"><table class="sx-table"><thead><tr><th>#</th><th>' + esc(t('sec.states.move')) + '</th><th>' + esc(t('sec.states.trigger')) + '</th><th>' + esc(t('sec.files')) + '</th></tr></thead><tbody>' + trRows + '</tbody></table></div>' : '') +
+                '</div>';
+        }).join('');
+    }
+
+    function db(sec) {
+        var rels = of(sec, 'rel');
+        var cards = of(sec, 'entity').map(function (e) {
+            var id = e.a.entity;
+            var fields = of(sec, 'field').filter(function (f) { return f.a.entity === id; }).map(function (f) {
+                var origin = f.a.origin === 'inferred' ? '' : '<span class="inferred-mark" title="' + esc(t('sec.db.declaredHint')) + '">' + esc(t('sec.db.declared')) + '</span>';
+                return '<tr><td><button data-path="' + esc(first(f)) + '" title="' + esc(t('sec.cite', { file: f.c.map(function (c) { return c[0] + (c[1] ? '#' + c[1] : ''); }).join(', ') })) + '">' + esc(f.a.field) + '</button>' + origin + '</td><td class="sx-type">' + esc(f.a.type).split('|').join('|<wbr>') + '</td><td>' + note(sec, f.key) + '</td></tr>';
+            }).join('');
+            var out = rels.filter(function (r) { return r.a.entity === id; }).map(function (r) {
+                return '<li><span class="sx-id">' + esc(r.a.field) + '</span> → <button class="sx-go" data-entity="' + esc(r.a.target) + '">' + esc(r.a.target) + '</button> <span class="sx-badge">' + esc(t('sec.db.rel.' + r.a.kind)) + '</span> ' + cites(r) + note(sec, r.key) + '</li>';
+            }).join('');
+            var inn = rels.filter(function (r) { return r.a.target === id; }).map(function (r) {
+                return '<button class="sx-go" data-entity="' + esc(r.a.entity) + '">' + esc(r.a.entity) + '.' + esc(r.a.field) + '</button>';
+            }).join(', ');
+            var owners = of(sec, 'own').filter(function (o) { return o.a.entity === id; }).map(cites).join('');
+            return '<article class="sx-entity" id="sx-e-' + esc(sec.id) + '-' + esc(id) + '"><header><span class="sx-id">' + esc(id) + '</span>' +
+                '<span class="sx-badge">' + esc(t('sec.db.kind.' + e.a.kind)) + '</span>' +
+                '<span class="sx-badge ' + esc(e.a.origin) + '" title="' + esc(t('sec.db.' + e.a.origin + 'Hint')) + '">' + esc(t('sec.db.' + e.a.origin)) + '</span></header>' +
+                note(sec, e.key, 'p') +
+                (fields ? '<table class="sx-fields"><tbody>' + fields + '</tbody></table>' : '') +
+                (out ? '<ul class="sx-rels">' + out + '</ul>' : '') +
+                '<div class="sx-meta">' + (inn ? esc(t('sec.db.refBy')) + ' ' + inn + '<span>·</span>' : '') + esc(t('sec.db.owners')) + ' ' + (owners || cites(e)) + '</div></article>';
+        }).join('');
+        return '<div class="sx-entities">' + cards + '</div>';
+    }
+
+    function facts(sec) {
+        return '<ul class="sx-facts">' + of(sec, 'item').map(function (i) {
+            return '<li><p>' + textHtml(text(sec, i.key)) + '</p>' + note(sec, i.key + ' note') + cites(i) + '</li>';
+        }).join('') + '</ul>';
+    }
+
+    var BODY = { rbac: rbac, states: states, db: db, facts: facts };
+    var openState = {};
+
+    /*@P*/
+    function curPlatform() {
+        var m = /(?:^#|&)platform=([^&]*)/.exec(location.hash);
+        var v = m ? decodeURIComponent(m[1]) : '';
+        return G.platforms.some(function (p) { return p.id === v; }) ? v : '';
+    }
+    function platLabel(id) {
+        var own = G.texts[lang], main = G.texts[G.primary];
+        var found = G.platforms.filter(function (p) { return p.id === id; })[0];
+        return (own && own.p[id]) || (main && main.p[id]) || t('plat.kind.' + (found ? found.kind : 'shared'));
+    }
+    var plat = '';
+    var scoped = S.sections;
+    function kindLabel(sec) { return t('sec.type.' + sec.type) + (sec.p ? ' · ' + platLabel(sec.p) : ''); }
+
+    /*@end*/
+    function render() {
+        lang = readLang();
+        /*@P*/
+        plat = curPlatform();
+        scoped = S.sections.filter(function (sec) { return !plat || !sec.p || sec.p === plat; });
+        root.style.display = scoped.length ? '' : 'none';
+        /*@end*/
+        root.querySelectorAll('details').forEach(function (d) { openState[d.id] = d.open; });
+/*@P*/
+        var nav = '<nav class="sx-nav" aria-label="' + esc(t('sec.nav')) + '"><b>' + esc(t('sec.nav')) + '</b>' + scoped.map(function (sec) {
+/*@else*/
+        var nav = '<nav class="sx-nav" aria-label="' + esc(t('sec.nav')) + '"><b>' + esc(t('sec.nav')) + '</b>' + S.sections.map(function (sec) {
+/*@end*/
+            return '<button data-jump="' + esc(sec.id) + '">' + titleOf(sec) + '</button>';
+        }).join('') + '<button class="sx-up" data-up="1">' + esc(t('sec.top')) + '</button></nav>';
+/*@P*/
+        var blocks = scoped.map(function (sec) {
+/*@else*/
+        var blocks = S.sections.map(function (sec) {
+/*@end*/
+            var id = 'sx-' + sec.id;
+            var open = openState[id] !== false;
+/*@P*/
+            return '<details class="sx-block" id="' + esc(id) + '"' + (open ? ' open' : '') + '><summary><span class="sx-kind">' + esc(kindLabel(sec)) + '</span><h2>' + titleOf(sec) + '</h2><span class="sx-count">' + esc(countOf(sec)) + '</span></summary>' +
+/*@else*/
+            return '<details class="sx-block" id="' + esc(id) + '"' + (open ? ' open' : '') + '><summary><span class="sx-kind">' + esc(t('sec.type.' + sec.type)) + '</span><h2>' + titleOf(sec) + '</h2><span class="sx-count">' + esc(countOf(sec)) + '</span></summary>' +
+/*@end*/
+                '<div class="sx-body">' + note(sec, 'intro', 'p').replace('class="sx-note"', 'class="sx-intro"') + (BODY[sec.type] ? BODY[sec.type](sec) : '') + '</div></details>';
+        }).join('');
+        root.setAttribute('aria-label', t('sec.nav'));
+        root.innerHTML = nav + blocks;
+    }
+
+    var pendingSelect = false;
+    function selectFile(p) {
+        if (!known[p]) return;
+        var parts = location.hash.replace(/^#/, '').split('&').filter(function (x) { return x && x.indexOf('sel=') !== 0; });
+        parts.push('sel=' + encodeURIComponent(p));
+        pendingSelect = true;
+        location.hash = parts.join('&');
+    }
+
+    root.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('button');
+        if (!btn) return;
+        if (btn.hasAttribute('data-path')) selectFile(btn.getAttribute('data-path'));
+        else if (btn.hasAttribute('data-up')) window.scrollTo({ top: 0 });
+        else if (btn.hasAttribute('data-jump')) {
+            var d = document.getElementById('sx-' + btn.getAttribute('data-jump'));
+            d.open = true;
+            d.scrollIntoView({ block: 'start' });
+        } else if (btn.hasAttribute('data-entity')) {
+            var card = root.querySelector('#sx-e-' + CSS.escape(btn.closest('details').id.slice(3)) + '-' + CSS.escape(btn.getAttribute('data-entity')));
+            if (!card) return;
+            card.scrollIntoView({ block: 'center' });
+            card.classList.add('flash');
+            setTimeout(function () { card.classList.remove('flash'); }, 1200);
+        }
+    });
+    addEventListener('hashchange', function () {
+        /*@P*/
+        if (curPlatform() !== plat) render();
+        /*@end*/
+        if (readLang() !== lang) render();
+        if (!pendingSelect) return;
+        pendingSelect = false;
+        var side = document.getElementById('side');
+        side.scrollTop = 0;
+        var r = side.getBoundingClientRect();
+        if (r.bottom < 80 || r.top > innerHeight) side.scrollIntoView({ block: 'start' });
+    });
+    document.addEventListener('change', function (ev) {
+        if (ev.target.id === 'lang') render();
+    });
+    /*@P*/
+    addEventListener('lantern:refresh', function () {
+        if (curPlatform() !== plat) render();
+    });
+    /*@end*/
+    render();
+})();
+</script>

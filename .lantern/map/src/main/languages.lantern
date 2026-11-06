@@ -1,0 +1,7 @@
+lantern 1
+# src/main/languages
+
+src/main/languages/index.ts . service 3615ae333cde
+#feature map-setup
+  < src/shared/languages/index.ts#chosenLanguage
+  = src/main/settings-store.ts#projectSetting

@@ -1,0 +1,6 @@
+{
+ "text": {
+  "guards.ts": "tells whether a user's role may use an endpoint, in the bookshop sample",
+  "routes.ts": "the sample's order endpoints and the roles each one accepts"
+ }
+}

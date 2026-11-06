@@ -1,0 +1,21 @@
+{
+ "text": {
+  "harness.css": "Sizes the isolated graph regression viewport",
+  "index.html": "Loads graph harness markup with production map styles",
+  "skills-extras-main.ts": "Launches the Skills window harness's main process: the real extensions channels and the real skills listing over a temporary home and project folder, so every attach, move and detach writes real files",
+  "skills-extras-renderer.ts": "Opens the real Skills modal on the harness page for the project it is given, with the shared tooltips installed",
+  "skills-extras.html": "Loads the Skills modal markup with the production workspace and floating styles",
+  "integrations-main.ts": "Launches the Integrations harness's main process: the real account service and IPC handlers with a fake cipher, pointed at a stub provider server and real git projects",
+  "integrations-main.ts gotcha": "It accepts any frame as the workspace page, so the sender-frame guard is covered by the unit tests, not by this harness.",
+  "integrations-renderer.ts": "Mounts an Integrations button and the real project chip in the status bar, both opening the real Integrations dialog, on the harness page for the projects it is given",
+  "integrations.html": "Loads a sidebar with an Integrations button and a Lantern panel with a status bar, with the production chrome and Integrations styles",
+  "main.cjs": "Launches isolated Electron graph fixtures with controlled viewport and pixel density",
+  "tray-popover-frame.html": "Loads the real popover page with the production theme and popover styles inside the harness, which supplies its own bridge",
+  "tray-popover-main.cjs": "Launches a hidden Electron window that holds the popover harness on a desktop backdrop",
+  "tray-popover-renderer.ts": "Mounts the real popover view with a bridge that records the calls it makes and reports its height to the page around it, and lets the test open or update it with a model",
+  "tray-popover-shell.css": "Paints a desktop and menu bar behind the popover and places the frame, a rounded translucent window, under the icon",
+  "tray-popover-shell.js": "Resizes the frame to the height the popover reports",
+  "tray-popover.html": "Holds the desktop backdrop and the frame that shows the popover page",
+  "renderer.ts": "Mounts production graph views using deterministic or supplied map fixtures, and a pinned macro view with this repo's feature texts or a pinned areas payload on request, a stub explanation client for the review demo, a project name when asked, the Orchard Market evaluation project with its pull request, a small or large evaluation project, and a project sized by the areas and features in the address"
+ }
+}

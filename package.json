@@ -1,0 +1,90 @@
+{
+  "name": "lantern",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Desktop app for running and understanding Claude Code and Codex across your harness: watch sessions, get notified when one needs you, and read each change.",
+  "keywords": [
+    "claude-code",
+    "codex",
+    "electron",
+    "vscode",
+    "desktop-app"
+  ],
+  "author": {
+    "name": "Mobile Reality",
+    "email": "hello@themobilereality.com"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "compile": "node scripts/esbuild.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint --diagnostic-level=error",
+    "test": "vitest run",
+    "test:lsp": "pnpm compile && vitest run test/lsp-integration.test.ts test/semantic-highlight.test.ts",
+    "test:watch": "vitest",
+    "test:graph:e2e": "playwright test test/e2e/graph-regression.spec.ts test/e2e/graph-pixi.spec.ts test/e2e/graph-navigation.spec.ts test/e2e/pane-overflow.spec.ts",
+    "test:graph:pixi": "playwright test test/e2e/graph-pixi.spec.ts",
+    "test:graph:typecheck": "tsc --noEmit -p test/e2e/tsconfig.json",
+    "test:graph:visual": "playwright test test/e2e/graph-regression.spec.ts --grep @visual",
+    "test:graph:visual:update": "playwright test test/e2e/graph-regression.spec.ts --grep @visual --update-snapshots",
+    "test:flow:layout": "playwright test test/e2e/flow-layout.spec.ts",
+    "test:integrations:e2e": "playwright test test/e2e/integrations.spec.ts test/e2e/integrations-bindings.spec.ts",
+    "test:tray:e2e": "playwright test test/e2e/tray-popover.spec.ts",
+    "test:skills:e2e": "playwright test test/e2e/skills-extras.spec.ts",
+    "test:graph:perf": "playwright test test/e2e/graph-performance.spec.ts",
+    "demo:pr-review": "node scripts/pr-review-demo.mjs",
+    "coverage": "vitest run --coverage",
+    "start": "node scripts/esbuild.mjs && LANTERN_PROFILE=dev env -u ELECTRON_RUN_AS_NODE electron out",
+    "open:dev": "LANTERN_PROFILE=dev env -u ELECTRON_RUN_AS_NODE electron out",
+    "icon": "node scripts/make-icon.js",
+    "icons:update": "node scripts/material-file-icons.mjs --update-manifest",
+    "install-skills": "node scripts/install-skills.mjs",
+    "e2e:delegate": "node scripts/e2e-delegate/run.mjs",
+    "skill-test": "node scripts/skill-test/run.mjs",
+    "run-cost": "node scripts/run-cost/run.mjs",
+    "build": "node scripts/esbuild.mjs --target-platform darwin --target-arch arm64 && env -u ELECTRON_RUN_AS_NODE electron-packager out \"Lantern\" --platform=darwin --arch=arm64 --out=dist --overwrite --app-bundle-id=com.mobilereality.lantern --icon=build/icon.icns --extend-info=build/extend-info.plist --ignore='^/lsp-runtime($|/)' --ignore='^/cli($|/)' --ignore='^/licenses($|/)' --extra-resource=out/lsp-runtime --extra-resource=out/cli --extra-resource=out/licenses && node scripts/package-licences.mjs --platform darwin --arch arm64",
+    "sign": "codesign --force --deep --sign \"Lantern Local\" \"dist/Lantern-darwin-arm64/Lantern.app\"",
+    "fuses": "node scripts/fuses.js",
+    "dist": "pnpm run build && pnpm run fuses && pnpm run sign",
+    "sign:adhoc": "codesign --force --deep --sign - \"dist/Lantern-darwin-arm64/Lantern.app\"",
+    "pack": "ditto -c -k --keepParent \"dist/Lantern-darwin-arm64/Lantern.app\" \"dist/Lantern-mac.zip\"",
+    "dist:share": "pnpm run build && pnpm run fuses && pnpm run sign:adhoc && pnpm run pack",
+    "build:win": "node scripts/esbuild.mjs --target-platform win32 --target-arch x64 && electron-packager out \"Lantern\" --platform=win32 --arch=x64 --out=dist --overwrite --app-bundle-id=com.mobilereality.lantern --icon=build/icon.ico --ignore=\"^/lsp-runtime($|/)\" --ignore=\"^/cli($|/)\" --ignore=\"^/licenses($|/)\" --extra-resource=out/lsp-runtime --extra-resource=out/cli --extra-resource=out/licenses && node scripts/package-licences.mjs --platform win32 --arch x64 && pnpm run fuses",
+    "app": "open \"dist/Lantern-darwin-arm64/Lantern.app\"",
+    "patch-mic": "node scripts/patch-claude-mic.js",
+    "patch-mic:check": "node scripts/patch-claude-mic.js --check",
+    "patch-mic:revert": "node scripts/patch-claude-mic.js --revert"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.5",
+    "@electron/fuses": "^2.1.2",
+    "@electron/osx-sign": "^2.4.0",
+    "@electron/packager": "^20.0.1",
+    "@playwright/test": "1.55.1",
+    "@types/node": "^26.0.1",
+    "@vitest/coverage-v8": "^3.2.6",
+    "electron": "^45.2.2",
+    "esbuild": "^0.28.1",
+    "jsdom": "^29.1.1",
+    "material-icon-theme": "5.39.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.2.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
+  },
+  "dependencies": {
+    "@lantern/lsp-runtime": "workspace:*",
+    "dompurify": "^3.4.17",
+    "js-yaml": "^5.2.1",
+    "jsonc-parser": "3.3.1",
+    "marked": "^18.0.6",
+    "pixi.js": "8.14.3",
+    "shiki": "3.13.0",
+    "vscode-jsonrpc": "8.2.1"
+  }
+}

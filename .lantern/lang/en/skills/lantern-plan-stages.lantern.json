@@ -1,0 +1,6 @@
+{
+ "text": {
+  "README.md": "Says the skill covers steps 3 and 4 of planning and has no scripts of its own",
+  "SKILL.md": "Directs splitting work into ordered stages of items with acceptance checks and the files each creates or changes, putting each question in the stage it blocks with its touches, explanation and flow, recording answers and requests pasted from Lantern, and checking the file"
+ }
+}

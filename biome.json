@@ -1,0 +1,56 @@
+{
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "includes": [
+            "src/**/*.{ts,tsx,js,mjs,cjs,mts,cts,css}",
+            "packages/**/*.{ts,tsx,js,mjs,cjs,mts,cts}",
+            "scripts/**/*.{ts,js,mjs,cjs,mts,cts}",
+            "skills/**/*.{ts,js,mjs,cjs,mts,cts}",
+            "test/**/*.{ts,tsx,js,mjs,cjs,mts,cts}",
+            "*.ts"
+        ]
+    },
+    "formatter": {
+        "enabled": false
+    },
+    "assist": {
+        "enabled": false
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "preset": "recommended",
+            "correctness": {
+                "noConstructorReturn": "off",
+                "noEmptyCharacterClassInRegex": "off",
+                "noUnknownTypeSelector": "off",
+                "noUnsafeOptionalChaining": "off",
+                "noVoidTypeReturn": "off",
+                "usePlaywrightValidDescribeCallback": "off"
+            },
+            "suspicious": {
+                "noDuplicateTestHooks": "off",
+                "noImplicitAnyLet": "off",
+                "noNonNullAssertedOptionalChain": "off",
+                "noShadowRestrictedNames": "off"
+            }
+        }
+    },
+    "overrides": [
+        {
+            "includes": ["test/e2e/**"],
+            "linter": {
+                "rules": {
+                    "correctness": {
+                        "noEmptyPattern": "off"
+                    }
+                }
+            }
+        }
+    ]
+}

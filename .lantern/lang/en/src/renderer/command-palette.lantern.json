@@ -1,0 +1,8 @@
+{
+  "text": {
+    "index.ts": "Opens the command palette from the palette.open command or the app bar field: builds its dialog, anchors it over the field, filters the registered commands as you type, lists recently used ones first with their shortcut chips, runs the chosen one, hands focus back to the opener on close and keeps the field's shortcut label current",
+    "index.ts gotcha": "Its capture-phase key listener swallows keys meant for dialogs below; focus leaving the card closes it",
+    "items.ts": "Filters and orders the command palette's entries by query and use, never listing the palette itself, and splits each label into hit and plain parts",
+    "usage.ts": "Counts how often each palette command runs, kept in local storage"
+  }
+}

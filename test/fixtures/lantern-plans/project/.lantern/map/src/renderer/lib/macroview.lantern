@@ -1,0 +1,12 @@
+lantern 1
+# src/renderer/lib/macroview
+
+src/renderer/lib/macroview/marks.ts . pure 000000000000
+#feature macro-view
+  < src/renderer/lib/macroview/model.ts
+src/renderer/lib/macroview/model.ts . pure 000000000000
+#feature macro-view
+src/renderer/lib/macroview/mount.ts . component 000000000000
+#feature macro-view
+  = src/renderer/lib/macroview/marks.ts
+  < src/renderer/lib/macroview/model.ts

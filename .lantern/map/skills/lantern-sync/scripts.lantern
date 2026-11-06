@@ -1,0 +1,32 @@
+lantern 1
+# skills/lantern-sync/scripts
+
+skills/lantern-sync/scripts/selftest.mjs . test 53b8210bef4f
+#feature map-sync
+  = ext:git
+  = skills/lantern-setup/scripts/enumerate.mjs
+  = skills/lantern-setup/scripts/lib.mjs
+  = skills/lantern-setup/scripts/plan.mjs
+  = skills/lantern-setup/scripts/prs.mjs
+  = skills/lantern-setup/scripts/validate.mjs
+  = skills/lantern-sync/scripts/sync.mjs
+
+skills/lantern-sync/scripts/sync.mjs . script d15a4c65d6f6
+#feature map-sync
+#see-also skills/lantern-setup/scripts/prs.mjs
+  = ext:git
+  < skills/lantern-plan/scripts/plan-format.mjs
+  < skills/lantern-plan/scripts/plan-io.mjs#planRel
+  < skills/lantern-plan/scripts/plan-messages.mjs
+  < skills/lantern-plan/scripts/plan-model.mjs#allItems
+  = skills/lantern-plan/scripts/plan-run.mjs#runPlanJson
+  > skills/lantern-plan/scripts/plan.mjs
+  = skills/lantern-setup/scripts/areas.mjs
+  = skills/lantern-setup/scripts/lib.mjs
+  < skills/lantern-setup/scripts/plan-ref.mjs
+  = skills/lantern-setup/scripts/prdescribe.mjs#describeFromJson
+  = skills/lantern-setup/scripts/prflow.mjs#flowFromJson
+  = skills/lantern-setup/scripts/prs.mjs
+  = skills/lantern-setup/scripts/shell.mjs#runGit
+  = skills/lantern-setup/scripts/texts.mjs
+  = skills/lantern-setup/scripts/validate.mjs

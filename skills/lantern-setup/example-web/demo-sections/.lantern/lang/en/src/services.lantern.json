@@ -1,0 +1,8 @@
+{
+ "text": {
+  "authService.ts": "decides a user's role from the e-mail lists",
+  "authService.ts see-also": "the role is decided here; the check that uses it is in the guard",
+  "orderService.ts": "moves an order through placed, paid, shipped and cancelled",
+  "orderService.ts gotcha": "cancelling a paid order never gives the copies back to the shelf"
+ }
+}

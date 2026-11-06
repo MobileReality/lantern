@@ -1,0 +1,104 @@
+{
+  "usage": {
+    "header": "usage: node jira.mjs <command> [arguments]",
+    "get": "  get <KEY> [--json]                        show one issue",
+    "search": "  search \"<JQL>\" [--limit N] [--json]       find issues by JQL",
+    "comment": "  comment <KEY> --body <text> | --body-file <path>   add a comment",
+    "describe": "  describe <KEY> --body <text> | --body-file <path>  replace the description",
+    "transitions": "  transitions <KEY> [--json]                 list the statuses the issue can move to",
+    "transition": "  transition <KEY> <status name>             move the issue to a named status",
+    "conventions": "  conventions [--json]                       list the templates, skills and saved templates this project already has for tickets",
+    "template": "  template save ticket --file <path> [--force] | show ticket   keep or print the project's ticket template",
+    "help": "  help                                       show this text"
+  },
+  "cli": {
+    "unknownCommand": "Unknown or missing command \"{command}\".",
+    "failed": "Failed: {reason}"
+  },
+  "args": {
+    "unknownOption": "Unknown option {option}.",
+    "missingValue": "Option {option} needs a value.",
+    "positionals": "Expected arguments: {expected}.",
+    "noArguments": "(none)",
+    "bodyRequired": "Give the text with exactly one of --body <text> or --body-file <path>.",
+    "bodyUnreadable": "Could not read the text: {reason}",
+    "bodyEmpty": "The text is empty.",
+    "badLimit": "--limit must be a whole number from 1 to {max}."
+  },
+  "credentials": {
+    "missing": "Missing {names}. Add the Jira account, with its site URL, in Lantern (command palette, Integrations); runs started from Lantern then get it for the project. Nothing else needs to be set up.",
+    "reason": {
+      "noAccount": "Lantern has no Jira account yet: add one in Lantern (command palette, Integrations), then choose an account for this project in Integrations.",
+      "chooseAccount": "No Jira account is chosen for this project: choose an account for this project in Integrations (command palette, Integrations).",
+      "storeUnavailable": "Lantern could not read the stored account (its secret store is locked or unavailable); unlock it and try again.",
+      "unknownProject": "This folder is not a project opened in Lantern; open it there.",
+      "notRunning": "Lantern is not running or does not answer; start it.",
+      "refused": "Lantern refused the request."
+    },
+    "badSite": "{name} must be the https URL of the Jira site, for example https://example.atlassian.net."
+  },
+  "http": {
+    "unreachable": "Could not reach {host}: {reason}",
+    "refused": "{action} was refused ({status}).{hint} {detail}",
+    "hint": {
+      "401": "The account was not accepted; check it in Lantern (command palette, Integrations).",
+      "403": "The account may lack permission for this.",
+      "404": "Not found, or the account cannot see it."
+    }
+  },
+  "jira": {
+    "badKey": "\"{key}\" is not an issue key such as PROJ-123.",
+    "action": {
+      "get": "Reading {key}",
+      "search": "The search",
+      "comment": "Commenting on {key}",
+      "describe": "Updating the description of {key}",
+      "transitions": "Listing the transitions of {key}",
+      "transition": "Moving {key}"
+    },
+    "issue": {
+      "title": "{key}: {summary}"
+    },
+    "field": {
+      "status": "Status",
+      "type": "Type",
+      "priority": "Priority",
+      "assignee": "Assignee",
+      "reporter": "Reporter",
+      "labels": "Labels",
+      "parent": "Parent",
+      "url": "URL: {url}"
+    },
+    "searchRow": "{key}  [{status}]  {summary}",
+    "noResults": "No issues found.",
+    "noValue": "-",
+    "commented": "Commented on {key} (comment {id}).",
+    "described": "Updated the description of {key}.",
+    "transitionRow": "{id}  {name} -> {target}",
+    "noTransitions": "No transitions are available from the current status.",
+    "noSuchTransition": "{key} cannot move to \"{status}\". It can move to: {available}.",
+    "transitioned": "{key} is now \"{status}\"."
+  },
+  "conventions": {
+    "row": "{source}  {path}  {line}",
+    "none": "Nothing found: no ticket template in the repository, no skill about it and no saved template.",
+    "noDescription": "(no description)",
+    "repoLine": "ticket template in the repository",
+    "savedLine": "ticket template saved for this project ({kind})",
+    "source": {
+      "repository": "repository",
+      "skill": "skill",
+      "saved": "saved"
+    }
+  },
+  "template": {
+    "badAction": "The first argument must be one of: {actions}.",
+    "badKind": "The kind \"{kind}\" is not one for Jira; use one of: {kinds}.",
+    "fileRequired": "Give the approved template with --file <path>.",
+    "unreadable": "Could not read the template: {reason}",
+    "empty": "The template file is empty.",
+    "exists": "A template is already saved at {path}; pass --force to replace it.",
+    "saved": "Saved the {kind} template at {path}.",
+    "absent": "No {kind} template is saved for this project."
+  }
+}

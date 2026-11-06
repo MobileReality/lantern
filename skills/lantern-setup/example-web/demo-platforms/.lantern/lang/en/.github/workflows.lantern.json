@@ -1,0 +1,6 @@
+{
+ "text": {
+  "deploy.yml": "tests, then applies Terraform on main",
+  "deploy.yml > infra/main.tf#readings": "plan and apply"
+ }
+}

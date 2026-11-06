@@ -1,0 +1,57 @@
+lantern 1
+# skills/lantern-delegate
+
+skills/lantern-delegate/README.md . skill 994498c26e7c
+#feature delegate-runs
+
+skills/lantern-delegate/SKILL.md . skill 6b6af22a5ad9
+#feature delegate-runs
+  @ skills/lantern-delegate-complex/SKILL.md
+  @ skills/lantern-delegate/agents/lantern-delegate-high.md
+  @ skills/lantern-delegate/agents/lantern-delegate-low.md
+  @ skills/lantern-delegate/agents/lantern-delegate-medium.md
+  @ skills/lantern-delegate/agents/lantern-delegate-xhigh.md
+  @ skills/lantern-delegate/agents/reviewer.md
+  @ skills/lantern-delegate/protocol.md
+  @ skills/lantern-delegate/references/codex.md
+  @ skills/lantern-delegate/scripts/check-skill-use.mjs
+  @ skills/lantern-delegate/scripts/extensions.mjs
+  @ skills/lantern-delegate/scripts/init-local.mjs
+  @ skills/lantern-delegate/scripts/lint-reviewer.mjs
+  @ skills/lantern-delegate/scripts/lint-skill-reads.mjs
+  @ skills/lantern-delegate/scripts/lint-transcript.mjs
+  @ skills/lantern-delegate/scripts/permissions.mjs
+  @ skills/lantern-delegate/scripts/pr-append-cost.mjs
+  @ skills/lantern-delegate/scripts/preferences.mjs
+  @ skills/lantern-delegate/scripts/preflight.mjs
+  @ skills/lantern-delegate/scripts/required-skills.mjs
+  @ skills/lantern-plan-handoff/SKILL.md
+  @ skills/lantern-plan/scripts/plan.mjs
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/scripts/model.mjs
+  @ skills/lantern-sync/SKILL.md
+  @ skills/lantern-sync/scripts/sync.mjs
+
+skills/lantern-delegate/protocol.md . skill f4d1ab8d2fe0
+#feature delegate-runs
+  @ skills/lantern-delegate-complex/agents/reviewer-complex.md
+  @ skills/lantern-delegate/agents/reviewer.md
+  @ skills/lantern-delegate/references/codex.md
+  @ skills/lantern-delegate/scripts/check-skill-use.mjs
+  @ skills/lantern-delegate/scripts/github/identity.mjs
+  @ skills/lantern-delegate/scripts/lint-skill-reads.mjs
+  @ skills/lantern-delegate/scripts/lint-transcript.mjs
+  @ skills/lantern-delegate/scripts/pr-create.mjs
+  @ skills/lantern-delegate/scripts/required-skills.mjs
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/references/reason.md
+  @ skills/lantern-setup/scripts/areas.mjs
+  @ skills/lantern-setup/scripts/retag.mjs
+  @ skills/lantern-setup/scripts/systems.mjs
+  @ skills/lantern-setup/scripts/validate.mjs
+  @ skills/lantern-sync/SKILL.md
+  @ skills/lantern-sync/scripts/sync.mjs
+  @ skills/lantern-local-loop/SKILL.md
+  @ skills/lantern-no-comments/SKILL.md
+  @ skills/lantern-bitbucket/scripts/bitbucket.mjs
+  @ skills/lantern-github/scripts/github.mjs

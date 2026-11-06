@@ -1,0 +1,19 @@
+{
+ "text": {
+  "common.ts": "shared helpers and types for section renderers",
+  "common.ts gotcha": "a cite renders as a graph link only when both the cite and the map mark it mapped",
+  "common.ts < src/renderer/lib/lanternctx.ts#textHtml": "translated text spans",
+  "controller.ts": "opens, closes and refreshes the sections overlay, keeping each db section's filters across refreshes",
+  "controller.ts gotcha": "graph is inert while a section is open; Esc is caught on document, clearing a filled db search first",
+  "controller.ts = src/renderer/lib/lanternsections/registry.ts#overlayHtml": "overlay markup",
+  "controller.ts = src/renderer/lib/lanternsections/registry.ts#barHtml": "section bar markup",
+  "db.ts": "renders a db section as an overview and entity cards, with search, kind, origin and related-entity filters",
+  "facts.ts": "renders a facts section as a bullet list",
+  "rbac.ts": "renders an rbac section as a role matrix",
+  "registry.ts": "picks a renderer per section type, builds bar and overlay",
+  "registry.ts gotcha": "RENDERERS is exhaustive over section types, so a new type needs a renderer here",
+  "registry.ts < src/renderer/lib/lanternscope.ts#platformLabel": "platform badge",
+  "states.ts": "renders a states section as SVG diagrams and tables",
+  "states.ts gotcha": "transition numbers follow list order; arcs to undeclared states are dropped but keep their number"
+ }
+}

@@ -1,0 +1,15 @@
+lantern 1
+# src/api
+
+src/api/guards.ts . middleware 5b68f46d6b3c
+#feature staff-access
+  = src/services/authService.ts#roleFor
+  < src/types/order.ts#Role
+src/api/routes.ts . route 67bbd8643613
+#feature ordering
+  = src/api/guards.ts#requireRole
+  = src/services/orderService.ts#cancelOrder
+  = src/services/orderService.ts#payOrder
+  = src/services/orderService.ts#placeOrder
+  = src/services/orderService.ts#shipOrder
+  < src/types/order.ts#Role

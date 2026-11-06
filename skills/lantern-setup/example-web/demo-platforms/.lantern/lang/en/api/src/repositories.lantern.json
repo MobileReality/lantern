@@ -1,0 +1,6 @@
+{
+ "text": {
+  "readingRepository.ts": "reads and writes the readings table",
+  "readingRepository.ts = ext:dynamodb": "readings table"
+ }
+}

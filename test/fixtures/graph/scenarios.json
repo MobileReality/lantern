@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "renderer": "pixi",
+  "locale": "en-US",
+  "timezone": "Europe/Warsaw",
+  "theme": "dark",
+  "deviceScaleFactor": 1,
+  "viewport": { "width": 1100, "height": 760 },
+  "scenarios": [
+    { "id": "overview", "fixture": "overview", "selection": null, "filters": [] },
+    { "id": "selected", "fixture": "overview", "selection": "src/services/project-service.ts", "filters": [] },
+    { "id": "empty", "fixture": "empty", "selection": null, "filters": [] },
+    { "id": "large-performance", "fixture": "large", "selection": "src/group-00/file-0600.ts", "filters": [] }
+  ]
+}

@@ -1,0 +1,207 @@
+lantern 1
+# src/renderer/features
+
+src/renderer/features/agent-run.ts . component 6657f28898dc
+#feature agent-runs
+  = src/preload/workspace.ts
+  < src/renderer/lib/providers.ts#assistantName
+  < src/renderer/lib/providers.ts#providerForProject
+  < src/renderer/lib/providers.ts#providerLabel
+  = src/renderer/lib/util.ts
+  = src/renderer/state.ts
+  < src/shared/lantern-plan-messages.ts#say
+  > src/renderer/features/explain.ts
+
+src/renderer/features/cli-panel.ts . component 2a1ac195297b
+  < src/main/cli.ts#CliStatus
+  = src/preload/workspace.ts#cliInstall
+  < src/renderer/lib/settings-editor.ts#SettingsPanel
+  < src/renderer/lib/util.ts#el
+  < src/shared/shell-quote.ts#shellQuote
+
+src/renderer/features/editor-tab.ts . service 7356a388d6b0
+#feature serve-web
+  < src/renderer/state.ts
+  = src/preload/workspace.ts
+  = src/renderer/features/load-screen.ts
+  = src/renderer/lib/editorload.ts
+
+src/renderer/features/explain.ts . component 8d84de6f1aef
+#feature code-insight
+  = src/preload/workspace.ts
+  = src/renderer/features/agent-run.ts
+  = src/renderer/lib/codeview.ts
+  = src/renderer/lib/explain.ts
+  = src/renderer/lib/safe-markdown.ts#safeMarkdown
+  = src/renderer/lib/util.ts
+  = src/renderer/state.ts
+  = src/renderer/commands/index.ts#registerCommand
+  < src/shared/project-data.ts#EXPLAINS_DIR
+
+src/renderer/features/lantern.ts . component be160edd7758
+#feature file-graph
+  < src/main/lantern.ts
+  < src/main/setup-progress.ts
+  = src/preload/workspace.ts
+  = src/renderer/features/agent-run.ts
+  > src/renderer/features/explain.ts#openExplain
+  < src/renderer/lib/providers.ts#assistantName
+  < src/renderer/lib/providers.ts#providerForProject
+  < src/renderer/lib/providers.ts#providerLabel
+  = src/renderer/lantern-problems/index.ts#mountProblems
+  = src/renderer/lib/codemodal.ts#openCodeModal
+  = src/renderer/lib/comparemodal.ts#openCompareModal
+  = src/renderer/lib/lanternhead.ts#syncLang
+  = src/renderer/lib/lanternlayout.ts
+  = src/renderer/lib/lanternplanfix.ts#brokenPlanFix
+  = src/renderer/lib/lanternplanfix.ts#createPlanFix
+  = src/renderer/lib/lanternplanwindow.ts#syncPlanWindow
+  = src/renderer/lib/lanternprs.ts
+  = src/renderer/lib/lanternview.ts#mountLanternView
+  = src/renderer/lib/lanternview.ts#setFoldFiles
+  = src/renderer/lib/prexplain-client.ts#projectExplainClient
+  < src/renderer/lib/settings-state.ts#settingValue
+  = src/renderer/lib/setupprogress.ts
+  = src/renderer/lib/setuprun.ts
+  = src/renderer/lib/setupscreen.ts
+  = src/renderer/lib/util.ts
+  = src/renderer/state.ts
+  < src/shared/settings-registry.ts#affectsSetting
+  = src/renderer/features/integrations.ts#openIntegrations
+  = src/renderer/lib/integrations-chip.ts#mountIntegrationChip
+  = src/renderer/features/provider-control.ts#mountProviderButton
+  > src/renderer/lantern-status/index.ts#renderSessions
+  > src/renderer/lantern-status/index.ts#renderStats
+  < src/renderer/lib/opened-projects.ts#openedProjects
+
+src/renderer/features/load-screen.ts . component 9b1c0f18420e
+#feature serve-web
+  = src/renderer/lib/editorload.ts
+  < src/renderer/lib/util.ts#el
+
+src/renderer/features/memory.ts . component 79577c20306a
+#feature process-memory
+  = src/preload/workspace.ts
+  = src/renderer/lib/memoryview.ts#renderMemory
+  = src/renderer/lib/util.ts
+
+src/renderer/features/provider-control.ts . component e3d438ce1096
+#feature agent-runs
+  = src/preload/workspace.ts
+  = src/renderer/lib/providers.ts
+  = src/renderer/popover/index.ts#mountPopover
+  = src/renderer/popover/index.ts#rovingFocus
+  < src/renderer/state.ts#app
+
+src/renderer/features/rtk-panel.ts . component 9cc9770a6850
+  = src/preload/workspace.ts#rtkStatus
+  < src/renderer/lib/settings-editor.ts#SettingsPanel
+  < src/renderer/lib/util.ts#el
+  < src/renderer/state.ts#activeProjectPath
+  < src/shared/rtk.ts#RtkStatus
+
+src/renderer/features/server-load.ts . component aa84e39c548a
+#feature serve-web
+  < src/renderer/state.ts
+  = src/preload/workspace.ts
+  = src/renderer/features/load-screen.ts
+  = src/renderer/lib/editorload.ts
+
+src/renderer/features/settings.ts . component 83a8981e57ff
+  < src/renderer/features/cli-panel.ts#cliPanel
+  < src/renderer/features/rtk-panel.ts#rtkPanel
+  > src/renderer/lib/notification-sound.ts#playSound
+  = src/renderer/lib/settings-editor.ts#mountSettingsEditor
+  < src/renderer/lib/settings-state.ts
+  < src/renderer/lib/util.ts#el
+  < src/shared/settings-notifications.ts#SOUND_SETTING_FOR_KIND
+  < src/shared/settings-registry.ts
+  = src/renderer/lib/modal-focus.ts#trapTab
+  = src/renderer/commands/index.ts#registerCommand
+  = src/preload/workspace.ts#settingsOpenFile
+
+src/renderer/features/skills-extras-step.ts . component 1c9018ac8fe0
+#feature skill-installer
+  = src/preload/workspace.ts
+  < src/renderer/features/skills-rows.ts#scopeLabel
+  < src/renderer/features/skills-rows.ts#slotLabel
+  < src/renderer/features/skills-segmented.ts#segmentedControl
+  < src/renderer/lib/util.ts#footBtn
+  < src/shared/extension-problem.ts#extraProblemMessage
+  < src/shared/extension-slots.ts#EXTENSION_SCOPES
+  < src/shared/extension-slots.ts#ExtensionSlot
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/features/skills-extras.ts . component 572104817313
+#feature skill-installer
+  = src/preload/workspace.ts
+  < src/renderer/features/skills-roles.ts#roleBoard
+  < src/renderer/features/skills-rows.ts#scopeLabel
+  < src/renderer/features/skills-rows.ts#slotLabel
+  = src/renderer/lib/util.ts
+  < src/shared/extension-slots.ts#EXTENSION_SCOPE
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/features/skills-roles.ts . component 85f395b6d942
+#feature skill-installer
+  < src/renderer/features/skills-rows.ts#attachedItem
+  < src/renderer/features/skills-rows.ts#candidateItem
+  < src/renderer/features/skills-segmented.ts#segmentedControl
+  < src/renderer/features/skills-shortcuts.ts#searchShortcuts
+  < src/renderer/features/skills-state.ts#attachedRows
+  < src/renderer/features/skills-state.ts#candidateRows
+  < src/renderer/lib/util.ts#el
+  < src/shared/extension-slots.ts#EXTENSION_SLOTS
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/features/skills-rows.ts . component 76ff9f60fa81
+#feature skill-installer
+  < src/renderer/features/skills-state.ts#otherScope
+  < src/renderer/lib/util.ts#el
+  < src/shared/extension-slots.ts#ExtensionScope
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/features/skills-segmented.ts . component cedd6a971b0f
+#feature skill-installer
+  < src/renderer/features/skills-state.ts#KEY
+  < src/renderer/lib/util.ts#el
+
+src/renderer/features/skills-shortcuts.ts . util 1844893a31c2
+#feature skill-installer
+
+src/renderer/features/skills-state.ts . pure e54c1f116173
+#feature skill-installer
+  < src/shared/extension-slots.ts#EXTENSION_SCOPE
+  < src/shared/extension-slots.ts#hasLockedPrefix
+  < src/shared/extension-slots.ts#isLockedSkill
+  < src/shared/extension-slots.ts#mergeExtras
+  < src/shared/extension-slots.ts#SKILL_LINKER_STATE
+
+src/renderer/features/skills.ts . component 38ce9e659bf4
+#feature skill-installer
+  = src/preload/workspace.ts
+  = src/renderer/features/skills-extras-step.ts
+  = src/renderer/features/skills-extras.ts
+  < src/renderer/features/skills-roles.ts#resetBoardUi
+  < src/renderer/features/skills-state.ts
+  = src/renderer/lib/util.ts
+  = src/renderer/state.ts
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/features/integrations.ts . component ff914f1c1d2c
+#feature integrations
+  = src/renderer/lib/auth-client.ts#loadAuthStatus
+  = src/renderer/lib/integrations-account.ts#buildAccountRow
+  = src/renderer/lib/integrations-form.ts#buildAddForm
+  < src/renderer/lib/integrations-format.ts#accountName
+  = src/renderer/lib/integrations-projects.ts#buildProjectCard
+  = src/renderer/lib/integrations-tiles.ts#buildProjectTile
+  = src/renderer/lib/modal-focus.ts#trapTab
+  < src/renderer/lib/opened-projects.ts#ProjectRef
+  < src/renderer/lib/provider-logo.ts#providerLogo
+  < src/renderer/lib/util.ts#el
+  < src/renderer/state.ts#activeProjectPath
+  < src/shared/auth-kinds.ts#AUTH_ERROR
+  < src/shared/auth-view.ts#AuthStatus
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#PROVIDER_ROLE

@@ -1,0 +1,9 @@
+lantern 1
+# skills/lantern-plan-impact
+
+skills/lantern-plan-impact/README.md . skill 051ce12f0ae5
+#feature planning
+
+skills/lantern-plan-impact/SKILL.md . skill 1e19be3e591e
+#feature planning
+  @ skills/lantern-plan/scripts/plan.mjs

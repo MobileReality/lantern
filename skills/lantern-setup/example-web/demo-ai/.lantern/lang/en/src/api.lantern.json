@@ -1,0 +1,7 @@
+{
+ "text": {
+  "chatHandler.ts": "POST /api/chat: runs the agent, opens a ticket",
+  "chatHandler.ts = src/ai/agentLoop.ts#runAgent": "question in, answer and triage out",
+  "chatHandler.ts > src/services/ticketService.ts#openTicketFromTriage": "model triage"
+ }
+}

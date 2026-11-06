@@ -1,0 +1,27 @@
+lantern 1
+# skills/lantern-setup/example-web
+
+skills/lantern-setup/example-web/demo-ai.html . page 32dc9c8dd87b
+#feature file-graph
+skills/lantern-setup/example-web/demo-platforms.html . page abad72c3a821
+#feature file-graph
+skills/lantern-setup/example-web/demo-sections.html . page 68f942935d15
+#feature file-graph
+skills/lantern-setup/example-web/demo-skills.html . page cff8864703c5
+#feature file-graph
+skills/lantern-setup/example-web/locales.json . config e9e707bee9ca
+#feature file-graph
+skills/lantern-setup/example-web/render.mjs . script c069f810bfee
+#feature file-graph
+  = skills/lantern-setup/scripts/lib.mjs#loadMap
+  = skills/lantern-setup/scripts/platforms.mjs#loadPlatforms
+  = skills/lantern-setup/scripts/sections.mjs#loadSections
+  = skills/lantern-setup/scripts/texts.mjs#textSlots
+  < skills/lantern-setup/example-web/locales.json
+  < skills/lantern-setup/example-web/sections.html#__SECTIONS__
+  < skills/lantern-setup/example-web/template.html#__DATA__
+skills/lantern-setup/example-web/sections.html . component 4c624e8df68a
+#feature lantern-sections
+  < skills/lantern-setup/example-web/template.html#lantern-data
+skills/lantern-setup/example-web/template.html . page f87d39593c6e
+#feature file-graph

@@ -1,0 +1,18 @@
+lantern 1
+# skills/lantern-delegate/agents
+
+skills/lantern-delegate/agents/lantern-delegate-high.md . skill 2ba8ce88ccb2
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate/agents/lantern-delegate-low.md . skill 456a7306b0e4
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate/agents/lantern-delegate-medium.md . skill 185f657c4095
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate/agents/lantern-delegate-xhigh.md . skill 901d7d0540c4
+#feature delegate-runs
+  @ skills/lantern-delegate/protocol.md
+skills/lantern-delegate/agents/reviewer.md . skill 8daa1340d437
+#feature delegate-runs
+  @ skills/lantern-delegate/scripts/required-skills.mjs

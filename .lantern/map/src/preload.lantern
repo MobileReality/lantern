@@ -1,0 +1,17 @@
+lantern 1
+# src/preload
+
+src/preload/overlay.ts . gateway ca0ee7fc362a
+#feature notifications
+
+src/preload/tray-popover.ts . gateway 2fd4f639f5a6
+#feature session-monitoring
+
+src/preload/workspace.ts . gateway 7b036f19cb12
+  < src/main/provider.ts#Provider
+  < src/shared/auth.ts#AUTH_STATUS_CHANNEL
+  < src/shared/code-highlighting.ts
+  < src/shared/memory.ts#MEMORY_FREE_CHANNEL
+  < src/shared/memory.ts#MEMORY_WATCH_CHANNEL
+  < src/shared/pr-explain.ts#PR_EXPLAIN_START
+  < src/shared/settings-registry.ts#SettingKey

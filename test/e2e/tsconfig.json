@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "@playwright/test"]
+  },
+  "include": [
+    "../../playwright.config.ts",
+    "../helpers/lantern-map.ts",
+    "../fixtures/graph/**/*.ts",
+    "./**/*.ts",
+    "../../src/main/lantern.ts",
+    "../../src/main/lantern-types.ts",
+    "../../src/main/filecontent.ts",
+    "../../src/main/lantern-prfile.ts",
+    "../../src/renderer/global.d.ts",
+    "../../src/renderer/lib/**/*.ts"
+  ]
+}

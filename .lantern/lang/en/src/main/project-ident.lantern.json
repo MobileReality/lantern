@@ -1,0 +1,6 @@
+{
+  "text": {
+    "index.ts": "Names a project by its main checkout's folder and adds its current branch and, when it is a linked worktree on a branch, the worktree's name, giving the app bar its label",
+    "index.ts < src/main/projectroot.ts#checkoutRoot": "the project name is the main checkout's folder, even from a worktree"
+  }
+}

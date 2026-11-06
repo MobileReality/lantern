@@ -1,0 +1,60 @@
+/* Lantern brand — Overpass + navy/primary-red palette (style guide) */
+@font-face {
+  font-family: 'Overpass';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('fonts/overpass-400.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Overpass';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('fonts/overpass-600.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Overpass';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('fonts/overpass-700.ttf') format('truetype');
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #040d23; /* Secondary 500 */
+  --sidebar: #081027; /* navy, a touch lighter than bg */
+  --toolbar: #0e1a3b;
+  --card: #16244a; /* navy card */
+  --card-hover: #1e3160;
+  --primary: #f53103; /* Primary 500 */
+  --primary-600: #c42702;
+  --navy-400: #182a57; /* Secondary 400 */
+  --text: #f6f8f9; /* Neutral 50 */
+  --muted: #8b94ad;
+  --border: #1b2a4d;
+  --accent: #f53103;
+  --success: #28b13e;
+  --warning: #ff9900;
+  --teal: #43bccd;
+
+  /* Notification cards */
+  --notify-done: #3ccf5c;
+  --notify-waiting: #43bccd;
+  --notify-permission: #ffb21a;
+  --notify-error: #ff1f3a;
+  --active: #f53103; /* selected = red, matching project/flow rows */
+
+  /* Type scale — one ladder for the whole app */
+  --fs-xs: 10px; /* tags, counts, eyebrow captions */
+  --fs-sm: 11px; /* secondary text, status, monospace diff */
+  --fs-base: 12px; /* body, list rows, controls, buttons */
+  --fs-md: 13px; /* filenames, emphasis, selected titles */
+  --fs-lg: 14px; /* modal + brand titles */
+
+  /* Controls */
+  --radius: 8px;
+  --radius-sm: 6px;
+  --btn-pad: 7px 13px;
+}

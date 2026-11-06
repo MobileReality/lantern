@@ -1,0 +1,24 @@
+lantern-section 1
+# rbac
+
+role customer @ src/services/authService.ts#roleFor
+role clerk @ src/services/authService.ts#CLERK_EMAILS
+role manager @ src/services/authService.ts#MANAGER_EMAILS
+res place-order @ src/api/routes.ts#placeOrder
+res pay-order @ src/api/routes.ts#payOrder
+res ship-order @ src/api/routes.ts#shipOrder
+res cancel-order @ src/api/routes.ts#cancelOrder
+cell customer place-order allow @ src/api/routes.ts#placeOrder
+cell customer pay-order cond @ src/api/routes.ts#payOrder
+cell customer ship-order deny @ src/api/routes.ts#shipOrder
+cell customer cancel-order deny @ src/api/routes.ts#cancelOrder
+cell clerk place-order allow @ src/api/routes.ts#placeOrder
+cell clerk pay-order allow @ src/api/routes.ts#payOrder
+cell clerk ship-order allow @ src/api/routes.ts#shipOrder
+cell clerk cancel-order deny @ src/api/routes.ts#cancelOrder
+cell manager place-order allow @ src/api/routes.ts#placeOrder
+cell manager pay-order allow @ src/api/routes.ts#payOrder
+cell manager ship-order allow @ src/api/routes.ts#shipOrder
+cell manager cancel-order allow @ src/api/routes.ts#cancelOrder
+source email-lists @ src/services/authService.ts#roleFor
+guard require-role @ src/api/guards.ts#requireRole src/api/routes.ts#allowed

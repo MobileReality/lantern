@@ -1,0 +1,155 @@
+lantern 1
+# skills/lantern-plan/scripts
+
+skills/lantern-plan/scripts/messages.json . config 902eee7bca7c
+#feature planning
+
+skills/lantern-plan/scripts/plan-approval.mjs . pure 8730f23b09af
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#SECTION_STATE
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/plan-model.mjs#sectionIds
+  < skills/lantern-plan/scripts/plan-write.mjs#sectionDigest
+
+skills/lantern-plan/scripts/plan-check.mjs . service 14436228b7ca
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#TARGET_KIND
+  = skills/lantern-plan/scripts/plan-git.mjs#git
+  < skills/lantern-plan/scripts/plan-map.mjs#areaOfPath
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/plan-model.mjs#allItems
+  < skills/lantern-plan/scripts/plan-shape.mjs#shapeProblems
+
+skills/lantern-plan/scripts/plan-edit.mjs . pure 939a8749351b
+#feature planning
+  < skills/lantern-plan/scripts/plan-approval.mjs#unapprovedSections
+  < skills/lantern-plan/scripts/plan-format.mjs#TARGET_KINDS
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/plan-model.mjs#emptyPlan
+  < skills/lantern-plan/scripts/plan-write.mjs#sectionDigest
+
+skills/lantern-plan/scripts/plan-flow.mjs . pure f2beeb208f64
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#hasControlCharacter
+
+skills/lantern-plan/scripts/plan-format.mjs . config a873f2b54f2e
+#feature planning
+  < skills/lantern-setup/scripts/plan-ref.mjs#PLAN_REF
+
+skills/lantern-plan/scripts/plan-gate.mjs . service 4aa8b3420343
+#feature planning
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/planning-skills.mjs#formatSkillCheck
+  < skills/lantern-setup/scripts/lib.mjs#MAP_DIR
+  < skills/lantern-setup/scripts/shell.mjs#siblingSkill
+  > skills/lantern-setup/scripts/validate.mjs
+
+skills/lantern-plan/scripts/plan-git.mjs . service 203184e7fc7a
+#feature planning
+  = ext:git
+  < skills/lantern-plan/scripts/plan-format.mjs#PR_STATE
+  < skills/lantern-setup/scripts/prs.mjs#PR_DIR
+  = skills/lantern-setup/scripts/shell.mjs#runGit
+
+skills/lantern-plan/scripts/plan-handoff.mjs . pure a749d2ea7b10
+#feature planning
+  < skills/lantern-plan/scripts/plan-approval.mjs#isPlanApproved
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+
+skills/lantern-plan/scripts/plan-impact.mjs . pure 3b08e832bede
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#TARGET_KIND
+  < skills/lantern-plan/scripts/plan-map.mjs#describeFile
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-setup/scripts/shell.mjs#cmp
+
+skills/lantern-plan/scripts/plan-io.mjs . service d7af9f880e2e
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#PLAN_DIR
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/plan-parse.mjs#parsePlan
+  > skills/lantern-plan/scripts/plan-write.mjs#serializePlan
+
+skills/lantern-plan/scripts/plan-links.mjs . service a6e2b81156de
+#feature planning
+  = skills/lantern-plan/scripts/plan-git.mjs#prStates
+  < skills/lantern-setup/scripts/prs.mjs#listPrs
+
+skills/lantern-plan/scripts/plan-map.mjs . service ae33a13abfc9
+#feature planning
+  < skills/lantern-setup/scripts/areas-file.mjs#loadAreas
+  < skills/lantern-setup/scripts/lib.mjs#loadMap
+
+skills/lantern-plan/scripts/plan-messages.mjs . util 1a8e74eed507
+#feature planning
+  < skills/lantern-plan/scripts/messages.json
+
+skills/lantern-plan/scripts/plan-model.mjs . pure cb3b696add6d
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#hasControlCharacter
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+
+skills/lantern-plan/scripts/plan-parse.mjs . pure 5ff2c4429a75
+#feature planning
+  < skills/lantern-plan/scripts/plan-flow.mjs#createFlowReader
+  < skills/lantern-plan/scripts/plan-format.mjs#TAG
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/plan-model.mjs#emptyPlan
+  < skills/lantern-setup/scripts/lib.mjs#decodePath
+
+skills/lantern-plan/scripts/plan-run.mjs . service e5c8235d1f81
+#feature planning
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+
+skills/lantern-plan/scripts/plan-shape.mjs . pure 60b22f639802
+#feature planning
+  < skills/lantern-plan/scripts/plan-approval.mjs#approvalProblems
+  < skills/lantern-plan/scripts/plan-format.mjs#TAG
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-plan/scripts/plan-model.mjs#allItems
+
+skills/lantern-plan/scripts/plan-status.mjs . pure b1731279a915
+#feature planning
+  < skills/lantern-plan/scripts/plan-approval.mjs#isPlanApproved
+  < skills/lantern-plan/scripts/plan-format.mjs#ITEM_STATUS
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+
+skills/lantern-plan/scripts/plan-write.mjs . pure 458dcbe615f4
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#SECTION
+  < skills/lantern-setup/scripts/lib.mjs#encodePath
+  < skills/lantern-setup/scripts/prflow.mjs#flowRecordLines
+
+skills/lantern-plan/scripts/plan.mjs . script 0cc5f5122878
+#feature planning
+  = skills/lantern-plan/scripts/plan-approval.mjs#planState
+  = skills/lantern-plan/scripts/plan-check.mjs#checkPlan
+  = skills/lantern-plan/scripts/plan-edit.mjs#addToPlan
+  < skills/lantern-plan/scripts/plan-format.mjs#PLAN_DIR
+  = skills/lantern-plan/scripts/plan-gate.mjs#runGate
+  = skills/lantern-plan/scripts/plan-handoff.mjs#handoffOf
+  = skills/lantern-plan/scripts/plan-impact.mjs#computeImpact
+  = skills/lantern-plan/scripts/plan-io.mjs#loadPlan
+  = skills/lantern-plan/scripts/plan-links.mjs#loadLinks
+  = skills/lantern-plan/scripts/plan-map.mjs#loadPlanMap
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  = skills/lantern-plan/scripts/plan-status.mjs#deriveStatus
+  < skills/lantern-plan/scripts/plan-write.mjs#sectionLines
+  = skills/lantern-plan/scripts/planning-skills.mjs#checkPlanningSkills
+  < skills/lantern-setup/scripts/cli-args.mjs#parseArgs
+  < skills/lantern-setup/scripts/lib.mjs#MAP_DIR
+  < skills/lantern-setup/scripts/prflow.mjs#flowFromJson
+
+skills/lantern-plan/scripts/planning-skills.mjs . service 66562f59e0da
+#feature planning
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  < skills/lantern-setup/scripts/shell.mjs#siblingSkill
+
+skills/lantern-plan/scripts/selftest.mjs . test 12d5451e5c54
+#feature planning
+  = ext:git
+  < skills/lantern-plan/scripts/plan-format.mjs#ITEM_STATUS
+  = skills/lantern-plan/scripts/plan.mjs
+  < skills/lantern-setup/scripts/lib.mjs#hashFile
+  < skills/lantern-setup/scripts/shell.mjs#siblingSkill
+  = skills/lantern-sync/scripts/sync.mjs

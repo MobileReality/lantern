@@ -1,0 +1,4 @@
+lantern 1
+# src/types
+
+src/types/ticket.ts . schema 209065237e6e

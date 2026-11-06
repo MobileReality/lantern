@@ -1,0 +1,41 @@
+lantern 1
+# skills/lantern-setup/references
+
+skills/lantern-setup/references/authority.md . skill 86a5a45f84ec
+#feature map-setup
+
+skills/lantern-setup/references/codex.md . skill bd1dfb875ece
+#feature map-setup
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/references/authority.md
+  @ skills/lantern-setup/references/format.md
+  @ skills/lantern-setup/references/roles.md
+  @ skills/lantern-setup/scripts/model.mjs
+  @ skills/lantern-setup/scripts/systems.mjs
+
+skills/lantern-setup/references/format.md . skill 113f813f3357
+#feature map-setup
+  @ skills/lantern-plan/scripts/plan-format.mjs
+  @ skills/lantern-plan/scripts/plan-parse.mjs
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/references/reason.md
+  @ skills/lantern-setup/references/roles.md
+  @ skills/lantern-setup/scripts/lang-todo.mjs
+  @ skills/lantern-setup/scripts/lang.mjs
+  @ skills/lantern-setup/scripts/migrate-lang.mjs
+  @ skills/lantern-setup/scripts/migrate-model.mjs
+  @ skills/lantern-setup/scripts/plan-ref.mjs
+  @ skills/lantern-setup/scripts/prs.mjs
+  @ src/main/lantern-plan.ts
+
+skills/lantern-setup/references/model-floor.json . config 2ada3a5b24a5
+#feature map-setup
+
+skills/lantern-setup/references/reason.md . skill ad640189d642
+#feature map-sync
+  @ src/shared/reason.ts
+
+skills/lantern-setup/references/roles.md . skill 93b5feb7f0f6
+#feature map-setup
+  @ skills/lantern-setup/SKILL.md
+  @ skills/lantern-setup/references/format.md

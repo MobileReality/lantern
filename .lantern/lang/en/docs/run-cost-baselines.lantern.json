@@ -1,0 +1,6 @@
+{
+ "text": {
+  "lantern-delegate-baseline.json": "Stored token and cost baseline of one real delegate run of this repository, the numbers later token-saving changes are compared against",
+  "lantern-delegate-baseline.json gotcha": "built from one local run, not from the four e2e projects, which need live paid runs"
+ }
+}

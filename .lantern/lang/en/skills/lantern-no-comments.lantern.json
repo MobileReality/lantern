@@ -1,0 +1,6 @@
+{
+  "text": {
+    "README.md": "Records the comment-discipline convention the skill encodes",
+    "SKILL.md": "Keeps code self-explanatory and allows a comment only for a non-obvious why"
+  }
+}

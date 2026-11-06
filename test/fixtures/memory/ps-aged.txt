@@ -1,0 +1,27 @@
+  200     0 03-22:48:27 Ss   /sbin/launchd
+  210   200 03-22:48:00 Ss   /usr/libexec/logd
+ 4000   200       09:26 S    /Applications/Lantern.app/Contents/MacOS/Lantern
+ 4001  4000       09:26 S    /Applications/Lantern.app/Contents/Frameworks/Lantern Helper (GPU).app/Contents/MacOS/Lantern Helper (GPU) --type=gpu-process --user-data-dir=/Users/dev/Library/Application Support/Lantern --seatbelt-client=35
+ 4002  4000       09:26 S    /Applications/Lantern.app/Contents/Frameworks/Lantern Helper.app/Contents/MacOS/Lantern Helper --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US
+ 4003  4000       09:11 S    /Applications/Lantern.app/Contents/Frameworks/Lantern Helper (Renderer).app/Contents/MacOS/Lantern Helper (Renderer) --type=renderer --user-data-dir=/Users/dev/Library/Application Support/Lantern --renderer-client-id=4
+ 4010  4000       09:26 S    bash /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code serve-web --port 9888 --without-connection-token
+ 4011  4010       09:26 S    /Applications/Visual Studio Code.app/Contents/MacOS/Code /Applications/Visual Studio Code.app/Contents/Resources/app/out/cli.js serve-web --port 9888
+ 4012  4011       09:26 S    /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code-tunnel serve-web --port 9888
+ 4013  4012       09:25 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/bin/code-server --port 9888
+ 4014  4013       09:25 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/out/server-main.js --port 9888
+ 4020  4014  1-02:03:04 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node --type=extensionHost --transformURIs
+ 4021  4020  1-02:00:00 S    /Users/dev/.vscode-server/extensions/anthropic.claude-code-2.1.304-darwin-arm64/resources/native-binary/claude --output-format stream-json --resume=7e166f5d-b2f4-49ff-99c9-ab4e36fb6e63 --setting-sources=user,project,local
+ 4022  4020  1-01:59:00 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node --max-old-space-size=3072 /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/extensions/node_modules/typescript/lib/tsserver.js --useInferredProjectPerProjectRoot --cancellationPipeName /var/folders/7y/T/vscode-typescript501/832d/tscancellation-df8d.tmp*
+ 4023  4020  1-01:58:00 S    /Users/dev/.vscode-server/extensions/openai.chatgpt-26.1007.21434-darwin-arm64/bin/macos-aarch64/codex -c features.code_mode_host=true app-server
+ 4024  4014  1-02:03:04 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node --type=fileWatcher
+ 4025  4020  1-01:57:00 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=4020
+ 4030  4021       00:25 Ss   zsh -c source /Users/dev/.claude/shell-snapshots/snapshot-zsh-1792495814.sh && eval 'npm exec jest -- --runInBand' < /dev/null
+ 4031  4030       00:05 S    npm exec jest
+ 4032  4031       00:05 S    /Users/dev/.nvm/versions/node/v22.22.0/bin/node /Users/dev/GIT/webapp/node_modules/.bin/jest --runInBand
+ 4033  4031       00:05 Z    (node)
+ 4040  4014       04:30 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node --type=extensionHost --transformURIs
+ 4041  4040       04:25 S    /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/node --max-old-space-size=3072 /Users/dev/.vscode/cli/serve-web/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/extensions/node_modules/typescript/lib/tsserver.js --useInferredProjectPerProjectRoot
+ 4050  4000       01:10 S    /Users/dev/.nvm/versions/node/v22.22.0/bin/node /Users/dev/GIT/webapp/node_modules/vite/bin/vite.js --port 5173
+ 4051  4000       00:03 S    git status --porcelain
+ 9000   200       12:00 S    /Users/dev/.local/bin/claude --resume
+ 9001  9000       12:00 S    node /Users/dev/GIT/elsewhere/server.js

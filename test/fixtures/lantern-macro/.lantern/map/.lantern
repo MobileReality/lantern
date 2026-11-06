@@ -1,0 +1,1263 @@
+lantern 1
+# .
+
+package.json . config 4d4afc18ee33
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < skills/lantern-setup/example-web/sections.html
+  < src/main/codex-hooks.ts
+  < src/main/codex-hooks.ts
+  < src/main/codex-hooks.ts
+  < src/main/codex-hooks.ts
+  < scripts/pr-review-demo.mjs
+  < scripts/pr-review-demo.mjs
+  > packages/lsp-runtime/package.json
+  > packages/lsp-runtime/package.json
+  > packages/lsp-runtime/package.json
+  > scripts/e2e-delegate/checks.mjs
+  > scripts/skill-test/agent.mjs
+  > scripts/pr-review-demo.mjs
+  > scripts/patch-claude-mic.js
+  > scripts/install-skills.mjs
+packages/lsp-runtime/package.json . config 9f5a696ec74b
+#feature code-insight
+  < src/main/app-menu.ts
+  < package.json
+  = src/main/agent-codex.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  > src/main/app-menu.ts
+  = ext:git
+  = ext:git
+  = ext:pnpm
+  = ext:vtsls
+playwright.config.ts . config 1071e180a38b
+pnpm-workspace.yaml . config 25cdcd3824ff
+scripts/e2e-delegate/checks.mjs . util 92f8acee9ec4
+#feature delegate-runs
+  < scripts/pr-review-demo.mjs
+  < scripts/install-skills.mjs
+  > scripts/skill-test/agent.mjs
+  > scripts/skill-test/agent.mjs
+  > scripts/install-skills.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/install-skills.mjs
+  @ scripts/install-skills.mjs
+  @ scripts/install-skills.mjs
+  @ scripts/install-skills.mjs
+  = ext:bitbucket-api
+  = ext:bitbucket-api
+  = ext:bitbucket-api
+  = ext:bitbucket-api
+  = ext:github-api
+  = ext:github-api
+  = ext:github-api
+scripts/e2e-delegate/child.mjs . util 9388c11f1e4a
+#feature delegate-runs
+scripts/e2e-delegate/execute.mjs . service fcb095670e51
+#feature delegate-runs
+scripts/e2e-delegate/fake-ssh.sh . script eeedda37ee66
+#feature delegate-runs
+scripts/e2e-delegate/mock-bitbucket.mjs . script 37457d2bca32
+#feature delegate-runs
+scripts/e2e-delegate/panel.mjs . util fb7d70e95534
+#feature delegate-runs
+scripts/e2e-delegate/plan.mjs . util e8e1a9d388e7
+#feature delegate-runs
+scripts/e2e-delegate/projects.mjs . config fdd2af54f738
+#feature delegate-runs
+scripts/e2e-delegate/redirect-fetch.mjs . script 711e7d18b82f
+#feature delegate-runs
+scripts/e2e-delegate/report.mjs . pure 8f9edf051373
+#feature delegate-runs
+scripts/e2e-delegate/run.mjs . script 7e13b4a0dfb9
+#feature delegate-runs
+scripts/e2e-delegate/session.mjs . util f43df733ba56
+#feature delegate-runs
+scripts/e2e-delegate/verify.mjs . service 064fd5ba6193
+#feature delegate-runs
+scripts/e2e-delegate/workspace.mjs . service 2246f83b2646
+#feature delegate-runs
+scripts/esbuild.mjs . script fb4def2ab112
+scripts/fuses.js . script 024b32e5f00a
+scripts/install-skills.mjs . script a40f369ca534
+#feature skills-management
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  = src/main/agent-codex.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  = ext:git
+  = ext:git
+scripts/lantern-bundle.d.mts . schema b9ae8eb2a007
+#feature skills-management
+scripts/lantern-bundle.mjs . service dca52c10601b
+#feature skills-management
+scripts/lsp-runtime.mjs . script b3acf6f8f38b
+#feature code-insight
+scripts/make-icon.js . script dc8e7152c288
+scripts/material-file-icons.mjs . script ba05c878ebd7
+#feature code-insight
+scripts/patch-claude-mic.js . script a95df7ca6bb6
+#feature serve-web
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  > src/main/app-menu.ts
+  = ext:claude-code-extension
+  = ext:vscode-serve-web
+  = ext:vscode-serve-web
+scripts/pr-review-demo.mjs . script b884b0cc3484
+#feature pull-requests
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  > packages/lsp-runtime/package.json
+  = ext:git
+scripts/skill-test/agent.mjs . service 3f2079419ffb
+#feature lantern-map
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < scripts/e2e-delegate/checks.mjs
+  < skills/lantern-setup/example-web/sections.html
+  < skills/lantern-setup/example-web/sections.html
+  < scripts/pr-review-demo.mjs
+  < scripts/pr-review-demo.mjs
+  < scripts/pr-review-demo.mjs
+  < scripts/pr-review-demo.mjs
+  < scripts/install-skills.mjs
+  = src/main/agent-codex.ts
+  = src/main/agent-codex.ts
+  = src/main/agent-codex.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = skills/lantern-setup/example-web/demo-skills/CLAUDE.md
+  = skills/lantern-setup/example-web/demo-skills/CLAUDE.md
+  = scripts/e2e-delegate/checks.mjs
+  = skills/lantern-setup/example-web/sections.html
+  = skills/lantern-setup/example-web/sections.html
+  = skills/lantern-setup/example-web/sections.html
+  = skills/lantern-setup/example-web/sections.html
+  = skills/lantern-setup/example-web/sections.html
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  > packages/lsp-runtime/package.json
+  > src/main/app-menu.ts
+  > scripts/e2e-delegate/checks.mjs
+  > scripts/pr-review-demo.mjs
+  > scripts/install-skills.mjs
+  @ scripts/pr-review-demo.mjs
+  @ scripts/pr-review-demo.mjs
+  @ scripts/pr-review-demo.mjs
+  @ scripts/pr-review-demo.mjs
+  = ext:claude-cli
+  = ext:git
+scripts/skill-test/fake-agent.mjs . util a2785e57e5f4
+#feature lantern-map
+scripts/skill-test/fixtures.mjs . util ce1ea7e9e8cd
+#feature lantern-map
+scripts/skill-test/report.mjs . pure 19f73c55ec5b
+#feature lantern-map
+scripts/skill-test/run.mjs . script 759a85465737
+#feature lantern-map
+scripts/skill-test/slices.mjs . service 9760ba50ae01
+#feature lantern-map
+skills/sample-skill/README.md . skill e3231d98a514
+#feature skills-management
+skills/sample-skill/SKILL.md . skill 5b94edcf8943
+#feature skills-management
+skills/code-reviewer/README.md . skill c63505b8d69f
+#feature skills-management
+skills/code-reviewer/SKILL.md . skill 06eebe5ed25d
+#feature skills-management
+skills/lantern-commit/README.md . skill cf94f52d2d8b
+#feature skills-management
+skills/lantern-commit/SKILL.md . skill 23417b97235a
+#feature skills-management
+skills/lantern-delegate/agents/lantern-delegate-high.md . skill d231b8903fe6
+#feature delegate-runs
+skills/lantern-delegate/agents/lantern-delegate-low.md . skill de2125d3001b
+#feature delegate-runs
+skills/lantern-delegate/agents/lantern-delegate-medium.md . skill f85429a1a069
+#feature delegate-runs
+skills/lantern-delegate/agents/lantern-delegate-xhigh.md . skill 46929821d9ed
+#feature delegate-runs
+skills/lantern-delegate/agents/reviewer.md . skill dc3aaa38dcce
+#feature delegate-runs
+skills/lantern-delegate/protocol.md . skill 2b8e27440523
+#feature delegate-runs
+skills/lantern-delegate/README.md . skill ead8ab46ace2
+#feature delegate-runs
+skills/lantern-delegate/references/authority.md . skill 5d18cd3c2b2b
+#feature delegate-runs
+skills/lantern-delegate/references/codex.md . skill 43bf2fdd556a
+#feature delegate-runs
+skills/lantern-delegate/scripts/bitbucket/credentials.mjs . util decd3070f36d
+#feature delegate-runs
+skills/lantern-delegate/scripts/bitbucket/pr-create.mjs . script a9e15ca3a0f6
+#feature delegate-runs
+skills/lantern-delegate/scripts/bundled-skills.mjs . config 17e351396b41
+#feature delegate-runs
+skills/lantern-delegate/scripts/check-skill-use.mjs . script b2a48131c8ba
+#feature delegate-runs
+skills/lantern-delegate/scripts/cost-block.mjs . pure e40e44702cec
+#feature delegate-runs
+skills/lantern-delegate/scripts/credentials.mjs . util 18deb319cfd8
+#feature delegate-runs
+skills/lantern-delegate/scripts/github/credentials.mjs . util 6fc72470b79f
+#feature delegate-runs
+skills/lantern-delegate/scripts/github/github.mjs . gateway f477349f6053
+#feature delegate-runs
+skills/lantern-delegate/scripts/github/identity.mjs . script 57df42edd744
+#feature delegate-runs
+skills/lantern-delegate/scripts/github/pr-create.mjs . script cb3d98bac70c
+#feature delegate-runs
+skills/lantern-delegate/scripts/host.mjs . util b3df067353b0
+#feature delegate-runs
+skills/lantern-delegate/scripts/init-local.mjs . script 4b4e136ba195
+#feature delegate-runs
+skills/lantern-delegate/scripts/lint-reviewer.mjs . script d2f69eb0ee12
+#feature delegate-runs
+skills/lantern-delegate/scripts/lint-skill-reads.mjs . script 2767fbf2fd81
+#feature delegate-runs
+skills/lantern-delegate/scripts/lint-transcript.mjs . script 3fef77b7b1f4
+#feature delegate-runs
+skills/lantern-delegate/scripts/permissions.mjs . util ca361726142a
+#feature delegate-runs
+skills/lantern-delegate/scripts/pr-append-cost.mjs . script cfd4c29e4d15
+#feature delegate-runs
+skills/lantern-delegate/scripts/pr-create.mjs . script 38f20c257c95
+#feature delegate-runs
+skills/lantern-delegate/scripts/preflight.mjs . script 62fc850a779f
+#feature delegate-runs
+skills/lantern-delegate/scripts/split-command.mjs . util cb4d68a030b1
+#feature delegate-runs
+skills/lantern-delegate/scripts/skill-linker.mjs . util 4cad54cab1ef
+#feature delegate-runs
+skills/lantern-delegate/SKILL.md . skill 4c8964f0b8ba
+#feature delegate-runs
+skills/lantern-example/README.md . skill b1bf3b7dc2ee
+#feature skills-management
+skills/lantern-example/SKILL.md . skill 4c7031eda01d
+#feature skills-management
+skills/lantern-setup/agents/lantern-mapper.md . skill 5b63d275e5e5
+#feature lantern-map
+skills/lantern-setup/example-web/demo-ai.html . page 32dc9c8dd87b
+#feature lantern-map
+skills/lantern-setup/example-web/demo-ai/README.md . skill 0d606cf433f5
+#feature lantern-map
+skills/lantern-setup/example-web/demo-platforms.html . page abad72c3a821
+#feature lantern-map
+skills/lantern-setup/example-web/demo-platforms/README.md . skill 9a54fb3f2eb4
+#feature lantern-map
+skills/lantern-setup/example-web/demo-skills.html . page 76cc3ff21d47
+#feature lantern-map
+skills/lantern-setup/example-web/demo-skills/CLAUDE.md . skill d67e67e8f292
+  @ scripts/skill-test/agent.mjs
+  @ scripts/skill-test/agent.mjs
+  = ext:git
+  = ext:git
+skills/lantern-setup/example-web/demo-skills/skills/commit/SKILL.md . skill ce5e919fa3b0
+skills/lantern-setup/example-web/demo-skills/skills/deploy/agents/verifier.md . skill 7ab5a72eabc2
+skills/lantern-setup/example-web/demo-skills/skills/deploy/protocol.md . skill bdd9052c94f5
+skills/lantern-setup/example-web/demo-skills/skills/deploy/references/checklist.md . skill 9d513d27cd74
+skills/lantern-setup/example-web/demo-skills/skills/deploy/scripts/preflight.mjs . script 61f3d7777bb9
+skills/lantern-setup/example-web/demo-skills/skills/deploy/scripts/rollback.sh . script 3229d0854071
+skills/lantern-setup/example-web/demo-skills/skills/deploy/SKILL.md . skill 69e54138e498
+skills/lantern-setup/example-web/demo-skills/docs/guide.md . skill 4d763b8631c8
+skills/lantern-setup/example-web/demo-skills/README.md . skill 6f898ae5d03a
+skills/lantern-setup/example-web/index.html . page cc8f2895beb2
+#feature lantern-map
+skills/lantern-setup/example-web/locales.json . config e9e707bee9ca
+#feature lantern-map
+skills/lantern-setup/example-web/render.mjs . script 61797cf5a231
+#feature lantern-map
+skills/lantern-setup/example-web/sections.html . component 4c624e8df68a
+#feature lantern-sections
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+skills/lantern-setup/example-web/template.html . page f87d39593c6e
+#feature lantern-map
+skills/lantern-setup/README.md . skill 463e5523c70c
+#feature lantern-map
+skills/lantern-setup/references/authority.md . skill 86a5a45f84ec
+#feature lantern-map
+skills/lantern-setup/references/codex.md . skill 6dcb3bc45396
+#feature lantern-map
+skills/lantern-setup/references/format.md . skill dba0d6bcd098
+#feature lantern-map
+skills/lantern-setup/references/model-floor.json . config a04845dbaa77
+#feature lantern-map
+skills/lantern-setup/references/roles.md . skill 93b5feb7f0f6
+#feature lantern-map
+skills/lantern-setup/scripts/check-locales.mjs . script 84318c0f53e1
+#feature lantern-map
+skills/lantern-setup/scripts/enumerate.mjs . script 91f04ba1df8d
+#feature lantern-map
+skills/lantern-setup/scripts/ignore.mjs . util 8251c0ea7603
+skills/lantern-setup/scripts/lang-todo.mjs . script a7540a8c9b92
+#feature lantern-map
+skills/lantern-setup/scripts/lang.mjs . script b90a1fd799b8
+#feature lantern-map
+skills/lantern-setup/scripts/lib.mjs . service 9951aa57c7f2
+#feature lantern-map
+skills/lantern-setup/scripts/migrate-lang.mjs . script cf3a165e93d4
+#feature lantern-map
+skills/lantern-setup/scripts/migrate-model.mjs . script e999cc609a6f
+#feature lantern-map
+skills/lantern-setup/scripts/model.mjs . script 727287d2f513
+#feature lantern-map
+skills/lantern-setup/scripts/plan.mjs . script 144031c5f24e
+#feature lantern-map
+skills/lantern-setup/scripts/platforms.mjs . service e6f11a43e2e0
+#feature lantern-map
+skills/lantern-setup/scripts/prs.mjs . script 40e93829e9c4
+#feature pull-requests
+skills/lantern-setup/scripts/refs.mjs . script 8fb8d41e2991
+#feature lantern-map
+skills/lantern-setup/scripts/sections.mjs . service 740d2365700b
+#feature lantern-sections
+skills/lantern-setup/scripts/texts.mjs . service 824d8fd7153e
+#feature lantern-map
+skills/lantern-setup/scripts/validate.mjs . script c43a9a526ad6
+#feature lantern-map
+skills/lantern-setup/SKILL.md . skill 1cd7b3532ef6
+#feature lantern-map
+skills/lantern-sync/README.md . skill a2e62f0b2956
+#feature lantern-map
+skills/lantern-sync/references/authority.md . skill 5d18cd3c2b2b
+#feature lantern-map
+skills/lantern-sync/references/codex.md . skill ed27bfb3cb90
+#feature lantern-map
+skills/lantern-sync/scripts/selftest.mjs . test a89850d425bb
+#feature lantern-map
+skills/lantern-sync/scripts/sync.mjs . script 21abaedf29c1
+#feature lantern-map
+skills/lantern-sync/SKILL.md . skill eee831664cba
+#feature lantern-map
+skills/lantern-local-loop/README.md . skill da18d5651ac4
+#feature skills-management
+skills/lantern-local-loop/references/templates.md . skill f279a934e9c3
+#feature skills-management
+skills/lantern-local-loop/scripts/loop.sh . script 6976a1043b35
+#feature skills-management
+skills/lantern-local-loop/SKILL.md . skill e51c438d3b43
+#feature skills-management
+skills/lantern-no-comments/README.md . skill 9c265f43aeca
+#feature skills-management
+skills/lantern-no-comments/SKILL.md . skill a75d51997d28
+#feature skills-management
+src/main/agent-codex.ts . ai 9d4c5c44d2b9
+#feature agent-runs
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < scripts/skill-test/agent.mjs
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = scripts/skill-test/agent.mjs
+  = scripts/install-skills.mjs
+  > packages/lsp-runtime/package.json
+  > packages/lsp-runtime/package.json
+  > src/main/app-menu.ts
+  = ext:claude-code-cli
+  = ext:codex-cli
+  = ext:codex-cli
+src/main/agent-request.ts . middleware bc3cc733d8d3
+#feature agent-runs
+src/main/agent.ts . ai 1ff5a82508a7
+#feature agent-runs
+src/main/app-menu.ts . pure d5b505ce0545
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < packages/lsp-runtime/package.json
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < src/main/codex-hooks.ts
+  < src/main/cli.ts
+  < src/main/cli.ts
+  < scripts/pr-review-demo.mjs
+  < scripts/pr-review-demo.mjs
+  < scripts/patch-claude-mic.js
+  < scripts/patch-claude-mic.js
+  = scripts/skill-test/agent.mjs
+  = scripts/patch-claude-mic.js
+  > src/main/agent-codex.ts
+src/main/atomic-write.ts . util 78ea0d386ee8
+src/main/bundle.ts . service 8e568674cfb4
+#feature skills-management
+src/main/claude-bin.ts . service 48bdda2e03a8
+#feature agent-runs
+src/main/claude-poll.ts . service a10d0dfd0d0f
+#feature session-monitoring
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/codex-hooks.ts
+  = src/main/agent-codex.ts
+  = src/main/agent-codex.ts
+  = ext:claude-code-cli
+  = ext:codex-sessions
+src/main/cli.ts . service 703ed9dec292
+#feature projects-hub
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  < src/main/app-menu.ts
+  = packages/lsp-runtime/package.json
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/app-menu.ts
+  = src/main/claude-poll.ts
+  = src/main/claude-poll.ts
+  > src/main/agent-codex.ts
+  > packages/lsp-runtime/package.json
+  > packages/lsp-runtime/package.json
+  > scripts/skill-test/agent.mjs
+  > scripts/install-skills.mjs
+  = ext:osascript
+src/main/codex-event.ts . pure c8f0209ad3c4
+#feature session-monitoring
+src/main/codex-hooks.ts . service 453e4632417f
+#feature notifications
+  < src/main/app-menu.ts
+  < src/main/claude-poll.ts
+  = src/main/app-menu.ts
+  = src/main/claude-poll.ts
+  > src/main/claude-poll.ts
+  > src/main/claude-poll.ts
+  = ext:codex-hooks-config
+src/main/codex-scanner.ts . service 53630cbde005
+#feature session-monitoring
+src/main/codex-turns.ts . state b1e8df963ffb
+#feature session-monitoring
+src/main/devserver.ts . handler 411dfe950f77
+src/main/explains.ts . repository 7a933a47c7cd
+#feature code-insight
+src/main/filecontent.ts . service 58b2e2eb47a1
+#feature code-insight
+src/main/hook-cleanup.ts . service 93ab40d0f80a
+#feature notifications
+src/main/hooks.ts . service e15a93bf9c04
+#feature notifications
+src/main/lantern-batch.ts . util 5086a2a4626a
+src/main/lantern-cache.ts . util 507ce092b779
+src/main/lantern-enumerate.ts . service 80e6b76462e1
+#feature lantern-map
+src/main/lantern-git.ts . gateway 38b1cd7ee2d4
+#feature pull-requests
+src/main/lantern-ignore.ts . util 792c7e34b6dd
+src/main/lantern-nodes.ts . pure 91e6b9113999
+#feature lantern-map
+src/main/lantern-parse.ts . pure be48a88e53fb
+#feature lantern-map
+src/main/lantern-platforms.ts . service f52eaa1d28bf
+#feature lantern-map
+src/main/lantern-pr-parse.ts . pure daccf09f0aa8
+#feature pull-requests
+src/main/lantern-pr-remote.ts . service 5c9a80e9bef5
+#feature pull-requests
+src/main/lantern-pr-revisions.ts . service 6ee02cf515d6
+#feature pull-requests
+src/main/lantern-prdiff.ts . service aa433792088b
+#feature pull-requests
+src/main/lantern-prfile.ts . service c115f30ba433
+#feature pull-requests
+src/main/lantern-proverlay.ts . service 0c4d6905baa8
+#feature pull-requests
+src/main/lantern-prs.ts . service ed51280da0c0
+#feature pull-requests
+src/main/lantern-sections.ts . service d0c2fd5f3432
+#feature lantern-sections
+src/main/lantern-stamp.ts . service e56f6153c49c
+#feature lantern-map
+src/main/lantern-texts.ts . service 18029fc1c004
+#feature lantern-map
+src/main/lantern-types.ts . model 296aeeeb47f3
+#feature lantern-map
+src/main/lantern.ts . service a63707042c57
+#feature lantern-map
+src/main/lsp/lsp-client.ts . gateway d58d12a6556a
+#feature code-insight
+src/main/lsp/runtime-path.ts . util e3b2ebca117e
+#feature code-insight
+src/main/lsp/semantic-service.ts . service b81cc3472609
+#feature code-insight
+src/main/lsp/snapshot-root.ts . service 4b35b25a2d1c
+#feature code-insight
+src/main/lsp/source-provenance.ts . state da22416ca3b9
+#feature code-insight
+src/main/main.ts . entry bef176deebaf
+  < packages/lsp-runtime/package.json
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < scripts/skill-test/agent.mjs
+  < skills/lantern-setup/example-web/sections.html
+  < src/main/codex-hooks.ts
+  < scripts/pr-review-demo.mjs
+  = src/main/agent-codex.ts
+  = src/main/agent-codex.ts
+  = src/main/agent-codex.ts
+  = src/main/agent-codex.ts
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = packages/lsp-runtime/package.json
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = scripts/skill-test/agent.mjs
+  = src/main/codex-hooks.ts
+  = src/main/codex-hooks.ts
+  = src/main/codex-hooks.ts
+  = src/main/codex-hooks.ts
+  = src/main/codex-hooks.ts
+  = src/main/cli.ts
+  = src/main/cli.ts
+  = src/main/cli.ts
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/pr-review-demo.mjs
+  = scripts/patch-claude-mic.js
+  = scripts/patch-claude-mic.js
+  = scripts/patch-claude-mic.js
+  = scripts/patch-claude-mic.js
+  = src/main/claude-poll.ts
+  = src/main/claude-poll.ts
+  = src/main/claude-poll.ts
+  = src/main/claude-poll.ts
+  = src/main/claude-poll.ts
+  = scripts/install-skills.mjs
+  > src/main/agent-codex.ts
+  > packages/lsp-runtime/package.json
+  > packages/lsp-runtime/package.json
+  > packages/lsp-runtime/package.json
+  > scripts/skill-test/agent.mjs
+  > src/main/codex-hooks.ts
+  > src/main/codex-hooks.ts
+  > src/main/cli.ts
+  > scripts/install-skills.mjs
+  > scripts/install-skills.mjs
+  = ext:vscode-serve-web
+src/main/metadir.ts . repository 947c1c445306
+#feature code-insight
+src/main/notifier.ts . service 7f363fe056e0
+#feature notifications
+src/main/notifycard.ts . pure e144cf5bbcec
+#feature notifications
+src/main/overlay.ts . service 4cc84b849f84
+#feature notifications
+src/main/popout.ts . service 02b7f97913b2
+#feature code-insight
+src/main/prockill.ts . util cd3a5ae6f49a
+src/main/proctree.ts . pure 4bbf367bcb61
+#feature serve-web
+src/main/projectroot.ts . service cd7deb80dee0
+#feature projects-hub
+src/main/projects.ts . service 2b6830125b06
+#feature projects-hub
+src/main/provider.ts . pure 714b2a8b2a0b
+src/main/review.ts . service 9f8263e6799c
+#feature code-insight
+src/main/scanner.ts . gateway 0a407940b9b5
+#feature session-monitoring
+src/main/server.ts . handler 73dc74717b18
+#feature session-monitoring
+src/main/serveweb-failure.ts . pure 012f37ae6ce7
+#feature serve-web
+src/main/serveweb-launch.ts . pure cca830bdede6
+#feature serve-web
+src/main/serveweb-parse.ts . pure 19d4d23e32ce
+#feature serve-web
+src/main/serveweb-port.ts . service 4c51ebb9dd28
+#feature serve-web
+src/main/serveweb-probe.ts . gateway 73862215da43
+#feature serve-web
+src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
+#feature serve-web
+src/main/serveweb-settings.ts . service 5dd31636afcf
+#feature serve-web
+src/main/serveweb.ts . service 0e08f4346d5f
+#feature serve-web
+src/main/session-notification.ts . service ba7c81df56ab
+#feature notifications
+src/main/settings-model.ts . pure 391e46f94c92
+src/main/settings-store.ts . repository bf51f8c11b42
+src/main/settings.ts . repository b664b296bdb4
+src/main/setup-progress.ts . service c5a1019d5a43
+#feature lantern-map
+src/main/setup-state.ts . service 7dbff2739a68
+#feature lantern-map
+src/main/skills.ts . service ac0b459ecf44
+#feature skills-management
+src/main/state.ts . state c7b906436f5b
+#feature session-monitoring
+src/main/subagent.ts . pure 5e2a765e84ea
+#feature session-monitoring
+src/main/windows.ts . service 643671412ffd
+#feature projects-hub
+src/notify-hooks/codex.ps1 . script 851e1da5217a
+#feature notifications
+src/notify-hooks/codex.sh . script 57464f3efaae
+#feature notifications
+src/preload/overlay.ts . gateway bd55c8abba23
+#feature notifications
+src/preload/workspace.ts . gateway 58a86607bd12
+src/renderer/features/agent-run.ts . component d941f60754b7
+#feature agent-runs
+src/renderer/features/cli-panel.ts . component 2a1ac195297b
+src/renderer/features/editor-tab.ts . service 7356a388d6b0
+#feature serve-web
+src/renderer/features/explain.ts . component e0678ce7190d
+#feature code-insight
+src/renderer/features/hub.ts . component fc18c00bec00
+#feature projects-hub
+src/renderer/features/lantern.ts . component e6070d673dd4
+#feature lantern-map
+src/renderer/features/load-screen.ts . component 9b1c0f18420e
+#feature serve-web
+src/renderer/features/provider-control.ts . component e121f1c4fb77
+#feature agent-runs
+src/renderer/features/review.ts . component 63074fff20d1
+#feature code-insight
+src/renderer/features/server-load.ts . component aa84e39c548a
+#feature serve-web
+src/renderer/features/settings.ts . component 818921318a5a
+src/renderer/features/skills-state.ts . pure b75792dc3a22
+#feature skills-management
+src/renderer/features/skills.ts . component 2e4f24156f79
+#feature skills-management
+src/renderer/global.d.ts . schema c4da808c4967
+src/renderer/lantern-prs.css . style 7605b0fb8377
+#feature pull-requests
+src/renderer/lantern-relation.css . style 22c56f6957c8
+#feature lantern-map
+src/renderer/lantern-sections.css . style 259adb0cbae7
+#feature lantern-sections
+src/renderer/lantern-setup.css . style fdb0c51e9b6b
+#feature lantern-map
+src/renderer/lantern.css . style e1c8d8220f30
+#feature lantern-map
+src/renderer/lib/codemodal.ts . component 123dd3fbda3a
+#feature code-insight
+src/renderer/lib/codeview.ts . component 8f5f2f41c0a8
+#feature code-insight
+src/renderer/lib/diffcollapse.ts . pure 2938067b7e60
+#feature code-insight
+src/renderer/lib/diffview.ts . component 24842a038a33
+#feature code-insight
+src/renderer/lib/editorload.ts . pure 1a135e4756e2
+#feature serve-web
+src/renderer/lib/explain.ts . pure 9535e7408e72
+#feature code-insight
+src/renderer/lib/file-icon-manifest.json . config 5673c93d104a
+src/renderer/lib/file-icons.ts . component a1fca8f26ed3
+src/renderer/lib/file-label.ts . component 7fc6c964b323
+src/renderer/lib/graph-navigation.ts . component a0090c394b88
+#feature lantern-map
+src/renderer/lib/idle-tabs.ts . pure 1a9fc9b22b45
+#feature serve-web
+src/renderer/lib/langselect.ts . component 7bd3ebb1bc64
+src/renderer/lib/lantern-pixi/edge-graphics.ts . component 4e616af3f85c
+#feature lantern-map
+src/renderer/lib/lantern-pixi/index.ts . component 52acc8475104
+#feature lantern-map
+src/renderer/lib/lantern-pixi/node-graphics.ts . component 9a084d9d45c7
+#feature lantern-map
+src/renderer/lib/lantern-pixi/open-actions.ts . component c2a927bdb69f
+#feature lantern-map
+src/renderer/lib/lantern-pixi/palette.ts . util 225ca437e414
+#feature lantern-map
+src/renderer/lib/lantern-pixi/relation-graphics.ts . component c0080dd4be42
+#feature lantern-map
+src/renderer/lib/lantern-pixi/text-quality.ts . util 6f8fe2e91cc9
+#feature lantern-map
+src/renderer/lib/lanterncollapse.ts . pure cf5bebec596e
+#feature lantern-map
+src/renderer/lib/lanternctx.ts . component 1b65854eef3a
+#feature lantern-map
+src/renderer/lib/lanterndetail.ts . component 9ca939faa105
+#feature lantern-map
+src/renderer/lib/lanternhead.ts . component 5d1dd6f8f6a0
+#feature lantern-map
+src/renderer/lib/lanternlayout.ts . pure 8192a3287d99
+#feature lantern-map
+src/renderer/lib/lanternlock.ts . component 894314854718
+#feature lantern-map
+src/renderer/lib/lanternmove.ts . util 5fe2bbf4ca42
+src/renderer/lib/lanternoverlay.ts . pure 566ddc4dbb02
+#feature pull-requests
+src/renderer/lib/lanternprofile.ts . pure 031bbc373071
+#feature lantern-map
+src/renderer/lib/lanternpronly.ts . pure 2177169ab0dc
+#feature pull-requests
+src/renderer/lib/lanternprpanel.ts . component 546de6215b8c
+#feature pull-requests
+src/renderer/lib/lanternprs.ts . component 77fd73974e3f
+#feature pull-requests
+src/renderer/lib/lanternrelview.ts . pure c806f431497c
+#feature lantern-map
+src/renderer/lib/lanternscope.ts . pure 991cbeab8ef3
+#feature lantern-map
+src/renderer/lib/lanternsections/common.ts . component c6f85d328601
+#feature lantern-sections
+src/renderer/lib/lanternsections/controller.ts . hook f8d59dac8929
+#feature lantern-sections
+src/renderer/lib/lanternsections/db.ts . component 0191f66fd13d
+#feature lantern-sections
+src/renderer/lib/lanternsections/facts.ts . component 2f4925805a3f
+#feature lantern-sections
+src/renderer/lib/lanternsections/rbac.ts . component 9f5f20992d81
+#feature lantern-sections
+src/renderer/lib/lanternsections/registry.ts . component 4e1718c333d9
+#feature lantern-sections
+src/renderer/lib/lanternsections/states.ts . component e7e7d143b498
+#feature lantern-sections
+src/renderer/lib/lanternside.ts . component 59c112d1cb08
+#feature lantern-map
+src/renderer/lib/lanterntabs.ts . component e88076beeb03
+#feature lantern-map
+src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
+#feature lantern-map
+src/renderer/lib/lanternview.ts . component eb8847cb01ba
+#feature lantern-map
+src/renderer/lib/maplang.ts . component 37abe10f5af4
+#feature lantern-map
+src/renderer/lib/modalsteps.ts . component e4918e6d73c5
+#feature pull-requests
+src/renderer/lib/modalreason.ts . component f56006698164
+#feature pull-requests
+src/renderer/lib/prdiffmodal.ts . component 93ba211ec29c
+#feature pull-requests
+src/renderer/lib/project-list-keys.ts . util 23929f32afe9
+src/renderer/lib/providers.ts . state 5c8c256de421
+src/renderer/lib/semantic-highlight.ts . component e8ad742a94e8
+#feature code-insight
+src/renderer/lib/semantic-limit-notice.ts . component b0a8ff5b5628
+#feature code-insight
+src/renderer/lib/settings-editor.ts . component b342cbf585f1
+src/renderer/lib/settings-search.ts . pure a20d45b6716e
+src/renderer/lib/settings-state.ts . state 69e33518b130
+src/renderer/lib/setupprogress.ts . pure d8713e9b05d5
+#feature lantern-map
+src/renderer/lib/setuprun.ts . service 2988263eeca8
+#feature lantern-map
+src/renderer/lib/setupscreen.ts . component 55ef8614ac05
+#feature lantern-map
+src/renderer/lib/symbolfind.ts . pure dc31e008126a
+#feature code-insight
+src/renderer/lib/syntax-client.ts . service 4731ae944215
+#feature code-insight
+src/renderer/lib/syntax-highlighting.ts . util 57d2fcecbd85
+#feature code-insight
+src/renderer/lib/syntax-theme.ts . pure 3f7e09b05fa5
+#feature code-insight
+src/renderer/lib/syntax-worker.ts . handler 45303b08cb7c
+#feature code-insight
+src/renderer/lib/util.ts . util 1a97a6a8fae4
+src/renderer/overlay.css . style 67978133980e
+#feature notifications
+src/renderer/overlay.html . entry 71bb484278d9
+#feature notifications
+  = src/main/app-menu.ts
+src/renderer/overlay.ts . entry 87d1fda1b81f
+#feature notifications
+src/renderer/settings.css . style 735d29fb5e58
+src/renderer/state.ts . state aaaa58257ffd
+src/renderer/themes/lantern-dark.json . style 7b460c33e822
+#feature code-insight
+src/renderer/workspace.css . style 4f226c4f713e
+src/renderer/workspace.html . entry 8ec24718078c
+src/renderer/workspace.ts . entry 7f89a330833f
+src/shared/code-highlighting.ts . schema 28ed9c711129
+#feature code-insight
+src/shared/code-preview.ts . config 54b61910a554
+#feature code-insight
+src/shared/config.ts . config b627e15427ec
+#feature notifications
+src/shared/settings-graph.ts . config 06857aef727c
+src/shared/settings-notifications.ts . config 2c839fa63c7e
+#feature notifications
+src/shared/settings-registry.ts . pure 422978f260bc
+src/shared/settings-schema.ts . schema 37bdc38a9cb3
+src/shared/settings-tabs.ts . config d6aa623c338c
+#feature serve-web
+src/shared/shell-quote.ts . util ef8b28ec1ccf
+test/agent-close.test.ts . test b704327b2a3f
+#feature agent-runs
+test/agent-codex.test.ts . test 1390835fe858
+#feature agent-runs
+test/agent-language.test.ts . test 48f2406f3f9d
+#feature agent-runs
+test/agent-request.test.ts . test 52929fc149f6
+#feature agent-runs
+test/agent-start.test.ts . test 988146fdf55c
+#feature agent-runs
+test/agent.test.ts . test d85ea9ad236d
+#feature agent-runs
+test/app-menu.test.ts . test 59af5bc5eeba
+test/bundled-skills-standalone.test.ts . test 2b12384cbe32
+#feature skills-management
+test/claude-bin.test.ts . test 2faabe2ffd2b
+#feature agent-runs
+test/claude-poll.test.ts . test f42811098272
+#feature session-monitoring
+test/cli-panel.test.ts . test b791377031b0
+#feature projects-hub
+test/cli-script.test.ts . test 0594b247431b
+#feature projects-hub
+test/cli.test.ts . test f44ed9b1ed53
+#feature projects-hub
+test/codeview.test.ts . test 276eabcd9d5e
+#feature code-insight
+test/codex-event-route.test.ts . test 9662bfb4ad9b
+#feature notifications
+test/codex-event.test.ts . test ec31c00cfaee
+#feature session-monitoring
+test/codex-hooks.test.ts . test 7dabf7ab52fa
+#feature notifications
+test/codex-scanner.test.ts . test da05f8281e9b
+#feature session-monitoring
+test/codex-skill-guides.test.ts . test a2eae6a0bf12
+#feature skills-management
+test/delegate-e2e-harness.test.ts . test 402dcdf524a0
+#feature delegate-runs
+test/lantern-delegate-check-skill-use.test.ts . test 73aff5e2c8d1
+#feature delegate-runs
+test/lantern-delegate-lint-reviewer.test.ts . test 9474714ff432
+#feature delegate-runs
+test/lantern-delegate-lint-transcript.test.ts . test 3ffb19251016
+#feature delegate-runs
+test/lantern-delegate-pick-conventions.test.ts . test f1179bf92a5d
+#feature delegate-runs
+test/lantern-delegate-scripts.test.ts . test 3e02074b2530
+#feature delegate-runs
+test/lantern-delegate-skill-reads.test.ts . test c738440f1d75
+#feature delegate-runs
+test/lantern-delegate-skill.test.ts . test 4e9ce5365e12
+#feature delegate-runs
+test/diff-collapse.test.ts . test 8170f196b244
+#feature code-insight
+test/dom.test.ts . test 54fb7da385e4
+#feature code-insight
+test/e2e/app/harness.css . style 362b854f8fb3
+test/e2e/app/index.html . test 10c02b3ee323
+test/e2e/app/main.cjs . test 8cb566c0eda9
+test/e2e/app/renderer.ts . test 042214e08429
+test/e2e/graph-navigation.spec.ts . test 7ed46145f408
+#feature lantern-map
+test/e2e/graph-performance.spec.ts . test ae8c54d65587
+#feature lantern-map
+test/e2e/graph-pixi.spec.ts . test cf569b550252
+#feature lantern-map
+test/e2e/graph-regression.spec.ts . test bb415efaaf2b
+#feature lantern-map
+test/e2e/lsp-app/index.html . test c8002f51ee54
+test/e2e/lsp-app/main.ts . test 332eed015db8
+test/e2e/lsp-app/renderer.ts . test 16e50ff05b81
+test/e2e/lsp-semantic.spec.ts . test 8530fca71fbc
+#feature code-insight
+test/e2e/pr-review-demo.spec.ts . test 0975a571ca09
+#feature pull-requests
+test/e2e/support/graph-harness.ts . test 1328658afb3c
+test/e2e/tsconfig.json . config b024315ec7d5
+test/editor-tab.test.ts . test f3f282dd27ed
+#feature serve-web
+test/editorload.test.ts . test 7b206fd4e27f
+#feature serve-web
+test/explain-links.test.ts . test 54e5c8c6cd2f
+#feature code-insight
+test/explain.test.ts . test 4b3e013fbaec
+#feature code-insight
+test/file-icon-render.test.ts . test d54e0c0a9237
+#feature lantern-map
+test/file-icons.test.ts . test ef455ad9ebf6
+#feature lantern-map
+test/filecontent.test.ts . test d58888162b4a
+#feature code-insight
+test/fixpanel.test.ts . test ddfb8a323ed4
+#feature agent-runs
+test/fixtures/graph/graph-fixtures.ts . test f9eaeeb47e37
+test/fixtures/graph/pr-review-demo.ts . test 84910c265768
+test/fixtures/graph/scenarios.json . config 4986c076e715
+test/graph-navigation.test.ts . test f1f59ae8df02
+#feature lantern-map
+test/helpers/diff-text.ts . test 319f73d83fcc
+#feature pull-requests
+test/helpers/git-repo.ts . test 78f2fdbfd5c0
+#feature pull-requests
+test/helpers/lantern-map.ts . test bcd31440f374
+#feature lantern-map
+test/helpers/lantern-sections.ts . test d287c4965df8
+#feature lantern-sections
+test/helpers/setup-project.ts . test ba3482dd793f
+#feature lantern-map
+test/hook-cleanup.test.ts . test e396e94ce32e
+#feature notifications
+test/idle-tabs-workspace.test.ts . test 3a3a74d4ac1d
+#feature serve-web
+test/idle-tabs.test.ts . test bcb77489369e
+#feature serve-web
+test/install-skills.test.ts . test 29aeb73ba69e
+#feature skills-management
+test/lantern-arrowheads.test.ts . test c7b5b6c31b4f
+#feature lantern-map
+test/lantern-bundle.test.ts . test d3fa6e92f46e
+#feature skills-management
+test/lantern-cache.test.ts . test 733f310f86b2
+#feature lantern-map
+test/lantern-collapse.test.ts . test e79c7a1f96d9
+#feature lantern-map
+test/lantern-coverage-stage.test.ts . test da054aceb9ba
+#feature lantern-map
+test/lantern-data.test.ts . test faeb3b6a496e
+#feature lantern-map
+test/lantern-database-filters.test.ts . test 04003be0b578
+#feature lantern-sections
+test/lantern-detail.test.ts . test 6a1aca1c1df9
+#feature lantern-map
+test/lantern-diff-view.test.ts . test 074e8fd8ef3e
+#feature code-insight
+test/lantern-edge-geometry.test.ts . test 5faf6c3b233f
+#feature lantern-map
+test/lantern-enumerate.test.ts . test 294ef8a24301
+#feature lantern-map
+test/lantern-focus-reload.test.ts . test 1d37a34d5384
+#feature lantern-map
+test/lantern-focus.test.ts . test 2f411b1fc231
+#feature lantern-map
+test/lantern-lift.test.ts . test aff9340cafdb
+#feature lantern-map
+test/lantern-lock.test.ts . test 279bd5e49b59
+#feature lantern-map
+test/lantern-migrate-model.test.ts . test e5903f389f3c
+#feature lantern-map
+test/lantern-modal-reason.test.ts . test 821c0be3376d
+#feature pull-requests
+test/lantern-model.test.ts . test 95b228546f32
+#feature lantern-map
+test/lantern-opencode.test.ts . test 20a77eaf4c99
+#feature code-insight
+test/lantern-openfile.test.ts . test 48e56ae71eea
+#feature code-insight
+test/lantern-panel.test.ts . test 3bd90c5a5904
+#feature lantern-map
+test/lantern-pixi-edge-style.test.ts . test b0bded696957
+#feature lantern-map
+test/lantern-pixi-text-quality.test.ts . test ff11397189ea
+#feature lantern-map
+test/lantern-platforms.test.ts . test fd7fecb4d66b
+#feature lantern-map
+test/lantern-pr-autofetch.test.ts . test c79e9b4ee697
+#feature pull-requests
+test/lantern-pr-code-modal.test.ts . test db2eb13c6e79
+#feature pull-requests
+test/lantern-pr-diff-modal.test.ts . test 479f848ad84b
+#feature pull-requests
+test/lantern-pr-merge.test.ts . test 7eebeece46d2
+#feature pull-requests
+test/lantern-pr-mode.test.ts . test 10bd10d656b1
+#feature pull-requests
+test/lantern-pr-only.test.ts . test 67a2d7c679e9
+#feature pull-requests
+test/lantern-pr-overlay-view.test.ts . test 3baae99d620e
+#feature pull-requests
+test/lantern-pr-overlay.test.ts . test 884efd8c4d68
+#feature pull-requests
+test/lantern-pr-panel.test.ts . test d8baa1b787b8
+#feature pull-requests
+test/lantern-pr-parity.test.ts . test ffda2a74c7fb
+#feature pull-requests
+test/lantern-pr-parse.test.ts . test d5ec2010798d
+#feature pull-requests
+test/lantern-pr-refresh.test.ts . test 1dd9185c5b0a
+#feature pull-requests
+test/lantern-pr-steps.test.ts . test bca0abeb1237
+#feature pull-requests
+test/lantern-pr-visibility.test.ts . test 7c5bce6fdf77
+#feature pull-requests
+test/lantern-prdiff.test.ts . test 4385a0ba3b78
+#feature pull-requests
+test/lantern-prfile.test.ts . test 365d9ec57ae7
+#feature pull-requests
+test/lantern-primary-lang.test.ts . test 8a343bc2177c
+#feature lantern-map
+test/lantern-prs.test.ts . test 86c29eb0c103
+#feature pull-requests
+test/lantern-relation-open.test.ts . test 734aadfa38b1
+#feature lantern-map
+test/lantern-relation-tiles.test.ts . test ccca9938584c
+#feature lantern-map
+test/lantern-relation.test.ts . test a5a5ecf80917
+#feature lantern-map
+test/lantern-resume.test.ts . test 4283a09ce55d
+#feature lantern-map
+test/lantern-search.test.ts . test 0a18c6ed4f78
+#feature lantern-map
+test/lantern-sections-scope.test.ts . test 27289517d95f
+#feature lantern-sections
+test/lantern-sections.test.ts . test 6751c5839513
+#feature lantern-sections
+test/lantern-shared-map.test.ts . test dc01aa2a1d6b
+#feature lantern-map
+test/lantern-skill-files.test.ts . test 3dbbd7ecee53
+#feature lantern-map
+test/lantern-skill-graph.test.ts . test b52128536990
+#feature lantern-map
+test/lantern-skill-refs.test.ts . test db2f9eb1d393
+#feature lantern-map
+test/lantern-stamp.test.ts . test 2f37a651978a
+#feature lantern-map
+test/lantern-sync-resolution.test.ts . test 0e95a27eddf9
+#feature lantern-map
+test/lantern-sync-selftest.test.ts . test 5e958f2acec6
+#feature lantern-map
+test/lantern-sync-untracked.test.ts . test c22272f42eaa
+#feature lantern-map
+test/lantern-tab.test.ts . test 17c09d043ad0
+#feature lantern-map
+test/lantern.test.ts . test cd245a6cf2ab
+#feature lantern-map
+test/lanternview-fold.test.ts . test b5da9ff49ef5
+#feature lantern-map
+test/lanternview.test.ts . test 9b21d262e0af
+#feature lantern-map
+test/lsp-integration.test.ts . test 290fc85a417a
+#feature code-insight
+test/lsp-lifecycle.test.ts . test 04389aa1ad14
+#feature code-insight
+test/lsp-runtime.test.ts . test 57d482f3bef6
+#feature code-insight
+test/lsp-snapshot.test.ts . test d4c083b645a5
+#feature code-insight
+test/map-language.test.ts . test 3c927f0eb78e
+#feature lantern-map
+test/material-file-icons-build.test.ts . test 10af2ed19305
+#feature lantern-map
+test/metadir.test.ts . test d5cf9047bd85
+#feature code-insight
+test/notifycard.test.ts . test c16cef4225d0
+#feature notifications
+test/process-guard.test.ts . test b5db20b03988
+#feature serve-web
+test/prockill.test.ts . test 47d5e01e02c5
+#feature serve-web
+test/proctree.test.ts . test dde5bf2ea101
+#feature serve-web
+test/project-window.test.ts . test 78ac86c9df6c
+#feature projects-hub
+test/projectroot.test.ts . test af95acdc7e38
+#feature projects-hub
+test/projects.test.ts . test 8fcf5643d995
+#feature projects-hub
+test/review-content.test.ts . test ef79d82dda0d
+#feature code-insight
+test/scanner.test.ts . test 724ed83cf738
+#feature session-monitoring
+test/semantic-highlight.test.ts . test f2fdeb455239
+#feature code-insight
+test/server-routes.test.ts . test 0a2563e7ef6d
+#feature session-monitoring
+test/serveweb-launch-wiring.test.ts . test 05eebfff860d
+#feature serve-web
+test/serveweb-launch.test.ts . test a4802ba1f24b
+#feature serve-web
+test/serveweb-parse.test.ts . test cf7d9c919ee1
+#feature serve-web
+test/serveweb-port.test.ts . test e73603f2be8a
+#feature serve-web
+test/serveweb-reclaim.test.ts . test b4d60d1e0770
+#feature serve-web
+test/serveweb-settings.test.ts . test 9c9771777e55
+#feature serve-web
+test/serveweb.test.ts . test 0e440df6b14e
+#feature serve-web
+test/session-notification.test.ts . test 14cde027db48
+#feature notifications
+test/settings-dialog.test.ts . test 7f5d789cb123
+test/settings-editor.test.ts . test 9eea5c26709d
+test/settings-model.test.ts . test 30a08599b08d
+test/settings-registry.test.ts . test 449937e25b41
+test/settings-search.test.ts . test 13359e18cc3e
+test/settings-state.test.ts . test f0fde9abdcd9
+test/settings-store.test.ts . test 6dccc4f327a0
+test/settings-tabs.test.ts . test c16066d3344a
+#feature serve-web
+test/settings.test.ts . test 38f55c189547
+#feature projects-hub
+test/setup-process-guard.ts . test f66fce10b688
+#feature serve-web
+test/setup-progress.test.ts . test ef1eba6449fd
+#feature lantern-map
+test/setup-run.test.ts . test ae256c4a8f64
+#feature lantern-map
+test/setup-state.test.ts . test dcdbcb2caceb
+#feature lantern-map
+test/setup-view.test.ts . test ffb4448ce2d1
+#feature lantern-map
+test/sidebar.test.ts . test 05ef78d8225c
+#feature projects-hub
+test/skill-test-harness.test.ts . test f4e2f07ef962
+#feature lantern-map
+test/skills-state.test.ts . test 9c8c13be0903
+#feature skills-management
+test/skills.test.ts . test 7a0528277409
+#feature skills-management
+test/state.test.ts . test 75e9e87651f8
+#feature session-monitoring
+test/subagent.test.ts . test 905b42bf5b88
+#feature session-monitoring
+test/support/bundle-fixtures.ts . test 900240d83815
+test/support/process-guard.ts . test 1c48afa7cd5f
+test/symbolfind.test.ts . test d4664c8f948e
+#feature code-insight
+test/syntax-client.test.ts . test 279e43484fac
+#feature code-insight
+test/util.test.ts . test c6c561150c23
+#feature projects-hub
+test/windows.test.ts . test 3dbfb7e1f83a
+#feature projects-hub
+tsconfig.json . config 28af2cd912a1
+vitest.config.ts . config 894527ca3071

@@ -1,0 +1,91 @@
+lantern 1
+# skills/lantern-bitbucket/scripts
+
+skills/lantern-bitbucket/scripts/args.mjs . util 5cf60c0ded5e
+#feature integrations
+#see-also skills/lantern-github/scripts/args.mjs skills/lantern-jira/scripts/args.mjs
+  < skills/lantern-bitbucket/scripts/http.mjs#SkillError
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+
+skills/lantern-bitbucket/scripts/bitbucket-api.mjs . gateway ee0be2574171
+#feature integrations
+  < skills/lantern-bitbucket/scripts/http.mjs#createHttp
+  = ext:bitbucket-api
+
+skills/lantern-bitbucket/scripts/bitbucket.mjs . script c692763744ad
+#feature integrations
+  = skills/lantern-bitbucket/scripts/cli.mjs#run
+
+skills/lantern-bitbucket/scripts/block.mjs . util 82a4ec2cd3c3
+#feature integrations
+#see-also skills/lantern-github/scripts/block.mjs
+  < skills/lantern-bitbucket/scripts/args.mjs#OPTION
+  < skills/lantern-bitbucket/scripts/http.mjs#SkillError
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+
+skills/lantern-bitbucket/scripts/cli.mjs . handler 1048b0a55321
+#feature integrations
+  < skills/lantern-bitbucket/scripts/args.mjs#parseArgs
+  = skills/lantern-bitbucket/scripts/bitbucket-api.mjs#createBitbucketApi
+  = skills/lantern-bitbucket/scripts/commands.mjs#COMMANDS
+  < skills/lantern-bitbucket/scripts/credentials.mjs#readCredentials
+  < skills/lantern-bitbucket/scripts/credentials.mjs#sourceOf
+  < skills/lantern-bitbucket/scripts/git.mjs#createGit
+  < skills/lantern-bitbucket/scripts/http.mjs#SkillError
+  = skills/lantern-bitbucket/scripts/lantern-socket.mjs#completeEnv
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+  < skills/lantern-bitbucket/scripts/redact.mjs#createRedactor
+
+skills/lantern-bitbucket/scripts/commands.mjs . handler f1ef99cafc33
+#feature integrations
+  < skills/lantern-bitbucket/scripts/args.mjs#readBody
+  < skills/lantern-bitbucket/scripts/block.mjs#readBlock
+  < skills/lantern-bitbucket/scripts/conventions.mjs#createConventions
+  < skills/lantern-bitbucket/scripts/credentials.mjs#SOURCE_MESSAGE
+  < skills/lantern-bitbucket/scripts/git.mjs#assertReadyToPublish
+  < skills/lantern-bitbucket/scripts/http.mjs#ensureOk
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+  < skills/lantern-bitbucket/scripts/remote.mjs#chooseRemote
+
+skills/lantern-bitbucket/scripts/conventions.mjs . util ab32fd3c6787
+#feature integrations
+#see-also skills/lantern-github/scripts/conventions.mjs skills/lantern-jira/scripts/conventions.mjs
+  < skills/lantern-bitbucket/scripts/http.mjs#SkillError
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+
+skills/lantern-bitbucket/scripts/credentials.mjs . pure 4201ea17ac65
+#feature integrations
+  < skills/lantern-bitbucket/scripts/redact.mjs#basicSecrets
+
+skills/lantern-bitbucket/scripts/git.mjs . util b79b5851e1c3
+#feature integrations
+#see-also skills/lantern-github/scripts/git.mjs
+  = ext:git
+  < skills/lantern-bitbucket/scripts/http.mjs#SkillError
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+
+skills/lantern-bitbucket/scripts/http.mjs . util 6682287c04fe
+#feature integrations
+#see-also skills/lantern-github/scripts/http.mjs skills/lantern-jira/scripts/http.mjs
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+
+skills/lantern-bitbucket/scripts/lantern-socket.mjs . gateway d56120b53469
+#feature integrations
+#see-also skills/lantern-github/scripts/lantern-socket.mjs skills/lantern-jira/scripts/lantern-socket.mjs
+  = src/main/auth/credential-server.ts#createCredentialServer
+  < skills/lantern-bitbucket/scripts/messages.mjs#message
+
+skills/lantern-bitbucket/scripts/messages.json . config d2c19df83edb
+#feature integrations
+
+skills/lantern-bitbucket/scripts/messages.mjs . util 878de13eddaa
+#feature integrations
+  < skills/lantern-bitbucket/scripts/messages.json
+
+skills/lantern-bitbucket/scripts/redact.mjs . util 9c651a206512
+#feature integrations
+
+skills/lantern-bitbucket/scripts/remote.mjs . util 3865ce4e0300
+#feature integrations
+  < skills/lantern-bitbucket/scripts/http.mjs#SkillError
+  < skills/lantern-bitbucket/scripts/messages.mjs#message

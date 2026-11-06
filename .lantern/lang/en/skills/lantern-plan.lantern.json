@@ -1,0 +1,7 @@
+{
+ "text": {
+  "README.md": "Describes the five-skill planning set, its shared scripts, where the format constants and the messages (including the app's plan view text) are defined once, and how to run their self-test",
+  "SKILL.md": "Gates planning on a settled map, runs a seven-step process to a structured plan file, names the small skill to read before each step and has the agent record answers pasted from Lantern",
+  "SKILL.md @ skills/lantern-plan/scripts/plan.mjs": "the one command line every planning step runs"
+ }
+}

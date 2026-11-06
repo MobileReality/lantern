@@ -1,0 +1,9 @@
+{
+  "text": {
+    "lsp-client.ts": "Manages a bundled language-server process and bounded serialized semantic-token requests",
+    "runtime-path.ts": "Resolves the language-server runtime directory in packaged and development builds",
+    "semantic-service.ts": "Authorizes source-bound semantic highlights and manages bounded language-server and snapshot lifetimes",
+    "snapshot-root.ts": "Leases bounded historical snapshots, reuses compatible dependencies and cleans released or orphaned roots",
+    "source-provenance.ts": "Issues and validates expiring source tokens bound to project, path and source identity"
+  }
+}

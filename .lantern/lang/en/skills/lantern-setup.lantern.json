@@ -1,0 +1,11 @@
+{
+ "text": {
+  "README.md": "Explains map capabilities, the fictional sample maps (skills, AI, platforms and the bookshop with all four sections) and how to render them, language setup, the shared feature and outside-system vocabulary with its tools, the call and deploy relations across platforms with their warning, and the one-time migration that strips model provenance from an older map",
+  "README.md @ skills/lantern-setup/scripts/migrate-model.mjs": "the one-time model provenance migration",
+  "SKILL.md": "Directs chunked source mapping with relations and primary-language texts, gated by a model policy (any version of the accepted families, older ones only warned about) checked when work starts and finished only when a map over the areas thresholds has its areas tree; names the one plain command shape an unattended run and its workers may type; fixes what a feature and an outside system are, with a canonical systems list, how a network call into the repository or a deploy file gets a relation to its handler or service entry (nothing when it does not resolve to one file), and a retag mode that cleans an existing map without a re-map; records under a .claude folder are written at an alias and folded into place, since the editor tools refuse that folder; the map records no model, so either agent continues it, plan files under .lantern/plans belong to the planning skills, and Codex sessions take the Codex reference route",
+  "SKILL.md @ skills/lantern-setup/scripts/areas.mjs": "proposes candidate area groupings from the map and gates a drafted areas tree",
+  "SKILL.md @ skills/lantern-setup/scripts/cross-platform.mjs": "holds the thresholds of the cross-platform relation warnings",
+  "SKILL.md @ skills/lantern-setup/scripts/fold.mjs": "moves .claude records out of their alias folder",
+  "SKILL.md @ skills/lantern-setup/scripts/systems.mjs":"the only writer of the outside-system list"
+ }
+}

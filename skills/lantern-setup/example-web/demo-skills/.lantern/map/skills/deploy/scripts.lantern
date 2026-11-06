@@ -1,0 +1,5 @@
+lantern 1
+# skills/deploy/scripts
+
+skills/deploy/scripts/preflight.mjs . script 61f3d7777bb9
+skills/deploy/scripts/rollback.sh . script 3229d0854071

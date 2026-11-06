@@ -1,0 +1,20 @@
+lantern 1
+# src/ai
+
+src/ai/agentLoop.ts . ai ee35b6dc7806
+  = src/ai/llmClient.ts#complete
+  = src/ai/promptBuilder.ts#buildMessages
+  = src/ai/embeddingRetriever.ts#retrieveContext
+  > src/ai/guardrails.ts#checkAnswer
+  = src/services/ticketService.ts#findTicketStatus
+  < src/services/ticketService.ts#listTickets
+  < src/types/ticket.ts#Triage
+src/ai/embeddingRetriever.ts . ai 8bac30039c62
+  = ext:embeddings-api
+  = ext:vector-store
+src/ai/guardrails.ts . ai e86bff83537a
+  < src/types/ticket.ts#Triage
+src/ai/llmClient.ts . ai f0be140b62d1
+  = ext:anthropic-api
+src/ai/promptBuilder.ts . ai 4a363cab30e3
+  < src/types/ticket.ts#Ticket

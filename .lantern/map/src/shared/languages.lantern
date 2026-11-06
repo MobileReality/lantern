@@ -1,0 +1,6 @@
+lantern 1
+# src/shared/languages
+
+src/shared/languages/index.ts . pure 9c58700c15ef
+#feature map-setup
+  < src/shared/settings-schema.ts#SettingsNode

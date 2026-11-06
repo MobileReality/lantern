@@ -1,0 +1,13 @@
+{
+    "claude": [
+        { "family": "sonnet", "recommended": "5.5" },
+        { "family": "opus", "recommended": "5.5" },
+        { "family": "fable", "recommended": "5.1" }
+    ],
+    "allowedIds": ["gpt-6-astra"],
+    "codex": [
+        { "family": "sol", "recommended": "6.1" },
+        { "family": "astra", "recommended": "6" },
+        { "family": "terra" }
+    ]
+}

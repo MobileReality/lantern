@@ -1,0 +1,34 @@
+Processes: 638 total, 2 running, 636 sleeping, 7315 threads
+2026/10/20 13:31:58
+Load Avg: 3.29, 2.58, 2.77
+CPU usage: 3.14% user, 7.1% sys, 89.83% idle
+SharedLibs: 373M resident, 89M data, 84M linkedit.
+MemRegions: 1222506 total, 8369M resident, 153M private, 1829M shared.
+PhysMem: 23G used (3628M wired, 7981M compressor), 446M unused.
+VM: 392T vsize, 57G framework vsize, 9043764(0) swapins, 12052673(0) swapouts.
+Networks: packets: 11727482/14G in, 22710693/19G out.
+Disks: 72463191/2172G read, 20124959/666G written.
+
+PID    MEM
+4000   212M
+4001   359M+
+4002   13M-
+4003   462M
+4010   3744K
+4011   58M
+4012   31M
+4013   9856K
+4014   96M
+4020   1.5G
+4021   289M
+4022   2423M+
+4023   42M
+4024   7392K
+4025   64M
+4030   2288K
+4031   40M
+4032   180M
+4040   140M
+4041   310M
+4050   220M
+4051   0B

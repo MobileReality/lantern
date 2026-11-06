@@ -1,0 +1,10 @@
+{
+ "text": {
+  "CLAUDE.md": "fixture project instructions: commits and releases follow the two skills",
+  "CLAUDE.md @ skills/lantern-setup/example-web/demo-skills/skills/commit/SKILL.md": "every commit follows it",
+  "CLAUDE.md @ skills/lantern-setup/example-web/demo-skills/skills/deploy/SKILL.md": "releases follow it",
+  "README.md": "explains the fictional demo-skills repository and what its map shows",
+  "README.md @ skills/lantern-setup/scripts/refs.mjs": "its candidates are what the expected relations come from",
+  "README.md @ skills/lantern-setup/scripts/validate.mjs": "settles the fixture map"
+ }
+}

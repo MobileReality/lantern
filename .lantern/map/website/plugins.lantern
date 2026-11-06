@@ -1,0 +1,9 @@
+lantern 1
+# website/plugins
+
+website/plugins/check-links.ts . script 88635b02a788
+  < website/src/lib/headings.ts#extractHeadings
+  < website/src/lib/links.ts#collectLinkTargets
+  < website/src/lib/pages.ts#PAGES
+
+website/plugins/site.ts . script e898386ea7d7

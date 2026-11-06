@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Claude Code uses the microphone for voice input inside the embedded editor.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Claude Code may use the camera inside the embedded editor.</string>
+  <key>NSAppleEventsUsageDescription</key>
+  <string>Lantern focuses the terminal tab of a Claude session when you jump to it from a notification.</string>
+</dict>
+</plist>

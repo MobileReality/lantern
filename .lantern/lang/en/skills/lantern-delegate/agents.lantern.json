@@ -1,0 +1,13 @@
+{
+ "text": {
+  "lantern-delegate-high.md": "Sonnet delegate at high effort, worktree-isolated, for a Lantern project",
+  "lantern-delegate-high.md @ skills/lantern-delegate/protocol.md": "the rules it follows",
+  "lantern-delegate-low.md": "Sonnet delegate at low effort, worktree-isolated, for a Lantern project",
+  "lantern-delegate-low.md @ skills/lantern-delegate/protocol.md": "the rules it follows",
+  "lantern-delegate-medium.md": "Sonnet delegate at medium effort, worktree-isolated, for a Lantern project",
+  "lantern-delegate-medium.md @ skills/lantern-delegate/protocol.md": "the rules it follows",
+  "lantern-delegate-xhigh.md": "Sonnet delegate at xhigh effort, worktree-isolated, for a Lantern project",
+  "lantern-delegate-xhigh.md @ skills/lantern-delegate/protocol.md": "the rules it follows",
+  "reviewer.md": "read-only Opus reviewer that reads the skills its list prints and returns a verdict with the four machine-readable closing lines"
+ }
+}

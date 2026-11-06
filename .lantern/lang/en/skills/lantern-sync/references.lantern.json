@@ -1,0 +1,8 @@
+{
+  "text": {
+    "authority.md": "Limits sync to the mutations the current session authorizes: no commit, push, PR change or worktree removal without consent",
+    "codex.md": "Codex route for sync: find the setup skill, pass --provider codex, refresh dirty trees by plan and validate, finish and verify only after an approved commit",
+    "codex.md @ skills/lantern-setup/scripts/plan.mjs": "pending and chunk refresh for uncommitted edits",
+    "codex.md @ skills/lantern-setup/scripts/validate.mjs": "settled validation after a refresh"
+  }
+}

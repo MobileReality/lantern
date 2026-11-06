@@ -1,0 +1,42 @@
+.lt-rvbar { position: sticky; bottom: 0; flex: none; margin-top: auto; left: 0; z-index: 3; height: 0; pointer-events: none; }
+.lt-rvbar[hidden] { display: none; }
+.lt-rvbtns { position: absolute; bottom: 12px; right: 16px; display: flex; gap: 8px; pointer-events: auto; }
+.lt-rvtoggle { display: inline-flex; align-items: center; gap: 4px; padding: 5px 13px 5px 8px; border: 1px solid var(--lt-rule); border-radius: 999px; background: var(--lt-panel); color: var(--lt-ink-2); font: inherit; font-size: var(--fs-base); cursor: default; }
+.lt-lock { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px 5px 10px; border: 1px solid var(--lt-rule); border-radius: 999px; background: var(--lt-panel); color: var(--lt-ink-2); font: inherit; font-size: var(--fs-base); cursor: default; }
+.lt-lock:hover { color: var(--lt-ink); border-color: var(--lt-ink-3); }
+.lt-lock[aria-pressed="true"] { background: var(--lt-ink); border-color: var(--lt-ink); color: var(--lt-bg); font-weight: 700; }
+.lt-lock:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 2px; }
+.lt-rvtoggle i { flex: none; width: 4px; height: 4px; margin: 0 9px; border-radius: 50%; background: currentColor; box-shadow: -7px 0 currentColor, 7px 0 currentColor; }
+.lt-rvtoggle:hover { color: var(--lt-ink); border-color: var(--lt-ink-3); }
+.lt-rvtoggle[aria-pressed="true"] { background: var(--lt-surface); border-color: var(--lt-glow); color: var(--lt-ink); font-weight: 700; box-shadow: 0 0 0 2px var(--lt-glow-soft); }
+.lt-rvtoggle:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 2px; }
+
+.lt-detail .rv-open { display: block; width: 100%; margin: 10px 0 0; padding: 4px 9px; border: 1px solid var(--lt-rule); border-radius: var(--radius-sm); background: var(--lt-bg); color: var(--lt-ink); font: inherit; font-size: var(--fs-base); text-align: left; cursor: default; }
+.lt-detail .rv-open:hover { border-color: var(--lt-ink-3); }
+.lt-detail .rv-open[aria-pressed="true"] { border-color: var(--lt-glow); }
+.lt-detail .rv-open:focus-visible, .lt-detail .rv-hint button:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 1px; }
+.lt-detail .rv-hint { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 8px 0 0; padding: 6px 8px 6px 10px; border-left: 3px solid var(--warning); background: color-mix(in srgb, var(--warning) 11%, var(--lt-bg)); font-size: var(--fs-base); line-height: 1.4; }
+.lt-detail .rv-hint-text { flex: 1 1 100%; color: var(--lt-ink-2); }
+.lt-detail .rv-hint-text b { color: var(--warning); font-weight: 700; }
+.lt-detail .rv-hint-go { border: 0; background: none; padding: 0; color: var(--lt-ink); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; cursor: default; }
+.lt-detail .rv-hint-x { margin-left: auto; border: 0; background: none; padding: 0 2px; color: var(--lt-ink-3); font: inherit; font-size: 15px; line-height: 1; cursor: default; }
+.lt-detail .rv-hint-x:hover { color: var(--lt-ink); }
+
+.lt-lockbar { margin-top: 16px; }
+.lt-lockbar:empty { display: none; }
+.lt-lockbar + .lt-detail { margin-top: 8px; }
+.lt-lockbar .lock-ico { flex: none; }
+.lt-lockbar .lock-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 5px 9px; border: 1px dashed var(--lt-ink-3); border-radius: var(--radius-sm); background: none; color: var(--lt-ink-2); font: inherit; font-size: var(--fs-base); text-align: left; cursor: default; }
+.lt-lockbar .lock-btn span { flex: 1; }
+.lt-lockbar .lock-btn kbd { padding: 0 5px; border: 1px solid var(--lt-rule); border-radius: 4px; font: 10px/1.6 var(--lt-mono); color: var(--lt-ink-3); }
+.lt-lockbar .lock-btn:hover { color: var(--lt-ink); border-color: var(--lt-ink-2); }
+.lt-lockbar .lock-on { display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 10px; border-radius: var(--radius-sm); background: var(--lt-ink); color: var(--lt-bg); font-size: var(--fs-base); }
+.lt-lockbar .lock-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.lt-lockbar .lock-on button { padding: 2px 9px; border: 1px solid color-mix(in srgb, var(--lt-bg) 45%, transparent); border-radius: 999px; background: none; color: inherit; font: inherit; font-size: var(--fs-sm); cursor: default; }
+.lt-lockbar .lock-on button:hover { background: color-mix(in srgb, var(--lt-bg) 18%, transparent); }
+.lt-lockbar .lock-insp { margin: 6px 0 0; padding: 0 2px; color: var(--lt-ink-2); font-size: var(--fs-base); line-height: 1.5; }
+.lt-lockbar .lock-insp b { color: var(--lt-ink); }
+.lt-lockbar .lock-insp button { display: block; margin-top: 4px; padding: 0; border: 0; background: none; color: var(--lt-ink); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; cursor: default; }
+.lt-lockbar .lock-note { margin: 8px 0 0; padding: 6px 8px 6px 10px; border-left: 3px solid var(--warning); background: color-mix(in srgb, var(--warning) 11%, var(--lt-bg)); color: var(--lt-ink-2); font-size: var(--fs-base); line-height: 1.4; }
+.lt-lockbar button:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 1px; }
+.lt-detail.insp { border-style: dashed; border-left-style: solid; }

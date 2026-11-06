@@ -1,0 +1,45 @@
+# dependencies
+node_modules/
+.claude/*
+.ai/tmp/
+
+# build output
+dist/
+
+# logs
+*.log
+
+# macOS
+.DS_Store
+
+# editors
+.vscode/
+.idea/
+
+# env / secrets
+.env
+.env.*
+
+# TS build output
+out/
+
+# test coverage
+coverage/
+test-results/
+playwright-report/
+test/e2e/app/renderer.js
+test/e2e/app/syntax-worker.js
+test/e2e/app/integrations-renderer.js
+test/e2e/app/integrations-main.cjs
+test/e2e/app/integrations-preload.cjs
+test/e2e/app/tray-popover-renderer.js
+test/e2e/app/skills-extras-renderer.js
+test/e2e/app/skills-extras-main.cjs
+test/e2e/app/skills-extras-preload.cjs
+docs/roadmap.md
+docs/implementation-loops/
+.claude/feature-loop/
+test/e2e/lsp-app/main.cjs
+test/e2e/lsp-app/renderer.js
+test/e2e/lsp-app/syntax-worker.js
+test/e2e/assets/

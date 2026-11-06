@@ -1,0 +1,23 @@
+lantern 1
+# src/main/lsp
+
+src/main/lsp/lsp-client.ts . gateway d58d12a6556a
+#feature code-insight
+  > src/main/prockill.ts#killChildTree
+  = ext:vtsls
+src/main/lsp/runtime-path.ts . util e3b2ebca117e
+#feature code-insight
+src/main/lsp/semantic-service.ts . service b81cc3472609
+#feature code-insight
+  < src/shared/code-highlighting.ts
+  < src/shared/code-preview.ts#MAX_DOCUMENT_BYTES
+  = src/main/filecontent.ts#isEscaping
+  = src/main/lsp/lsp-client.ts#LspClient
+  = src/main/lsp/snapshot-root.ts#SnapshotRoots
+  = src/main/lsp/source-provenance.ts#validateSource
+src/main/lsp/snapshot-root.ts . service 4b35b25a2d1c
+#feature code-insight
+  = ext:git
+src/main/lsp/source-provenance.ts . state da22416ca3b9
+#feature code-insight
+  < src/shared/code-highlighting.ts#CodeSource

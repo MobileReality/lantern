@@ -1,0 +1,11 @@
+lantern 1
+# skills/lantern-plan-review
+
+skills/lantern-plan-review/README.md . skill b5cb63be9403
+#feature planning
+
+skills/lantern-plan-review/SKILL.md . skill 11a4081b4517
+#feature planning
+  @ skills/lantern-commit/SKILL.md
+  @ skills/lantern-plan-stages/SKILL.md
+  @ skills/lantern-plan/scripts/plan.mjs

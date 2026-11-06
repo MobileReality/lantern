@@ -1,0 +1,7 @@
+{
+ "text": {
+  "overlay.ts": "Exposes incoming notification cards and the open, resize, animate and pointer-interactivity controls through the isolated IPC bridge",
+  "tray-popover.ts": "Exposes the menu bar popover's open and changed-model pushes and its resize, close, open-project and run-action calls through the isolated IPC bridge",
+  "workspace.ts": "Exposes the extensions load, save (with a scope), move between scopes, create-a-skill, skill linker and import-a-list calls of the Skills panel, workspace, project file preview, the project's name, branch and worktree label, the dev build's identity, map, macro view, local comparison, pull request refresh and enter-a-pull-request, agent, provider, user settings read, update and change events, the push that runs a command, Codex hook install and removal, lantern command status and install, memory view watch and updates, freeing one project's editor memory, asking for the editor server when the Editor is first needed, the account status, project, add-token, rename, expiry, commit-email, bind, unbind and remove calls with their change push, the read-only RTK status, semantic highlighting, and the explain-a-pull-request-file start, cancel, saved and completion IPC APIs"
+ }
+}

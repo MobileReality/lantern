@@ -1,0 +1,9 @@
+export function appManifest(electronVersion) {
+  return {
+    name: 'lantern',
+    productName: 'Lantern',
+    version: '1.0.0',
+    main: 'main.js',
+    devDependencies: { electron: electronVersion },
+  };
+}

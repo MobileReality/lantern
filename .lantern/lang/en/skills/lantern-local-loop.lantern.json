@@ -1,0 +1,6 @@
+{
+  "text": {
+    "README.md": "Records the loop skill's origin and payload, and that its map step is inert without .lantern",
+    "SKILL.md": "Plans a task and implements it as small verified commits, resumable from a run folder, ending with a true Lantern map"
+  }
+}

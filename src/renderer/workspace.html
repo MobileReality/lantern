@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; worker-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-src http://127.0.0.1:*; child-src http://127.0.0.1:*;"
+    />
+    <title>Lantern</title>
+    <link rel="stylesheet" href="workspace.css" />
+    <link rel="stylesheet" href="floating.css" />
+    <link rel="stylesheet" href="lantern.css" />
+    <link rel="stylesheet" href="lantern-sections.css" />
+    <link rel="stylesheet" href="lantern-prs.css" />
+    <link rel="stylesheet" href="lantern-plans.css" />
+    <link rel="stylesheet" href="lantern-review.css" />
+    <link rel="stylesheet" href="lantern-flow.css" />
+    <link rel="stylesheet" href="lantern-select.css" />
+    <link rel="stylesheet" href="lantern-relation.css" />
+    <link rel="stylesheet" href="lantern-macroview.css" />
+    <link rel="stylesheet" href="lantern-setup.css" />
+    <link rel="stylesheet" href="settings.css" />
+    <link rel="stylesheet" href="command-palette.css" />
+    <link rel="stylesheet" href="memory.css" />
+    <link rel="stylesheet" href="integrations.css" />
+  </head>
+  <body>
+    <header id="appbar" class="appbar">
+      <div id="project-ident" class="project-ident" hidden>
+        <span class="pi-name"><span id="pi-name"></span></span>
+        <span id="pi-git" class="pi-git" hidden>
+          <span id="pi-worktree-item" class="pi-worktree-item"><span class="pi-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2.5" width="12" height="11" rx="1.6" /><path d="M2 6.5h12M6 6.5v7" /></svg><span id="pi-worktree"></span></span><span class="pi-sep" aria-hidden="true">/</span></span>
+          <span class="pi-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4.5" cy="3.5" r="1.8" /><circle cx="4.5" cy="12.5" r="1.8" /><circle cx="11.5" cy="5.5" r="1.8" /><path d="M4.5 5.3v5.4M11.5 7.3c0 2.4-2.6 2.6-5 3.2" /></svg><span id="pi-branch"></span></span>
+        </span>
+      </div>
+      <button id="command-palette-btn" class="command-palette-field" type="button" aria-label="Search commands">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.3" /><path d="m10 10 3.3 3.3" /></svg>
+        <span class="command-palette-field-label">Search commands</span>
+        <kbd id="command-palette-keys"></kbd>
+      </button>
+      <button id="mode-btn" class="mode-switch" role="switch" aria-checked="false" aria-label="Show the Lantern map" data-tip="Switch between the editor and the Lantern map">
+        <span class="mode-opt" data-mode="editor">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2.8" width="12" height="8.6" rx="1.6" /><path d="M5.6 14h4.8" /></svg>
+          Editor
+        </span>
+        <span class="mode-opt" data-mode="lantern">
+          <span id="mode-mark" class="mode-mark" aria-hidden="true"></span>
+          Lantern
+        </span>
+      </button>
+      <div id="dev-banner" class="dev-banner" hidden></div>
+    </header>
+    <aside id="sidebar">
+      <div class="toolbar">
+        <button id="new" class="btn-primary" data-tip="Open a blank VS Code — pick a project inside it">+ New</button>
+        <button id="addFolder" class="btn-ghost" data-tip-command="project.addFolder" data-tip="Add a folder via the system dialog" aria-label="Add folder">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5.2V3.8c0-.7.6-1.3 1.3-1.3h2.6l1.5 1.7h5.3c.7 0 1.3.6 1.3 1.3v6.5c0 .7-.6 1.3-1.3 1.3H3.3c-.7 0-1.3-.6-1.3-1.3V5.2z" /><path d="M8 7v3.4M6.3 8.7h3.4" /></svg>
+          <span class="btn-label">Add folder</span>
+        </button>
+      </div>
+      <div class="project-filter">
+        <label for="project-filter">Filter projects</label>
+        <div class="project-filter-control">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.3" /><path d="m10 10 3.3 3.3" /></svg>
+          <input id="project-filter" type="search" placeholder="Name or path" autocomplete="off" spellcheck="false" />
+        </div>
+        <div id="project-count" class="project-count" aria-live="polite"></div>
+      </div>
+      <div id="projects"></div>
+      <div class="foot">
+        <label id="provider-control" class="provider-control">
+          <span>Lantern tools</span>
+          <select id="provider-select" aria-label="Lantern tools assistant">
+            <option value="claude">Claude</option>
+            <option value="codex">Codex</option>
+          </select>
+        </label>
+        <div id="codex-hooks-control" class="codex-hooks hidden">
+          <span id="codex-hooks-status">Checking activity hooks…</span>
+          <button id="codex-hooks-install" type="button">Set up</button>
+          <button id="codex-hooks-uninstall" type="button" class="hidden" data-tip="Remove Lantern's entries from ~/.codex/hooks.json">Remove</button>
+        </div>
+        <div id="status" class="status" role="status">Starting VS Code server…</div>
+      </div>
+    </aside>
+    <main id="main">
+      <div id="empty" class="empty">
+        <div>
+          <h2>Your projects, in one place</h2>
+          <p>Pick a project on the left to open a full VS Code here. Run Claude in its terminal.</p>
+          <p id="empty-hint" class="hint"></p>
+        </div>
+      </div>
+      <button id="mic-btn" class="mic-fix" aria-label="Enable microphone" data-tip="Patch the Claude Code extension so voice input works here, after you confirm">
+        <svg class="ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="1.8" width="4" height="7.2" rx="2" /><path d="M3.7 7.4a4.3 4.3 0 0 0 8.6 0M8 11.7v2.5M5.8 14.2h4.4" /></svg>
+        <span class="mic-fix-label">Enable mic</span>
+      </button>
+      <div id="views"></div>
+      <div id="lantern-tab" class="lantern-tab hidden"></div>
+      <div id="loading" class="loading hidden"></div>
+    </main>
+
+    <div id="skills-modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <span class="modal-title">✦ Skills</span>
+          <span id="sk-proj" class="modal-proj"></span>
+          <button id="sk-close" class="modal-close" aria-label="Close the skills view" data-tip="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+        </div>
+        <div id="sk-body" class="modal-body"></div>
+        <div id="sk-foot" class="modal-foot"></div>
+      </div>
+    </div>
+
+    <div id="memory-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="memory-title">
+      <div class="modal-card memory-modal-card">
+        <div class="modal-head">
+          <span id="memory-title" class="modal-title">Memory</span>
+          <span class="modal-proj">Lantern and everything it started</span>
+          <button id="memory-close" class="modal-close" data-tip="Close" aria-label="Close the memory view"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+        </div>
+        <div id="memory-body" class="memory-body"></div>
+      </div>
+    </div>
+
+    <div id="explain-modal" class="modal hidden">
+      <div class="modal-card explain-modal-card">
+        <div class="modal-head">
+          <button id="ex-list-toggle" class="modal-max" aria-label="Hide list" data-tip="Hide list">❮</button>
+          <span class="modal-title">📖 Explain</span>
+          <span id="ex-proj" class="modal-proj"></span>
+          <span id="ex-title" class="fl-desc"></span>
+          <button id="ex-popout" class="modal-max" aria-label="Open in a separate window" data-tip="Open in a separate window"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5H3.5v9h9v-3"/><path d="M9.5 3.5h3v3M12.5 3.5 7 9"/></svg></button>
+          <button id="ex-max" class="modal-max" aria-label="Maximize" data-tip="Maximize"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.8 2.5h4.7v4.7M13.5 2.5 8.6 7.4M7.2 13.5H2.5V8.8M2.5 13.5l4.9-4.9"/></svg></button>
+          <button id="ex-close" class="modal-close" aria-label="Close the explainers" data-tip="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+        </div>
+        <div class="ex-body">
+          <div id="ex-list" class="fl-list"></div>
+          <div id="ex-doc" class="ex-doc"></div>
+          <div id="ex-code" class="fl-code hidden">
+            <div class="fl-code-head">
+              <span id="ex-code-path" class="fl-code-path"></span>
+              <button id="ex-code-close" class="modal-close" aria-label="Close the code" data-tip="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+            </div>
+            <div id="ex-code-body" class="rv-code"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="workspace.js"></script>
+  </body>
+</html>

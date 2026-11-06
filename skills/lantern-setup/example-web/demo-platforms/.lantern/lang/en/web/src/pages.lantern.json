@@ -1,0 +1,7 @@
+{
+ "text": {
+  "Dashboard.tsx": "daily steps and heart-rate overview",
+  "Dashboard.tsx > web/src/components/StepChart.tsx#StepChart": "series",
+  "Dashboard.tsx = web/src/api/client.ts#fetchReadings": "readings"
+ }
+}

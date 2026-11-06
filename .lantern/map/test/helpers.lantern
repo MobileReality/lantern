@@ -1,0 +1,206 @@
+
+
+lantern 1
+# test/helpers
+
+test/helpers/areas-hint-project.ts . test 0b2c88010596
+#feature product-areas
+
+test/helpers/auth-ipc-world.ts . test 28886087bff0
+#feature integrations
+  > src/main/auth/ipc.ts#registerAuthIpc
+  < test/helpers/auth-world.ts#createAuthWorld
+
+test/helpers/auth-window.ts . test 9e4bb62545a6
+#feature integrations
+  > src/main/auth/ipc.ts#createAuthHandlers
+  < test/helpers/auth-world.ts#createAuthWorld
+  < test/helpers/fake-providers.ts#startFakeProviders
+
+test/helpers/auth-world.ts . test df80416fa57e
+#feature integrations
+  > src/main/auth/errors.ts#DriverError
+  > src/main/auth/index.ts#createAuth
+  < src/main/auth/providers.ts#ProviderDriver
+  < src/main/auth/secret-store.ts#Cipher
+  < src/main/auth/token-check.ts#CheckDeps
+  < src/main/lantern-host-origin.ts#CodeHost
+
+test/helpers/diff-text.ts . test 96a23f96c97b
+#feature pull-requests
+
+test/helpers/fake-bitbucket.ts . test d7fa43f9088f
+#feature pull-requests
+
+test/helpers/fake-claude.ts . test 1de20dedb2eb
+#feature pr-explain
+
+test/helpers/credential-world.ts . test a350e21f5379
+#feature integrations
+  = src/main/auth/credential-server.ts#createCredentialServer
+  = src/main/auth/known-project.ts#knownProject
+  < test/helpers/auth-world.ts#createAuthWorld
+
+test/helpers/fake-host.ts . test d5ec4c824251
+#feature integrations
+
+test/helpers/fake-lantern-agent.mjs . test e57b62b085de
+#feature agent-runs
+  = scripts/skill-test/areas-fixtures.mjs#writeAreasMap
+  = skills/lantern-setup/scripts/areas.mjs
+  = skills/lantern-setup/scripts/validate.mjs
+
+test/helpers/fake-lantern.ts . test d6cb4f5e013d
+#feature integrations
+
+test/helpers/fake-providers.ts . test 8b09b0534518
+#feature integrations
+  < src/main/auth/token-check.ts#Endpoints
+  < src/shared/providers.ts#ProviderId
+
+test/helpers/fake-tokens.ts . test 5443c9287cee
+#feature integrations
+
+test/helpers/git-repo.ts . test 78f2fdbfd5c0
+#feature pull-requests
+  > ext:git
+
+test/helpers/host-world.ts . test 747a1fe41018
+#feature pull-requests
+  = test/helpers/git-repo.ts
+
+test/helpers/lantern-areas-fixtures.ts . test cc338311c502
+#feature product-areas
+  < test/helpers/lantern-vocab-project.ts#FixtureSpec
+
+test/helpers/lantern-areas-gate-fixtures.ts . test 3ca9857927ba
+#feature product-areas
+  = test/helpers/lantern-areas-fixtures.ts
+  < test/helpers/lantern-vocab-project.ts#FixtureSpec
+
+test/helpers/lantern-flow-cases.ts . test da9c830f9921
+#feature pr-flow
+
+test/helpers/lantern-macro-areas-fixture.ts . test 0ef703f3348b
+#feature product-areas
+
+test/helpers/lantern-macro-areas-payload.ts . test 32e0cdacff6c
+#feature product-areas
+  = src/main/lantern-macro-areas.ts#deriveMacroAreas
+  = src/main/lantern-macro-systems.ts#macroSystemsByPath
+  < src/main/lantern-areas.ts#LanternArea
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/main/lantern-macro.ts#MIN_STRONG_EDGE
+  = test/helpers/lantern-macro-fixture.ts#macroFixtureView
+
+test/helpers/lantern-macro-fixture.ts . test b156d5b15127
+#feature macro-view
+  = src/main/lantern-macro-files.ts#macroBlocksByPath
+  = src/main/lantern-macro.ts#deriveMacroView
+  = src/main/lantern-parse.ts#parseMapFile
+  = src/main/lantern-platforms.ts#parsePlatforms
+  = src/main/lantern-pr-parse.ts#parsePrRecord
+
+test/helpers/lantern-map.ts . test fe6eda938da6
+#feature file-graph
+  < src/main/lantern.ts#LanternMap
+
+test/helpers/lantern-plan-world.ts . test 54375e5e8633
+#feature planning
+  = skills/lantern-plan/scripts/plan.mjs
+  = skills/lantern-sync/scripts/sync.mjs
+  = test/helpers/git-repo.ts
+
+test/helpers/lantern-sections.ts . test d287c4965df8
+#feature lantern-sections
+  > src/renderer/lib/lanternview.ts#mountLanternView
+  < src/main/lantern.ts#LanternMap
+  < test/helpers/lantern-map.ts#node
+
+test/helpers/lantern-vocab-fixtures.ts . test 59d61e935ed8
+#feature map-vocabulary
+  < test/helpers/lantern-vocab-project.ts#FixtureSpec
+
+test/helpers/lantern-vocab-project.ts . test a7e5e87edf58
+#feature map-vocabulary
+  < skills/lantern-setup/scripts/lib.mjs#hashContent
+
+test/helpers/macro-foundation-world.ts . test 5d6c3b89bdb8
+#feature macro-view
+  = src/main/lantern-macro-areas.ts#deriveMacroAreas
+  = src/main/lantern-macro-files.ts#macroBlocksByPath
+  = src/main/lantern-macro-systems.ts#macroSystemsByPath
+  = src/main/lantern-macro.ts#deriveMacroView
+  < src/main/lantern-areas.ts#LanternArea
+  < src/main/lantern-macro.ts#MIN_STRONG_EDGE
+  = src/main/lantern-parse.ts#parseMapFile
+  = src/main/lantern-platforms.ts#parsePlatforms
+  = test/helpers/lantern-macro-areas-fixture.ts#mapText
+
+test/helpers/macro-lab-world.ts . test 424b62ecd5d1
+#feature macro-view
+  = src/main/lantern-macro-areas.ts#deriveMacroAreas
+  = src/main/lantern-macro-files.ts#macroBlocksByPath
+  = src/main/lantern-macro-systems.ts#macroSystemsByPath
+  = src/main/lantern-macro.ts#deriveMacroView
+  < src/main/lantern-areas.ts#LanternArea
+  < src/main/lantern-macro.ts#MIN_STRONG_EDGE
+  < src/main/lantern-parse.ts#ParsedRecord
+  = src/main/lantern-platforms.ts#parsePlatforms
+  < src/main/lantern-types.ts#Arrow
+
+test/helpers/macro-sizes-world.ts . test 32085fcb5e0a
+#feature macro-view
+  = src/main/lantern-macro-areas.ts#deriveMacroAreas
+  = src/main/lantern-macro-files.ts#macroBlocksByPath
+  = src/main/lantern-macro-systems.ts#macroSystemsByPath
+  = src/main/lantern-macro.ts#deriveMacroView
+  < src/main/lantern-areas.ts#LanternArea
+  < src/main/lantern-macro.ts#MIN_STRONG_EDGE
+  < src/main/lantern-parse.ts#ParsedRecord
+  = src/main/lantern-platforms.ts#parsePlatforms
+  < src/main/lantern-types.ts#Arrow
+
+test/helpers/memory-fixtures.ts . test c9f1439f3697
+#feature process-memory
+  < src/main/memory-collect.ts#CommandRunner
+
+test/helpers/run-cost-fixture.ts . test 6b38703d2730
+#feature run-cost
+
+test/helpers/redirect-fetch.mjs . test 60d9e81ea3f0
+#feature integrations
+
+test/helpers/setup-project.ts . test ba3482dd793f
+#feature map-setup
+  < skills/lantern-setup/scripts/lib.mjs#hashContent
+
+test/helpers/skill-runner.ts . test a4d326b00dd5
+#feature integrations
+  < test/helpers/git-repo.ts#makeTmp
+
+test/helpers/macro-uses-world.ts . test ab710ed6c7d5
+#feature macro-view
+  = src/main/lantern-macro-areas.ts#deriveMacroAreas
+  = src/main/lantern-macro-files.ts#macroBlocksByPath
+  = src/main/lantern-macro-systems.ts#macroSystemsByPath
+  = src/main/lantern-macro.ts#deriveMacroView
+  < src/main/lantern-areas.ts#LanternArea
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-macro.ts#MIN_STRONG_EDGE
+  = src/main/lantern-parse.ts#parseMapFile
+  = src/main/lantern-platforms.ts#parsePlatforms
+  < test/helpers/lantern-macro-areas-fixture.ts#FixtureFile
+  = test/helpers/lantern-macro-areas-fixture.ts#mapText
+
+test/helpers/macroview-host.ts . test 16bead592633
+#feature macro-view
+
+test/helpers/macroview-world.ts . test 6e9461335721
+#feature macro-view
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-macro-load.ts#MacroLoad
+
+test/helpers/comment-body.ts . test 1c468a4987d3
+#feature review-comments
+  = src/renderer/lib/codeview.ts#codeRow

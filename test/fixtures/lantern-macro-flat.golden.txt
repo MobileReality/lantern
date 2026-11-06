@@ -1,0 +1,132 @@
+## rest
+### bar
+<div class="lt-tabs-strip" role="group" aria-label="Graph view"><b>View</b><button class="lt-plat" data-view="files" aria-pressed="false" data-tip="One node per source file">Files <em>121</em></button><button class="lt-plat" data-view="macro" aria-pressed="true" data-tip="One block per feature, with the relations between blocks counted">Macro <em>11</em></button></div>
+### side
+<div class="lt-brand"><h1 class="lt-proj" data-tip="demo">demo</h1><p class="sub">Macro view, one block per feature</p></div><div class="stats"><div><b>11</b><span>feature blocks</span></div><div><b>7</b><span>main links, of 18</span></div><div class="wip"><b>6</b><span>strong</span></div><div class="unm"><b>13</b><span>outside systems</span></div></div><div class="coverage">313 files in blocks, 176 test files left out · 330 relations between blocks · 3 entries in the shared foundation</div><h2>Features</h2><div class="chips"><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:lantern-map" aria-pressed="false" data-tip="the map of the project, drawn as a graph of files and relations"><i></i>Lantern map <em>80</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:delegate-runs" aria-pressed="false" data-tip="Delegate runs"><i></i>Delegate runs <em>45</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:code-insight" aria-pressed="false" data-tip="reading and highlighting the code of a file next to the graph"><i></i>Code insight <em>30</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:skills-management" aria-pressed="false" data-tip="Skills management"><i></i>Skills management <em>21</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:pull-requests" aria-pressed="false" data-tip="listing pull requests and marking what each one touches"><i></i>Pull requests <em>18</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:serve-web" aria-pressed="false" data-tip="Serve web"><i></i>Serve web <em>16</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:notifications" aria-pressed="false" data-tip="Notifications"><i></i>Notifications <em>15</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:lantern-sections" aria-pressed="false" data-tip="Lantern sections"><i></i>Lantern sections <em>11</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:session-monitoring" aria-pressed="false" data-tip="Session monitoring"><i></i>Session monitoring <em>8</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:agent-runs" aria-pressed="false" data-tip="Agent runs"><i></i>Agent runs <em>6</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:projects-hub" aria-pressed="false" data-tip="Projects hub"><i></i>Projects hub <em>5</em></button></div><h2>Shared foundation</h2><div class="chips"><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="band:foundation" aria-pressed="false" data-tip="All the entries of the shared foundation and the features that rely on them"><i></i>Whole band <em>58</em></button><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="block:core:desktop" aria-pressed="false" data-tip="Desktop shell"><i></i>Desktop shell <em>36</em></button><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="block:core:shared" aria-pressed="false" data-tip="Shared code"><i></i>Shared code <em>11</em></button><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="block:core:skills" aria-pressed="false" data-tip="Skills"><i></i>Skills <em>11</em></button></div><h2>How to read it</h2><div class="legend"><div data-legend="strong"><svg width="34" height="10" aria-hidden="true" focusable="false"><path d="M1,5 H33" stroke="var(--lt-ink)" stroke-width="3.2" opacity="1" fill="none"></path></svg><span class="legend-text">Strong link, 8+ relations</span></div><div data-legend="weak"><svg width="34" height="10" aria-hidden="true" focusable="false"><path d="M1,5 H33" stroke="var(--lt-ink-3)" stroke-width="1.2" opacity="0.55" fill="none"></path></svg><span class="legend-text">Weaker link, fewer than 8</span></div><p>Click a block to follow its links, click again to clear.</p><p>The number on a line counts its relations.</p></div>
+### nodes
+Skills | Skills, 11 files | false | shared foundation block | Skills, 11 files | 28 | 78 | 189 | 36
+Shared code | Shared code, 11 files | false | shared foundation block | Shared code, 11 files | 28 | 124 | 189 | 36
+Desktop shell | Desktop shell, 36 files | false | shared foundation block | Desktop shell, 36 files | 28 | 170 | 189 | 36
+Serve web | Serve web, 16 files | false | feature block | Serve web, 16 files | 369 | 78 | 300 | 46
+Notifications | Notifications, 15 files | false | feature block | Notifications, 15 files | 369 | 146 | 300 | 46
+Session monitoring | Session monitoring, 8 files | false | feature block | Session monitoring, 8 files | 369 | 214 | 300 | 46
+Projects hub | Projects hub, 5 files | false | feature block | Projects hub, 5 files | 369 | 282 | 300 | 55
+Agent runs | Agent runs, 6 files | false | feature block | Agent runs, 6 files | 369 | 359 | 300 | 64
+Code insight | Code insight, 30 files | false | feature block | Code insight, 30 files — reading and highlighting the code of a file next to the graph | 369 | 445 | 300 | 74
+Pull requests | Pull requests, 18 files | false | feature block | Pull requests, 18 files — listing pull requests and marking what each one touches | 369 | 541 | 300 | 74
+Lantern map | Lantern map, 80 files | false | feature block | Lantern map, 80 files — the map of the project, drawn as a graph of files and relations | 369 | 637 | 300 | 74
+Lantern sections | Lantern sections, 11 files | false | feature block | Lantern sections, 11 files | 369 | 733 | 300 | 46
+Delegate runs | Delegate runs, 45 files | false | feature block | Delegate runs, 45 files | 369 | 801 | 300 | 46
+Skills management | Skills management, 21 files | false | feature block | Skills management, 21 files | 369 | 869 | 300 | 55
+### edges
+block:pull-requests>block:lantern-map | 18 | true | Pull requests → Lantern map: 18 relations, strong
+← takes data from: 10
+⇄ both ways: 8
+block:lantern-map>block:pull-requests | 17 | true | Lantern map → Pull requests: 17 relations, strong
+→ sends data into: 1
+← takes data from: 4
+⇄ both ways: 8
+⇢ refers to: 4
+block:lantern-sections>block:lantern-map | 16 | true | Lantern sections → Lantern map: 16 relations, strong
+← takes data from: 13
+⇄ both ways: 3
+block:pull-requests>block:code-insight | 16 | true | Pull requests → Code insight: 16 relations, strong
+→ sends data into: 1
+← takes data from: 7
+⇄ both ways: 8
+block:delegate-runs>block:lantern-map | 13 | true | Delegate runs → Lantern map: 13 relations, strong
+→ sends data into: 2
+⇢ refers to: 11
+block:lantern-map>block:delegate-runs | 12 | true | Lantern map → Delegate runs: 12 relations, strong
+→ sends data into: 1
+← takes data from: 10
+⇄ both ways: 1
+block:lantern-map>block:lantern-sections | 7 | false | Lantern map → Lantern sections: 7 relations
+← takes data from: 2
+⇄ both ways: 5
+block:delegate-runs>block:skills-management | 6 | false | Delegate runs → Skills management: 6 relations
+→ sends data into: 1
+← takes data from: 1
+⇢ refers to: 4
+block:skills-management>block:lantern-map | 4 | false | Skills management → Lantern map: 4 relations
+⇢ refers to: 4
+block:lantern-map>block:agent-runs | 3 | false | Lantern map → Agent runs: 3 relations
+⇄ both ways: 3
+block:agent-runs>block:lantern-map | 2 | false | Agent runs → Lantern map: 2 relations
+← takes data from: 1
+⇄ both ways: 1
+block:code-insight>block:pull-requests | 2 | false | Code insight → Pull requests: 2 relations
+⇄ both ways: 2
+block:lantern-map>block:skills-management | 2 | false | Lantern map → Skills management: 2 relations
+→ sends data into: 1
+← takes data from: 1
+
+## lantern map picked
+### bar
+<div class="lt-tabs-strip" role="group" aria-label="Graph view"><b>View</b><button class="lt-plat" data-view="files" aria-pressed="false" data-tip="One node per source file">Files <em>121</em></button><button class="lt-plat" data-view="macro" aria-pressed="true" data-tip="One block per feature, with the relations between blocks counted">Macro <em>11</em></button></div>
+### side
+<div class="lt-brand"><h1 class="lt-proj" data-tip="demo">demo</h1><p class="sub">Macro view, one block per feature</p></div><div class="stats"><div><b>11</b><span>feature blocks</span></div><div><b>7</b><span>main links, of 18</span></div><div class="wip"><b>6</b><span>strong</span></div><div class="unm"><b>13</b><span>outside systems</span></div></div><div class="coverage">313 files in blocks, 176 test files left out · 330 relations between blocks · 3 entries in the shared foundation</div><section class="lt-detail" style="--c: var(--lt-l-domain)"><button class="close" data-macro-go="" aria-label="Close details">×</button><div class="path"><span>Lantern map</span></div><span class="role">feature · 80 files</span><p class="lt-purpose">the map of the project, drawn as a graph of files and relations</p><p class="lt-sentence">Sends to <button data-macro-go="block:pull-requests">Pull requests</button> (17 relations), <button data-macro-go="block:delegate-runs">Delegate runs</button> (12 relations), <button data-macro-go="block:lantern-sections">Lantern sections</button> (7 relations), <button data-macro-go="block:agent-runs">Agent runs</button> (3 relations), <button data-macro-go="block:code-insight">Code insight</button> (3 relations) and <button data-macro-go="block:skills-management">Skills management</button> (2 relations).</p><p class="lt-sentence">Takes from <button data-macro-go="block:pull-requests">Pull requests</button> (18 relations), <button data-macro-go="block:lantern-sections">Lantern sections</button> (16 relations), <button data-macro-go="block:delegate-runs">Delegate runs</button> (13 relations), <button data-macro-go="block:skills-management">Skills management</button> (4 relations), <button data-macro-go="block:agent-runs">Agent runs</button> (2 relations) and <button data-macro-go="block:projects-hub">Projects hub</button> (1 relation).</p><p class="lt-sentence">Relies on the shared foundation (34 relations in all): <button data-macro-go="block:core:desktop">Desktop shell</button> (32 relations) and <button data-macro-go="block:core:skills">Skills</button> (2 relations).</p><p class="lt-sentence">Is relied on by the shared foundation (19 relations in all): <button data-macro-go="block:core:desktop">Desktop shell</button> (11 relations), <button data-macro-go="block:core:shared">Shared code</button> (6 relations) and <button data-macro-go="block:core:skills">Skills</button> (2 relations).</p><p class="lt-sentence">Talks to the outside systems <button data-macro-go="ext:git">Git</button> (1 relation) and <button data-macro-go="ext:claude-cli">Claude CLI</button> (1 relation).</p></section><h2>Features</h2><div class="chips"><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:lantern-map" aria-pressed="true" data-tip="the map of the project, drawn as a graph of files and relations"><i></i>Lantern map <em>80</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:delegate-runs" aria-pressed="false" data-tip="Delegate runs"><i></i>Delegate runs <em>45</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:code-insight" aria-pressed="false" data-tip="reading and highlighting the code of a file next to the graph"><i></i>Code insight <em>30</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:skills-management" aria-pressed="false" data-tip="Skills management"><i></i>Skills management <em>21</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:pull-requests" aria-pressed="false" data-tip="listing pull requests and marking what each one touches"><i></i>Pull requests <em>18</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:serve-web" aria-pressed="false" data-tip="Serve web"><i></i>Serve web <em>16</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:notifications" aria-pressed="false" data-tip="Notifications"><i></i>Notifications <em>15</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:lantern-sections" aria-pressed="false" data-tip="Lantern sections"><i></i>Lantern sections <em>11</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:session-monitoring" aria-pressed="false" data-tip="Session monitoring"><i></i>Session monitoring <em>8</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:agent-runs" aria-pressed="false" data-tip="Agent runs"><i></i>Agent runs <em>6</em></button><button class="chip" style="--c: var(--lt-l-domain)" data-macro-go="block:projects-hub" aria-pressed="false" data-tip="Projects hub"><i></i>Projects hub <em>5</em></button></div><h2>Shared foundation</h2><div class="chips"><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="band:foundation" aria-pressed="false" data-tip="All the entries of the shared foundation and the features that rely on them"><i></i>Whole band <em>58</em></button><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="block:core:desktop" aria-pressed="false" data-tip="Desktop shell"><i></i>Desktop shell <em>36</em></button><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="block:core:shared" aria-pressed="false" data-tip="Shared code"><i></i>Shared code <em>11</em></button><button class="chip" style="--c: var(--lt-l-support)" data-macro-go="block:core:skills" aria-pressed="false" data-tip="Skills"><i></i>Skills <em>11</em></button></div><h2>How to read it</h2><div class="legend"><div data-legend="strong"><svg width="34" height="10" aria-hidden="true" focusable="false"><path d="M1,5 H33" stroke="var(--lt-ink)" stroke-width="3.2" opacity="1" fill="none"></path></svg><span class="legend-text">Strong link, 8+ relations</span></div><div data-legend="weak"><svg width="34" height="10" aria-hidden="true" focusable="false"><path d="M1,5 H33" stroke="var(--lt-ink-3)" stroke-width="1.2" opacity="0.55" fill="none"></path></svg><span class="legend-text">Weaker link, fewer than 8</span></div><div data-legend="leaves"><svg width="34" height="10" aria-hidden="true" focusable="false"><path d="M1,5 H33" stroke="var(--lt-k-send)" stroke-width="2.2" opacity="1" fill="none"></path></svg><span class="legend-text">Leaves the selected block</span></div><div data-legend="arrives"><svg width="34" height="10" aria-hidden="true" focusable="false"><path d="M1,5 H33" stroke="var(--lt-k-take)" stroke-width="2.2" opacity="1" fill="none"></path></svg><span class="legend-text">Arrives at the selected block</span></div><div data-legend="system"><svg width="34" height="16" aria-hidden="true" focusable="false"><rect x="1.5" y="2.5" width="31" height="11" rx="2" fill="none" stroke="var(--lt-rule)" stroke-width="1"></rect></svg><span class="legend-text">Outside system</span></div><p>Click a block to follow its links, click again to clear.</p><p>The number on a line counts its relations.</p></div>
+### nodes
+Skills | Skills, 11 files | false | shared foundation block, related | Skills, 11 files | 28 | 78 | 189 | 36
+Shared code | Shared code, 11 files | false | shared foundation block, related | Shared code, 11 files | 28 | 124 | 189 | 36
+Desktop shell | Desktop shell, 36 files | false | shared foundation block, related | Desktop shell, 36 files | 28 | 170 | 189 | 36
+Serve web | Serve web, 16 files | false | feature block | Serve web, 16 files | 369 | 78 | 300 | 46
+Notifications | Notifications, 15 files | false | feature block | Notifications, 15 files | 369 | 146 | 300 | 46
+Session monitoring | Session monitoring, 8 files | false | feature block | Session monitoring, 8 files | 369 | 214 | 300 | 46
+Projects hub | Projects hub, 5 files | false | feature block, related | Projects hub, 5 files | 369 | 282 | 300 | 55
+Agent runs | Agent runs, 6 files | false | feature block, related | Agent runs, 6 files | 369 | 359 | 300 | 64
+Code insight | Code insight, 30 files | false | feature block, related | Code insight, 30 files — reading and highlighting the code of a file next to the graph | 369 | 445 | 300 | 74
+Pull requests | Pull requests, 18 files | false | feature block, related | Pull requests, 18 files — listing pull requests and marking what each one touches | 369 | 541 | 300 | 74
+Lantern map | Lantern map, 80 files | true | feature block, selected | Lantern map, 80 files — the map of the project, drawn as a graph of files and relations | 369 | 637 | 300 | 74
+Lantern sections | Lantern sections, 11 files | false | feature block, related | Lantern sections, 11 files | 369 | 733 | 300 | 46
+Delegate runs | Delegate runs, 45 files | false | feature block, related | Delegate runs, 45 files | 369 | 801 | 300 | 46
+Skills management | Skills management, 21 files | false | feature block, related | Skills management, 21 files | 369 | 869 | 300 | 55
+Git | Git | false | external in Outside, related | Git | 28 | 324 | 189 | 22
+Claude CLI | Claude CLI | false | external in Outside, related | Claude CLI | 28 | 350 | 189 | 22
+### edges
+block:pull-requests>block:lantern-map | 18 | true | Pull requests → Lantern map: 18 relations, strong
+← takes data from: 10
+⇄ both ways: 8
+block:lantern-map>block:pull-requests | 17 | true | Lantern map → Pull requests: 17 relations, strong
+→ sends data into: 1
+← takes data from: 4
+⇄ both ways: 8
+⇢ refers to: 4
+block:lantern-sections>block:lantern-map | 16 | true | Lantern sections → Lantern map: 16 relations, strong
+← takes data from: 13
+⇄ both ways: 3
+block:pull-requests>block:code-insight | 16 | true | Pull requests → Code insight: 16 relations, strong
+→ sends data into: 1
+← takes data from: 7
+⇄ both ways: 8
+block:delegate-runs>block:lantern-map | 13 | true | Delegate runs → Lantern map: 13 relations, strong
+→ sends data into: 2
+⇢ refers to: 11
+block:lantern-map>block:delegate-runs | 12 | true | Lantern map → Delegate runs: 12 relations, strong
+→ sends data into: 1
+← takes data from: 10
+⇄ both ways: 1
+block:lantern-map>block:lantern-sections | 7 | false | Lantern map → Lantern sections: 7 relations
+← takes data from: 2
+⇄ both ways: 5
+block:delegate-runs>block:skills-management | 6 | false | Delegate runs → Skills management: 6 relations
+→ sends data into: 1
+← takes data from: 1
+⇢ refers to: 4
+block:skills-management>block:lantern-map | 4 | false | Skills management → Lantern map: 4 relations
+⇢ refers to: 4
+block:lantern-map>block:agent-runs | 3 | false | Lantern map → Agent runs: 3 relations
+⇄ both ways: 3
+block:agent-runs>block:lantern-map | 2 | false | Agent runs → Lantern map: 2 relations
+← takes data from: 1
+⇄ both ways: 1
+block:code-insight>block:pull-requests | 2 | false | Code insight → Pull requests: 2 relations
+⇄ both ways: 2
+block:lantern-map>block:skills-management | 2 | false | Lantern map → Skills management: 2 relations
+→ sends data into: 1
+← takes data from: 1
+block:lantern-map>block:code-insight | 3 | false | Lantern map → Code insight: 3 relations
+→ sends data into: 1
+← takes data from: 2
+block:projects-hub>block:lantern-map | 1 | false | Projects hub → Lantern map: 1 relation
+→ sends data into: 1

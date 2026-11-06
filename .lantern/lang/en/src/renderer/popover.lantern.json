@@ -1,0 +1,6 @@
+{
+ "text": {
+  "index.ts": "Turns any element into a popover anchored to its trigger (mountPopover): toggles on click, keeps aria-expanded current, moves focus in on open and back on close, and closes on an outside press, on Escape or when focus leaves, with nested popovers staying open together; also gives a menu arrow-key, Home and End navigation (rovingFocus)",
+  "index.ts gotcha": "Escape closes only the topmost open popover and stops there, so it never reaches the dialog below"
+ }
+}

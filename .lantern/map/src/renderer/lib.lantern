@@ -1,0 +1,826 @@
+lantern 1
+# src/renderer/lib
+
+src/renderer/lib/codemodal.ts . component 1c07f87ea26a
+#feature code-insight
+  < src/main/filecontent.ts
+  = src/renderer/lib/codeview.ts
+  = src/renderer/lib/file-label.ts
+  = src/renderer/lib/modalsteps.ts
+  = src/renderer/lib/modalreason.ts
+  = src/renderer/lib/semantic-highlight.ts
+  = src/renderer/lib/semantic-limit-notice.ts#semanticLimitNotices
+  = src/renderer/lib/symbolfind.ts
+  < src/shared/code-highlighting.ts
+  < src/shared/code-preview.ts
+  < src/shared/markdown-render.ts#renderMarkdown
+
+src/renderer/lib/codeview.ts . component f7b5ff18377e
+#feature code-insight
+  = src/renderer/lib/syntax-client.ts#highlightBatch
+  < src/renderer/lib/syntax-theme.ts#themeColors
+  < src/shared/code-preview.ts
+
+src/renderer/lib/comparedropdown.ts . component 8a0e23203bbf
+#feature pull-requests
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/popover/index.ts#mountPopover
+
+src/renderer/lib/comparemodal.ts . component 09e6b8474a55
+#feature pull-requests
+  = src/renderer/lib/comparedropdown.ts#mountDropdown
+  < src/renderer/lib/lanternctx.ts#esc
+  < src/shared/local-review.ts#compareId
+
+src/renderer/lib/diffcollapse.ts . pure 2938067b7e60
+#feature code-insight
+  < src/renderer/lib/codeview.ts#DiffRow
+
+src/renderer/lib/diffview.ts . component 87c9e4be62d3
+#feature code-insight
+  = src/renderer/lib/codeview.ts
+  < src/renderer/lib/diffcollapse.ts
+  = src/renderer/lib/semantic-highlight.ts#semanticLine
+  = src/renderer/lib/syntax-client.ts#highlightBatch
+  < src/shared/code-highlighting.ts
+  < src/shared/code-preview.ts
+
+src/renderer/lib/editorload.ts . pure 1a135e4756e2
+#feature serve-web
+
+src/renderer/lib/explain.ts . pure 9535e7408e72
+#feature code-insight
+
+src/renderer/lib/file-icon-manifest.json . config 5673c93d104a
+
+src/renderer/lib/file-icons.ts . component a1fca8f26ed3
+  < src/renderer/lib/file-icon-manifest.json
+
+src/renderer/lib/file-label.ts . component 897771cba86e
+  = src/renderer/lib/file-icons.ts#fileIconHtml
+  = src/renderer/lib/lanternctx.ts#esc
+
+src/renderer/lib/graph-navigation.ts . component bca7702f3398
+#feature file-graph
+
+src/renderer/lib/idle-tabs.ts . pure 1a9fc9b22b45
+#feature serve-web
+
+src/renderer/lib/lanterncollapse.ts . pure cf5bebec596e
+#feature file-graph
+
+src/renderer/lib/lanternctx.ts . component 878d66715247
+#feature file-graph
+  < src/main/lantern.ts
+  < src/renderer/lib/lanternlayout.ts#Filters
+  < src/renderer/lib/lanternprofile.ts#Profile
+  < src/renderer/lib/lanternrelview.ts#DenseColumn
+  < src/renderer/lib/lanternscope.ts#Scope
+
+src/renderer/lib/lanterndetail.ts . component 594f824af1a9
+#feature file-graph
+  < src/main/lantern.ts
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/lanternctx.ts
+  = src/renderer/lib/lanternlayout.ts#isWip
+  = src/renderer/lib/lanternlock.ts#lockBarHtml
+  = src/renderer/lib/lanternscope.ts#platformLabel
+
+src/renderer/lib/lanternflow.ts . component 763d49749950
+#feature pr-flow
+  < src/main/lantern.ts
+  = src/renderer/lib/lanternctx.ts#esc
+
+src/renderer/lib/lanternhead.ts . component 284ab3e9663f
+#feature file-graph
+  < src/main/lantern.ts#LanternLanguage
+
+src/renderer/lib/lanternlayout.ts . pure a4fe75c2e3b7
+#feature file-graph
+  < src/main/lantern.ts
+  = src/renderer/lib/lanterncollapse.ts#dirTileKey
+  < src/renderer/lib/lanternprofile.ts#Layer
+  = src/renderer/lib/lanternscope.ts
+  = src/renderer/lib/util.ts#fileLabel
+
+src/renderer/lib/lanternlock.ts . component 1fbd951084c9
+#feature file-graph
+  < src/renderer/lib/lanternctx.ts#SideContext
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/util.ts#fileLabel
+
+src/renderer/lib/lanternmacro.ts . pure b4241148ab15
+#feature macro-view
+  < src/main/lantern-macro-foundation.ts#FoundationLink
+  < src/main/lantern-macro-foundation.ts#PlatformUses
+  < src/main/lantern-macro.ts#MacroView
+  < src/main/lantern.ts#LanternMap
+  < src/renderer/lib/lanterncollapse.ts#SMALL_MAP_FILES
+  < src/renderer/lib/lanternctx.ts#GLYPH
+  = src/renderer/lib/lanternmacronames.ts#blockName
+  = src/renderer/lib/lanternmacrorest.ts#mainLinkPairs
+
+src/renderer/lib/lanternmacroareas.ts . pure 9fe192472813
+#feature product-areas
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-macro.ts#MacroView
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  = src/renderer/lib/lanternmacronames.ts#blockName
+  = src/renderer/lib/lanternmacrorest.ts#pairKey
+
+src/renderer/lib/lanternmacroareaside.ts . component 518cf4c6c2ec
+#feature product-areas
+  = src/renderer/lib/lanternctx.ts#esc
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  = src/renderer/lib/lanternmacro.ts#plural
+  = src/renderer/lib/lanternmacromentions.ts#sentence
+
+src/renderer/lib/lanternmacrocards.ts . pure 530e9d22507f
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#GraphBlock
+  = src/renderer/lib/lanternmacronames.ts#wrapPurpose
+
+src/renderer/lib/lanternmacrocrumbs.ts . pure 36393101d444
+#feature product-areas
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternmacro.ts#plural
+  = src/renderer/lib/lanternmacrorest.ts#realCards
+
+src/renderer/lib/lanternmacrocurrent.ts . pure b9fa93645729
+#feature macro-view
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  = src/renderer/lib/lanternmacroareas.ts#areaOfFeature
+  = src/renderer/lib/lanternmacropr.ts#blockOfNew
+  < src/renderer/lib/lanternmacroview.ts#MacroFrame
+
+src/renderer/lib/lanternmacrodrawer.ts . component a05ae3349f67
+#feature macro-view
+  = src/renderer/lib/modal-focus.ts#focusableIn
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/lib/lanternmacrofoundation.ts . pure c6f1d1b8f5a7
+#feature macro-view
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-macro-foundation.ts#FoundationLink
+  < src/main/lantern-macro-foundation.ts#PlatformUses
+  < src/main/lantern-types.ts#Arrow
+  = src/renderer/lib/lanternmacro.ts#FOUNDATION_KEY
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  = src/renderer/lib/lanternmacronames.ts#platformOfFoundation
+
+src/renderer/lib/lanternmacrofoundationside.ts . component 695e200cac07
+#feature macro-view
+  = src/renderer/lib/lanternctx.ts#esc
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  = src/renderer/lib/lanternmacro.ts#plural
+  = src/renderer/lib/lanternmacrofoundation.ts#foundationPartners
+  = src/renderer/lib/lanternmacrofoundation.ts#platformReached
+  = src/renderer/lib/lanternmacromentions.ts#sentence
+  = src/renderer/lib/lanternmacronames.ts#platformName
+
+src/renderer/lib/lanternmacrolabels.ts . pure 57f259575561
+#feature macro-view
+  < src/renderer/lib/lanternlayout.ts#EdgeCurve
+
+src/renderer/lib/lanternmacrolayers.ts . pure 6bc9eb8ca7f5
+#feature macro-view
+  = src/renderer/lib/lanternmacro.ts#FOUNDATION_HEADING
+  < src/renderer/lib/lanternprofile.ts#Layer
+
+src/renderer/lib/lanternmacrolayout.ts . pure 1df1b712b461
+#feature macro-view
+  = src/renderer/lib/lanternlayout.ts#edgeCurve
+  < src/renderer/lib/lanternlayout.ts#BlockTile
+  = src/renderer/lib/lanternmacrocards.ts#cardWidth
+  = src/renderer/lib/lanternmacrolabels.ts#LabelPlacer
+  = src/renderer/lib/lanternmacrolayers.ts#blocksLayer
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  = src/renderer/lib/lanternmacroorder.ts#macroRowOrder
+  = src/renderer/lib/lanternmacropath.ts#arcPath
+  = src/renderer/lib/lanternmacrorest.ts#linkKeyOf
+  = src/renderer/lib/lanternprofile.ts#profileFor
+
+src/renderer/lib/lanternmacrolegend.ts . pure 42e648ac6df4
+#feature macro-view
+  < src/renderer/lib/lanternmacrostyles.ts#FLAT_INK
+  < src/renderer/lib/lanternmacrostyles.ts#FLAT_LINE
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+
+src/renderer/lib/lanternmacrolegendhtml.ts . component 531aee5e155e
+#feature macro-view
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternmacrolegend.ts#legendEntries
+  < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
+
+src/renderer/lib/lanternmacrolevels.ts . pure b2842af3cfbb
+#feature product-areas
+  < src/main/lantern-macro-areas.ts#MacroAreas
+  < src/main/lantern-macro-load.ts#MacroLoad
+  = src/renderer/lib/lanternmacro.ts#macroGraph
+  = src/renderer/lib/lanternmacroareas.ts#areaGraph
+
+src/renderer/lib/lanternmacromarks.ts . pure 1d992c6629d9
+#feature macro-view
+  < src/main/lantern-types.ts#LanternMap
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  = src/renderer/lib/lanternmacroareas.ts#cardMembers
+  < src/renderer/lib/lanternmacrolayout.ts#MacroLayout
+  = src/renderer/lib/lanternmacropr.ts#derivePrImpact
+  < src/renderer/lib/lanternmacroview.ts#MacroFrame
+  < src/renderer/lib/lanternplanfocus.ts#PlanFocus
+  = src/renderer/lib/lanternprpanel.ts#reviewSequence
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternmacromentions.ts . pure 6a887996bc7d
+#feature macro-view
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternmacro.ts#plural
+
+src/renderer/lib/lanternmacronames.ts . pure c7e79a92ae04
+#feature macro-view
+  = src/shared/lantern-names.ts
+
+src/renderer/lib/lanternmacronav.ts . hook 1f679389a195
+#feature product-areas
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  = src/renderer/lib/lanternmacrocrumbs.ts#levelAnnouncement
+  < src/renderer/lib/lanternmacroview.ts#MacroMode
+
+src/renderer/lib/lanternmacroorder.ts . pure 27cec7b217a7
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+
+src/renderer/lib/lanternmacropath.ts . pure 39834b9abb6a
+#feature macro-view
+  < src/renderer/lib/lanternlayout.ts#EdgeCurve
+  < src/renderer/lib/lanternmacrolabels.ts#Point
+
+src/renderer/lib/lanternmacropr.ts . pure 5b2a1ba6b02a
+#feature macro-view
+  < src/main/lantern-macro.ts#MacroView
+  < src/main/lantern-types.ts#LanternPrFile
+  = src/renderer/lib/lanternmacronames.ts#isFoundationId
+
+src/renderer/lib/lanternmacrorest.ts . pure a6156103adfd
+#feature macro-view
+  < src/renderer/lib/lanternmacro.ts#MacroGraph
+  < src/renderer/lib/lanternmacrolayout.ts#MacroLayout
+  = src/shared/lantern-main-links.ts#selectMainLinks
+
+src/renderer/lib/lanternmacroside.ts . component 21d5993e10e4
+#feature macro-view
+  < src/main/lantern.ts#LanternMap
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternmacrofoundation.ts#foundationFocus
+  = src/renderer/lib/lanternmacrolegendhtml.ts#legendHtml
+  < src/renderer/lib/lanternmacrolegend.ts#LegendWhen
+  = src/renderer/lib/lanternmacrofoundationside.ts#foundationLinksHtml
+  = src/renderer/lib/lanternmacro.ts#FOUNDATION_HEADING
+  = src/renderer/lib/lanternmacro.ts#FOUNDATION_KEY
+  = src/renderer/lib/lanternmacroareaside.ts#nounsOf
+  = src/renderer/lib/lanternmacrocurrent.ts#OPEN_FILE_LABEL
+  = src/renderer/lib/lanternmacromarks.ts#markCaption
+  = src/renderer/lib/lanternmacromentions.ts#sentence
+  = src/renderer/lib/lanternmacronames.ts#blockName
+  = src/renderer/lib/lanternmacropr.ts#outsideCount
+  = src/renderer/lib/lanternmacrorest.ts#restCounts
+  = src/renderer/lib/lanternmacrosystemside.ts#systemUsesHtml
+  = src/renderer/lib/lanternmacrosystems.ts#systemUses
+  < src/renderer/lib/lanternmacroview.ts#MacroFrame
+  = src/renderer/lib/lanternprpanel.ts#fileRow
+  = src/renderer/lib/util.ts#fileLabel
+
+src/renderer/lib/lanternmacrostyles.ts . pure 957ae8b1a184
+#feature macro-view
+
+src/renderer/lib/lanternmacrosystems.ts . pure 0587b549bf4e
+#feature macro-view
+  < src/main/lantern-macro-load.ts#MacroLoad
+  = src/renderer/lib/lanternmacro.ts#SYSTEM_KEY
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  = src/renderer/lib/lanternmacronames.ts#blockName
+  = src/renderer/lib/lanternmacronames.ts#isFoundationId
+  = src/renderer/lib/lanternmacronames.ts#systemName
+
+src/renderer/lib/lanternmacrosystemside.ts . component 42ab8036b439
+#feature macro-view
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternmacro.ts#FOUNDATION_HEADING
+  = src/renderer/lib/lanternmacro.ts#plural
+  < src/renderer/lib/lanternmacrosystems.ts#SystemUses
+
+src/renderer/lib/lanternmacroview.ts . state aa3d9b4edd33
+#feature macro-view
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/main/lantern.ts#LanternMap
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternflow.ts#flowButtonHtml
+  = src/renderer/lib/lanternmacrodrawer.ts#overviewButtonHtml
+  = src/renderer/lib/lanternmacrofoundation.ts#foundationNear
+  = src/renderer/lib/lanternmacrofoundation.ts#foundationUsesNear
+  = src/renderer/lib/lanternmacro.ts#FOUNDATION_KEY
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  = src/renderer/lib/lanternmacroareas.ts#areasSignature
+  = src/renderer/lib/lanternmacrocrumbs.ts#crumbsHtml
+  = src/renderer/lib/lanternmacrolayout.ts#layoutMacro
+  = src/renderer/lib/lanternmacrolevels.ts#sceneGraph
+  = src/renderer/lib/lanternmacrorest.ts#realCards
+  = src/renderer/lib/lanternmacrorest.ts#systemLinksFor
+  = src/renderer/lib/lanternmacrorest.ts#hasFoundation
+  = src/renderer/lib/lanternmacrorest.ts#withoutFoundation
+
+src/renderer/lib/lanternmove.ts . util 5fe2bbf4ca42
+
+src/renderer/lib/lanternoverlay.ts . pure 566ddc4dbb02
+#feature pull-requests
+  < src/main/lantern.ts
+
+src/renderer/lib/lanternpanes.ts . component 0c8e782c025d
+#feature review-screen
+  = src/renderer/lib/lanternpanewidths.ts#clampWidths
+  = src/renderer/lib/lanternregions.ts#shortcutOf
+
+src/renderer/lib/lanternplanfiles.ts . pure fb3902da75bb
+#feature planning
+  < src/main/lantern.ts
+
+src/renderer/lib/lanternplanfocus.ts . pure 1cd1acd5e74b
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#TARGET_KIND
+  < src/main/lantern-plan-types.ts#PlanTouch
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  = src/renderer/lib/lanternplanimpact.ts#planImpactFiles
+  < src/renderer/lib/lanternprpanel.ts#FileMark
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplanimpact.ts . pure 6d8f80619b5e
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#TARGET_KIND
+  < src/main/lantern-plan-types.ts#PlanTouch
+  < src/main/lantern.ts
+
+src/renderer/lib/lanternplanpanel.ts . component 5998128affac
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#ITEM_STATUS
+  < src/renderer/lib/lanternplanwords.ts#KIND_TEXT
+  < src/main/lantern-plan-types.ts#PlanTouch
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/lanternctx.ts#esc
+  < src/renderer/lib/lanternplanfocus.ts#touchesOf
+  < src/renderer/lib/lanternplanimpact.ts#IMPACT_ORIGIN
+  < src/shared/lantern-plan-messages.ts#say
+  < src/renderer/lib/lanternplananswers.ts#askCounts
+  = src/renderer/lib/lanternplanfix.ts#fixBarHtml
+
+src/renderer/lib/lanternplanselection.ts . util 9f356a03e6c2
+#feature planning
+
+src/renderer/lib/lanternplanstrip.ts . component 3d9485485730
+#feature planning
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  = src/renderer/lib/lanternctx.ts#esc
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplantext.ts . pure 909b42f19eee
+#feature planning
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  < src/renderer/lib/lanternplanwords.ts#KIND_TEXT
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplanwords.ts . pure 40032eaf7fd4
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#ITEM_STATUS
+  < src/shared/lantern-plan-messages.ts#VIEW
+
+src/renderer/lib/lanternprofile.ts . pure 031bbc373071
+#feature file-graph
+  < src/main/lantern.ts
+
+src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
+#feature pull-requests
+  < src/main/lantern.ts
+  < src/renderer/lib/lanternplanfocus.ts#planFilePaths
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternprpanel.ts . component fe71baae7045
+#feature pull-requests
+  < src/main/lantern.ts
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/lanternctx.ts
+  < src/renderer/lib/lanternflow.ts#PickedStep
+  = src/renderer/lib/lanternprs.ts#fileCount
+  = src/renderer/lib/lanternprdescribe.ts#descriptionHostHtml
+
+src/renderer/lib/lanternprs.ts . component 21f381d33e4f
+#feature pull-requests
+  < src/main/lantern.ts
+  = src/renderer/lib/lanternctx.ts#esc
+
+src/renderer/lib/lanternrelview.ts . pure 9cc7d752f475
+#feature file-graph
+  < src/main/lantern.ts
+  < src/renderer/lib/lanternlayout.ts
+
+src/renderer/lib/lanternreview.ts . component 4586df8704f3
+#feature review-screen
+  = src/renderer/lib/codemodal.ts#createCodeView
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/modalsteps.ts#createStepper
+  = src/renderer/lib/modalreason.ts#reasonBlock
+  = src/renderer/lib/prdiffmodal.ts#createDiffView
+  < src/renderer/lib/prexplain.ts#ExplainHub
+  = src/renderer/lib/comments/controller.ts#createReviewComments
+  < src/shared/local-review.ts#isLocalId
+
+src/renderer/lib/lanternscope.ts . pure 991cbeab8ef3
+#feature file-graph
+  < src/main/lantern.ts
+  = src/renderer/lib/lanternprofile.ts#profileFor
+
+src/renderer/lib/lanternside.ts . component cf80a6c0ae4c
+#feature file-graph
+  < src/main/lantern.ts
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/lanternctx.ts
+  = src/renderer/lib/lanterndetail.ts#detailHtml
+  = src/renderer/lib/lanternlayout.ts
+  = src/renderer/lib/util.ts#baseName
+
+src/renderer/lib/lanterntabs.ts . component b21c37c79a17
+#feature file-graph
+  < src/main/lantern.ts#LanternMap
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternscope.ts#isTabbed
+
+src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
+#feature file-graph
+  < src/renderer/lib/lanternlayout.ts
+
+src/renderer/lib/lanternview.ts . component a439767ea58c
+#feature file-graph
+  < src/main/lantern.ts
+  < src/main/local-reasons.ts#LocalReasonsResult
+  > src/renderer/lib/codemodal.ts#openCodeModal
+  = src/renderer/lib/graph-navigation.ts#mountGraphNavigation
+  = src/renderer/lib/lantern-pixi/index.ts#PixiGraph
+  = src/renderer/lib/lanterncollapse.ts
+  < src/renderer/lib/lanternctx.ts
+  = src/renderer/lib/lanterndetail.ts
+  = src/renderer/lib/lanternflow.ts#flowHtml
+  = src/renderer/lib/lanternlayout.ts
+  = src/renderer/lib/lanternlock.ts
+  = src/renderer/lib/lanternmacro.ts#blockKey
+  = src/renderer/lib/lanternmacroareas.ts#areaOfFeature
+  = src/renderer/lib/lanternmacrocurrent.ts#openFileBlock
+  = src/renderer/lib/lanternmacrodrawer.ts#mountOverviewDrawer
+  = src/renderer/lib/lanternmacrofoundation.ts#foundationFocus
+  = src/renderer/lib/lanternmacromarks.ts#macroPrView
+  = src/renderer/lib/lanternmacronav.ts#createMacroNav
+  = src/renderer/lib/lanternmacroside.ts#macroSideHtml
+  = src/renderer/lib/lanternmacroview.ts#createMacroMode
+  = src/renderer/lib/lanternmove.ts
+  = src/renderer/lib/lanternoverlay.ts
+  = src/renderer/lib/lanternpanes.ts#mountPanes
+  = src/renderer/lib/lanternplanfiles.ts#withPlanFiles
+  = src/renderer/lib/lanternplanfocus.ts#planFocus
+  = src/renderer/lib/lanternplanpanel.ts#planPanelHtml
+  = src/renderer/lib/lanternplanstrip.ts#mountPlanStrip
+  = src/renderer/lib/lanternpronly.ts
+  = src/renderer/lib/lanternprpanel.ts
+  = src/renderer/lib/lanternprs.ts
+  = src/renderer/lib/lanternrelview.ts
+  = src/renderer/lib/lanternreview.ts#createReviewPane
+  = src/renderer/lib/lanternscope.ts
+  = src/renderer/lib/lanternsections/controller.ts#mountSections
+  = src/renderer/lib/lanternside.ts
+  = src/renderer/lib/lanterntabs.ts
+  = src/renderer/lib/macroview/stage.ts#createMacroViewStage
+  < src/renderer/lib/macroview/types.ts#MacroViewContext
+  < src/renderer/lib/modalsteps.ts#StepNav
+  < src/renderer/lib/prdiffmodal.ts#ReadDiff
+  = src/renderer/lib/prdiffcache.ts#createDiffCache
+  = src/renderer/lib/prexplain.ts#createExplainHub
+  = src/renderer/lib/prfilereader.ts#prFileReader
+  = src/renderer/lib/textselection.ts#isSelectingWithin
+  = src/renderer/lib/util.ts#fileLabel
+  < src/shared/code-highlighting.ts
+  < src/shared/lantern-plan-messages.ts#say
+  = src/renderer/lib/lanternprdescribe.ts#fillDescriptions
+  = src/renderer/lib/lanternpanewidths.ts#browserStore
+  = src/renderer/lib/lanternregions.ts#createRegions
+  = src/renderer/lib/lanternregiontools.ts#mountRegionTools
+  < skills/lantern-plan/scripts/plan-format.mjs#PLAN_EXT
+  = src/renderer/lib/lanternplanask.ts#createPlanAsk
+  = src/renderer/lib/lanternplancolumn.ts#mountPlanColumn
+  = src/renderer/lib/lanternplancopy.ts#createCopyFeedback
+  = src/renderer/lib/lanternplanfix.ts#createPlanFix
+  = src/renderer/lib/lanternplanselection.ts#saveSelection
+  = src/renderer/lib/lanternplantext.ts#planText
+  = src/renderer/lib/lanternplanwindow.ts#holdPlanWindow
+
+src/renderer/lib/memoryformat.ts . pure 6ff40c035773
+#feature process-memory
+
+src/renderer/lib/memoryview.ts . component 30f5e0f3a77b
+#feature process-memory
+  < src/renderer/lib/memoryformat.ts#formatBytes
+  < src/renderer/lib/util.ts#el
+  < src/shared/memory.ts#MemorySnapshot
+
+src/renderer/lib/modalreason.ts . component edc943dea09a
+#feature review-screen
+  = src/renderer/lib/textselection.ts#isSelectingWithin
+
+src/renderer/lib/modalsteps.ts . component c3b123adca7f
+#feature review-screen
+
+src/renderer/lib/notification-sound.ts . service e0af0765e7c3
+#feature notifications
+  < src/main/session-notification.ts#CardKind
+  < src/shared/settings-notifications.ts#NotificationTimbre
+
+src/renderer/lib/overlay-cards.ts . component 0af4fdb40779
+#feature notifications
+  < src/renderer/global.d.ts
+  < src/renderer/lib/notification-sound.ts#SoundKind
+
+src/renderer/lib/prdiffcache.ts . state c18a833daf7c
+#feature review-screen
+  < src/main/lantern-pr-revisions.ts#PrSides
+  < src/main/lantern-prdiff.ts#PrFileDiff
+
+src/renderer/lib/prdiffmodal.ts . component c4085ba3fec5
+#feature review-screen
+  < src/main/lantern-prdiff.ts#PrFileDiff
+  = src/renderer/lib/codeview.ts
+  = src/renderer/lib/diffcollapse.ts
+  = src/renderer/lib/diffview.ts
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/modalsteps.ts#createStepper
+  = src/renderer/lib/modalreason.ts#reasonBlock
+  = src/renderer/lib/semantic-limit-notice.ts#semanticLimitNotices
+  < src/shared/code-highlighting.ts
+  < src/shared/code-preview.ts
+  < src/shared/local-review.ts#isLocalId
+
+src/renderer/lib/prexplain-client.ts . gateway 51db54d48c17
+#feature pr-explain
+  = src/preload/workspace.ts#prExplainStart
+  = src/preload/workspace.ts#prExplainSaved
+  > src/preload/workspace.ts#prExplainCancel
+  < src/renderer/lib/prexplain.ts#PrExplainClient
+  < src/shared/pr-explain.ts
+
+src/renderer/lib/prexplain.ts . component d99fa565a172
+#feature pr-explain
+  < src/shared/pr-explain.ts
+
+src/renderer/lib/prfilereader.ts . util 76839e1ecb53
+#feature review-screen
+  < src/main/filecontent.ts#ProjectFile
+  < src/main/lantern-prfile.ts#PrFile
+  < src/renderer/lib/codemodal.ts#ReadFile
+  < src/shared/local-review.ts#isLocalId
+
+src/renderer/lib/project-list-keys.ts . util 23929f32afe9
+
+src/renderer/lib/project-release.ts . service 2f90cf8c363c
+#feature process-memory
+  < src/renderer/lib/idle-tabs.ts#hasLiveSession
+  < src/shared/memory.ts#FreeMemoryResult
+
+src/renderer/lib/providers.ts . state 5c8c256de421
+  < src/main/provider.ts#Provider
+
+src/renderer/lib/safe-markdown.ts . pure edefb90a377f
+#feature code-insight
+
+src/renderer/lib/semantic-highlight.ts . component 4d0cb34cae2a
+#feature code-insight
+  = src/renderer/lib/codeview.ts#escapeHtml
+  = src/renderer/lib/syntax-theme.ts#semanticStyle
+  < src/shared/code-highlighting.ts#SemanticSpan
+
+src/renderer/lib/semantic-limit-notice.ts . component b0a8ff5b5628
+#feature code-insight
+  < src/shared/code-highlighting.ts#SemanticHighlightResult
+
+src/renderer/lib/settings-editor.ts . component e88b280bb92c
+  = src/renderer/lib/settings-search.ts
+  < src/shared/settings-registry.ts#SETTINGS
+  < src/shared/settings-schema.ts#NumberSetting
+
+src/renderer/lib/settings-search.ts . pure a20d45b6716e
+  < src/shared/settings-registry.ts
+
+src/renderer/lib/settings-state.ts . state 69e33518b130
+  < src/shared/settings-registry.ts#SETTING_DEFAULTS
+
+src/renderer/lib/setupprogress.ts . pure d8713e9b05d5
+#feature map-setup
+  < src/main/setup-progress.ts#SetupProgress
+
+src/renderer/lib/setuprun.ts . service 95e9796a7d59
+#feature map-setup
+  < src/main/setup-progress.ts#SetupProgress
+  = src/renderer/lib/setupprogress.ts
+
+src/renderer/lib/setupscreen.ts . component e92d765ffae7
+#feature map-setup
+  = src/renderer/lib/setupprogress.ts
+  = src/renderer/lib/setuprun.ts#SetupRun
+  = src/renderer/lib/util.ts#baseName
+
+src/renderer/lib/sidebar-row.ts . component 8dbbe3f970a9
+#feature projects-hub
+
+src/renderer/lib/symbolfind.ts . pure dc31e008126a
+#feature code-insight
+
+src/renderer/lib/syntax-client.ts . service 4731ae944215
+#feature code-insight
+  = src/renderer/lib/syntax-worker.ts
+
+src/renderer/lib/syntax-highlighting.ts . util 57d2fcecbd85
+#feature code-insight
+  < src/renderer/themes/lantern-dark.json
+
+src/renderer/lib/syntax-theme.ts . pure 3f7e09b05fa5
+#feature code-insight
+  < src/renderer/themes/lantern-dark.json
+
+src/renderer/lib/syntax-worker.ts . handler 45303b08cb7c
+#feature code-insight
+  = src/renderer/lib/syntax-highlighting.ts#highlightLines
+
+src/renderer/lib/textselection.ts . util 53c5c454d270
+#feature review-screen
+
+src/renderer/lib/tray-popover-view.ts . component 1311309093ae
+#feature session-monitoring
+  < src/renderer/global.d.ts
+  < src/renderer/lib/overlay-cards.ts#middleTruncate
+  < src/renderer/lib/util.ts#el
+  < src/shared/lang/messages.ts#msg
+  < src/shared/tray-action.ts#trayActionId
+  < src/shared/tray-keys.ts#trayIntent
+  < src/shared/tray-model.ts#TrayModel
+
+src/renderer/lib/util.ts . util 1ea99a7e1736
+  < src/shared/platform.ts#PlatformName
+
+src/renderer/lib/lanternpanewidths.ts . state 5af72c8d0e8d
+#feature review-screen
+  = src/renderer/lib/lanternregions.ts#regionKeyFor
+
+src/renderer/lib/lanternprdescribe.ts . component cdfd42ceca7d
+#feature pull-requests
+  < src/main/lantern.ts
+
+src/renderer/lib/lanternregions.ts . state d751e9e2102f
+#feature review-screen
+
+src/renderer/lib/lanternregiontools.ts . component 63968f34ecad
+#feature review-screen
+  = src/renderer/lib/lanternregions.ts#shortcutTarget
+
+src/renderer/lib/auth-client.ts . gateway cfe50867e64b
+#feature integrations
+  = src/preload/workspace.ts
+  < src/shared/auth-kinds.ts#AUTH_ERROR
+  < src/shared/auth-view.ts#AddTokenResult
+  < src/shared/auth-view.ts#AuthStatus
+  < src/shared/auth-view.ts#ProjectIntegrations
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#ProviderId
+
+src/renderer/lib/integrations-account.ts . component d4b5cf90e552
+#feature integrations
+  < src/renderer/lib/integrations-format.ts#expiryLabel
+  < src/renderer/lib/provider-logo.ts#providerLogo
+  < src/renderer/lib/util.ts#confirmBtn
+  < src/renderer/lib/util.ts#formatDay
+  < src/shared/auth-expiry.ts#formatExpiryDate
+  < src/shared/auth-input.ts#parseCommitEmail
+  < src/shared/auth-kinds.ts#CONNECTION_STATE
+  < src/shared/auth-view.ts#ProfileStatus
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#PROVIDERS
+
+src/renderer/lib/integrations-chip.ts . component f5a16ecb4601
+#feature integrations
+  = src/renderer/lib/auth-client.ts#loadAuthStatus
+  = src/renderer/lib/auth-client.ts#loadProjectIntegrations
+  = src/renderer/lib/auth-client.ts#onAuthChange
+  < src/renderer/lib/integrations-format.ts#accountName
+  < src/renderer/lib/provider-logo.ts#providerLogo
+  < src/renderer/lib/util.ts#el
+  < src/shared/auth-kinds.ts#BINDING_CHOICE
+  < src/shared/auth-view.ts#ProjectIntegrations
+  < src/shared/lang/messages.ts#msg
+
+src/renderer/lib/integrations-form.ts . component 84b556dbc0f5
+#feature integrations
+  < src/renderer/lib/integrations-help.ts#providerHelp
+  < src/renderer/lib/provider-logo.ts#providerLogo
+  < src/renderer/lib/util.ts#el
+  < src/shared/auth-expiry.ts#EXPIRY_WARNING_DAYS
+  < src/shared/auth-input.ts#parseTokenInput
+  < src/shared/auth-kinds.ts#AUTH_ERROR
+  < src/shared/auth-view.ts#AddTokenResult
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#PROVIDERS
+
+src/renderer/lib/integrations-format.ts . pure aea624a4a794
+#feature integrations
+  < src/renderer/lib/util.ts#formatDay
+  < src/shared/auth-expiry.ts#expiryState
+  < src/shared/auth-kinds.ts#BINDING_CHOICE
+  < src/shared/auth-kinds.ts#CREDENTIAL_SOURCE
+  < src/shared/auth-view.ts#ProfileStatus
+  < src/shared/auth-view.ts#ProjectSlot
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#PROVIDERS
+
+src/renderer/lib/integrations-help.ts . pure 138a9149d686
+#feature integrations
+  < src/shared/lang/messages.ts#msgList
+  < src/shared/providers.ts#PROVIDERS
+
+src/renderer/lib/integrations-projects.ts . component 6b5c9e1a32d2
+#feature integrations
+  < src/renderer/lib/integrations-format.ts#isShadowed
+  < src/renderer/lib/integrations-format.ts#suggestedNote
+  < src/renderer/lib/integrations-format.ts#winnerNote
+  < src/renderer/lib/provider-logo.ts#providerLogo
+  < src/renderer/lib/util.ts#el
+  < src/shared/auth-kinds.ts#BINDING_CHOICE
+  < src/shared/auth-view.ts#ProjectIntegrations
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#CODE_HOST_IDS
+
+src/renderer/lib/integrations-tiles.ts . component 4362dd7d0297
+#feature integrations
+  < src/renderer/lib/provider-logo.ts#providerLogo
+  < src/renderer/lib/util.ts#el
+  < src/shared/auth-kinds.ts#BINDING_CHOICE
+  < src/shared/auth-view.ts#ProjectIntegrations
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#ProviderId
+
+src/renderer/lib/modal-focus.ts . util bc9083c1342a
+#feature integrations
+
+src/renderer/lib/opened-projects.ts . util 58a30542ffe5
+#feature integrations
+  < src/renderer/lib/util.ts#baseName
+  < src/renderer/state.ts#app
+
+src/renderer/lib/provider-logo.ts . component 9c76a1aeb558
+#feature integrations
+  < src/renderer/lib/util.ts#el
+  < src/shared/providers.ts#ProviderId
+
+src/renderer/lib/lanternplananswers.ts . state f411c7aa822d
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#LIMITS
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplanask.ts . component 4e2e7aa74952
+#feature planning
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  = src/renderer/lib/lanternplancopy.ts#createCopyFeedback
+  < src/renderer/lib/lanternplananswers.ts#formatAsks
+  = src/renderer/lib/lanternplanquestion.ts#openQuestionModal
+
+src/renderer/lib/lanternplancolumn.ts . component b98a86749c35
+#feature planning
+  = src/renderer/lib/lanternpanewidths.ts#between
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplancopy.ts . util df9bb244bbb4
+#feature planning
+
+src/renderer/lib/lanternplanfix.ts . component dc315b7a1da9
+#feature planning
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternplancopy.ts#createCopyFeedback
+  < src/shared/lantern-plan-fix.ts#planFixText
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplanquestion.ts . component 17c131cac565
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#LIMITS
+  < src/main/lantern-plan-view-types.ts#LanternPlanView
+  = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/lanternflow.ts#flowHtml
+  < src/renderer/lib/lanternplananswers.ts#askCounts
+  < src/renderer/lib/lanternplananswers.ts#askOf
+  < src/renderer/lib/lanternplananswers.ts#formatAsks
+  = src/renderer/lib/modal-focus.ts#trapTab
+  < src/shared/lantern-plan-messages.ts#say
+
+src/renderer/lib/lanternplanwindow.ts . state 2b7ac32a18d0
+#feature planning

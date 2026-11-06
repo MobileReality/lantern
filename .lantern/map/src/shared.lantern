@@ -1,0 +1,125 @@
+lantern 1
+# src/shared
+
+src/shared/app-identity.ts . config 724d98964429
+
+src/shared/code-highlighting.ts . schema 28ed9c711129
+#feature code-insight
+
+src/shared/code-preview.ts . config 54b61910a554
+#feature code-insight
+
+src/shared/config.ts . config 00a07233bbf7
+#feature notifications
+
+src/shared/control-characters.ts . pure a52a19db2fb3
+
+src/shared/extension-problem.ts . pure 190f247188f9
+#feature skill-installer
+  < src/shared/extension-slots.ts#extraProblem
+  < src/shared/extension-slots.ts#offProblem
+  < src/shared/lang/messages.ts#msg
+
+src/shared/extension-slots.ts . config ab1a031fde14
+#feature skill-installer
+
+src/shared/lantern-main-links.ts . pure 8ecc30147c85
+#feature macro-view
+
+src/shared/lantern-names.ts . pure 886a68f638b9
+#feature macro-view
+
+src/shared/lantern-plan-fix.ts . pure 0b4e6daa38ca
+#feature planning
+  < skills/lantern-plan/scripts/plan-format.mjs#PLAN_DIR
+  < src/shared/lantern-plan-messages.ts#say
+
+src/shared/lantern-plan-messages.ts . util 4522f3b9c8e6
+#feature planning
+  < skills/lantern-plan/scripts/messages.json
+
+src/shared/local-review.ts . pure b109a1fe8011
+#feature pull-requests
+
+src/shared/markdown-render.ts . pure e5dce8493ff6
+#feature pull-requests
+
+src/shared/memory.ts . schema d994a3def7a5
+#feature process-memory
+
+src/shared/platform.ts . pure 287a66efda23
+#feature commands-keymap
+
+src/shared/pr-explain.ts . schema 96c601756292
+#feature pr-explain
+
+src/shared/project-data.ts . config ec817447d561
+#feature code-insight
+
+src/shared/reason.ts . config b93addd0b1e8
+#feature pull-requests
+
+src/shared/rtk.ts . schema 0412ddf5dffb
+
+src/shared/settings-graph.ts . config 06857aef727c
+  < src/shared/settings-schema.ts#SettingsNode
+
+src/shared/settings-notifications.ts . config 07f9e250b97c
+#feature notifications
+  < src/shared/settings-schema.ts#SettingsNode
+
+src/shared/settings-reasons.ts . config 07fc17b8169e
+#feature pull-requests
+  < src/shared/settings-schema.ts#SettingsNode
+
+src/shared/settings-registry.ts . pure 0c5277fbd7fc
+  < src/shared/settings-graph.ts#GRAPH_SETTINGS
+  < src/shared/settings-notifications.ts#NOTIFICATION_SETTINGS
+  < src/shared/settings-reasons.ts#REASONS_SETTINGS
+  < src/shared/settings-schema.ts
+  < src/shared/settings-tabs.ts#TAB_SETTINGS
+  < src/shared/settings-schema.ts#KeyBinding
+  < src/shared/commands/keymap-settings.ts#KEYMAP_SETTINGS
+  < src/shared/languages/index.ts#LANGUAGE_SETTINGS
+
+src/shared/settings-schema.ts . schema eb72bdc33864
+
+src/shared/settings-tabs.ts . config d6aa623c338c
+#feature serve-web
+  < src/shared/settings-schema.ts#SettingsNode
+
+src/shared/shell-quote.ts . util ef8b28ec1ccf
+
+src/shared/tray-action.ts . pure 3674de8a044c
+#feature session-monitoring
+
+src/shared/tray-keys.ts . pure 76dcb595e9ba
+#feature session-monitoring
+
+src/shared/tray-model.ts . pure 9bc486c36011
+#feature session-monitoring
+
+src/shared/auth-expiry.ts . pure c72fb58ef433
+#feature integrations
+  < src/shared/auth-kinds.ts#EXPIRY_LEVEL
+
+src/shared/auth-input.ts . pure 2d15608a6a51
+#feature integrations
+  < src/shared/control-characters.ts#hasControlCharacter
+  < src/shared/auth-expiry.ts#parseExpiryDate
+  < src/shared/lang/messages.ts#msg
+  < src/shared/providers.ts#PROVIDERS
+
+src/shared/auth-kinds.ts . config 3276924ec95e
+#feature integrations
+
+src/shared/auth-view.ts . schema a75528dafdd4
+#feature integrations
+  < src/shared/auth-kinds.ts#CheckFailure
+  < src/shared/providers.ts#ProviderId
+
+src/shared/auth.ts . config b6493039b1b7
+#feature integrations
+
+src/shared/providers.ts . config 27f267cf13e7
+#feature integrations

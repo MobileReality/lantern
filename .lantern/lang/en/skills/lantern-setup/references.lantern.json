@@ -1,0 +1,12 @@
+{
+ "text": {
+  "authority.md": "Limits mapping to the mutations the current session authorizes: no commit, push, PR change or worktree removal without consent",
+  "codex.md": "Codex route for mapping: gate every semantic write on a checked model id, never write model provenance and leave existing records and records outside the work list as they are, delegate to checked workers, run the areas step in the root, review records for semantic detail",
+  "codex.md @ skills/lantern-setup/scripts/systems.mjs": "the only way to a new outside system",
+  "format.md": "Defines the map (which records no model, with the one-time migration that strips it from older maps), text, feature, outside-system list, areas file with its checks, section, platform and pull-request record grammars, the flow lines of a pull-request record and the #file references of its steps included, the local comparison records and the branch record that gives a branch with no pull request the same cards, and the plan file with the #plan line that ticks its items and the touches, explanation and flow lines a question can carry, whose pattern and the plan format constants each live in one script",
+  "model-floor.json": "Declares the Sonnet, Opus and Fable families that may write the map with the version recommended for each, exact additional mapping model IDs and the Codex families (Sol, Astra, Terra) with the version recommended for each, Terra having none",
+  "reason.md": "The one definition of the sentence recorded under a changed file: why not what, at most 160 plain characters, shared by the skills, the delegate protocol and the app's prompt",
+  "reason.md @ src/shared/reason.ts": "the app's copy of these rules, kept equal to this list by a test",
+  "roles.md": "Defines ordered architectural roles and the evidence for choosing each one"
+ }
+}

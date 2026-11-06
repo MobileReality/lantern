@@ -1,0 +1,8 @@
+{
+ "text": {
+  "selftest.mjs": "Checks map drift, remapping gates that never write model provenance, PR records (map-only, stacked, already open), the mandatory per-file reasons with their exemptions, the PR flow (written, kept, cleared, required) with its step file references (written, kept, refused when not a changed file), seed cleanup and the vocabulary warnings verify passes through, in isolated Git repositories",
+  "sync.mjs": "Maintains changed-file maps and PR records, or with no pull request a git-ignored local branch record that pr itself mirrors into the main checkout (verify is red while that copy is missing, carry redoes it) and a later PR adopts (refusing files without a reason, writing the description, the flow with its step file links and requiring it on request, warning when no step links a file, and ticking plan items it refuses to invent, reading the plan skill's modules and messages only when lantern-plan is installed beside it), clears stray seeded copies and verifies consistency against a Git base, warning on a partly migrated map, on feature and outside-system vocabulary breaches, on platforms that relate to no other platform and on records that tick unknown plan items, and failing a branch that adds model provenance or breaks a plan file it touched, locating the setup skill for Claude or Codex",
+  "sync.mjs > skills/lantern-plan/scripts/plan.mjs": "runs the plan check over every plan during verify",
+  "sync.mjs see-also": "PR grammar and parsing live in prs.mjs; this command derives records and verifies them against Git"
+ }
+}

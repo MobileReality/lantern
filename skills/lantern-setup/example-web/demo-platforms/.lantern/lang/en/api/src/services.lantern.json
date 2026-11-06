@@ -1,0 +1,6 @@
+{
+ "text": {
+  "readingService.ts": "validates and stores readings, sums the day",
+  "readingService.ts = api/src/repositories/readingRepository.ts#ReadingRepository": "rows"
+ }
+}

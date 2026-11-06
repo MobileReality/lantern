@@ -1,0 +1,23 @@
+lantern 1
+# src/main/session-jump
+
+src/main/session-jump/index.ts . service 4b58c7b0a2a7
+#feature notifications
+  < src/main/proctree.ts#ProcRow
+  < src/main/proctree.ts#parsePsTable
+  = src/main/session-files.ts#readSessionFiles
+  = src/main/session-jump/shell.ts#out
+  = src/main/session-jump/shell.ts#pidsOnTty
+  = src/main/session-jump/integrations/tmux.ts#clientTty
+  = src/main/session-jump/integrations/tmux.ts#showPane
+  = src/main/session-jump/integrations/tmux.ts#tmuxTarget
+  = src/main/session-jump/integrations/ghostty.ts#focus
+  = src/main/session-jump/integrations/iterm2.ts#focus
+  = src/main/session-jump/integrations/apple-terminal.ts#focus
+  = src/main/session-jump/integrations/kitty.ts#focus
+  = ext:macos-process-tools
+src/main/session-jump/shell.ts . gateway 25b7efb04fbc
+#feature notifications
+  < src/shared/control-characters.ts#stripControlCharacters
+  = ext:macos-process-tools
+  = ext:osascript

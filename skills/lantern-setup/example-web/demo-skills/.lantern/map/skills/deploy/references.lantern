@@ -1,0 +1,6 @@
+lantern 1
+# skills/deploy/references
+
+skills/deploy/references/checklist.md . skill 9d513d27cd74
+  @ skills/deploy/scripts/preflight.mjs
+  @ skills/deploy/scripts/rollback.sh

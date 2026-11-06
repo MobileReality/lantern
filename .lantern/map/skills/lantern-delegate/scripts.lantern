@@ -1,0 +1,160 @@
+lantern 1
+# skills/lantern-delegate/scripts
+
+skills/lantern-delegate/scripts/bundled-skills.mjs . util 7b5f4f364563
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/check-skill-use.mjs . script 6c4a80240c71
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/lint-skill-reads.mjs#segmentEvents
+  < skills/lantern-delegate/scripts/required-skills.mjs#parseRoleArgs
+  < skills/lantern-delegate/scripts/required-skills.mjs#roleRequirements
+  < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath
+
+skills/lantern-delegate/scripts/cost-block.mjs . pure 470c88d0bc44
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/delegate-kinds.mjs . pure bd5210230cf8
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/extension-skills.mjs . util 0b596dedeaaa
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/extensions.mjs#mergeExtras
+  < skills/lantern-delegate/scripts/extensions.mjs#readExtensionsChecked
+  < skills/lantern-delegate/scripts/extensions.mjs#readProjectExtensionsChecked
+  < skills/lantern-delegate/scripts/messages.mjs#message
+
+skills/lantern-delegate/scripts/extensions.mjs . script 7369bfb0bd0d
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#BUNDLED_SKILLS
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#switchableSkills
+  < skills/lantern-delegate/scripts/messages.mjs#message
+
+skills/lantern-delegate/scripts/host.mjs . util 4eb190bfb14b
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/github/github.mjs#parseRemoteUrl
+  < skills/lantern-delegate/scripts/github/github.mjs#sshEffective
+
+skills/lantern-delegate/scripts/init-local.mjs . script 4b4e136ba195
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/lint-reviewer.mjs . script b5e7c21f8393
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/delegate-kinds.mjs#delegateKind
+
+skills/lantern-delegate/scripts/lint-skill-reads.mjs . script 13a85322dab5
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath
+  < skills/lantern-delegate/scripts/skill-linker.mjs#isSkillLinkerWord
+  < skills/lantern-delegate/scripts/split-command.mjs#splitPipeline
+
+skills/lantern-delegate/scripts/lint-transcript.mjs . script c16f26715f74
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath
+  < skills/lantern-delegate/scripts/skill-linker.mjs#isSkillLinkerWord
+
+skills/lantern-delegate/scripts/permissions.mjs . util cfee0b2e5900
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/pr-append-cost.mjs . script 9e3feb5e45cd
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/cost-block.mjs#costContent
+  < skills/lantern-delegate/scripts/host-skill.mjs#runHostSkill
+  < skills/lantern-delegate/scripts/host.mjs#pickRemote
+  < skills/lantern-delegate/scripts/messages.mjs#message
+
+skills/lantern-delegate/scripts/pr-create.mjs . script aa69a1c51c8d
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/git-env.mjs#git
+  < skills/lantern-delegate/scripts/github/identity.mjs#commitIdentity
+  < skills/lantern-delegate/scripts/host-skill.mjs#runHostSkill
+  < skills/lantern-delegate/scripts/host.mjs#pickRemote
+  < skills/lantern-delegate/scripts/messages.mjs#message
+  < skills/lantern-delegate/scripts/permissions.mjs#PUSH_BRANCH_TYPES
+
+skills/lantern-delegate/scripts/preflight.mjs . script ec2bb13239e8
+#feature delegate-runs
+  = ext:git
+  < skills/lantern-delegate/scripts/github/identity.mjs
+  < skills/lantern-delegate/scripts/bundled-skills.mjs
+  < skills/lantern-delegate/scripts/extension-skills.mjs#configuredExtras
+  < skills/lantern-delegate/scripts/extensions.mjs#EXTENSION_SLOT
+  < skills/lantern-delegate/scripts/extensions.mjs#projectRootOf
+  < skills/lantern-delegate/scripts/host.mjs
+  = skills/lantern-delegate/scripts/init-local.mjs#initLocal
+  < skills/lantern-delegate/scripts/permissions.mjs
+  < skills/lantern-delegate/scripts/required-skills.mjs#PLAN_SKILLS
+  < skills/lantern-delegate/scripts/rtk-detect.mjs#detectRtk
+  < skills/lantern-delegate/scripts/skill-linker.mjs#resolveSkillLinker
+  < skills/lantern-plan/scripts/plan-git.mjs#REMOTE_PREFIX
+  < skills/lantern-plan/scripts/plan-handoff.mjs#nextSummary
+  < skills/lantern-plan/scripts/plan-io.mjs#planRel
+  < skills/lantern-plan/scripts/plan-messages.mjs#say
+  = skills/lantern-plan/scripts/plan-run.mjs#runPlanJson
+  > skills/lantern-plan/scripts/plan.mjs
+  < skills/lantern-delegate/scripts/git-env.mjs#git
+  < skills/lantern-delegate/scripts/lantern-account.mjs#EMAIL_SOURCE
+  < skills/lantern-delegate/scripts/host-skill.mjs#runHostSkill
+  < skills/lantern-delegate/scripts/preferences.mjs#DELIVERY
+  < skills/lantern-delegate/scripts/messages.mjs#message
+
+skills/lantern-delegate/scripts/required-skills.mjs . script eb764d949fb6
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#enabledSkills
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#ORCHESTRATOR_SKILLS
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#REQUIRED_SKILLS
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#REVIEWER_SKILLS
+  < skills/lantern-delegate/scripts/extension-skills.mjs#claudeSkillRoots
+  < skills/lantern-delegate/scripts/extension-skills.mjs#configuredExtras
+  < skills/lantern-delegate/scripts/extension-skills.mjs#resolvedExtras
+  < skills/lantern-delegate/scripts/extensions.mjs#EXTENSION_SLOT
+  < skills/lantern-delegate/scripts/extensions.mjs#EXTENSION_SLOTS
+  < skills/lantern-delegate/scripts/extensions.mjs#projectRootOf
+  < skills/lantern-delegate/scripts/host-skill.mjs#HOST_SKILL_NAMES
+
+skills/lantern-delegate/scripts/rtk-detect.mjs . gateway 9d375714a7ad
+#feature delegate-runs
+  = ext:rtk-cli
+  < skills/lantern-delegate/scripts/rtk-hook.mjs#findRtkHooks
+  < skills/lantern-delegate/scripts/rtk-resolve.mjs#resolveRtk
+
+skills/lantern-delegate/scripts/rtk-hook.mjs . util 7ce1c29fd126
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/rtk-resolve.mjs . util af81781e65ba
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/skill-linker.mjs . util 4e29df46a1d3
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/extensions.mjs#readSkillLinker
+  < skills/lantern-delegate/scripts/messages.mjs#message
+
+skills/lantern-delegate/scripts/split-command.mjs . util cb4d68a030b1
+#feature delegate-runs
+
+skills/lantern-delegate/scripts/git-env.mjs . util 63b79ecb8932
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/messages.mjs#message
+
+skills/lantern-delegate/scripts/host-skill.mjs . util be6e421bfab5
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/messages.mjs#message
+  > skills/lantern-bitbucket/scripts/bitbucket.mjs
+  > skills/lantern-github/scripts/github.mjs
+
+skills/lantern-delegate/scripts/lantern-account.mjs . util b640cf1476fb
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/host-skill.mjs#hostScript
+  > skills/lantern-bitbucket/scripts/lantern-socket.mjs#askLantern
+  > skills/lantern-github/scripts/lantern-socket.mjs#askLantern
+
+skills/lantern-delegate/scripts/messages.json . config 4dffa5c0e034
+#feature integrations
+
+skills/lantern-delegate/scripts/messages.mjs . util 93f01451bf01
+#feature integrations
+  < skills/lantern-delegate/scripts/messages.json
+
+skills/lantern-delegate/scripts/preferences.mjs . script 5e2a95699fb8
+#feature delegate-runs
+  < skills/lantern-delegate/scripts/messages.mjs#message

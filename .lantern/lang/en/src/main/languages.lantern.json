@@ -1,0 +1,6 @@
+{
+  "text": {
+    "index.ts": "Resolves the language for the map or the explainers: the team's .lantern/settings.json first, then the user's choice, then a fallback, reading the project file through the settings store.",
+    "index.ts gotcha": "Nothing chosen gives no language at all, so a refresh keeps the language the existing map already has."
+  }
+}

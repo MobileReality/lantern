@@ -1,0 +1,5 @@
+{
+ "text": {
+  "index.ts": "Shows the active project's name, branch and linked worktree in the app bar, asking main for them when the project changes, when the window regains focus or files change, and every 15 seconds, and hiding the block when no project or name is known"
+ }
+}

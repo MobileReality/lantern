@@ -1,0 +1,6 @@
+{
+ "text": {
+  "preflight.mjs": "refuses a release from a dirty tree or without a rollback tag",
+  "rollback.sh": "checks out the previous release tag"
+ }
+}

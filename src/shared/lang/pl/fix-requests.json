@@ -1,0 +1,21 @@
+{
+ "text": {
+  "fix": "Popraw to.",
+  "test": "Dodaj test dla tego.",
+  "rename": "Zmień nazwę.",
+  "simplify": "Uprość to.",
+  "explain": "Wyjaśnij, dlaczego to jest potrzebne.",
+  "remove": "Usuń to."
+ },
+ "copy": {
+  "header": "Komentarze z review dla",
+  "scope": "Pracuj tylko w ramach tego pull requesta: zostań na jego gałęzi i w kodzie, który zmienia.",
+  "mixed": "Te komentarze się różnią. Wykonaj instrukcję przy każdym z nich:",
+  "intent": "Zamiar"
+ },
+ "intent": {
+  "fix": { "label": "Popraw", "instruction": "Zmień kod, aby uwzględnić ten komentarz." },
+  "explain": { "label": "Wyjaśnij", "instruction": "Wyjaśnij to, nie zmieniając żadnego kodu." },
+  "question": { "label": "Pytanie", "instruction": "Odpowiedz na to pytanie, nie zmieniając żadnego kodu." }
+ }
+}

@@ -1,0 +1,10 @@
+lantern 1
+# skills/lantern-code-reviewer
+
+skills/lantern-code-reviewer/README.md . skill 82d18f828357
+#feature skill-installer
+skills/lantern-code-reviewer/SKILL.md . skill e49727ffce2d
+#feature skill-installer
+  @ skills/lantern-delegate/scripts/required-skills.mjs
+  @ skills/lantern-commit/SKILL.md
+  @ skills/lantern-no-comments/SKILL.md

@@ -1,0 +1,21 @@
+{
+ "text": {
+  "fix": "Das beheben.",
+  "test": "Einen Test dafür hinzufügen.",
+  "rename": "Das umbenennen.",
+  "simplify": "Das vereinfachen.",
+  "explain": "Erklären, warum das nötig ist.",
+  "remove": "Das entfernen."
+ },
+ "copy": {
+  "header": "Review-Kommentare zu",
+  "scope": "Nur innerhalb dieses Pull Requests arbeiten: auf seinem Branch bleiben und im Code, den er ändert.",
+  "mixed": "Diese Kommentare unterscheiden sich. Die Anweisung bei jedem einzelnen befolgen:",
+  "intent": "Absicht"
+ },
+ "intent": {
+  "fix": { "label": "Beheben", "instruction": "Den Code ändern, um diesen Kommentar umzusetzen." },
+  "explain": { "label": "Erklären", "instruction": "Das erklären, ohne Code zu ändern." },
+  "question": { "label": "Frage", "instruction": "Diese Frage beantworten, ohne Code zu ändern." }
+ }
+}

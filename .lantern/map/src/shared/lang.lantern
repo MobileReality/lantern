@@ -1,0 +1,15 @@
+lantern 1
+# src/shared/lang
+
+src/shared/lang/fix-requests.ts . pure 0a6f226a3230
+#feature review-comments
+  < src/shared/lang/de/fix-requests.json
+  < src/shared/lang/en/fix-requests.json
+  < src/shared/lang/es/fix-requests.json
+  < src/shared/lang/fr/fix-requests.json
+  < src/shared/lang/it/fix-requests.json
+  < src/shared/lang/pl/fix-requests.json
+  < src/shared/lang/pt/fix-requests.json
+  < src/shared/lang/uk/fix-requests.json
+src/shared/lang/messages.ts . util c4dfb6ab9ebb
+  < src/shared/lang/en/messages.json

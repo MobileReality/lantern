@@ -1,0 +1,25 @@
+{
+  "text": {
+    "app-manifest.mjs": "Builds the package manifest written into the packaged app, naming it lantern with the product name Lantern, which fixes the folder Electron keeps the user's data in",
+    "aliases.cjs": "Reads the @shared, @main and @renderer import aliases from tsconfig.json as absolute folders, so every build and test tool resolves them as tsc does",
+    "aliases.d.cts": "Types the alias reader for the TypeScript harness code that imports it",
+    "esbuild.mjs": "Builds desktop bundles and assets, including the shared theme sheet, the command palette sheet, the menu bar popover's page, sheet and preload and the executable lantern command, loading .svg imports as text for the renderer, writing the packaged app's manifest from the app-manifest helper with the installed Electron version stamped into it and taking the shared Node bundle options for the main and preload bundles and writing the licence folder the packaged app ships, while preserving the validated language-server runtime cache",
+    "inline-json-reads.mjs": "Replaces a script's read of a sibling JSON file through its own module URL with the file's text, so the bundled main process needs no module URL at load",
+    "node-bundle.mjs": "Holds the esbuild options shared by the main and preload bundles and the build test: Node platform, import aliases, the jsonc-parser entry and the JSON inlining",
+    "fuses.js": "Hardens packaged Electron startup and debugging fuses",
+    "install-skills.mjs": "Installs guarded bundled skills for Claude or Codex, with agent definitions for Claude, into a project, prints a line for each old bundled folder it removed and a skipped line, with its reason, for each skill or agent file git still does not ignore, then the permissions outcome and one read-only line on whether RTK is on the machine",
+    "install-skills.mjs < skills/lantern-delegate/scripts/rtk-detect.mjs#detectRtk": "finds RTK and a set hook for the closing status line",
+    "lantern-bundle.d.mts": "Declares guarded bundle installation options, provider choice, results (skills including the not-ignored status, agents, agent files left out, removed folders, permissions) and exports, with the lists of obsolete skills and agent files, with the standalone delegate permission sync and the helper that makes git ignore one project file",
+    "lantern-bundle.mjs": "Installs or refreshes owned skill bundles for Claude or Codex while preserving user files adding the repo-local exclude lines for bundle names git does not yet ignore (never a user's own folder, symlink or agent file) before installing them, reporting what it still leaves out, and removing only marked copies of the obsolete skill names and the obsolete agent files its marker lists, installing the agents of the delegate, complex-delegate and setup skills under one marker and leaving the agents (and the delegate skill's presets) out of the skill copies, and for Claude merges the delegate permissions into the project's settings.local.json through one sync function the app also calls on its own, adding only the rules missing for the given home folder and its skill linker, asking the caller's consent before adding allow rules and merging into the file as it is after the answer, and writing nothing when none is missing, and keeps the project's extensions file out of git by excluding it when the project opens and, through one exported helper, before the app writes it",
+    "lantern-bundle.mjs < skills/lantern-delegate/scripts/delegate-kinds.mjs#DELEGATE_AGENT_PREFIX": "names the glob that excludes every delegate agent type, complex ones included",
+    "lantern-bundle.mjs < skills/lantern-delegate/scripts/permissions.mjs#settingsSnippet": "the allow and deny rules merged into the project settings",
+    "lantern-bundle.mjs < skills/lantern-delegate/scripts/skill-linker.mjs#resolveSkillLinker": "resolves the skill linker path for its rules from the home folder it was given",
+    "licenses.mjs": "Writes the licence folder of the packaged app: Lantern's licence, the third-party notices, the font licence and a generated, repeatable file with the licence text of every production dependency, and adds Electron's own licence files to the packaged app's resources",
+    "package-licences.mjs": "Command run after packaging that copies Electron's licence and Chromium notices into the packaged app's licence folder for a given platform and architecture",
+    "lsp-runtime.mjs": "Caches and validates bundled Node and language-server deployments against build inputs",
+    "make-icon.js": "Generates Lantern application and tray icons for desktop platforms",
+    "material-file-icons.mjs": "Validates or refreshes the icon manifest and copies its licensed SVG assets",
+    "patch-claude-mic.js": "Applies, checks or reverts the local Claude extension voice guard patch by hand",
+    "pr-review-demo.mjs": "Builds and launches the interactive pull request review fixture, opened on its rich flow"
+  }
+}

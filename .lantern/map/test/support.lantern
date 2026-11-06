@@ -1,0 +1,7 @@
+lantern 1
+# test/support
+
+test/support/bundle-fixtures.ts . test 22e2c8fc718f
+  < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
+test/support/process-guard.ts . test 1c48afa7cd5f
+test/support/rtk-fixtures.ts . test 85e8a57b4d59

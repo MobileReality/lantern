@@ -1,0 +1,20 @@
+lantern-plan 1
+# draft-reader
+#title Read a plan file in the app
+#opened 2026-10-26
+
+#goal The main process parses a plan file into a typed object.
+
+#scope-in One reader module and its tests.
+
+#impact feature pull-requests The reader sits next to the PR record parser and shares its path rules.
+#impact file src/main/lantern-pr-parse.ts The new reader copies its tolerant line handling.
+
+#stage s1 Parse
+#touch feature pull-requests
+#item s1.1 Parse a plan into sections
+#touch file src/main/lantern-pr-parse.ts
+#accept The reader parses every fixture the skill scripts parse.
+#question s1.q1 Should an unknown line survive a rewrite by the scripts?
+
+#approved title jun 2026-10-26 60ae93bd3da2

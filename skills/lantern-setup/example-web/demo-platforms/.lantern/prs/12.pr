@@ -1,0 +1,25 @@
+lantern-pr 1
+# 12
+#title feat: sync heart-rate readings from the watch
+#url https://bitbucket.org/example/fitness-tracker/pull-requests/12
+#branch feat/watch-heart-rate-sync
+#base main
+#opened 2026-09-28
+#head 3f9a1c2b4d5e6f708192a3b4c5d6e7f8091a2b3c
+#summary Watch readings go through the sync queue; the old polling client is gone.
++ api/src/handlers/heartRate.ts
++ watch/Sources/HeartRateSync.swift
+~ api/src/routes.ts
+~ mobile/src/sync/syncQueue.ts
+~ watch/Sources/HeartRateView.swift
+- web/src/api/legacyPoller.ts
+#order api/src/handlers/heartRate.ts
+#order api/src/routes.ts
+#order watch/Sources/HeartRateSync.swift
+#order mobile/src/sync/syncQueue.ts
+#order watch/Sources/HeartRateView.swift
+#order web/src/api/legacyPoller.ts
+#reason api/src/handlers/heartRate.ts Accepts batched readings so a flaky watch link loses nothing.
+#reason watch/Sources/HeartRateSync.swift Queues readings on the watch and retries instead of dropping them.
+#reason api/src/routes.ts Exposes the new heart-rate endpoint.
+#reason web/src/api/legacyPoller.ts Polling is replaced by the sync queue, so the client has no caller left.

@@ -1,0 +1,17 @@
+{
+ "text": {
+  "lantern-delegate-complex-fable-high.md": "Fable delegate at high effort, worktree-isolated, dispatched only after the user chose Fable for a heavy task",
+  "lantern-delegate-complex-fable-high.md @ skills/lantern-delegate/protocol.md": "the rules it follows, with the Opus and Fable delegates section",
+  "lantern-delegate-complex-fable-medium.md": "Fable delegate at medium effort, worktree-isolated, dispatched only after the user chose Fable for a heavy task",
+  "lantern-delegate-complex-fable-medium.md @ skills/lantern-delegate/protocol.md": "the rules it follows, with the Opus and Fable delegates section",
+  "lantern-delegate-complex-fable-xhigh.md": "Fable delegate at xhigh effort, worktree-isolated, dispatched only after the user chose Fable for a heavy task",
+  "lantern-delegate-complex-fable-xhigh.md @ skills/lantern-delegate/protocol.md": "the rules it follows, with the Opus and Fable delegates section",
+  "lantern-delegate-complex-opus-high.md": "Opus delegate at high effort, worktree-isolated, dispatched only after the user chose Opus for a heavy task",
+  "lantern-delegate-complex-opus-high.md @ skills/lantern-delegate/protocol.md": "the rules it follows, with the Opus and Fable delegates section",
+  "lantern-delegate-complex-opus-medium.md": "Opus delegate at medium effort, worktree-isolated, dispatched only after the user chose Opus for a heavy task",
+  "lantern-delegate-complex-opus-medium.md @ skills/lantern-delegate/protocol.md": "the rules it follows, with the Opus and Fable delegates section",
+  "lantern-delegate-complex-opus-xhigh.md": "Opus delegate at xhigh effort, worktree-isolated, dispatched only after the user chose Opus for a heavy task",
+  "lantern-delegate-complex-opus-xhigh.md @ skills/lantern-delegate/protocol.md": "the rules it follows, with the Opus and Fable delegates section",
+  "reviewer-complex.md": "read-only Fable reviewer for Fable delegates that reads the skills its list prints and returns a verdict with the four machine-readable closing lines"
+ }
+}

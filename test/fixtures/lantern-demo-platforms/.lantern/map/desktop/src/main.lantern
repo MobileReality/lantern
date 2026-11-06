@@ -1,0 +1,5 @@
+lantern 1
+# desktop/src/main
+
+desktop/src/main/main.ts . entry 9d0935df2f0c
+  < api/src/routes.ts#readingsRoutes

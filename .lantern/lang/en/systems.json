@@ -1,0 +1,23 @@
+{
+ "text": {
+  "bitbucket-api": "Bitbucket Cloud REST API: pull requests and their diffs",
+  "github-api": "GitHub REST API: pull requests and their diffs",
+  "claude-code-cli": "the claude command-line tool that runs sessions and headless calls",
+  "claude-code-extension": "the Claude Code editor extension installed on the machine",
+  "codex-cli": "the Codex command-line tool that runs Codex sessions",
+  "codex-hooks-config": "the Codex hooks configuration file on the machine",
+  "codex-sessions": "Codex session logs written to disk",
+  "git": "the git command-line tool",
+  "macos-process-tools": "operating-system process and memory tools",
+  "osascript": "macOS scripting tool used to drive other apps",
+  "pnpm": "the pnpm package manager command",
+  "rtk-cli": "the optional RTK command-line tool",
+  "ssh": "the ssh command-line client for remote hosts",
+  "vscode-serve-web": "the editor's serve-web server embedded in a tab",
+  "vtsls": "the TypeScript language server the code view talks to",
+  "os-keychain": "the operating system's secure store that encrypts saved sign-ins",
+  "jira-api": "Jira Cloud REST API: the account behind a token and its tickets",
+  "tmux": "Terminal multiplexer whose panes are selected to show a session",
+  "kitty": "Terminal app whose windows are focused by remote control"
+ }
+}

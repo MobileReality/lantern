@@ -1,0 +1,18 @@
+{
+ "text": {
+  "agentLoop.ts": "tool-use loop that answers a question and proposes a triage",
+  "agentLoop.ts = src/ai/llmClient.ts#complete": "prompt and tool results in, reply out",
+  "agentLoop.ts = src/ai/promptBuilder.ts#buildMessages": "question, context, tickets",
+  "agentLoop.ts = src/ai/embeddingRetriever.ts#retrieveContext": "question in, passages out",
+  "agentLoop.ts > src/ai/guardrails.ts#checkAnswer": "answer to check",
+  "agentLoop.ts = src/services/ticketService.ts#findTicketStatus": "the find_ticket_status tool",
+  "agentLoop.ts < src/services/ticketService.ts#listTickets": "open tickets for the prompt",
+  "embeddingRetriever.ts": "embeds the question and fetches similar passages",
+  "embeddingRetriever.ts = ext:embeddings-api": "question embedding",
+  "embeddingRetriever.ts = ext:vector-store": "nearest passages",
+  "guardrails.ts": "rejects unsafe answers and malformed triage",
+  "llmClient.ts": "the one place the model is called",
+  "llmClient.ts = ext:anthropic-api": "Messages API",
+  "promptBuilder.ts": "assembles the system prompt and message list"
+ }
+}

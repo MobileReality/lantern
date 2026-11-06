@@ -1,0 +1,6 @@
+{
+  "text": {
+    "README.md": "Records the reviewer's origin, model choice and how it works from the conventions the project has linked",
+    "SKILL.md": "Reviews a change against the conventions the project has linked, requires only lantern-no-comments, and ends with a machine-readable verdict"
+  }
+}

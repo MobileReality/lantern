@@ -1,0 +1,11 @@
+lantern 1
+# src/services
+
+src/services/ticketRepository.ts . repository cdea3bdd6435
+  = ext:postgres
+  < src/types/ticket.ts#Ticket
+src/services/ticketService.ts . service 5252e266f19d
+  < src/ai/agentLoop.ts#AgentReply
+  = src/ai/guardrails.ts#validateTriage
+  = src/services/ticketRepository.ts#saveTicket
+  < src/services/ticketRepository.ts#loadTickets

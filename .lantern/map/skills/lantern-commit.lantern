@@ -1,0 +1,7 @@
+lantern 1
+# skills/lantern-commit
+
+skills/lantern-commit/README.md . skill a16c43b5e2ac
+#feature skill-installer
+skills/lantern-commit/SKILL.md . skill b934bcb99109
+#feature skill-installer

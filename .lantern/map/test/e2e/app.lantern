@@ -1,0 +1,96 @@
+lantern 1
+# test/e2e/app
+
+test/e2e/app/harness.css . style 362b854f8fb3
+
+test/e2e/app/index.html . test 906c0f7630c6
+  < src/renderer/lantern-flow.css
+  < src/renderer/lantern-macroview.css
+  < src/renderer/lantern-prs.css
+  < src/renderer/lantern-relation.css
+  < src/renderer/lantern-review.css
+  < src/renderer/lantern-select.css
+  < src/renderer/lantern.css
+  < src/renderer/workspace.css
+  < test/e2e/app/harness.css
+  > test/e2e/app/renderer.ts
+
+test/e2e/app/integrations-main.ts . test 0bcb6e45540d
+#feature integrations
+  = src/main/auth/env-names.ts#namesInProjectFiles
+  = src/main/auth/index.ts#createAuth
+  = src/main/auth/ipc.ts#registerAuthIpc
+  = src/main/lantern-host-origin.ts#codeHostOf
+  > test/e2e/app/integrations.html
+
+test/e2e/app/integrations-renderer.ts . test 55d5fb4637b7
+#feature integrations
+  = src/renderer/features/integrations.ts#openIntegrations
+  = src/renderer/lib/integrations-chip.ts#mountIntegrationChip
+
+test/e2e/app/skills-extras-main.ts . test f37b4dab5cfb
+#feature skill-installer
+  = src/main/extensions-ipc.ts#registerExtensionsIpc
+  = src/main/skills.ts
+  > test/e2e/app/skills-extras.html
+
+test/e2e/app/skills-extras-renderer.ts . test 75d42e283151
+#feature skill-installer
+  = src/renderer/features/skills.ts#openSkills
+  = src/renderer/state.ts
+
+test/e2e/app/skills-extras.html . test 59b65e7ccd92
+#feature skill-installer
+  < src/renderer/floating.css
+  < src/renderer/workspace.css
+  > test/e2e/app/skills-extras-renderer.ts
+
+test/e2e/app/tray-popover-frame.html . test 368e8b30d0f4
+#feature session-monitoring
+  < src/renderer/theme.css
+  < src/renderer/tray-popover.css
+  > test/e2e/app/tray-popover-renderer.ts
+
+test/e2e/app/tray-popover-main.cjs . test c99bf28d5da7
+#feature session-monitoring
+  > test/e2e/app/tray-popover.html
+
+test/e2e/app/tray-popover-renderer.ts . test 51d9650b4f1c
+#feature session-monitoring
+  = src/renderer/lib/tray-popover-view.ts#mountTrayPopover
+
+test/e2e/app/tray-popover-shell.css . style dd689aa2d902
+#feature session-monitoring
+
+test/e2e/app/tray-popover-shell.js . test 48c1d4b5ad1c
+#feature session-monitoring
+
+test/e2e/app/tray-popover.html . test dcaf5de38308
+#feature session-monitoring
+  < test/e2e/app/tray-popover-frame.html
+  < test/e2e/app/tray-popover-shell.css
+  > test/e2e/app/tray-popover-shell.js
+
+test/e2e/app/integrations.html . test c5ca8885c3a1
+#feature integrations
+  < src/renderer/integrations.css
+  < src/renderer/lantern.css
+  < src/renderer/workspace.css
+  > test/e2e/app/integrations-renderer.ts
+
+test/e2e/app/main.cjs . test 847289af4668
+  > test/e2e/app/index.html
+
+test/e2e/app/renderer.ts . test 89342a75e346
+  < src/main/lantern-macro-load.ts#MacroLoad
+  < src/main/lantern-macro.ts#MacroView
+  < src/main/lantern.ts
+  < test/fixtures/graph/areas-pr-demo.ts
+  < test/fixtures/graph/graph-fixtures.ts
+  < test/fixtures/graph/macro-lab-demo.ts
+  < test/fixtures/graph/macro-sized-demo.ts
+  = src/renderer/lib/lanternview.ts
+  = test/fixtures/graph/pr-review-demo.ts
+  < test/fixtures/lantern-macro-areas-payload.json
+  < test/fixtures/lantern-macro-own-view.json
+  < test/fixtures/graph/macro-sizes-demo.ts

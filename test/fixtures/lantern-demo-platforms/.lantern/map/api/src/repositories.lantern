@@ -1,0 +1,5 @@
+lantern 1
+# api/src/repositories
+
+api/src/repositories/readingRepository.ts . repository ace120aaca94
+  = ext:dynamodb

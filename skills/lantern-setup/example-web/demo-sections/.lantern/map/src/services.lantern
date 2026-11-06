@@ -1,0 +1,14 @@
+lantern 1
+# src/services
+
+src/services/authService.ts . service bf9adf1f4c22
+#feature staff-access
+#see-also src/api/guards.ts
+  < src/types/order.ts#Role
+src/services/orderService.ts . service 2a339066bca7
+#feature ordering
+  = src/repositories/bookRepository.ts#decrementStock
+  = src/repositories/orderRepository.ts#findOrder
+  = src/repositories/orderRepository.ts#insertOrder
+  = src/repositories/orderRepository.ts#setStatus
+  < src/types/order.ts#Order

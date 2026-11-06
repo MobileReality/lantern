@@ -1,0 +1,5 @@
+lantern 1
+# src/shared/lang/de
+
+src/shared/lang/de/fix-requests.json . config 06c61ba1bc06
+#feature review-comments

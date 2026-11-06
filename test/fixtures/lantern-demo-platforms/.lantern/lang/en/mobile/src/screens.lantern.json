@@ -1,0 +1,6 @@
+{
+ "text": {
+  "TodayScreen.tsx": "today screen with live steps",
+  "TodayScreen.tsx > mobile/src/sync/syncQueue.ts#enqueueReading": "step sample"
+ }
+}

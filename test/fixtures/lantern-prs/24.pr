@@ -1,0 +1,12 @@
+lantern-pr 1
+# 24
+#title test: refuse to signal pids 0, 1 and -1
+#url https://example.com/org/repo/pull-requests/24
+#branch fix/test-process-kill-guard
+#base main
+#opened 2026-09-30
+#head 3f9a1c2b4d5e6f708192a3b4c5d6e7f8091a2b3c
+#summary one line, optional
++ test/support/process-guard.ts
+~ vitest.config.ts
+- src/old/legacy.ts

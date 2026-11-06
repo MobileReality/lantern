@@ -1,0 +1,11 @@
+{
+ "text": {
+  "CLAUDE.md": "Tells an agent to read the primitives map before changing code",
+  "biome.json": "Configures Biome as a lint-only gate over the source folders, keeping the recommended rules except those switched off because existing code breaks them, with the formatter and import sorting off",
+  "package.json": "Names the package lantern with its description, keywords, MIT licence and Mobile Reality as author, and declares desktop dependencies and development, lint, test, packaging (macOS and Windows) and release commands, including the skill-test harness, the run-cost command, the Flow layout check, the Integrations screen and account choice checks and the tray popover check, the Skills window check, shipping the lantern command and the licence folder as extra resources (adding Electron's licence files after packaging), marked private so it cannot be published to a registry and naming no entry file of its own because the packaged app's manifest does, and leaving the Electron version to the installed package, with the start command running the dev profile and open:dev launching an already built dev profile without rebuilding",
+  "playwright.config.ts": "Configures serial Electron browser tests and exact visual snapshots",
+  "pnpm-workspace.yaml": "Includes local packages and enables deployable injected workspace dependencies",
+  "tsconfig.json": "Sets strict TypeScript checking for main, preload, shared and renderer sources and declares the @shared, @main and @renderer import aliases",
+  "vitest.config.ts": "Configures unit tests, process cleanup, coverage, the import aliases and loading .svg imports as text"
+ }
+}

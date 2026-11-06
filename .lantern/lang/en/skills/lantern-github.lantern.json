@@ -1,0 +1,8 @@
+{
+ "text": {
+  "README.md": "Records what the GitHub skill is based on, the credentials it reads, that lantern-delegate runs it as a subprocess and that it stays self-contained, with a user's own GitHub skill taking precedence",
+  "SKILL.md": "Directs an agent to list, show, open, comment on and check GitHub pull requests, and to keep a marked block in a description, with the account added in Lantern, taken from the environment or asked of Lantern, never merging, approving, deleting or force-pushing, and leaves what a pull request contains to the user's own templates and skills, found with the conventions command",
+  "SKILL.md @ skills/lantern-commit/SKILL.md": "commit the work first, since opening a pull request never commits",
+  "SKILL.md @ skills/lantern-github/scripts/github.mjs": "the one command the agent runs for every pull request action"
+ }
+}

@@ -1,0 +1,5 @@
+{
+ "text": {
+  "index.ts": "Defines the project identity (name, branch, worktree) that main sends and the app bar shows"
+ }
+}

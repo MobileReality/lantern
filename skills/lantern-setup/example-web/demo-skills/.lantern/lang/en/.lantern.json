@@ -1,0 +1,7 @@
+{
+ "text": {
+  "CLAUDE.md": "what agents must follow in this repo: commits and releases",
+  "CLAUDE.md @ skills/commit/SKILL.md": "commit rules",
+  "CLAUDE.md @ skills/deploy/SKILL.md": "release rules"
+ }
+}

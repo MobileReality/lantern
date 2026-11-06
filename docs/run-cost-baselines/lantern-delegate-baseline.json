@@ -1,0 +1,154 @@
+{
+  "schema": "lantern-run-cost-baseline",
+  "version": 1,
+  "label": "Real delegate run of this repository (tsserver cap change, one lantern-delegate-medium plus two reviewers), built offline from its local transcripts by pnpm run run-cost. Not an e2e project baseline. USD is list price times transcript usage, not billed.",
+  "run": {
+    "id": "lantern-tsserver-limits",
+    "project": "lantern",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium"
+  },
+  "estimators": {
+    "toolOutputTokens": "bytes/4",
+    "usd": "list-price x transcript usage"
+  },
+  "pass": {
+    "value": true,
+    "source": "reviewer-verdict"
+  },
+  "unpricedCalls": 0,
+  "phases": {
+    "brief": {
+      "calls": 6,
+      "input": 12,
+      "cacheWrite": 84555,
+      "cacheRead": 290876,
+      "output": 970,
+      "tokens": 376413,
+      "usd": 0.2793,
+      "toolOutputTokens": 27083
+    },
+    "work": {
+      "calls": 25,
+      "input": 50,
+      "cacheWrite": 41794,
+      "cacheRead": 2962373,
+      "output": 621,
+      "tokens": 3004838,
+      "usd": 0.7033,
+      "toolOutputTokens": 7365
+    },
+    "review": {
+      "calls": 23,
+      "input": 46,
+      "cacheWrite": 98226,
+      "cacheRead": 1425464,
+      "output": 377,
+      "tokens": 1524113,
+      "usd": 0.7719,
+      "toolOutputTokens": 24617
+    },
+    "handover": {
+      "calls": 19,
+      "input": 38,
+      "cacheWrite": 14736,
+      "cacheRead": 2660495,
+      "output": 323,
+      "tokens": 2675592,
+      "usd": 0.5722,
+      "toolOutputTokens": 2505
+    }
+  },
+  "total": {
+    "calls": 73,
+    "input": 146,
+    "cacheWrite": 239311,
+    "cacheRead": 7339208,
+    "output": 2291,
+    "tokens": 7580956,
+    "usd": 2.3267,
+    "toolOutputTokens": 61570
+  },
+  "tools": {
+    "Agent": {
+      "calls": 2,
+      "outputTokens": 176
+    },
+    "Bash": {
+      "calls": 72,
+      "outputTokens": 30654
+    },
+    "Edit": {
+      "calls": 13,
+      "outputTokens": 594
+    },
+    "Read": {
+      "calls": 12,
+      "outputTokens": 28754
+    },
+    "Skill": {
+      "calls": 3,
+      "outputTokens": 25
+    },
+    "SubagentHandback": {
+      "calls": 3,
+      "outputTokens": 48
+    },
+    "ToolSearch": {
+      "calls": 1,
+      "outputTokens": 0
+    },
+    "WebFetch": {
+      "calls": 4,
+      "outputTokens": 882
+    },
+    "Write": {
+      "calls": 8,
+      "outputTokens": 437
+    }
+  },
+  "agents": [
+    {
+      "id": "a973612529e759a87",
+      "type": "lantern-delegate-medium",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "calls": 54,
+      "input": 108,
+      "cacheWrite": 145574,
+      "cacheRead": 6406625,
+      "output": 1999,
+      "tokens": 6554306,
+      "usd": 1.6655,
+      "toolOutputTokens": 38164
+    },
+    {
+      "id": "a7e3c3696bdeb904f",
+      "type": "reviewer",
+      "model": "claude-opus-5-5",
+      "effort": "medium",
+      "calls": 9,
+      "input": 18,
+      "cacheWrite": 45328,
+      "cacheRead": 438420,
+      "output": 116,
+      "tokens": 483882,
+      "usd": 0.3167,
+      "toolOutputTokens": 10758
+    },
+    {
+      "id": "abdf9f9d55b5addfa",
+      "type": "reviewer",
+      "model": "claude-opus-5-5",
+      "effort": "medium",
+      "calls": 10,
+      "input": 20,
+      "cacheWrite": 48409,
+      "cacheRead": 494163,
+      "output": 176,
+      "tokens": 542768,
+      "usd": 0.3445,
+      "toolOutputTokens": 12648
+    }
+  ]
+}

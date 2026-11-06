@@ -1,0 +1,66 @@
+:root {
+  color-scheme: light dark;
+
+  --pulse-time: 3.6s;
+
+  --bg: #edf2fa;
+  --bg-raised: #e3eaf6;
+  --bg-code: #e2e9f5;
+  --ink: #0b1a3a;
+  --ink-soft: #33466d;
+  --ink-faint: #4f6288;
+  --line: #8fa3c8;
+  --rule: #c2cfe4;
+  --dot: rgba(36, 76, 150, 0.22);
+  --link: #1b3c8c;
+  --link-line: #8fa3c8;
+  --hot: #c22a00;
+  --hot-line: #f53103;
+  --lit: #f53103;
+  --lit-halo: rgba(255, 150, 70, 0.55);
+  --focus: #c22a00;
+
+  --hl-comment: #56698f;
+  --hl-keyword: #1f4fbf;
+  --hl-string: #0b6650;
+  --hl-number: #8a4b00;
+  --hl-title: #5a3aa8;
+  --hl-attr: #0b5a78;
+
+  --font-body: 'Overpass Variable', 'Overpass', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: var(--font-body);
+  --font-mono: 'Overpass Mono Variable', 'Overpass Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --sidebar-width: 18.5rem;
+  --measure: 39rem;
+  --dot-pitch: 26px;
+  --radius: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #061230;
+    --bg-raised: #08173a;
+    --bg-code: #0a1c45;
+    --ink: #e2eafa;
+    --ink-soft: #b0c0e0;
+    --ink-faint: #8b9ec6;
+    --line: #4d6fae;
+    --rule: #1e3567;
+    --dot: rgba(139, 148, 173, 0.2);
+    --link: #a3c4ff;
+    --link-line: #4d6fae;
+    --hot: #ffa066;
+    --hot-line: #ff9646;
+    --lit: #ff6a2e;
+    --lit-halo: rgba(255, 150, 70, 0.6);
+    --focus: #ff9646;
+
+    --hl-comment: #8b9ec6;
+    --hl-keyword: #8db8ff;
+    --hl-string: #7fd6b3;
+    --hl-number: #e8c27a;
+    --hl-title: #c6adff;
+    --hl-attr: #7fc8ea;
+  }
+}

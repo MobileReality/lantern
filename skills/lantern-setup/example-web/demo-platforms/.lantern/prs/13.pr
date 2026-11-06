@@ -1,0 +1,9 @@
+lantern-pr 1
+# 13
+#title fix: round step chart totals
+#url https://bitbucket.org/example/fitness-tracker/pull-requests/13
+#branch fix/step-chart-rounding
+#base main
+#opened 2026-09-30
+#head a1b2c3d4e5f60718293a4b5c6d7e8f9012345678
+~ web/src/components/StepChart.tsx

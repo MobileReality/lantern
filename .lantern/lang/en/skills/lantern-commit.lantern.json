@@ -1,0 +1,6 @@
+{
+  "text": {
+    "README.md": "Records why commit messages stay short and carry no attribution trailer",
+    "SKILL.md": "Sets the rules for short, concrete commit messages with no trailers"
+  }
+}

@@ -1,0 +1,18 @@
+lantern 1
+# test/fixtures
+
+test/fixtures/lantern-macro-areas-payload.json . config 5a2e09ca63bb
+#feature product-areas
+
+test/fixtures/lantern-macro-lab.json . config 6b57f3a3fdb6
+#feature macro-view
+
+test/fixtures/lantern-macro-own-view.json . config 6559e3c0b78b
+#feature macro-view
+
+test/fixtures/lantern-macro-sizes.json . config 60cfd81397a5
+#feature macro-view
+
+test/fixtures/tray-groups.ts . test 8d10fb300f51
+#feature session-monitoring
+  < src/shared/tray-model.ts#buildTrayModel

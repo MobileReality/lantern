@@ -1,0 +1,5 @@
+lantern 1
+# desktop/src/renderer
+
+desktop/src/renderer/ExportView.tsx . component b64fffb256ec
+  > desktop/src/main/main.ts#createExportWindow

@@ -1,0 +1,17 @@
+lantern 1
+# skills/lantern-plan
+
+skills/lantern-plan/README.md . skill 3da5c946c69a
+#feature planning
+  @ skills/lantern-plan/SKILL.md
+  @ skills/lantern-plan/scripts/selftest.mjs
+  @ skills/lantern-setup/references/format.md
+
+skills/lantern-plan/SKILL.md . skill c07a377db523
+#feature planning
+  @ skills/lantern-plan-handoff/SKILL.md
+  @ skills/lantern-plan-impact/SKILL.md
+  @ skills/lantern-plan-review/SKILL.md
+  @ skills/lantern-plan-stages/SKILL.md
+  @ skills/lantern-plan/scripts/plan.mjs
+  @ skills/lantern-setup/references/format.md

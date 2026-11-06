@@ -1,0 +1,156 @@
+lantern 1
+# scripts/skill-test
+
+scripts/skill-test/agent.mjs . service b7d7aaa153eb
+#feature skill-checks
+  < scripts/e2e-delegate/execute.mjs#sessionFailure
+  < scripts/e2e-delegate/report.mjs#capExceeded
+  = scripts/e2e-delegate/session.mjs#runClaude
+scripts/skill-test/areas-checks.mjs . service 93e0ad9a09e3
+#feature skill-checks
+  < scripts/skill-test/areas-fixtures.mjs#NEW_FEATURE
+  < scripts/skill-test/fixtures.mjs#validateSettled
+  > skills/lantern-setup/scripts/areas.mjs
+scripts/skill-test/areas-fake.mjs . util 4cd9ff465d30
+#feature skill-checks
+  < scripts/skill-test/areas-checks.mjs#parseTree
+  < scripts/skill-test/areas-fixtures.mjs#writeAreas
+  < scripts/skill-test/vocab-fake.mjs#vocabFixtureOf
+scripts/skill-test/areas-fixtures.mjs . util 44e0c8d20b27
+#feature skill-checks
+  < scripts/skill-test/fixtures.mjs#writeFiles
+  < scripts/skill-test/vocab-fixtures.mjs#writeMapRecords
+scripts/skill-test/areas-slices.mjs . service 42f5f537a175
+#feature skill-checks
+  < scripts/skill-test/areas-checks.mjs#judgeAreasAdd
+  < scripts/skill-test/areas-checks.mjs#judgeAreasRebuilt
+  < scripts/skill-test/areas-fixtures.mjs#createAreasProject
+  < scripts/skill-test/fixtures.mjs#installSkills
+  < scripts/skill-test/prompts.mjs#AREAS_ADD_FAILING_PROMPT
+  < scripts/skill-test/prompts.mjs#AREAS_MERGED_PROMPT
+  < scripts/skill-test/prompts.mjs#AREAS_PROMPT
+  = scripts/skill-test/agent.mjs#runAgent
+scripts/skill-test/extra-skills.mjs . service b0276ba45b03
+#feature skill-checks
+  < scripts/e2e-delegate/workspace.mjs#REPO_ROOT
+  < skills/lantern-delegate/scripts/check-skill-use.mjs#checkText
+  < skills/lantern-delegate/scripts/extensions.mjs#readExtensions
+  < skills/lantern-delegate/scripts/required-skills.mjs#requiredSkills
+  < skills/lantern-delegate/scripts/required-skills.mjs#ROLE
+  > skills/lantern-delegate/SKILL.md
+  > skills/lantern-delegate/agents/reviewer.md
+  > skills/lantern-delegate/protocol.md
+  > skills/lantern-delegate/scripts/required-skills.mjs
+scripts/skill-test/fake-agent.mjs . util f88393517747
+#feature skill-checks
+  < scripts/e2e-delegate/workspace.mjs#REPO_ROOT
+  < scripts/skill-test/fixtures.mjs#mapProject
+  < skills/lantern-delegate/scripts/preferences.mjs#storedPreference
+  > scripts/skill-test/areas-fake.mjs#areasAdd
+  > scripts/skill-test/lantern-areas-fake.mjs#lanternAreasAdd
+  > scripts/skill-test/vocab-fake.mjs#vocabRetag
+  > skills/lantern-delegate/scripts/pr-create.mjs
+  > skills/lantern-sync/scripts/sync.mjs
+scripts/skill-test/fixtures.mjs . util ce1ea7e9e8cd
+#feature skill-checks
+  < scripts/e2e-delegate/workspace.mjs#REPO_ROOT
+  < skills/lantern-setup/scripts/lib.mjs#enumerate
+  > scripts/install-skills.mjs
+  > skills/lantern-setup/scripts/validate.mjs
+  > skills/lantern-sync/scripts/sync.mjs
+scripts/skill-test/lantern-areas-checks.mjs . service c85fc09f601c
+#feature skill-checks
+  < scripts/skill-test/areas-checks.mjs#areasCheck
+  < scripts/skill-test/fixtures.mjs#changedSources
+  < scripts/skill-test/lantern-areas-find.mjs#findFiles
+  < scripts/skill-test/lantern-areas-fixtures.mjs#NEW_FEATURE
+  < scripts/skill-test/lantern-areas-reader.mjs#standInAnswers
+  < scripts/skill-test/vocab-checks.mjs#mapState
+  > skills/lantern-setup/scripts/areas.mjs
+scripts/skill-test/lantern-areas-fake.mjs . util 4c58c5d86a74
+#feature skill-checks
+  < scripts/skill-test/lantern-areas-fixtures.mjs#writeTree
+  < scripts/skill-test/lantern-areas-reader.mjs#standInAnswers
+  < scripts/skill-test/lantern-areas-specs.mjs#SHOP
+  < scripts/skill-test/vocab-fake.mjs#vocabFixtureOf
+scripts/skill-test/lantern-areas-find.mjs . util 447e9826ea5a
+#feature skill-checks
+scripts/skill-test/lantern-areas-fixtures.mjs . util 530744ce4e09
+#feature skill-checks
+  < scripts/skill-test/areas-fixtures.mjs#treeText
+  < scripts/skill-test/fixtures.mjs#writeFiles
+  < scripts/skill-test/lantern-areas-specs.mjs#SHOP
+  < scripts/skill-test/vocab-fixtures.mjs#writeMapRecords
+scripts/skill-test/lantern-areas-reader.mjs . util 0d646af17dc9
+#feature skill-checks
+  < scripts/skill-test/fixtures.mjs#runScript
+  > skills/lantern-setup/scripts/areas.mjs
+scripts/skill-test/lantern-areas-slices.mjs . service e0736923d096
+#feature skill-checks
+  < scripts/skill-test/lantern-areas-checks.mjs#judgeOverflow
+  < scripts/skill-test/lantern-areas-fake.mjs#lanternAreasSetup
+  < scripts/skill-test/lantern-areas-fixtures.mjs#FIXTURES
+  < scripts/skill-test/prompts.mjs#LANTERN_AREAS_SETUP_PROMPT
+  = scripts/skill-test/agent.mjs#runAgent
+  = scripts/skill-test/fixtures.mjs#installSkills
+scripts/skill-test/lantern-areas-specs.mjs . pure ac6b82ef33bb
+#feature skill-checks
+scripts/skill-test/prompts.mjs . pure 471806a7a71c
+#feature skill-checks
+scripts/skill-test/report.mjs . pure 19f73c55ec5b
+#feature skill-checks
+  < scripts/skill-test/agent.mjs#usd
+scripts/skill-test/run.mjs . script 446a26b35808
+#feature skill-checks
+  < scripts/e2e-delegate/child.mjs#stopChild
+  < scripts/e2e-delegate/execute.mjs#PROJECTS_HOME
+  < scripts/skill-test/agent.mjs#AGENT_TIMEOUT_MS
+  < scripts/skill-test/fake-agent.mjs#writeFakeClaude
+  < scripts/skill-test/report.mjs#buildReport
+  < scripts/skill-test/slices.mjs#SKILLS
+  < skills/lantern-delegate/scripts/preferences.mjs#DELIVERY
+  > ext:claude-code-cli
+scripts/skill-test/slices.mjs . service f2b89ffa559a
+#feature skill-checks
+  < scripts/e2e-delegate/execute.mjs#executeAll
+  < scripts/e2e-delegate/projects.mjs#PROJECTS
+  < scripts/e2e-delegate/report.mjs#planBudgets
+  < scripts/e2e-delegate/workspace.mjs#createWorkspace
+  < scripts/skill-test/extra-skills.mjs#extraSkills
+  < scripts/skill-test/lantern-areas-slices.mjs#LANTERN_AREAS
+  < scripts/skill-test/prompts.mjs#SETUP_PROMPT
+  < scripts/skill-test/vocab-slices.mjs#VOCABULARY
+  < skills/lantern-delegate/scripts/preferences.mjs#storedPreference
+  = scripts/skill-test/agent.mjs#runAgent
+  = scripts/skill-test/fixtures.mjs#mapProject
+  > skills/lantern-sync/scripts/selftest.mjs
+scripts/skill-test/vocab-checks.mjs . service e9341f3c05eb
+#feature skill-checks
+  < scripts/skill-test/fixtures.mjs#runScript
+  < scripts/skill-test/vocab-fixtures.mjs#CLIENTS_CAPABILITIES
+  < scripts/skill-test/vocab-fixtures.mjs#SIBLING_TWINS
+  < skills/lantern-setup/scripts/lib.mjs#loadMap
+  < skills/lantern-setup/scripts/vocabulary.mjs#namesId
+  > skills/lantern-setup/scripts/macro-eval.mjs
+  > skills/lantern-setup/scripts/plan.mjs
+  > skills/lantern-setup/scripts/systems.mjs
+  > skills/lantern-setup/scripts/validate.mjs
+scripts/skill-test/vocab-fake.mjs . util 6db6c3772ce3
+#feature skill-checks
+  < scripts/skill-test/fixtures.mjs#runScript
+  < scripts/skill-test/vocab-fixtures.mjs#SIBLING_TWINS
+  < scripts/skill-test/vocab-fixtures.mjs#writeMapRecords
+  > skills/lantern-setup/scripts/retag.mjs
+  > skills/lantern-setup/scripts/systems.mjs
+scripts/skill-test/vocab-fixtures.mjs . util cf4e7f12adaa
+#feature skill-checks
+  < scripts/skill-test/fixtures.mjs#writeFiles
+  < skills/lantern-setup/scripts/lib.mjs#hashFile
+scripts/skill-test/vocab-slices.mjs . service cd3a3e9b587a
+#feature skill-checks
+  < scripts/skill-test/areas-slices.mjs#AREAS_SLICES
+  < scripts/skill-test/prompts.mjs#RETAG_PROMPT
+  < scripts/skill-test/vocab-checks.mjs#judgeRetag
+  < scripts/skill-test/vocab-checks.mjs#judgeSibling
+  < scripts/skill-test/vocab-fixtures.mjs#createUntidyProject
+  = scripts/skill-test/agent.mjs#runAgent

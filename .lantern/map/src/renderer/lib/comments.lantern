@@ -1,0 +1,52 @@
+lantern 1
+# src/renderer/lib/comments
+
+src/renderer/lib/comments/box.ts . component 1f896a1d8cc1
+#feature review-comments
+  < src/renderer/lib/fixrequests/intent.ts#intentLabel
+  < src/renderer/lib/util.ts#el
+  < src/shared/lang/fix-requests.ts#suggestedIntent
+src/renderer/lib/comments/card.ts . component 4e9d6dfd4b1a
+#feature review-comments
+  < src/renderer/lib/fixrequests/intent.ts#intentLabel
+  < src/renderer/lib/fixrequests/model.ts#hasRange
+  < src/renderer/lib/util.ts#el
+src/renderer/lib/comments/controller.ts . component f78720a8a7f8
+#feature review-comments
+  = src/renderer/lib/comments/box.ts#createCommentBox
+  = src/renderer/lib/comments/card.ts#createCardPool
+  = src/renderer/lib/comments/float.ts#createSelectionButton
+  = src/renderer/lib/comments/gutter.ts#createGutter
+  = src/renderer/lib/comments/layer.ts#createCommentLayer
+  = src/renderer/lib/comments/note.ts#createViewNote
+  = src/renderer/lib/comments/rows.ts#textOfLines
+  = src/renderer/lib/comments/tools.ts#createCommentTools
+  < src/renderer/lib/fixrequests/format.ts#formatFixRequests
+  = src/renderer/lib/fixrequests/intent.ts#browserChoiceBackend
+  < src/renderer/lib/fixrequests/model.ts#hasRange
+  = src/renderer/lib/fixrequests/store.ts#createFixStore
+  < src/shared/lang/fix-requests.ts#fixPresets
+src/renderer/lib/comments/float.ts . component 6b13f2eb65d1
+#feature review-comments
+  = src/renderer/lib/comments/rows.ts#selectionAnchor
+  < src/renderer/lib/util.ts#el
+src/renderer/lib/comments/gutter.ts . component 09f0fb274108
+#feature review-comments
+  = src/renderer/lib/comments/rows.ts#lineRows
+  < src/renderer/lib/util.ts#el
+src/renderer/lib/comments/layer.ts . component 5d58847fe8df
+#feature review-comments
+  = src/renderer/lib/comments/rows.ts#lineRows
+  < src/renderer/lib/fixrequests/model.ts#hasRange
+src/renderer/lib/comments/note.ts . component dd5a2bac9ad2
+#feature review-comments
+  < src/renderer/lib/util.ts#el
+src/renderer/lib/comments/rows.ts . util 3c80a282242a
+#feature review-comments
+src/renderer/lib/comments/tools.ts . component 73e0c43aec0e
+#feature review-comments
+  = src/renderer/lib/comments/card.ts#whereLabel
+  < src/renderer/lib/fixrequests/format.ts#sortFixItems
+  < src/renderer/lib/fixrequests/intent.ts#COPY_CHOICES
+  < src/renderer/lib/util.ts#el
+  < src/renderer/popover/index.ts#mountPopover

@@ -1,0 +1,27 @@
+lantern 1
+# src/main/session-jump/integrations
+
+src/main/session-jump/integrations/apple-terminal.ts . gateway 7feb8cf3d375
+#feature notifications
+  = src/main/session-jump/shell.ts#appleScriptString
+  = src/main/session-jump/shell.ts#osascript
+  = ext:osascript
+src/main/session-jump/integrations/ghostty.ts . gateway a4a68b6d74b2
+#feature notifications
+  = src/main/session-jump/shell.ts#osascript
+  = src/main/session-jump/shell.ts#writeTitle
+  = ext:osascript
+src/main/session-jump/integrations/iterm2.ts . gateway 701f22ad3eb3
+#feature notifications
+  = src/main/session-jump/shell.ts#appleScriptString
+  = src/main/session-jump/shell.ts#osascript
+  = ext:osascript
+src/main/session-jump/integrations/kitty.ts . gateway 641b5a535468
+#feature notifications
+  = src/main/session-jump/shell.ts#out
+  = src/main/session-jump/shell.ts#pidsOnTty
+  = ext:kitty
+src/main/session-jump/integrations/tmux.ts . gateway 7488c8eb50c6
+#feature notifications
+  = src/main/session-jump/shell.ts#out
+  = ext:tmux

@@ -1,0 +1,11 @@
+{
+  "text": {
+    "authority.md": "Limits delegation to the mutations the current session authorizes: no commit, push, PR change or worktree removal without consent",
+    "codex.md": "Replaces the Claude dispatch route for Codex: scope one goal, spawn a checked-model worker and reviewer, stay local unless publication is authorized",
+    "codex.md @ skills/lantern-delegate/references/authority.md": "read first",
+    "codex.md @ skills/lantern-delegate/scripts/preflight.mjs": "run with --provider codex, local-only unless publishing",
+    "codex.md @ skills/lantern-setup/references/codex.md": "mapping reference the worker reads",
+    "codex.md @ skills/lantern-setup/scripts/model.mjs": "model check for worker and reviewer ids",
+    "codex.md @ skills/lantern-sync/references/codex.md": "status and refresh path for uncommitted edits"
+  }
+}

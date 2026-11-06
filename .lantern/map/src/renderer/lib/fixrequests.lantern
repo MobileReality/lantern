@@ -1,0 +1,18 @@
+lantern 1
+# src/renderer/lib/fixrequests
+
+src/renderer/lib/fixrequests/format.ts . pure 3eb1d348f16e
+#feature review-comments
+  < src/renderer/lib/fixrequests/intent.ts#intentOf
+  < src/renderer/lib/fixrequests/model.ts#hasRange
+  < src/shared/lang/fix-requests.ts#copyTexts
+src/renderer/lib/fixrequests/intent.ts . state 4c4e9acae94b
+#feature review-comments
+  < src/renderer/lib/fixrequests/model.ts#FixItem
+  < src/shared/lang/fix-requests.ts#copyTexts
+src/renderer/lib/fixrequests/model.ts . schema 82bb096244bf
+#feature review-comments
+  < src/shared/lang/fix-requests.ts#isIntentId
+src/renderer/lib/fixrequests/store.ts . state 6909fd553141
+#feature review-comments
+  < src/renderer/lib/fixrequests/model.ts#parseItems

@@ -1,0 +1,107 @@
+lantern 1
+# scripts
+
+scripts/esbuild.mjs . script 5bc4ce6f17ef
+  < scripts/app-manifest.mjs#appManifest
+  < scripts/node-bundle.mjs#nodeBundle
+  < src/main/main.ts
+  < src/preload/overlay.ts
+  < src/preload/tray-popover.ts
+  < src/preload/workspace.ts
+  < src/renderer/command-palette.css
+  < src/renderer/floating.css
+  < src/renderer/lantern-flow.css
+  < src/renderer/lantern-macroview.css
+  < src/renderer/lantern-plans.css
+  < src/renderer/lantern-prs.css
+  < src/renderer/lantern-relation.css
+  < src/renderer/lantern-review.css
+  < src/renderer/lantern-sections.css
+  < src/renderer/lantern-select.css
+  < src/renderer/lantern-setup.css
+  < src/renderer/lantern.css
+  < src/renderer/lib/syntax-worker.ts
+  < src/renderer/memory.css
+  < src/renderer/overlay.css
+  < src/renderer/overlay.html
+  < src/renderer/overlay.ts
+  < src/renderer/settings.css
+  < src/renderer/theme.css
+  < src/renderer/tray-popover.css
+  < src/renderer/tray-popover.html
+  < src/renderer/tray-popover.ts
+  < src/renderer/workspace.css
+  < src/renderer/workspace.html
+  < src/renderer/workspace.ts
+  > scripts/licenses.mjs#writeLicences
+  > scripts/lsp-runtime.mjs#buildLspRuntime
+  > scripts/material-file-icons.mjs#generateFileIconAssets
+  < scripts/aliases.cjs#sourceAliases
+  < src/renderer/integrations.css
+
+scripts/fuses.js . script 024b32e5f00a
+
+scripts/inline-json-reads.mjs . script aece13182c41
+
+scripts/install-skills.mjs . script 5f4ffd03709a
+#feature skill-installer
+  < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
+  = scripts/lantern-bundle.mjs#installBundleGuarded
+  = scripts/lantern-bundle.mjs#skippedEntries
+  < skills/lantern-delegate/scripts/rtk-detect.mjs#detectRtk
+
+scripts/lantern-bundle.d.mts . schema 9b4b011f0bab
+#feature skill-installer
+
+scripts/lantern-bundle.mjs . service 6565456d445f
+#feature skill-installer
+  = ext:git
+  < skills/lantern-delegate/scripts/bundled-skills.mjs#offEverywhere
+  < skills/lantern-delegate/scripts/delegate-kinds.mjs#DELEGATE_AGENT_PREFIX
+  < skills/lantern-delegate/scripts/extensions.mjs#EXTENSIONS_FILE
+  < skills/lantern-delegate/scripts/extensions.mjs#EXTENSIONS_FOLDER
+  < skills/lantern-delegate/scripts/extensions.mjs#readSwitchedOff
+  < skills/lantern-delegate/scripts/permissions.mjs#settingsSnippet
+  < skills/lantern-delegate/scripts/skill-linker.mjs#resolveSkillLinker
+
+scripts/licenses.mjs . script 159779ed243a
+  < scripts/lsp-runtime.mjs#pnpmInvocation
+  = ext:pnpm
+
+scripts/lsp-runtime.mjs . script b3acf6f8f38b
+#feature code-insight
+  < packages/lsp-runtime/package.json
+  < pnpm-workspace.yaml
+  = ext:pnpm
+
+scripts/make-icon.js . script dc8e7152c288
+
+scripts/material-file-icons.mjs . script ba05c878ebd7
+#feature code-insight
+  = src/renderer/lib/file-icon-manifest.json
+
+scripts/node-bundle.mjs . script 18523d7dfe4e
+  < scripts/aliases.cjs#sourceAliases
+  < scripts/inline-json-reads.mjs#inlineJsonReads
+
+scripts/package-licences.mjs . script dc62fafe6c07
+  = scripts/licenses.mjs#addElectronLicences
+  < scripts/licenses.mjs#packagedLayout
+
+scripts/patch-claude-mic.js . script 087b1d9b23f0
+#feature serve-web
+  = ext:claude-code-extension
+
+scripts/pr-review-demo.mjs . script 1728a77e2872
+#feature review-screen
+  < src/renderer/lib/syntax-worker.ts
+  < test/e2e/app/renderer.ts
+  > scripts/material-file-icons.mjs
+  > test/e2e/app/main.cjs
+
+scripts/app-manifest.mjs . script ffea1a93649b
+
+scripts/aliases.cjs . util dda184764e9f
+  < tsconfig.json
+
+scripts/aliases.d.cts . schema 3c8e08b27000

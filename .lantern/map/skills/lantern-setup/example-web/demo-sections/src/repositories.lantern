@@ -1,0 +1,9 @@
+lantern 1
+# skills/lantern-setup/example-web/demo-sections/src/repositories
+
+skills/lantern-setup/example-web/demo-sections/src/repositories/bookRepository.ts . repository 2decbd12af7b
+#feature lantern-sections
+  < skills/lantern-setup/example-web/demo-sections/src/types/order.ts#Book
+skills/lantern-setup/example-web/demo-sections/src/repositories/orderRepository.ts . repository d94135ea7cf5
+#feature lantern-sections
+  < skills/lantern-setup/example-web/demo-sections/src/types/order.ts#Order

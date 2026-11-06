@@ -1,0 +1,43 @@
+lantern 1
+# src/renderer/lib/lanternsections
+
+src/renderer/lib/lanternsections/common.ts . component ea914aab67c5
+#feature lantern-sections
+  < src/main/lantern-types.ts#LanternCite
+  < src/renderer/lib/lanternctx.ts#textHtml
+  < src/renderer/lib/lanternctx.ts#codeButton
+src/renderer/lib/lanternsections/controller.ts . hook f8d59dac8929
+#feature lantern-sections
+  < src/main/lantern-types.ts#LanternMap
+  < src/renderer/lib/lanternsections/db.ts#applyDbFilters
+  = src/renderer/lib/lanternsections/registry.ts#overlayHtml
+  = src/renderer/lib/lanternsections/registry.ts#barHtml
+  < src/renderer/lib/lanternsections/registry.ts#sectionsIn
+src/renderer/lib/lanternsections/db.ts . component 8ede12bc174e
+#feature lantern-sections
+  < src/main/lantern-types.ts#DbSection
+  < src/renderer/lib/lanternsections/common.ts#noteHtml
+  < src/renderer/lib/lanternsections/common.ts#citesHtml
+src/renderer/lib/lanternsections/facts.ts . component 2f4925805a3f
+#feature lantern-sections
+  < src/main/lantern-types.ts#FactsSection
+  < src/renderer/lib/lanternsections/common.ts#noteHtml
+src/renderer/lib/lanternsections/rbac.ts . component fe0fcd7417ab
+#feature lantern-sections
+  < src/main/lantern-types.ts#RbacSection
+  < src/renderer/lib/lanternsections/common.ts#noteHtml
+  < src/renderer/lib/lanternsections/common.ts#citesHtml
+src/renderer/lib/lanternsections/registry.ts . component 0aa96097c727
+#feature lantern-sections
+  < src/main/lantern-types.ts#LanternSection
+  < src/renderer/lib/lanternscope.ts#platformLabel
+  < src/renderer/lib/lanternsections/db.ts#dbRenderer
+  < src/renderer/lib/lanternsections/facts.ts#factsRenderer
+  < src/renderer/lib/lanternsections/rbac.ts#rbacRenderer
+  < src/renderer/lib/lanternsections/states.ts#statesRenderer
+  < src/renderer/lib/lanternsections/common.ts#fieldText
+src/renderer/lib/lanternsections/states.ts . component e7e7d143b498
+#feature lantern-sections
+  < src/main/lantern-types.ts#StatesSection
+  < src/renderer/lib/lanternsections/common.ts#noteHtml
+  < src/renderer/lib/lanternsections/common.ts#citesHtml

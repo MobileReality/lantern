@@ -1,0 +1,8 @@
+{
+ "text": {
+  "doc.css": "Styles the rendered Markdown: headings, code, tables, the page header and the not-found page",
+  "highlight.css": "Colours code tokens from the theme palette in both light and dark",
+  "layout.css": "Lays out the docs site: sticky sidebar with the pulsing lantern mark on desktop, collapsing menu on a phone, pager, footer legal lines, focus and skip link",
+  "tokens.css": "Holds the pulse period, the font families, the spacing measures and the light and dark theme colours of the Blueprint look"
+ }
+}
