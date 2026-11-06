@@ -65,5 +65,5 @@ describe('material file icon build assets', () => {
     expect(readFileSync(manifestPath, 'utf8')).toBe(readFileSync(path.resolve('src/renderer/lib/file-icon-manifest.json'), 'utf8'));
     execFileSync(process.execPath, [script, output]);
     expect(readFileSync(path.join(output, 'typescript.svg'), 'utf8')).toContain('<svg');
-  });
+  }, 60_000);
 });

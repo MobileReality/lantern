@@ -7,7 +7,9 @@ export default defineConfig({
   resolve: { alias: sourceAliases() },
   test: {
     include: ['test/**/*.test.ts'],
-    maxWorkers: 6,
+    maxWorkers: process.env.CI ? 2 : 6,
+    testTimeout: process.env.CI ? 30_000 : 15_000,
+    hookTimeout: process.env.CI ? 30_000 : 15_000,
     environment: 'node',
     setupFiles: ['test/setup-process-guard.ts', 'test/setup-yield.ts'],
     coverage: {

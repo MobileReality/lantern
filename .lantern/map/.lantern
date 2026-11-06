@@ -18,7 +18,7 @@ package.json . config 1dfc0837141f
 playwright.config.ts . config 1071e180a38b
 pnpm-workspace.yaml . config 25cdcd3824ff
 tsconfig.json . config a6792af1bbd4
-vitest.config.ts . config 086bfb1c3477
+vitest.config.ts . config 94879a99b377
   < scripts/aliases.cjs#sourceAliases
   > test/setup-process-guard.ts
   > test/setup-yield.ts

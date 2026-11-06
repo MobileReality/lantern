@@ -100,7 +100,7 @@ test/codex-skill-guides.test.ts . test b9e864191bb9
   < skills/lantern-setup/references/codex.md
   < skills/lantern-sync/references/codex.md
 
-test/codeview.test.ts . test 8235f3856afa
+test/codeview.test.ts . test df90ac8c51d8
 #feature code-insight
   = src/renderer/lib/codeview.ts
   = src/renderer/lib/syntax-highlighting.ts
@@ -571,7 +571,7 @@ test/lantern-detail.test.ts . test 51c19631e489
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-diff-view.test.ts . test 1e04e96541a0
+test/lantern-diff-view.test.ts . test 6ffc872670bb
 #feature code-insight
   < src/main/lantern-prdiff.ts
   = src/renderer/lib/codeview.ts
@@ -718,7 +718,7 @@ test/lantern-macro-areas-graph.test.ts . test bc9c57276ab0
   = test/helpers/lantern-macro-areas-payload.ts#areasPayload
   = test/helpers/lantern-macro-fixture.ts#macroFixtureRecords
 
-test/lantern-macro-areas-pr-view.test.ts . test fb79cda63286
+test/lantern-macro-areas-pr-view.test.ts . test ba2b7222f7c3
 #feature product-areas
   = src/renderer/lib/lanternmacroareas.ts#areaOfFeature
   = src/renderer/lib/lanternview.ts#mountLanternView
@@ -765,7 +765,7 @@ test/lantern-macro-calm.test.ts . test 06f8bd5edaa8
   = test/helpers/lantern-macro-fixture.ts#repoPrRecord
   = test/helpers/lantern-map.ts#mapOf
 
-test/lantern-macro-current.test.ts . test 53056fbcded1
+test/lantern-macro-current.test.ts . test b7185be8b29f
 #feature macro-view
   = src/renderer/lib/lanternmacro.ts#macroGraph
   = src/renderer/lib/lanternview.ts#mountLanternView
@@ -825,7 +825,7 @@ test/lantern-macro-lab-fixture.test.ts . test 1f8a200a9031
   = test/helpers/macro-lab-world.ts#labFixtureJson
   = test/fixtures/lantern-macro-lab.json
 
-test/lantern-macro-layout.test.ts . test c9d5e92838f4
+test/lantern-macro-layout.test.ts . test 3fea77a5c0a1
 #feature macro-view
   = src/renderer/lib/lanternmacro.ts#macroGraph
   = src/renderer/lib/lanternmacrolabels.ts#overlaps
@@ -1720,7 +1720,7 @@ test/markdown-render.test.ts . test 2a6797ede0d1
 #feature pull-requests
   = src/shared/markdown-render.ts
 
-test/material-file-icons-build.test.ts . test 10af2ed19305
+test/material-file-icons-build.test.ts . test 09e2465a5a44
 #feature file-graph
   = scripts/material-file-icons.mjs
   < src/renderer/lib/file-icon-manifest.json

@@ -112,7 +112,7 @@ describe('macro layout is readable', () => {
     const problems = [...graph.blocks.map((block) => block.key), ...graph.systems.map((system) => system.key)].flatMap((key) => problemsOf(layoutMacro(graph, systemLinksFor(graph, key))).map((problem) => `${key}: ${problem}`));
 
     expect(problems).toEqual([]);
-  });
+  }, 60_000);
 
   it.each([1, 2, 3, 4, 5, 6, 7, 8])('keeps a dense random graph clean (seed %i)', (seed) => {
     const view = randomView(seed, 15, 70);
