@@ -7,7 +7,8 @@ const WORKFLOW = fs.readFileSync(path.join(ROOT, '.github/workflows/ci.yml'), 'u
 const PACKAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')) as { packageManager: string };
 const PINNED_PNPM = PACKAGE.packageManager.replace(/^pnpm@/, '');
 const RUN_STEPS = [...WORKFLOW.matchAll(/^\s*-?\s*run:\s*(.+?)\s*$/gm)].map((match) => match[1]);
-const USES_REFS = [...WORKFLOW.matchAll(/^\s*-?\s*uses:\s*(\S+)/gm)].map((match) => match[1]);
+const USES_LINES = [...WORKFLOW.matchAll(/^\s*-?\s*uses:\s*(.+?)\s*$/gm)].map((match) => match[1]);
+const RUNNERS = [...WORKFLOW.matchAll(/^\s*runs-on:\s*(\S+)\s*$/gm)].map((match) => match[1]);
 
 describe('ci workflow', () => {
   it('runs on push and pull_request', () => {
@@ -39,9 +40,14 @@ describe('ci workflow', () => {
     expect(WORKFLOW).toMatch(/^permissions:\s*\n\s+contents:\s*read\s*$/m);
   });
 
-  it('pins every action to a full tag', () => {
-    expect(USES_REFS.length).toBeGreaterThan(0);
-    for (const ref of USES_REFS) expect(ref).toMatch(/@v\d+\.\d+\.\d+$/);
+  it('pins every action to a full commit SHA with a version tag comment', () => {
+    expect(USES_LINES.length).toBeGreaterThan(0);
+    for (const line of USES_LINES) expect(line).toMatch(/^[\w.-]+\/[\w.-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$/);
+  });
+
+  it('uses a pinned runner image, never a floating label', () => {
+    expect(RUNNERS.length).toBeGreaterThan(0);
+    for (const runner of RUNNERS) expect(runner).toMatch(/^ubuntu-\d+\.\d+$/);
   });
 
   it('launches no Electron, e2e or signing step', () => {
