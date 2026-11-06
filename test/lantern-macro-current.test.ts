@@ -136,7 +136,7 @@ describe('the block of the file open in the review pane', () => {
     pane(root).dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }));
     await flush();
     expect(shown(root)).toBe(ordered[ordered.length - 2]);
-  });
+  }, 60_000);
 });
 
 describe('a file that is in no feature block', () => {

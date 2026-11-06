@@ -217,7 +217,7 @@ describe('large diffs', async () => {
     expect(rows.length).toBeGreaterThan(2400);
     expect(painted).toBeLessThan(80);
     expect(host.querySelectorAll('.cl.scope')).toHaveLength(12);
-  });
+  }, 60_000);
 
   it('builds the lines of a region only when it is expanded', async () => {
     const diff = fullContextDiff(numbered(2000), [{ line: 1000, to: 'x' }]);

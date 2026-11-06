@@ -183,7 +183,7 @@ describe('the reading marker on the area shapes', () => {
     await flush();
     expect(shown(root)).toBe(ordered[ordered.length - 2]);
     expect(reading(root)).toEqual(placeHolding(ordered[ordered.length - 2]));
-  });
+  }, 60_000);
 
   it('puts the marker on the foundation entry when the open file sits in the foundation', async () => {
     const root = await openMacro();

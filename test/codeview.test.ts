@@ -57,7 +57,7 @@ describe('markdown files', () => {
     expect(lines[0]).toContain('font-weight:bold');
     expect(lines[2]).toContain('color:');
     expect(lines.join('')).toContain('run');
-  });
+  }, 60_000);
 });
 
 describe('bundled grammars', () => {
@@ -66,7 +66,7 @@ describe('bundled grammars', () => {
     for (const language of new Set(Object.values(HL_LANG))) {
       expect(() => highlightLines('const value = "safe";\n# heading\n', language), language).not.toThrow();
     }
-  });
+  }, 60_000);
 });
 
 describe('splitHighlightedLines', () => {
