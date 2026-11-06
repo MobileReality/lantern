@@ -1,0 +1,22 @@
+lantern-pr 1
+# 2
+#title docs: drop explainers from the README, add footer
+#url https://github.com/MobileReality/lantern/pull/2
+#branch docs/readme-footer
+#base main
+#opened 2026-11-06
+#head 3da7ef739ad6629c871f2fce37ed7df84be72660
+#describe what Drops the Explainers bullet and the word explainers from the Generate with Claude or Codex bullet in the README, and adds a footer.
+#describe before The feature list had an Explainers bullet and the README had no footer.
+#describe after No Explainers bullet; the README ends with Made with <love> by People with AI and By Mobile Reality.
+#describe verified README-only change; Lantern map unaffected, verify run with the PR record.
+~ README.md
+#order README.md
+#reason README.md Removes the retired Explainers feature from the feature list and adds the Mobile Reality footer.
+#story A reader opens the README
+#step actor A reader
+#file README.md
+#step action opens the project README
+#step subject the feature list and the page end
+#below interaction Reads the features without an Explainers bullet and sees a footer
+#below consequence The list offered Explainers and named them in the Claude or Codex bullet => No Explainers; the page ends with a Made with love footer

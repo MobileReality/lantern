@@ -25,11 +25,10 @@
   its relations) and draws it as a graph, so you can see the structure without reading the code.
 - **Reviews pull requests and local changes** with a file list, diffs and the graph, in review
   order, with a reason for each changed file.
-- **Explainers**: a readable write-up of what a set of changes does and why.
 - **Local review**: review your uncommitted changes, or a branch with no pull request, with the
   same file list, diffs and graph as a pull request (**+ Compare** in the Lantern tab, or
   `lantern --compare`). One click asks Claude for a one-sentence reason per changed file.
-- **Generate with Claude or Codex**: choose the assistant used by Lantern's maps, explainers,
+- **Generate with Claude or Codex**: choose the assistant used by Lantern's maps
   and repairs for each project. This setting does not change the assistant inside the embedded
   editor. Pick the output **language per project** and repair broken output in place.
 
@@ -73,3 +72,6 @@ Lantern is released under the MIT License. Copyright (c) 2026 Mobile Reality. Se
 Contact: hello@themobilereality.com.
 
 Lantern is not affiliated with or endorsed by Anthropic, OpenAI, Microsoft, Atlassian or GitHub; their names and marks are trademarks of their owners.
+
+Made with &lt;love&gt; by People with AI  
+By Mobile Reality
