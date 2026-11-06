@@ -1,0 +1,22 @@
+lantern-pr 1
+# 7
+#title docs: link the product website from the README
+#url https://github.com/MobileReality/lantern/pull/7
+#branch docs/readme-website-link
+#base main
+#opened 2026-11-06
+#head f26739e347d803cd9a6b4dc4a067ca620c68d923
+#describe what The README links to thelantern.dev under the tagline and in the Documentation section.
+#describe before No link to the website.
+#describe after A Website and Documentation line, and a Product overview bullet.
+#describe verified pnpm run lint and the docs tests pass.
+~ README.md
+#order README.md
+#reason README.md Visitors on the GitHub front page can reach the product website.
+#story Finding the website
+#step actor A visitor
+#step action opens the GitHub page
+#file README.md
+#step subject the Lantern README
+#below interaction Can follow a link to thelantern.dev
+#below consequence No link to the website => Website link at top and in Documentation
