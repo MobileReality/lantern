@@ -1,6 +1,6 @@
 {
  "text": {
-  "ci.yml": "Runs the install, typecheck, lint and unit tests on every push and pull request on a Linux runner",
-  "deploy-docs.yml": "Builds the documentation site on every change to its sources and on pull requests, and publishes it to GitHub Pages from main, defaulting the site URL to docs.thelantern.dev"
+  "ci.yml": "Runs the install, typecheck, lint and unit tests on every push and pull request on a pinned Ubuntu runner with SHA-pinned actions",
+  "deploy-docs.yml": "Builds the documentation site on every change to its sources and on pull requests, and publishes it to GitHub Pages from main with SHA-pinned actions, defaulting the site URL to docs.thelantern.dev"
  }
 }

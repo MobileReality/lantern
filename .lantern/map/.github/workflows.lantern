@@ -1,7 +1,7 @@
 lantern 1
 # .github/workflows
 
-.github/workflows/ci.yml . infra 34a0a5f984ac
+.github/workflows/ci.yml . infra 3b2522d281ab
 
-.github/workflows/deploy-docs.yml . infra b9d0bcd12efd
+.github/workflows/deploy-docs.yml . infra 41b0263d580d
   > website/package.json

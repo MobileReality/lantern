@@ -1,0 +1,5 @@
+{
+ "text": {
+  "dependabot.yml": "Opens one weekly grouped pull request for the pinned workflow actions and weekly grouped minor and patch updates for the root and website packages, so the pinned SHAs stay current"
+ }
+}
