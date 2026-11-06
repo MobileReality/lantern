@@ -87,7 +87,7 @@ never sent to this one.
 
 The host answer is the source of truth and overrides git in either direction; when there is none, because
 there is no account or the request failed, the git state stays. Bitbucket is asked about the pull requests
-git calls open. GitHub is asked about all of them (the open ones, then the 30 newest others), because only
+git calls open. GitHub is asked about all of them (the open ones, then the first 30 others in the list's order), because only
 the host knows a squash merge.
 
 ## The skill bundle
