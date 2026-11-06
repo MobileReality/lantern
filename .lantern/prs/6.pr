@@ -1,0 +1,44 @@
+lantern-pr 1
+# 6
+#title fix: CI-sized test timeouts and two workers on CI
+#url https://github.com/MobileReality/lantern/pull/6
+#branch fix/ci-test-timeouts
+#base main
+#opened 2026-11-06
+#head 1b779e14c77d21ced5e7138acbcafd5fc2be5b19
+#describe what The CI test run had seven CPU-heavy tests time out at 5 s on the 2-vCPU runner. Timeouts are now realistic and CI uses two workers.
+#describe before Default 5 s per test and up to 6 workers on every machine.
+#describe after 30 s defaults and 2 workers on CI, 15 s and 6 workers locally; seven heavy tests have an explicit 60 s timeout.
+#describe verified Typecheck and lint pass, and the CI-mode suite passes; the final proof is the CI run on this pull request.
+~ test/codeview.test.ts
+~ test/lantern-diff-view.test.ts
+~ test/lantern-macro-areas-pr-view.test.ts
+~ test/lantern-macro-current.test.ts
+~ test/lantern-macro-layout.test.ts
+~ test/material-file-icons-build.test.ts
+~ vitest.config.ts
+#order vitest.config.ts
+#order test/codeview.test.ts
+#order test/lantern-diff-view.test.ts
+#order test/lantern-macro-layout.test.ts
+#order test/lantern-macro-current.test.ts
+#order test/lantern-macro-areas-pr-view.test.ts
+#order test/material-file-icons-build.test.ts
+#reason test/codeview.test.ts Loading shiki grammars and tokenizing every registered language is heavy by design on a slow runner.
+#reason test/lantern-diff-view.test.ts Rendering a few thousand context lines is CPU-heavy and timed out on the hosted runner.
+#reason test/lantern-macro-areas-pr-view.test.ts Walking every file of the pull request with the stepper is long by design on a slow runner.
+#reason test/lantern-macro-current.test.ts Walking every file of the pull request with the stepper is long by design on a slow runner.
+#reason test/lantern-macro-layout.test.ts Laying out the macro graph for every block and system is CPU-heavy on a slow runner.
+#reason test/material-file-icons-build.test.ts Each case spawns the build script several times, which outlasts 5 s on a small runner.
+#reason vitest.config.ts A 2-vCPU CI runner ran heavy tests past the 5 s default, so CI gets 30 s timeouts and two workers.
+#story CI runs the tests on a small runner
+#step actor A contributor pushes a branch
+#file vitest.config.ts
+#step action Starts the test suite on the CI runner
+#file vitest.config.ts
+#step subject Seven heavy tests
+#file test/codeview.test.ts
+#file test/lantern-diff-view.test.ts
+#file test/lantern-macro-layout.test.ts
+#below interaction Get the CI run to finish green
+#below consequence Heavy tests timed out after 5 s => They have 30 s by default, 60 s explicitly
