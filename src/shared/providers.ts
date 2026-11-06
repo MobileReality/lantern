@@ -18,6 +18,7 @@ interface ProviderInfo {
   role: ProviderRole;
   hosts: readonly string[];
   remoteHost: string | null;
+  remoteAliases: readonly string[];
   tokenPage: string;
   tokenFields: readonly TokenField[];
   reportsExpiry: boolean;
@@ -31,6 +32,7 @@ const TABLE = {
     role: PROVIDER_ROLE.codeHost,
     hosts: ['github.com', 'api.github.com'],
     remoteHost: 'github.com',
+    remoteAliases: ['ssh.github.com'],
     tokenPage: 'github.com/settings/personal-access-tokens/new',
     tokenFields: [TOKEN_FIELD.token],
     reportsExpiry: true,
@@ -42,6 +44,7 @@ const TABLE = {
     role: PROVIDER_ROLE.tracker,
     hosts: ['auth.atlassian.com', 'api.atlassian.com'],
     remoteHost: null,
+    remoteAliases: [],
     tokenPage: 'id.atlassian.com/manage-profile/security/api-tokens',
     tokenFields: [TOKEN_FIELD.site, TOKEN_FIELD.email, TOKEN_FIELD.token],
     reportsExpiry: false,
@@ -53,6 +56,7 @@ const TABLE = {
     role: PROVIDER_ROLE.codeHost,
     hosts: ['bitbucket.org', 'api.bitbucket.org'],
     remoteHost: 'bitbucket.org',
+    remoteAliases: [],
     tokenPage: 'id.atlassian.com/manage-profile/security/api-tokens',
     tokenFields: [TOKEN_FIELD.email, TOKEN_FIELD.token],
     reportsExpiry: false,

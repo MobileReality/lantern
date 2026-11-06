@@ -1,21 +1,26 @@
 import { CREDENTIAL_VARS } from './auth/env-names';
 import type { Auth } from './auth';
-import type { HostCredentials } from './lantern-host-credentials';
 import { PROVIDER } from '@shared/providers';
+import type { CodeHostId } from '@shared/providers';
 
 type AccountSource = Pick<Auth, 'injectionFor'>;
 
-type AccountLookup = (root: string) => Promise<HostCredentials | null>;
+interface AccountCredentials {
+  token: string;
+  email?: string;
+}
 
-const [EMAIL_VAR, TOKEN_VAR] = CREDENTIAL_VARS[PROVIDER.bitbucket].required;
+type AccountLookup = (root: string, provider?: CodeHostId) => Promise<AccountCredentials | null>;
 
 function accountLookup(auth: AccountSource): AccountLookup {
-  return async (root) => {
+  return async (root, provider = PROVIDER.bitbucket) => {
     try {
-      const group = (await auth.injectionFor(root))[PROVIDER.bitbucket];
-      const email = group?.credentials[EMAIL_VAR];
-      const token = group?.credentials[TOKEN_VAR];
-      return email && token ? { email, token } : null;
+      const group = (await auth.injectionFor(root))[provider];
+      const { required } = CREDENTIAL_VARS[provider];
+      const token = group?.credentials[required[required.length - 1]];
+      const email = required.length > 1 ? group?.credentials[required[0]] : undefined;
+      if (!token || (required.length > 1 && !email)) return null;
+      return email ? { email, token } : { token };
     } catch {
       return null;
     }
@@ -23,4 +28,4 @@ function accountLookup(auth: AccountSource): AccountLookup {
 }
 
 export { accountLookup };
-export type { AccountLookup, AccountSource };
+export type { AccountCredentials, AccountLookup, AccountSource };

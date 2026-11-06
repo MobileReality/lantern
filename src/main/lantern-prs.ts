@@ -278,7 +278,7 @@ function dropPrCache(root: string) {
 async function refreshHostStates(root: string, force: boolean, host: HostStatus) {
   try {
     const { value } = await loadGitCached(root);
-    await host.refresh(root, value.prs.filter((p) => p.state === 'open').map((p) => p.id), force);
+    await host.refresh(root, value.prs, force);
   } catch {
     return;
   }

@@ -5,8 +5,8 @@ import { git } from './lantern-git';
 
 const CODE_HOSTS = new Map(
   CODE_HOST_IDS.flatMap((id) => {
-    const { remoteHost } = PROVIDERS[id];
-    return remoteHost ? [[remoteHost, id] as const] : [];
+    const { remoteHost, remoteAliases } = PROVIDERS[id];
+    return remoteHost ? [remoteHost, ...remoteAliases].map((host) => [host, id] as const) : [];
   }),
 );
 const SSH_TIMEOUT_MS = 3000;

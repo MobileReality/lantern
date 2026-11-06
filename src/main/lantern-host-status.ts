@@ -1,21 +1,28 @@
 import { msg } from '@shared/lang/messages';
-import { PROVIDER, PROVIDERS } from '@shared/providers';
+import { PROVIDERS } from '@shared/providers';
+import type { CodeHostId } from '@shared/providers';
 import type { AccountLookup } from './lantern-host-account';
 import { mapInBatches } from './lantern-batch';
-import { readHostCredentials } from './lantern-host-credentials';
-import { bitbucketRepoOf } from './lantern-host-origin';
-import type { HostnameResolver } from './lantern-host-origin';
-import { fetchHostState } from './lantern-host-request';
+import { DRIVERS, recordBelongsTo } from './lantern-host-drivers';
+import { isRateLimited } from './lantern-host-github';
+import { codeHostOf } from './lantern-host-origin';
+import type { CodeHost, HostnameResolver } from './lantern-host-origin';
 import type { HostAnswer } from './lantern-host-request';
 import type { LanternPr } from './lantern-types';
 
 const HOST_TTL_MS = 5 * 60 * 1000;
 const MAX_PARALLEL = 4;
 const MAX_PROJECTS = 32;
+const MAX_SETTLED_LOOKUPS = 30;
 
 type Unavailable = 'no-credentials' | 'failed';
 
-const noteOf = (unavailable: Unavailable) => msg(unavailable === 'failed' ? 'hostStatus.failed' : 'hostStatus.noAccount', { provider: PROVIDERS[PROVIDER.bitbucket].name });
+const NOTE_KEYS = {
+  failed: { plain: 'hostStatus.failed', merged: 'hostStatus.failedMerged' },
+  'no-credentials': { plain: 'hostStatus.noAccount', merged: 'hostStatus.noAccountMerged' },
+} as const;
+
+const noteOf = (unavailable: Unavailable, provider: CodeHostId) => msg(NOTE_KEYS[unavailable][DRIVERS[provider].asks('merged') ? 'merged' : 'plain'], { provider: PROVIDERS[provider].name });
 
 interface HostStatusOptions {
   baseUrl?: string;
@@ -32,8 +39,10 @@ interface Entry extends HostAnswer {
 }
 
 interface ProjectStatus {
+  provider: CodeHostId | null;
   entries: Map<string, Entry>;
   unavailable: Unavailable | null;
+  pausedUntil: number;
   version: number;
 }
 
@@ -52,7 +61,7 @@ function createHostStatus(options: HostStatusOptions = {}) {
   function statusOf(root: string): ProjectStatus {
     const known = projects.get(root);
     if (known) return known;
-    const created: ProjectStatus = { entries: new Map(), unavailable: null, version: 0 };
+    const created: ProjectStatus = { provider: null, entries: new Map(), unavailable: null, pausedUntil: Number.NEGATIVE_INFINITY, version: 0 };
     projects.set(root, created);
     while (projects.size > MAX_PROJECTS) projects.delete(projects.keys().next().value as string);
     return created;
@@ -66,34 +75,53 @@ function createHostStatus(options: HostStatusOptions = {}) {
     return !!entry && now() - entry.at < ttlMs;
   }
 
-  async function lookupAll(root: string, openIds: string[], status: ProjectStatus) {
-    const repo = await bitbucketRepoOf(root, options.resolveHostname);
-    if (!repo) return null;
-    const credentials = (await account?.(root)) ?? (await readHostCredentials(root, options.env));
+  function idsToAsk(host: CodeHost, prs: LanternPr[]) {
+    const driver = DRIVERS[host.provider];
+    const asked = prs.filter((p) => driver.asks(p.state) && recordBelongsTo(host.provider, p.url));
+    const open = asked.filter((p) => p.state === 'open');
+    const settled = asked.filter((p) => p.state !== 'open').slice(0, MAX_SETTLED_LOOKUPS);
+    return [...open, ...settled].map((p) => p.id);
+  }
+
+  async function lookupAll(root: string, host: CodeHost, ids: string[], status: ProjectStatus) {
+    const driver = DRIVERS[host.provider];
+    const credentials = await driver.credentials(root, { account, env: options.env });
     if (!credentials) return 'no-credentials' as const;
-    const due = openIds.filter((id) => !isFresh(status.entries.get(id)));
-    const answers = await mapInBatches(due, async (id) => [id, await fetchHostState(repo, id, credentials, options)] as const, MAX_PARALLEL);
+    const due = ids.filter((id) => !isFresh(status.entries.get(id)));
+    const paused = () => now() < status.pausedUntil;
+    if (due.length && paused()) return 'failed' as const;
+    const ask = async (id: string) => {
+      if (paused()) return [id, null] as const;
+      const answer = await driver.fetch(host, id, credentials, options);
+      if (answer && isRateLimited(answer)) status.pausedUntil = now() + ttlMs;
+      return [id, answer] as const;
+    };
+    const answers = await mapInBatches(due, ask, MAX_PARALLEL);
     let failed = false;
     for (const [id, answer] of answers) {
-      if (answer) status.entries.set(id, { ...answer, at: now() });
+      if (answer && !isRateLimited(answer)) status.entries.set(id, { ...answer, at: now() });
       else failed = true;
     }
     return failed ? ('failed' as const) : null;
   }
 
-  async function run(root: string, openIds: string[], force: boolean) {
+  async function run(root: string, prs: LanternPr[], force: boolean) {
     const status = statusOf(root);
     const before = signature(status);
+    const host = prs.length ? await codeHostOf(root, options.resolveHostname) : null;
+    if (host?.provider !== status.provider) status.entries.clear();
+    status.provider = host?.provider ?? null;
+    const ids = host ? idsToAsk(host, prs) : [];
     if (force) for (const entry of status.entries.values()) entry.at = Number.NEGATIVE_INFINITY;
-    for (const id of status.entries.keys()) if (!openIds.includes(id)) status.entries.delete(id);
-    status.unavailable = openIds.length ? await lookupAll(root, openIds, status) : null;
+    for (const id of status.entries.keys()) if (!ids.includes(id)) status.entries.delete(id);
+    status.unavailable = host && ids.length ? await lookupAll(root, host, ids, status) : null;
     if (signature(status) !== before) status.version++;
   }
 
-  function refresh(root: string, openIds: string[], force = false): Promise<void> {
+  function refresh(root: string, prs: LanternPr[], force = false): Promise<void> {
     const inflight = running.get(root);
     if (inflight && !force) return inflight;
-    const job = (inflight ?? Promise.resolve()).then(() => run(root, openIds, force));
+    const job = (inflight ?? Promise.resolve()).then(() => run(root, prs, force));
     const settled = job.catch(() => undefined).finally(() => {
       if (running.get(root) === settled) running.delete(root);
     });
@@ -103,14 +131,17 @@ function createHostStatus(options: HostStatusOptions = {}) {
 
   function apply(root: string, prs: LanternPr[]): Overlaid {
     const status = projects.get(root);
-    if (!status || !prs.some((p) => p.state === 'open')) return { prs, note: null };
+    const provider = status?.provider;
+    if (!status || !provider || !prs.some((p) => DRIVERS[provider].asks(p.state))) return { prs, note: null };
     const next = prs.map((p) => {
-      const entry = p.state === 'open' ? status.entries.get(p.id) : undefined;
+      const entry = DRIVERS[provider].asks(p.state) ? status.entries.get(p.id) : undefined;
       if (!entry) return p;
-      if (entry.state !== 'open') return { ...p, state: entry.state };
+      if (entry.state === 'merged' && p.state === 'merged') return p;
+      if (entry.state !== 'open') return withHostState(p, entry.state);
+      if (p.state !== 'open') return withHostState(p, 'open', entry.base);
       return entry.base ? { ...p, hostBase: entry.base } : p;
     });
-    return { prs: next, note: status.unavailable ? noteOf(status.unavailable) : null };
+    return { prs: next, note: status.unavailable ? noteOf(status.unavailable, provider) : null };
   }
 
   return {
@@ -121,6 +152,11 @@ function createHostStatus(options: HostStatusOptions = {}) {
       account = lookup;
     },
   };
+}
+
+function withHostState(pr: LanternPr, state: LanternPr['state'], base?: string): LanternPr {
+  const { mergedAt: _mergedAt, ...rest } = pr;
+  return { ...rest, state, ...(base ? { hostBase: base } : {}) };
 }
 
 type HostStatus = ReturnType<typeof createHostStatus>;

@@ -293,7 +293,9 @@
   },
   "hostStatus": {
     "noAccount": "Host status unavailable, so a declined pull request may still show as open: add your {provider} account in Lantern (command palette, Integrations).",
-    "failed": "Host status unavailable: the request to {provider} failed, so a declined pull request may still show as open."
+    "failed": "Host status unavailable: the request to {provider} failed, so a declined pull request may still show as open.",
+    "noAccountMerged": "Host status unavailable, so a merged or declined pull request may still show as open: add your {provider} account in Lantern (command palette, Integrations).",
+    "failedMerged": "Host status unavailable: the request to {provider} failed, so a merged or declined pull request may still show as open."
   },
   "extensions": {
     "problem": {
