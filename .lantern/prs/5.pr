@@ -1,0 +1,67 @@
+lantern-pr 1
+# 5
+#title chore: complete package metadata, build test tokens at run time
+#url https://github.com/MobileReality/lantern/pull/5
+#branch chore/public-repo-prep
+#base main
+#opened 2026-11-06
+#head e82d8369535d6d01c65a21c67ba234849e9d1ea3
+#describe what package.json gets repository, homepage, bugs and the new description.
+#describe what Test token literals are built at run time from parts, with the same shape and length, so secret scanning finds nothing.
+#describe before Tests held full token-shaped strings on one source line.
+#describe after fakeGithubToken, fakeGithubUserToken, fakeFineGrainedToken and fakeAtlassianToken build the same values at run time.
+#describe verified typecheck, lint, pnpm test, compile and both e2e runs green; the secret-shape grep prints nothing.
+~ package.json
+~ test/auth-accounts.test.ts
+~ test/auth-ipc-tokens.test.ts
+~ test/auth-redact.test.ts
+~ test/e2e/integrations.spec.ts
+~ test/helpers/fake-tokens.ts
+~ test/helpers/host-world.ts
+~ test/integration-skills-bitbucket.test.ts
+~ test/integration-skills-conventions.test.ts
+~ test/integration-skills-github.test.ts
+~ test/integration-skills-jira.test.ts
+~ test/integration-skills-standalone.test.ts
+~ test/integrations-screen.test.ts
+~ test/lantern-host-github.test.ts
+~ test/lantern-host-status.test.ts
+#order test/helpers/fake-tokens.ts
+#order package.json
+#order test/auth-redact.test.ts
+#order test/auth-accounts.test.ts
+#order test/auth-ipc-tokens.test.ts
+#order test/integrations-screen.test.ts
+#order test/helpers/host-world.ts
+#order test/lantern-host-github.test.ts
+#order test/lantern-host-status.test.ts
+#order test/integration-skills-bitbucket.test.ts
+#order test/integration-skills-conventions.test.ts
+#order test/integration-skills-github.test.ts
+#order test/integration-skills-jira.test.ts
+#order test/integration-skills-standalone.test.ts
+#order test/e2e/integrations.spec.ts
+#reason package.json Public repository needs repository, homepage, bugs and the current description.
+#reason test/auth-accounts.test.ts Unauthorized-token case is built at run time instead of a literal.
+#reason test/auth-ipc-tokens.test.ts Unknown-token case is built at run time instead of a literal.
+#reason test/auth-redact.test.ts Redaction cases keep real token shapes without a scannable literal.
+#reason test/e2e/integrations.spec.ts E2E account tokens are built at run time, same values as before.
+#reason test/helpers/fake-tokens.ts One place builds token-shaped test values from parts at run time.
+#reason test/helpers/host-world.ts Shared Bitbucket token is built at run time.
+#reason test/integration-skills-bitbucket.test.ts Skill test token is built at run time.
+#reason test/integration-skills-conventions.test.ts Per-skill credentials are built at run time.
+#reason test/integration-skills-github.test.ts Skill test fine-grained token is built at run time.
+#reason test/integration-skills-jira.test.ts Skill test Atlassian token is built at run time.
+#reason test/integration-skills-standalone.test.ts Injected tokens for the three skills are built at run time.
+#reason test/integrations-screen.test.ts Second and unknown GitHub tokens are built at run time.
+#reason test/lantern-host-github.test.ts Bitbucket account token is built at run time.
+#reason test/lantern-host-status.test.ts Account token is built once at run time and reused in the assertion.
+#story Making the repository public
+#step actor Maintainer
+#file package.json
+#step action switches the repository to public
+#step subject package metadata and test sources
+#file test/helpers/fake-tokens.ts
+#file test/auth-redact.test.ts
+#below interaction Visitors find the repository, homepage and issues links
+#below consequence Tests held full token-shaped literals => Tests build tokens from parts at run time
