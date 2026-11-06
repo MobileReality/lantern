@@ -61,15 +61,16 @@ test/helpers/fake-providers.ts . test 8b09b0534518
   < src/main/auth/token-check.ts#Endpoints
   < src/shared/providers.ts#ProviderId
 
-test/helpers/fake-tokens.ts . test 5443c9287cee
+test/helpers/fake-tokens.ts . test 437198c2f495
 #feature integrations
 
 test/helpers/git-repo.ts . test e5bc08a9427a
 #feature pull-requests
   > ext:git
 
-test/helpers/host-world.ts . test b47b941befc6
+test/helpers/host-world.ts . test 6002afefdaa2
 #feature pull-requests
+  = test/helpers/fake-tokens.ts#fakeAtlassianToken
   = test/helpers/git-repo.ts
 
 test/helpers/lantern-areas-fixtures.ts . test cc338311c502
