@@ -50,7 +50,7 @@ test/bundled-skills-standalone.test.ts . test cb4f3ecf7da0
 #feature skill-installer
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
 
-test/ci-workflow.test.ts . test fd3d295bd8f7
+test/ci-workflow.test.ts . test c9b0ceff788b
   < .github/workflows/ci.yml
   < package.json
 
@@ -280,7 +280,7 @@ test/lantern-delegate-skill.test.ts . test 5a2c9392d823
   < skills/lantern-delegate/protocol.md
   < skills/lantern-sync/SKILL.md
 
-test/deploy-docs-workflow.test.ts . test e3d5d702c63e
+test/deploy-docs-workflow.test.ts . test 934bedf83c2d
   < .github/workflows/ci.yml
   < .github/workflows/deploy-docs.yml
   < package.json

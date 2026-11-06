@@ -9,8 +9,9 @@ const PACKAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf
 const SITE_PACKAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'website/package.json'), 'utf8')) as { packageManager: string };
 const PINNED_PNPM = PACKAGE.packageManager.replace(/^pnpm@/, '');
 const RUN_STEPS = [...WORKFLOW.matchAll(/^\s*-?\s*run:\s*(.+?)\s*$/gm)].map((match) => match[1]);
-const USES_REFS = [...WORKFLOW.matchAll(/^\s*-?\s*uses:\s*(\S+)/gm)].map((match) => match[1]);
-const CI_USES_REFS = [...CI.matchAll(/^\s*-?\s*uses:\s*(\S+)/gm)].map((match) => match[1]);
+const USES_REFS = [...WORKFLOW.matchAll(/^\s*-?\s*uses:\s*(.+?)\s*$/gm)].map((match) => match[1]);
+const CI_USES_REFS = [...CI.matchAll(/^\s*-?\s*uses:\s*(.+?)\s*$/gm)].map((match) => match[1]);
+const RUNNERS = [...WORKFLOW.matchAll(/^\s*runs-on:\s*(\S+)\s*$/gm)].map((match) => match[1]);
 const WATCHED_PATHS = ['website/**', 'docs/**', 'README.md', 'TROUBLESHOOTING.md', 'CONTRIBUTING.md', '.github/workflows/deploy-docs.yml'];
 
 const CI_ACTIONS = new Set(CI_USES_REFS.map((ref) => ref.split('@')[0]));
@@ -44,12 +45,17 @@ describe('deploy-docs workflow', () => {
     expect(WORKFLOW).toMatch(/cache-dependency-path:\s*website\/pnpm-lock\.yaml/);
   });
 
-  it('pins every action to a full tag, matching the versions CI uses', () => {
+  it('pins every action to a full commit SHA with a version tag comment, matching the pins CI uses', () => {
     expect(USES_REFS.length).toBeGreaterThan(0);
-    for (const ref of USES_REFS) expect(ref).toMatch(/@v\d+\.\d+\.\d+$/);
+    for (const ref of USES_REFS) expect(ref).toMatch(/^[\w.-]+\/[\w.-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$/);
     const shared = USES_REFS.filter((ref) => CI_ACTIONS.has(ref.split('@')[0]));
     expect(shared.length).toBeGreaterThanOrEqual(3);
     for (const ref of shared) expect(CI_USES_REFS).toContain(ref);
+  });
+
+  it('uses a pinned runner image, never a floating label', () => {
+    expect(RUNNERS).toHaveLength(2);
+    for (const runner of RUNNERS) expect(runner).toMatch(/^ubuntu-\d+\.\d+$/);
   });
 
   it('grants read-only contents by default and Pages rights only to the deploy job', () => {
