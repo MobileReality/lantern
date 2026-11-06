@@ -3,12 +3,13 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createRouter, fakeFetch } from './helpers/fake-host';
+import { fakeFineGrainedToken } from './helpers/fake-tokens';
 import type { Route } from './helpers/fake-host';
 import { SKILLS_ROOT, git, makeHostedRepo, runSkill } from './helpers/skill-runner';
 import type { HostedRepo } from './helpers/skill-runner';
 
 const ORIGIN = 'git@github.com:example-owner/shop.git';
-const TOKEN = 'github_pat_11ABCDEFG_exampletoken';
+const TOKEN = fakeFineGrainedToken('11ABCDEFG_exampletoken');
 const ENV = { GITHUB_TOKEN: TOKEN };
 const API = 'https://api.github.com/repos/example-owner/shop';
 const PR_URL = 'https://github.com/example-owner/shop/pull/7';

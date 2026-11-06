@@ -5,7 +5,7 @@ import { createAuthHandlers } from '@main/auth/ipc';
 import { PROJECT, ipcWorld, keysDeep } from './helpers/auth-ipc-world';
 import { startFakeProviders } from './helpers/fake-providers';
 import type { FakeProviders } from './helpers/fake-providers';
-import { FAKE_ATLASSIAN_TOKEN, FAKE_GITHUB_TOKEN } from './helpers/fake-tokens';
+import { FAKE_ATLASSIAN_TOKEN, FAKE_GITHUB_TOKEN, fakeGithubToken } from './helpers/fake-tokens';
 
 const GITHUB_TOKEN = FAKE_GITHUB_TOKEN;
 const ATLASSIAN_TOKEN = FAKE_ATLASSIAN_TOKEN;
@@ -43,7 +43,7 @@ describe('auth:add-token', () => {
 
   it('says what went wrong and stores nothing when the provider says no', async () => {
     const { call, auth } = await world();
-    const reply = await call('auth:add-token', { provider: 'github', token: 'ghp_notaknowntokennotaknowntokennotakno' });
+    const reply = await call('auth:add-token', { provider: 'github', token: fakeGithubToken('notaknowntokennotaknowntokennotakno') });
     expect(reply).toMatchObject({ ok: false, error: AUTH_ERROR.checkFailed, reason: CHECK_FAILURE.unauthorized, message: expect.stringContaining('GitHub rejected this token') });
     expect(auth.status().providers.github.profiles.map((profile) => profile.login)).toEqual(['work', 'home']);
   });

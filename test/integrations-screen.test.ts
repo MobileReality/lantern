@@ -6,10 +6,11 @@ import { app } from '@renderer/state';
 import { DAY_MS } from '@shared/auth-expiry';
 import { installAuthWindow } from './helpers/auth-window';
 import type { AuthWindow } from './helpers/auth-window';
-import { FAKE_ATLASSIAN_TOKEN, FAKE_GITHUB_TOKEN } from './helpers/fake-tokens';
+import { FAKE_ATLASSIAN_TOKEN, FAKE_GITHUB_TOKEN, fakeGithubToken } from './helpers/fake-tokens';
 
 const GITHUB_TOKEN = FAKE_GITHUB_TOKEN;
-const SECOND_GITHUB_TOKEN = 'ghp_ZYXWVUTSRQPONMLKJIHGFEDCBA9876543210zy';
+const SECOND_GITHUB_TOKEN = fakeGithubToken('ZYXWVUTSRQPONMLKJIHGFEDCBA9876543210zy');
+const UNKNOWN_GITHUB_TOKEN = fakeGithubToken('notaknowntokennotaknowntokennotakno');
 const ATLASSIAN_TOKEN = FAKE_ATLASSIAN_TOKEN;
 const SHOP = { path: '/work/shop', name: 'shop' };
 const GITHUB_HOST = { provider: 'github', owner: 'acme', repo: 'shop' } as const;
@@ -227,7 +228,7 @@ describe('adding an account', () => {
   it('shows the busy state while the provider is asked, and leaves the form usable after a refusal', async () => {
     await open();
     buttonNamed(section('github'), msg('integrations.provider.add')).click();
-    type(field('github', 'token'), 'ghp_notaknowntokennotaknowntokennotakno');
+    type(field('github', 'token'), UNKNOWN_GITHUB_TOKEN);
     let release: (value: unknown) => void = () => {};
     const pending = new Promise((resolve) => (release = resolve));
     const real = window.ccmws.authAddToken;
@@ -240,7 +241,7 @@ describe('adding an account', () => {
     await vi.waitFor(() => expect($('.int-form-failure:not([hidden])').textContent).toMatch(/GitHub rejected this token/));
     expect($<HTMLButtonElement>('button[type="submit"]').disabled).toBe(false);
     expect($('.int-form-status').textContent).toBe('');
-    expect(field('github', 'token').value).toBe('ghp_notaknowntokennotaknowntokennotakno');
+    expect(field('github', 'token').value).toBe(UNKNOWN_GITHUB_TOKEN);
     expect(rows('github')).toHaveLength(0);
     expect(world.auth.status().providers.github.profiles).toEqual([]);
   });

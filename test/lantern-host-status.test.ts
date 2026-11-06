@@ -11,6 +11,9 @@ import type { World } from './helpers/git-repo';
 import { createAuthWorld } from './helpers/auth-world';
 import { accountLookup } from '../src/main/lantern-host-account';
 import { ENV, makeHostWorld } from './helpers/host-world';
+import { fakeAtlassianToken } from './helpers/fake-tokens';
+
+const ACCOUNT_TOKEN = fakeAtlassianToken('account-token');
 
 vi.setConfig({ testTimeout: 30_000, hookTimeout: 30_000 });
 
@@ -251,12 +254,12 @@ describe('credentials sources', () => {
   it('uses the Bitbucket account added in Lantern with no environment and no .ai/.env', async () => {
     fake.state(126, 'DECLINED');
     const accounts = createAuthWorld({ host: { provider: 'bitbucket', owner: 'acme', repo: 'shop' } });
-    accounts.addStatic('bitbucket', 'ATATT-account-token', 'dev', { email: 'dev@example.com' });
+    accounts.addStatic('bitbucket', ACCOUNT_TOKEN, 'dev', { email: 'dev@example.com' });
     const host = service({ env: {}, account: accountLookup(accounts.auth) });
     const { byId, load } = await stateOf(host, [126]);
     expect(byId).toEqual({ 126: 'declined' });
     expect(load.warnings).toEqual([]);
-    expect(fake.requests[0].authorization).toBe(basic('dev@example.com', 'ATATT-account-token'));
+    expect(fake.requests[0].authorization).toBe(basic('dev@example.com', ACCOUNT_TOKEN));
   });
 
   it('falls back to the environment when no account resolves', async () => {

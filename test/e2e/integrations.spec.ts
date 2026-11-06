@@ -4,13 +4,13 @@ import path from 'node:path';
 import { launchIntegrationsHarness } from './support/integrations-harness';
 import type { IntegrationsHarness } from './support/integrations-harness';
 import { findClippedText } from './support/overflow';
-import { FAKE_ATLASSIAN_TOKEN_LONG } from '../helpers/fake-tokens';
+import { FAKE_ATLASSIAN_TOKEN_LONG, fakeAtlassianToken, fakeFineGrainedToken, fakeGithubToken } from '../helpers/fake-tokens';
 
 const VIEWPORTS = ['1280x800', '700x640'];
 const DAY_MS = 86_400_000;
-const WORK_TOKEN = 'github_pat_11AAAAAAA0workworkworkworkworkworkworkwork';
-const HOME_TOKEN = 'github_pat_11BBBBBBB0homehomehomehomehomehomehomehome';
-const CI_TOKEN = 'ghp_ciciciciciciciciciciciciciciciciciciciciCI';
+const WORK_TOKEN = fakeFineGrainedToken('11AAAAAAA0workworkworkworkworkworkworkwork');
+const HOME_TOKEN = fakeFineGrainedToken('11BBBBBBB0homehomehomehomehomehomehomehome');
+const CI_TOKEN = fakeGithubToken('ciciciciciciciciciciciciciciciciciciciciCI');
 const ATLASSIAN_TOKEN = FAKE_ATLASSIAN_TOKEN_LONG;
 
 const utc = (ms: number) => new Date(ms).toISOString().slice(0, 19).replace('T', ' ').concat(' UTC');
@@ -100,7 +100,7 @@ for (const viewport of VIEWPORTS) {
       await jira.getByRole('button', { name: 'Check and save' }).click();
       await expect(jira.locator('.int-field-error:not([hidden])')).toContainText('address of your Jira site');
       await jira.getByLabel('Jira site address').fill('acme.atlassian.net');
-      await jira.getByLabel('API token').fill('ATATT-not-the-right-token-at-all-0000');
+      await jira.getByLabel('API token').fill(fakeAtlassianToken('not-the-right-token-at-all-0000'));
       await jira.getByRole('button', { name: 'Check and save' }).click();
       await expect(jira.locator('.int-form-failure')).toContainText('Jira rejected this email and token');
       await expect(jira.locator('.int-account')).toHaveCount(0);

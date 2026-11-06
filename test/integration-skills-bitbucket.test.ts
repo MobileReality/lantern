@@ -3,12 +3,13 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createRouter, fakeFetch } from './helpers/fake-host';
+import { fakeAtlassianToken } from './helpers/fake-tokens';
 import type { Route } from './helpers/fake-host';
 import { SKILLS_ROOT, git, makeHostedRepo, runSkill } from './helpers/skill-runner';
 import type { HostedRepo } from './helpers/skill-runner';
 
 const ORIGIN = 'git@bitbucket.org:example-workspace/shop.git';
-const TOKEN = 'ATATT-bitbucket-token-77c1';
+const TOKEN = fakeAtlassianToken('bitbucket-token-77c1');
 const ENV = { BITBUCKET_EMAIL: 'dev@example.com', BITBUCKET_API_TOKEN: TOKEN };
 const BASIC = `Basic ${Buffer.from(`dev@example.com:${TOKEN}`).toString('base64')}`;
 const PRS = 'https://api.bitbucket.org/2.0/repositories/example-workspace/shop/pullrequests';
