@@ -1,0 +1,46 @@
+lantern-pr 1
+# 3
+#title Pin workflow actions to Node 24 SHAs and add Dependabot
+#url https://github.com/MobileReality/lantern/pull/3
+#branch chore/pin-workflow-actions
+#base main
+#opened 2026-11-06
+#head 8f5a20e6fffe5f7bca19cb401b0d9f6aeb1b9044
+#describe what Pins every workflow action to a Node 24 commit SHA with a version comment, pins the runner to ubuntu-24.04 and adds Dependabot for actions and npm.
+#describe before uses: actions/checkout@v4.2.2 on ubuntu-latest, with Node.js 20 deprecation warnings.
+#describe after uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 on ubuntu-24.04.
+#describe verified typecheck, lint and the full test suite pass; the new tests fail on the base workflows.
++ .github/dependabot.yml
+~ .github/workflows/ci.yml
+~ .github/workflows/deploy-docs.yml
+~ test/ci-workflow.test.ts
+~ test/deploy-docs-workflow.test.ts
+#order .github/workflows/ci.yml
+#order .github/workflows/deploy-docs.yml
+#order .github/dependabot.yml
+#order test/ci-workflow.test.ts
+#order test/deploy-docs-workflow.test.ts
+#reason .github/dependabot.yml Keeps the pinned action SHAs and npm packages current without manual bumps
+#reason .github/workflows/ci.yml Pins actions to Node 24 commit SHAs and the runner image so a tag or label cannot change under CI
+#reason .github/workflows/deploy-docs.yml Same pinning as CI, and moves off Node 20 actions that GitHub is deprecating
+#reason test/ci-workflow.test.ts Fails if an action drifts back to a floating tag or the runner to a floating label
+#reason test/deploy-docs-workflow.test.ts Holds the docs workflow to the same SHA pins as CI and a pinned runner
+#story Workflows run on fixed versions
+#step actor Maintainer
+#step action pushes a change to
+#file .github/workflows/ci.yml
+#file .github/workflows/deploy-docs.yml
+#step subject the repository
+#below actor CI
+#below interaction runs the checks on the exact actions and runner reviewed
+#file test/ci-workflow.test.ts
+#file test/deploy-docs-workflow.test.ts
+#below consequence actions followed moving tags => actions are pinned to commits
+#story Pins stay current
+#step actor Dependabot
+#step action opens a weekly pull request for
+#file .github/dependabot.yml
+#step subject actions and packages
+#below actor Maintainer
+#below interaction reviews one grouped update instead of bumping SHAs
+#below consequence pins would go stale => pins update weekly through a PR
