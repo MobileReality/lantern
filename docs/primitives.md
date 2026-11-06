@@ -74,6 +74,21 @@ integration: id, display name, role, hosts, token page, token fields, whether it
 Use for anything that needs to know which providers exist or how one is called, reached or filled in.
 Never write `'github'`, `'bitbucket'`, `'jira'`, a provider host or a provider's name as a literal
 in the integrations logic: `test/bare-literals.test.ts` fails it there. A new provider is a new row, not a new branch.
+`remoteHost` and `remoteAliases` (GitHub's `ssh.github.com`) are the git remote hosts `codeHostOf` recognises.
+
+### Pull request host state
+`src/main/lantern-host-status.ts` (`createHostStatus`, `refresh`, `apply`) over one driver per code host in
+`src/main/lantern-host-drivers.ts` (`DRIVERS`: which git states are asked, where the credentials come from,
+the request), with `lantern-host-request.ts` (Bitbucket and the shared transport: redirects stay on one
+origin, a timeout, a size cap) and `lantern-host-github.ts`. Use for anything that needs whether a pull
+request is open, merged or declined on the host: `loadPrs` applies it over the git scan, and the host
+answer wins when there is one. The account comes from `lantern-host-account.ts` (`accountLookup`, over
+`auth.injectionFor`, so the project's chosen account wins); a token is never read from a file for GitHub,
+never logged, and never part of a note. A new code host is a `PROVIDERS` row plus a driver here; never a
+second request path in the view. Tests: `test/lantern-host-status.test.ts` (Bitbucket),
+`test/lantern-host-github.test.ts` (GitHub, with `test/helpers/fake-github.ts`), `test/lantern-host-cache.test.ts`,
+`test/lantern-host-leak.test.ts`; `pnpm run test:pr-host:e2e` draws the strip of a GitHub-origin project
+against a stub API in the graph harness (`LANTERN_PR_SHOTS=<dir>` keeps the screenshots).
 
 ### Kind constants
 `src/shared/auth-kinds.ts` (`AUTH_ERROR`, `CHECK_FAILURE`, `CONNECTION_STATE`, `CREDENTIAL_KIND`,

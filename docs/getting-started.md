@@ -50,9 +50,14 @@ relations to other files.
 
 ## Pull request and local review
 
-With a Bitbucket or GitHub account added in Lantern (command palette, **Integrations**), the Lantern
-tab shows the project's pull requests. Open one to see its changed files in review order, the diff
-of each file, the graph with the touched files marked, and a reason for each changed file.
+The Lantern tab lists the project's pull requests from their records in `.lantern/prs/` and from git,
+whether or not an account is added. With a Bitbucket or GitHub account added in Lantern (command
+palette, **Integrations**), Lantern also asks the host for the state of each pull request (open,
+merged or declined), so a pull request merged by squash or rebase, or declined on the host, is shown
+as it is there; without an account the state is read from the commit history alone and a note in the
+view says so. The same account gives the agent skills their token. Open a pull request to see its
+changed files in review order, the diff of each file, the graph with the touched files marked, and a
+reason for each changed file.
 
 **Integrations** also decides which account each project uses. Every project, a brand-new one without
 a remote included, shows a slot for each of GitHub, Bitbucket and Jira, lists every account you
