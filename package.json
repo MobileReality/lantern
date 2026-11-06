@@ -31,6 +31,7 @@
     "test:flow:layout": "playwright test test/e2e/flow-layout.spec.ts",
     "test:integrations:e2e": "playwright test test/e2e/integrations.spec.ts test/e2e/integrations-bindings.spec.ts",
     "test:tray:e2e": "playwright test test/e2e/tray-popover.spec.ts",
+    "test:pr-host:e2e": "playwright test test/e2e/pr-host-state.spec.ts",
     "test:skills:e2e": "playwright test test/e2e/skills-extras.spec.ts",
     "test:graph:perf": "playwright test test/e2e/graph-performance.spec.ts",
     "demo:pr-review": "node scripts/pr-review-demo.mjs",
