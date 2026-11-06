@@ -15,6 +15,8 @@
   together in one desktop app.
 </p>
 
+<p align="center"><a href="https://thelantern.dev">Website</a> · <a href="https://docs.thelantern.dev">Documentation</a></p>
+
 ## What it does
 
 - **Watches every session** across your harness and shows a live dashboard of
@@ -42,6 +44,7 @@ The documentation is at https://docs.thelantern.dev and in [docs/](docs/index.md
 - [Data and privacy](docs/installation.md#data-and-privacy): what Lantern stores, how to remove it, and what leaves your machine
 - [Getting started](docs/getting-started.md)
 - [Architecture](docs/architecture.md)
+- Product overview: [thelantern.dev](https://thelantern.dev)
 
 ## Development and checks
 
