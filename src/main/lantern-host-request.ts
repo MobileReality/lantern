@@ -68,7 +68,14 @@ async function discard(res: Response) {
   }
 }
 
-async function getJson(url: string, headers: Record<string, string>, timeoutMs: number): Promise<unknown> {
+interface Reply {
+  ok: boolean;
+  status: number;
+  headers: Headers;
+  text: string;
+}
+
+async function getReply(url: string, headers: Record<string, string>, timeoutMs: number): Promise<Reply | null> {
   const signal = AbortSignal.timeout(timeoutMs);
   let target = url;
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
@@ -82,12 +89,19 @@ async function getJson(url: string, headers: Record<string, string>, timeoutMs: 
     }
     if (!res.ok) {
       await discard(res);
-      return null;
+      return { ok: false, status: res.status, headers: res.headers, text: '' };
     }
-    const text = await res.text();
-    return text.length > MAX_BODY_CHARS ? null : JSON.parse(text);
+    return { ok: true, status: res.status, headers: res.headers, text: await res.text() };
   }
   return null;
+}
+
+function parseBody(reply: Reply | null): unknown {
+  return reply?.ok && reply.text.length <= MAX_BODY_CHARS ? JSON.parse(reply.text) : null;
+}
+
+async function getJson(url: string, headers: Record<string, string>, timeoutMs: number): Promise<unknown> {
+  return parseBody(await getReply(url, headers, timeoutMs));
 }
 
 async function fetchHostState(repo: BitbucketRepo, id: string, credentials: HostCredentials, options: RequestOptions = {}): Promise<HostAnswer | null> {
@@ -104,5 +118,5 @@ async function fetchHostState(repo: BitbucketRepo, id: string, credentials: Host
   }
 }
 
-export { fetchHostState, hostBaseOf, hostStateOf, BITBUCKET_API, REQUEST_TIMEOUT_MS };
-export type { HostAnswer, HostState, RequestOptions };
+export { fetchHostState, getReply, hostBaseOf, hostStateOf, isBranchName, parseBody, BITBUCKET_API, PR_ID, REQUEST_TIMEOUT_MS };
+export type { HostAnswer, HostState, Reply, RequestOptions };

@@ -56,8 +56,10 @@ the only place the aliases are declared: `test/e2e/tsconfig.json` inherits it, a
 - **Icons** are one SVG file each in `src/renderer/assets/icons/` (provider marks in
   `src/renderer/assets/logos/`), imported where they are drawn, never written inline in a feature.
 - **Providers** (GitHub, Bitbucket, Jira) are one table, `PROVIDERS` in `src/shared/providers.ts`: id,
-  name, mark, role, hosts, git remote host, token page and fields. Code reads `PROVIDER.github` or the
-  table, never the bare string (`test/bare-literals.test.ts` guards the integrations files).
+  name, mark, role, hosts, git remote host and its aliases, token page and fields. Code reads
+  `PROVIDER.github` or the table, never the bare string (`test/bare-literals.test.ts` guards the
+  integrations files). A code host also has a driver in `src/main/lantern-host-drivers.ts` that asks the
+  host for the state of a pull request, so a new one is a row plus a driver.
 - **Failure kinds and error codes** are const objects in `src/shared/auth-kinds.ts` (`CHECK_FAILURE`,
   `AUTH_ERROR`, `CONNECTION_STATE`, and the other kinds), each with a derived type. Main, renderer and
   tests all import them from there.

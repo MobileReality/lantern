@@ -53,7 +53,8 @@ A project's `.lantern/` folder is plain files, written by the Lantern skills and
 - `lang/<code>/`: the texts, one folder per language.
 - `plans/*.plan`: plans written by `lantern-plan`, drawn read-only next to the map.
 - `prs/<id>.pr`: a record per pull request, with a reason per changed file, the review order, a
-  plain-words flow and a description. The app shows these in the pull request view.
+  plain-words flow and a description. The app shows these in the pull request view. A record does
+  not say whether the pull request is still open: that comes from git and from the code host (below).
 - `local/<branch>.branch`: the same record for a branch with no pull request. It is ignored by git.
 - `.project/`: local state of the app (review marks, explainers, the opened stamp). Written only
   through `src/main/metadir.ts`, and never committed.
@@ -63,6 +64,31 @@ the pull request records. The app only reads `.lantern/`, apart from the local s
 Which files are mapped is decided in the skill (`skills/lantern-setup/scripts/lib.mjs`,
 `ignore.mjs`) and in the app (`src/main/lantern-enumerate.ts`, `lantern-ignore.ts`); tests keep the
 two lists identical.
+
+### State of a pull request
+
+The view first shows what git says: a branch still on the remote is open, a pull request named by a merge
+commit (`pull request #N`) or whose head is in the base is merged, a record whose branch is gone is closed.
+A squash or rebase merge leaves none of that behind, so for a GitHub or Bitbucket `origin` the app also
+asks the host (`src/main/lantern-host-status.ts`, with one driver per provider in `lantern-host-drivers.ts`
+and the request in `lantern-host-request.ts` and `lantern-host-github.ts`):
+
+- Bitbucket: `GET /2.0/repositories/<workspace>/<repo>/pullrequests/<id>` with the account's e-mail and token.
+- GitHub: `GET /repos/<owner>/<repo>/pulls/<id>` with the account's token as a bearer. `closed` is merged
+  when `merged` is true or `merged_at` is set, otherwise declined.
+
+Both answers become open, merged or declined, plus the base branch. The account is the one Integrations
+chooses for the project (a chosen one wins, otherwise the only one of the kind); the token stays in memory
+and is never logged, and every failure (no account, 401, 403, 404, a timeout, a network error) ends in one
+note on the view, never an exception. Answers are cached for five minutes per project and the refresh button
+drops them. A GitHub rate limit (429, or 403 with `x-ratelimit-remaining: 0` or `Retry-After`) stops further
+requests of that project for the cache window. A record whose `#url` is on the other provider's host is
+never sent to this one.
+
+The host answer is the source of truth and overrides git in either direction; when there is none, because
+there is no account or the request failed, the git state stays. Bitbucket is asked about the pull requests
+git calls open. GitHub is asked about all of them (the open ones, then the first 30 others in the list's order), because only
+the host knows a squash merge.
 
 ## The skill bundle
 

@@ -172,9 +172,9 @@ describe('host lookup failures', () => {
 });
 
 describe('where the host is read from', () => {
-  it('skips the lookup silently for a host other than Bitbucket', async () => {
+  it('skips the lookup silently for a host that is neither Bitbucket nor GitHub', async () => {
     fake.state(126, 'DECLINED');
-    world = makeHostWorld([126], 'git@github.com:acme/shop.git');
+    world = makeHostWorld([126], 'git@gitlab.com:acme/shop.git');
     const host = service();
     await fetchPrs(world.project, true, host);
     const load = await loadPrsDetailed(world.project, new Set(), host);

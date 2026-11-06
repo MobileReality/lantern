@@ -2,6 +2,7 @@ import { branchOff, commitFile, commitRecord, git, makeWorld } from './git-repo'
 import type { World } from './git-repo';
 
 const BITBUCKET_ORIGIN = 'git@bitbucket.org:acme/shop.git';
+const GITHUB_ORIGIN = 'git@github.com:acme/shop.git';
 const EMAIL = 'dev@example.com';
 const TOKEN = 'ATATT-secret-token-4f2a9c';
 const ENV = { BITBUCKET_EMAIL: EMAIL, BITBUCKET_API_TOKEN: TOKEN };
@@ -21,4 +22,4 @@ function makeHostWorld(ids: number[], originUrl = BITBUCKET_ORIGIN): World {
   return world;
 }
 
-export { BITBUCKET_ORIGIN, EMAIL, ENV, TOKEN, makeHostWorld, pushOpenPr };
+export { BITBUCKET_ORIGIN, EMAIL, ENV, GITHUB_ORIGIN, TOKEN, makeHostWorld, pushOpenPr };

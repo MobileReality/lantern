@@ -33,6 +33,13 @@ describe('the provider table', () => {
     expect(CODE_HOST_IDS).not.toContain(PROVIDER.jira);
   });
 
+  it('lists the extra git remote hosts of a code host, GitHub over port 443 only', () => {
+    expect(PROVIDERS[PROVIDER.github].remoteAliases).toEqual(['ssh.github.com']);
+    for (const id of PROVIDER_IDS) {
+      if (id !== PROVIDER.github) expect(PROVIDERS[id].remoteAliases).toEqual([]);
+    }
+  });
+
   it('is the one table the main process re-exports', () => {
     expect(fromMain.PROVIDERS).toBe(PROVIDERS);
     expect(fromMain.PROVIDER_IDS).toBe(PROVIDER_IDS);

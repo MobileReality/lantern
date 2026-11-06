@@ -25,6 +25,9 @@ describe('detecting the code host from the origin remote', () => {
     ['ssh://git@github.com:22/acme/shop.git', 'github'],
     ['https://GitHub.com/acme/shop.git', 'github'],
     ['https://x-access-token:ghp_secret@github.com/acme/shop.git', 'github'],
+    ['ssh://git@ssh.github.com:443/acme/shop.git', 'github'],
+    ['git@ssh.github.com:acme/shop.git', 'github'],
+    ['ssh://git@SSH.GitHub.com:443/acme/shop', 'github'],
     ['https://bitbucket.org/acme/shop.git', 'bitbucket'],
     ['https://jun@bitbucket.org/acme/shop.git', 'bitbucket'],
     ['git@bitbucket.org:acme/shop.git', 'bitbucket'],
@@ -38,6 +41,8 @@ describe('detecting the code host from the origin remote', () => {
     'https://gitlab.com/acme/shop.git',
     'git@gitlab.com:acme/shop.git',
     'https://github.com.evil.test/acme/shop.git',
+    'ssh://git@ssh.github.com.evil.test:443/acme/shop.git',
+    'git@evil-ssh.github.com:acme/shop.git',
     'https://evil.test/github.com/acme/shop.git',
     'git@evil.test:github.com/shop.git',
     'https://dev.azure.com/acme/shop',
@@ -59,6 +64,11 @@ describe('detecting the code host from the origin remote', () => {
     withRemote('git@work-github:acme/shop.git');
     expect(await codeHostOf(root, async (alias) => (alias === 'work-github' ? 'github.com' : null))).toEqual({ provider: 'github', owner: 'acme', repo: 'shop' });
     expect(await codeHostOf(root, async () => 'gitlab.com')).toBeNull();
+  });
+
+  it('follows an ssh alias that points at GitHub over port 443', async () => {
+    withRemote('git@gh-443:acme/shop.git');
+    expect(await codeHostOf(root, async (alias) => (alias === 'gh-443' ? 'ssh.github.com' : null))).toEqual({ provider: 'github', owner: 'acme', repo: 'shop' });
   });
 
   it('refuses owners and repositories with unsafe characters', async () => {

@@ -32,6 +32,7 @@ interface PrRecordInput {
   base?: string;
   title?: string;
   opened?: string;
+  url?: string;
   files?: string[];
 }
 
@@ -40,7 +41,7 @@ function prRecord(p: PrRecordInput) {
     'lantern-pr 1',
     `# ${p.id}`,
     `#title ${p.title ?? `pr ${p.id}`}`,
-    `#url https://example.test/pull-requests/${p.id}`,
+    `#url ${p.url ?? `https://example.test/pull-requests/${p.id}`}`,
     `#branch ${p.branch}`,
     `#base ${p.base ?? 'main'}`,
     `#opened ${p.opened ?? '2026-09-30'}`,
@@ -88,5 +89,11 @@ function mergeNoFf(root: string, branch: string, id: number) {
   git(root, ['merge', '-q', '--no-ff', '-m', `Merged in ${branch} (pull request #${id})`, branch]);
 }
 
-export { git, write, commitFile, commitRecord, prRecord, makeTmp, makeWorld, branchOff, mergeNoFf };
+function squashMerge(root: string, branch: string, id: number) {
+  git(root, ['checkout', '-q', 'main']);
+  git(root, ['merge', '-q', '--squash', branch]);
+  git(root, ['commit', '-q', '-m', `feat: work ${id} (#${id})`]);
+}
+
+export { git, write, commitFile, commitRecord, prRecord, makeTmp, makeWorld, branchOff, mergeNoFf, squashMerge };
 export type { World, PrRecordInput };
