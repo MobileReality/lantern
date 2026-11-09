@@ -24,10 +24,12 @@ function hygieneOf(name: string, source: string) {
   };
 }
 
-const WORKFLOWS = fs
+const SOURCES = fs
   .readdirSync(WORKFLOW_DIR)
   .filter((name) => /\.ya?ml$/.test(name))
-  .map((name) => hygieneOf(name, fs.readFileSync(path.join(WORKFLOW_DIR, name), 'utf8')));
+  .map((name) => ({ name, source: fs.readFileSync(path.join(WORKFLOW_DIR, name), 'utf8') }));
+const WORKFLOWS = SOURCES.map(({ name, source }) => hygieneOf(name, source));
+const BUILD_MAC_JOB = /^ {2}build-mac:\s*\n(?:(?! {2}\S).*\n?)*/m;
 
 const refsByAction = new Map<string, Set<string>>();
 for (const { uses } of WORKFLOWS) {
@@ -64,5 +66,20 @@ describe('workflow hygiene', () => {
 
   it('pins each action to the same commit in every workflow', () => {
     for (const [action, refs] of refsByAction) expect([...refs], action).toHaveLength(1);
+  });
+
+  it('references a secret only in the build-mac job of release.yml', () => {
+    for (const { name, source } of SOURCES) {
+      const outsideBuildMac = name === 'release.yml' ? source.replace(BUILD_MAC_JOB, '') : source;
+      expect(outsideBuildMac, name).not.toMatch(/\bsecrets\./);
+    }
+    expect(SOURCES.find(({ name }) => name === 'release.yml')?.source.match(BUILD_MAC_JOB)?.[0]).toMatch(/\bsecrets\./);
+  });
+
+  it('starts no workflow that holds a secret or write access from a pull request', () => {
+    for (const { name, source } of SOURCES) {
+      if (/^\s*pull_request_target:/m.test(source)) expect(source, name).not.toMatch(/\bsecrets\.|contents:\s*write/);
+    }
+    expect(SOURCES.find(({ name }) => name === 'release.yml')?.source).not.toMatch(/^\s*pull_request/m);
   });
 });
