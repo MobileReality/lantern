@@ -1,0 +1,53 @@
+lantern-pr 1
+# 16
+#title Remove tests that only check skill prose
+#url https://github.com/MobileReality/lantern/pull/16
+#branch chore/remove-skill-prose-tests
+#base chore/remove-pointless-tests-1
+#opened 2026-11-09
+#head 6191f09a118390539323a46c0496c520584cbfe8
+#describe what Removes tests that only checked words in skill, agent and protocol markdown.
+#describe before Rewording a skill could fail the suite.
+#describe after Only structural guards on skills remain.
+#describe verified typecheck, lint and pnpm test all green.
+~ test/lantern-bundle.test.ts
+~ test/lantern-code-reviewer.test.ts
+~ test/lantern-delegate-complex.test.ts
+~ test/lantern-delegate-delivery.test.ts
+~ test/lantern-delegate-host-skills.test.ts
+~ test/lantern-delegate-required-skills.test.ts
+~ test/lantern-delegate-skill.test.ts
+~ test/lantern-headless-permissions.test.ts
+~ test/lantern-plan-skills.test.ts
+~ test/lantern-sync-selftest.test.ts
+- test/lantern-delegate-pick-conventions.test.ts
+#order test/lantern-delegate-pick-conventions.test.ts
+#order test/lantern-delegate-skill.test.ts
+#order test/lantern-delegate-complex.test.ts
+#order test/lantern-delegate-required-skills.test.ts
+#order test/lantern-delegate-delivery.test.ts
+#order test/lantern-delegate-host-skills.test.ts
+#order test/lantern-code-reviewer.test.ts
+#order test/lantern-plan-skills.test.ts
+#order test/lantern-headless-permissions.test.ts
+#order test/lantern-bundle.test.ts
+#order test/lantern-sync-selftest.test.ts
+#reason test/lantern-bundle.test.ts A test of description wording for integration skills is dropped.
+#reason test/lantern-code-reviewer.test.ts The two prose tests on the reviewer skill and agent are dropped; the list tests stay.
+#reason test/lantern-delegate-complex.test.ts Prose about heavy tasks and the mapper is dropped; model kinds, policy and transcript lint stay.
+#reason test/lantern-delegate-delivery.test.ts Protocol sentence tests go; the delivery values still match the bullets.
+#reason test/lantern-delegate-host-skills.test.ts A source-text grep for identity variables and a file-absence check add nothing.
+#reason test/lantern-delegate-required-skills.test.ts Protocol and agent wording tests go; the lists and the names-none guards stay.
+#reason test/lantern-delegate-skill.test.ts Wording of SKILL.md and protocol.md is not behaviour; structure and the command lint stay.
+#reason test/lantern-headless-permissions.test.ts Wording assertions on SKILL.md and mapper.md go; command coverage stays.
+#reason test/lantern-plan-skills.test.ts Line-count and trigger-phrase checks on skill text go; the registry checks stay.
+#reason test/lantern-sync-selftest.test.ts The exact floor sentence is pinned elsewhere and is only wording here.
+#reason test/lantern-delegate-pick-conventions.test.ts Every test was a regex on skill and reviewer wording, so the file goes.
+#story Developers stop maintaining wording tests
+#step actor A developer
+#step action rewords a skill or protocol text
+#step subject the test suite
+#file test/lantern-delegate-skill.test.ts
+#file test/lantern-delegate-delivery.test.ts
+#below interaction Rewords skills without touching tests
+#below consequence A reworded sentence turned the suite red => Only structural breakage fails the suite
