@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/mac-sign-notarize
 #base origin/main
 #opened 2026-11-09
-#head 1a40ce67264b5cfa1836c621a448bbbe60cda2b0
+#head 018abd50509f7478ff6cb966aa9add98f977c1f3
 #describe what The release workflow's macOS job signs the app with the Developer ID certificate, notarizes it, staples the ticket and checks it, in a protected release environment, only from a v* tag.
 #describe what Signing and notarization are unrun: the first v* tag is the real test.
 #describe before The macOS zip was ad hoc signed and not notarized, so Gatekeeper quarantined it.
