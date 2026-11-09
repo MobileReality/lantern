@@ -3,9 +3,9 @@ lantern-pr 1
 #title chore: merge duplicate unit tests
 #url https://github.com/MobileReality/lantern/pull/17
 #branch chore/merge-duplicate-tests
-#base chore/remove-skill-prose-tests
+#base main
 #opened 2026-11-09
-#head 4c3f49757bd6c19c189e4e1e87908d637303e895
+#head 0286b6121b8e9b38629ef742585bc9ec7b9aa1ce
 #describe what Duplicated unit tests in five groups now live in one place each; a new hygiene test covers every workflow file.
 #describe before Pin, runner and pnpm checks repeated per workflow test; extension refusals and install guards asserted at several layers.
 #describe after One parametrised workflow-hygiene test; one refusal set at the config layer; install guards in lantern-bundle only.
