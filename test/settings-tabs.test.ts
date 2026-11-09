@@ -29,10 +29,6 @@ describe('project tab settings', () => {
     for (const value of [0, -5, 1441, Number.NaN, '10', null]) expect(isValidValue(schema, value), String(value)).toBe(false);
   });
 
-  it('does not warn about unsaved edits in the description of the switch', () => {
-    expect(TAB_SETTINGS.properties[CLOSE].description).not.toMatch(/unsaved/i);
-  });
-
   it('shows a Close idle project tabs row with a checkbox and an unchecked default', () => {
     const host = document.createElement('div');
     document.body.replaceChildren(host);

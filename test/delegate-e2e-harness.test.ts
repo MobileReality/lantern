@@ -165,14 +165,6 @@ describe('fake ssh and the project fixtures', () => {
     expect(git('config', 'user.email')).toBe('e2e@example.test');
   });
 
-  it('defines the four projects with a task and a verify command each', () => {
-    expect(PROJECTS.map((p: { name: string }) => p.name)).toEqual(['todo-cli', 'tiny-api', 'pyutil', 'rubyutil']);
-    for (const p of PROJECTS) {
-      expect(p.task).toContain(p.taskTestCommand);
-      expect(Object.keys(p.files).length).toBeGreaterThan(2);
-    }
-  });
-
   for (const project of PROJECTS) {
     const available = spawnSync(project.runtime, ['--version']).status === 0;
     it.skipIf(!available)(`${project.name}: the generated project passes its own tests with ${project.runtime}`, () => {

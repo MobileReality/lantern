@@ -94,12 +94,6 @@ test/codex-scanner.test.ts . test da05f8281e9b
 #feature session-monitoring
   = src/main/codex-scanner.ts#scanCodex
 
-test/codex-skill-guides.test.ts . test b9e864191bb9
-#feature skill-installer
-  < skills/lantern-delegate/references/codex.md
-  < skills/lantern-setup/references/codex.md
-  < skills/lantern-sync/references/codex.md
-
 test/codeview.test.ts . test df90ac8c51d8
 #feature code-insight
   = src/renderer/lib/codeview.ts
@@ -181,7 +175,7 @@ test/comments-tools.test.ts . test bf7898c60f52
   = src/renderer/lib/comments/tools.ts
   < src/renderer/lib/fixrequests/intent.ts#CopyChoice
 
-test/delegate-e2e-harness.test.ts . test 9a2cc07c06d9
+test/delegate-e2e-harness.test.ts . test 59633ae36122
 #feature skill-checks
   = scripts/e2e-delegate/checks.mjs
   = scripts/e2e-delegate/execute.mjs
@@ -305,7 +299,7 @@ test/diff-collapse.test.ts . test 8170f196b244
   = src/renderer/lib/diffcollapse.ts
   = test/helpers/diff-text.ts
 
-test/docs-website.test.ts . test 6416e198a581
+test/docs-website.test.ts . test 4b8487436f7d
   < website/plugins/site.ts#normalizeBase
   < website/src/lib/links.ts#resolveLink
   < website/src/lib/pages.ts#PAGES
@@ -370,7 +364,7 @@ test/fix-requests-format.test.ts . test 39b6e46a9c61
   < src/renderer/lib/fixrequests/model.ts#FixItem
   = src/shared/lang/fix-requests.ts#copyTexts
 
-test/fix-requests-intent.test.ts . test e7c616d93ed1
+test/fix-requests-intent.test.ts . test 4766a75a4d28
 #feature review-comments
   = src/renderer/lib/fixrequests/intent.ts#intentOf
 
@@ -379,7 +373,7 @@ test/fix-requests-store.test.ts . test 4ffad7bb28ae
   = src/renderer/lib/fixrequests/model.ts#parseItems
   = src/renderer/lib/fixrequests/store.ts#createFixStore
 
-test/fix-requests-texts.test.ts . test 22ff01654079
+test/fix-requests-texts.test.ts . test a3c210308a5a
 #feature review-comments
   = src/shared/lang/fix-requests.ts#copyTexts
   < src/shared/languages/index.ts#LANGUAGES
@@ -608,7 +602,7 @@ test/lantern-flow-reading.test.ts . test 07b583124b3f
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-map.ts#mapOf
 
-test/lantern-flow-view.test.ts . test 4e4083db919e
+test/lantern-flow-view.test.ts . test c288be86cab7
 #feature pr-flow
   < scripts/esbuild.mjs
   = src/main/lantern-pr-parse.ts#parsePrRecord
@@ -945,7 +939,7 @@ test/lantern-modal-reason.test.ts . test ed731a523a22
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-model.test.ts . test a801129e2c48
+test/lantern-model.test.ts . test 00f299186f0f
 #feature map-setup
   = skills/lantern-setup/scripts/model.mjs
 
@@ -964,7 +958,7 @@ test/lantern-openfile.test.ts . test a70e36e735f0
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-own-vocabulary.test.ts . test 538483ef764b
+test/lantern-own-vocabulary.test.ts . test d6c6036e54b2
 #feature map-vocabulary
   = skills/lantern-setup/scripts/validate.mjs
 
@@ -992,7 +986,7 @@ test/lantern-pixi-edge-style.test.ts . test b0bded696957
 #feature file-graph
   = src/renderer/lib/lantern-pixi/edge-graphics.ts
 
-test/lantern-pixi-text-quality.test.ts . test ff11397189ea
+test/lantern-pixi-text-quality.test.ts . test e7792d766ad5
 #feature file-graph
   = src/renderer/lib/lantern-pixi/text-quality.ts
 
@@ -1085,7 +1079,7 @@ test/lantern-plan-format.test.ts . test 70c611bfa9e6
   = src/main/lantern-plan.ts
   = test/helpers/lantern-plan-world.ts
 
-test/lantern-plan-messages.test.ts . test 65b15c6d05f0
+test/lantern-plan-messages.test.ts . test 4ef906dbbca2
 #feature planning
   = skills/lantern-delegate/scripts/preflight.mjs
   = skills/lantern-plan/scripts/messages.json
@@ -1105,7 +1099,7 @@ test/lantern-plan-panel.test.ts . test 19bb19c28bf6
   = test/helpers/lantern-macro-fixture.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-planning-view.test.ts . test a5a8c94601c8
+test/lantern-planning-view.test.ts . test 748851f7816f
 #feature planning
   = src/main/lantern-plan-view.ts#planView
   = src/main/lantern-plan.ts#parsePlanFile
@@ -1124,7 +1118,7 @@ test/lantern-plan-window.test.ts . test c1693d13ac96
   = test/helpers/lantern-macro-fixture.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-plan-readability.test.ts . test 2aae3bdd6bed
+test/lantern-plan-readability.test.ts . test fe913a7df187
 #feature planning
   = src/main/lantern-plan-view.ts#planView
   = src/main/lantern-plan.ts#parsePlanFile
@@ -1659,7 +1653,7 @@ test/lsp-snapshot.test.ts . test d4c083b645a5
   = src/main/lsp/snapshot-root.ts
   = test/helpers/git-repo.ts
 
-test/macro-legend-view.test.ts . test e38a558395b4
+test/macro-legend-view.test.ts . test 3e0a8ec0e0b3
 #feature macro-view
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-macro-areas-payload.ts#areasPayload
@@ -1986,7 +1980,7 @@ test/run-cost.test.ts . test fe5914d7599d
   = scripts/run-cost/transcripts.mjs#readRunTree
   < test/helpers/run-cost-fixture.ts#writeRun
 
-test/scanner.test.ts . test 7c65ad1765d7
+test/scanner.test.ts . test 68e20fb94cb0
 #feature session-monitoring
   = src/main/scanner.ts
 
@@ -2009,7 +2003,7 @@ test/serveweb-launch-wiring.test.ts . test 3bffe2ef65bd
 #feature serve-web
   = src/main/serveweb.ts
 
-test/serveweb-launch.test.ts . test 1cc6bee67008
+test/serveweb-launch.test.ts . test 4f1d62185dd6
 #feature serve-web
   = src/main/serveweb-launch.ts
 
@@ -2085,7 +2079,7 @@ test/settings-reasons.test.ts . test dcd34486b0c4
   < src/shared/settings-registry.ts#SETTING_DEFAULTS
   < src/main/settings-model.ts#isValidValue
 
-test/settings-registry.test.ts . test debf4b9ff1ca
+test/settings-registry.test.ts . test 9f72c6f530ee
   = src/main/settings-model.ts#isValidValue
   = src/shared/settings-registry.ts
   < src/shared/settings-schema.ts#SettingsNode
@@ -2104,7 +2098,7 @@ test/settings-store.test.ts . test c590466199a7
   = src/main/settings-store.ts
   < src/shared/settings-registry.ts#SETTING_DEFAULTS
 
-test/settings-tabs.test.ts . test c16066d3344a
+test/settings-tabs.test.ts . test ebee55ba0882
 #feature serve-web
   = src/main/settings-model.ts#isValidValue
   = src/renderer/lib/settings-editor.ts
@@ -2151,7 +2145,7 @@ test/setup-view.test.ts . test ffb4448ce2d1
   < src/main/setup-progress.ts
   = src/renderer/lib/setupprogress.ts
 
-test/sidebar.test.ts . test 55fe2bb1b0de
+test/sidebar.test.ts . test 9dbe51457bbd
 #feature projects-hub
   > src/renderer/features/agent-run.ts
   > src/renderer/features/provider-control.ts
@@ -2318,7 +2312,7 @@ test/windows.test.ts . test 2de79f10801b
   = src/main/projects.ts
   = src/main/windows.ts
 
-test/macro-sizes-fixture.test.ts . test afbe96149110
+test/macro-sizes-fixture.test.ts . test 35a228e5c0bc
 #feature macro-view
   = test/fixtures/lantern-macro-sizes.json
   = test/helpers/macro-sizes-world.ts#sizesFixtureJson
@@ -2473,7 +2467,7 @@ test/lantern-delegate-host-skills.test.ts . test 0191145cf775
   = skills/lantern-delegate/scripts/pr-create.mjs
   = skills/lantern-delegate/scripts/preflight.mjs
 
-test/lantern-delegate-messages.test.ts . test c088417a4ac6
+test/lantern-delegate-messages.test.ts . test de9b8b1c042a
 #feature integrations
   > skills/lantern-delegate/scripts/messages.mjs#message
 
@@ -2564,7 +2558,7 @@ test/integrations-screen.test.ts . test 4575a8eb0dec
   < test/helpers/auth-window.ts#installAuthWindow
   < test/helpers/fake-tokens.ts#FAKE_GITHUB_TOKEN
 
-test/messages.test.ts . test a35a730106c6
+test/messages.test.ts . test 1c13c04d0bba
 #feature integrations
   > src/shared/lang/messages.ts#createMessages
 

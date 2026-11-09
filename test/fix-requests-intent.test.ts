@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { COPY_CHOICES, PER_COMMENT, browserChoiceBackend, choiceKey, intentOf } from '../src/renderer/lib/fixrequests/intent';
+import { PER_COMMENT, browserChoiceBackend, choiceKey, intentOf } from '../src/renderer/lib/fixrequests/intent';
 
 afterEach(() => localStorage.clear());
 
@@ -15,10 +15,6 @@ describe('which intent a comment is copied with', () => {
     expect(intentOf({}, 'question')).toBe('question');
     expect(intentOf({}, 'explain')).toBe('explain');
     expect(intentOf({}, PER_COMMENT)).toBe('fix');
-  });
-
-  it('offers per comment first, then each intent', () => {
-    expect([...COPY_CHOICES]).toEqual(['per-comment', 'fix', 'explain', 'question']);
   });
 });
 

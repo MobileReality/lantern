@@ -227,22 +227,3 @@ describe('the divider between the plan and the map', () => {
     expect(root.querySelector('.lt-plansplit')!.getAttribute('aria-valuenow')).toBe('384');
   });
 });
-
-describe('what sits under the macOS window controls', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'lantern-plans.css'), 'utf8');
-  const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((rule) => ({ selectors: rule[1].replace(/\/\*[\s\S]*?\*\//g, '').split(',').map((one) => one.trim()), body: rule[2] }));
-  const rulesFor = (selector: string) => rules.filter((rule) => rule.selectors.includes(selector));
-
-  it('shares one inset value, set only while a plan is open on macOS', () => {
-    expect(rulesFor('body.plan-window.mac').map((rule) => rule.body.trim())).toEqual(['--lt-controls-inset: 84px;']);
-    expect(css.match(/84px/g)).toHaveLength(1);
-  });
-
-  it.each(['body.plan-window.mac .lt-planbar'])('clears the controls with that inset: %s', (selector) => {
-    expect(rulesFor(selector).some((rule) => /padding-left:\s*var\(--lt-controls-inset\)/.test(rule.body))).toBe(true);
-  });
-
-  it('hides the rest of the panel head (map job, resume and fetch notes) while a plan is open', () => {
-    expect(rulesFor('body.plan-window .lt-panel > :not(.lt-body)')).toHaveLength(1);
-  });
-});

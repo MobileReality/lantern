@@ -1,0 +1,87 @@
+lantern-pr 1
+# 15
+#title chore: remove tests that assert only constants, copy text or CSS text
+#url https://github.com/MobileReality/lantern/pull/15
+#branch chore/remove-pointless-tests-1
+#base main
+#opened 2026-11-09
+#head f4ef0add45f9fd2fc9732628bf0d3ecd4327b983
+#describe what Removes unit tests that asserted only constants, copy text, CSS or doc text, or duplicated another test.
+#describe before The suite held tests that echoed constants and grepped stylesheets.
+#describe after Those tests are gone; behaviour tests, including the fix-wording guard, stay.
+#describe verified typecheck, lint and the full test run are green.
+~ test/delegate-e2e-harness.test.ts
+~ test/docs-website.test.ts
+~ test/fix-requests-intent.test.ts
+~ test/fix-requests-texts.test.ts
+~ test/lantern-delegate-messages.test.ts
+~ test/lantern-flow-view.test.ts
+~ test/lantern-model.test.ts
+~ test/lantern-own-vocabulary.test.ts
+~ test/lantern-pixi-text-quality.test.ts
+~ test/lantern-plan-messages.test.ts
+~ test/lantern-plan-readability.test.ts
+~ test/lantern-planning-view.test.ts
+~ test/macro-legend-view.test.ts
+~ test/macro-sizes-fixture.test.ts
+~ test/messages.test.ts
+~ test/scanner.test.ts
+~ test/serveweb-launch.test.ts
+~ test/settings-registry.test.ts
+~ test/settings-tabs.test.ts
+~ test/sidebar.test.ts
+- test/codex-skill-guides.test.ts
+#order test/codex-skill-guides.test.ts
+#order test/serveweb-launch.test.ts
+#order test/scanner.test.ts
+#order test/lantern-pixi-text-quality.test.ts
+#order test/lantern-plan-messages.test.ts
+#order test/fix-requests-texts.test.ts
+#order test/fix-requests-intent.test.ts
+#order test/macro-sizes-fixture.test.ts
+#order test/lantern-delegate-messages.test.ts
+#order test/settings-registry.test.ts
+#order test/settings-tabs.test.ts
+#order test/lantern-flow-view.test.ts
+#order test/lantern-plan-readability.test.ts
+#order test/lantern-planning-view.test.ts
+#order test/lantern-model.test.ts
+#order test/lantern-own-vocabulary.test.ts
+#order test/messages.test.ts
+#order test/macro-legend-view.test.ts
+#order test/sidebar.test.ts
+#order test/docs-website.test.ts
+#order test/delegate-e2e-harness.test.ts
+#reason test/delegate-e2e-harness.test.ts The project-list test echoed the fixture table back and proved no behaviour.
+#reason test/docs-website.test.ts Copy, title and CNAME checks pinned wording and constants, not site behaviour.
+#reason test/fix-requests-intent.test.ts The test only repeated the COPY_CHOICES constant it imported.
+#reason test/fix-requests-texts.test.ts Snapshots of the English wording and the intent list added no behaviour check.
+#reason test/lantern-delegate-messages.test.ts A negative grep of the message table; the unused-key test already catches regressions.
+#reason test/lantern-flow-view.test.ts The CSS regex tests tested stylesheet text, not rendered layout.
+#reason test/lantern-model.test.ts Doc greps and a policy-file literal duplicated what the floor script tests cover.
+#reason test/lantern-own-vocabulary.test.ts A single feature-name check in the map file, not behaviour.
+#reason test/lantern-pixi-text-quality.test.ts The 500 ms test asserted a constant the timing tests already use.
+#reason test/lantern-plan-messages.test.ts The exit-code table test echoed a constant object.
+#reason test/lantern-plan-readability.test.ts CSS text regexes and a sticky-rule grep tested the stylesheet, not the view.
+#reason test/lantern-planning-view.test.ts The macOS inset describe was a CSS text check.
+#reason test/macro-legend-view.test.ts A negative prose check against old legend wording.
+#reason test/macro-sizes-fixture.test.ts Counts of a generated fixture; the drift test already guards it.
+#reason test/messages.test.ts A snapshot of English wording duplicated the catalogue itself.
+#reason test/scanner.test.ts The timeout test asserted a constant is above 3000.
+#reason test/serveweb-launch.test.ts A copy-pasted duplicate test and a grace-time constant check.
+#reason test/settings-registry.test.ts Type-only tests that tsc and src typechecking already cover.
+#reason test/settings-tabs.test.ts A negative regex on a description string.
+#reason test/sidebar.test.ts The scrollbar test grepped CSS text, not behaviour.
+#reason test/codex-skill-guides.test.ts Both tests only checked that guide files exist, which the bundle tests already cover.
+#story A maintainer runs the unit tests
+#step actor Maintainer
+#step action runs the unit test suite
+#step subject tests that checked only constants and wording
+#file test/messages.test.ts
+#file test/fix-requests-texts.test.ts
+#file test/scanner.test.ts
+#below interaction Sees only tests that can fail for a real reason
+#below consequence Tests echoed constants, copy and CSS text => Suite keeps tests of behaviour only
+#file test/lantern-flow-view.test.ts
+#file test/sidebar.test.ts
+#file test/docs-website.test.ts

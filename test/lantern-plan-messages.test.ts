@@ -8,7 +8,6 @@ import { PLAN_SCRIPTS, REPO, SKILLS, importScript } from './helpers/lantern-plan
 interface Messages {
   say: (code: string, params?: Record<string, string | number>) => string;
   ERROR: Record<string, string>;
-  EXIT: Record<string, number>;
 }
 
 let skill: Messages;
@@ -75,10 +74,6 @@ describe('messages.json is the one place the plan messages live', () => {
     expect(() => skill.say('error.NOPE')).toThrow(/no message/);
     expect(() => skill.say(skill.ERROR.TEXT_EMPTY)).toThrow(/needs \{what\}/);
     expect(skill.say(skill.ERROR.TEXT_EMPTY, { what: 'the title' })).toBe('the title is empty');
-  });
-
-  it('has one exit code per outcome, in one table', () => {
-    expect(skill.EXIT).toEqual({ OK: 0, FAILED: 1, USAGE: 2 });
   });
 
   it('keeps every placeholder in a message a plain word', () => {
