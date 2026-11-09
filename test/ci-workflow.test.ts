@@ -123,6 +123,11 @@ describe('ci workflow, e2e job', () => {
     for (const step of e2eRuns) expect(step.startsWith(`${E2E_XVFB} pnpm run test:`)).toBe(true);
   });
 
+  it('shows the harness windows, which Electron on Linux does not paint while hidden', () => {
+    const job = JOBS.get('e2e') ?? '';
+    expect(job).toMatch(/^ {4}env:\s*\n {6}LANTERN_GRAPH_VISIBLE: "1"\n {6}LANTERN_HARNESS_VISIBLE: "1"\n {4}steps:/m);
+  });
+
   it('runs only scripts that exist in package.json', () => {
     for (const script of E2E_SCRIPTS) expect(PACKAGE.scripts[script]).toMatch(/^playwright test /);
   });
