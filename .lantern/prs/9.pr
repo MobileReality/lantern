@@ -1,0 +1,26 @@
+lantern-pr 1
+# 9
+#title docs: Lantern is used through an AI chat
+#url https://github.com/MobileReality/lantern/pull/9
+#branch docs/ai-chat-usage
+#base main
+#opened 2026-11-09
+#head 798f56b32a4980b3a8c9c0bbab66c4b6efe299b7
+#describe what Getting started now explains that Lantern is used by prompting an AI chat, with example prompts.
+#describe before The docs did not say how to start work.
+#describe after A short section gives example prompts and what happens next.
+#describe verified pnpm run typecheck and pnpm test, all green.
+~ docs/getting-started.md
+~ docs/index.md
+#order docs/getting-started.md
+#order docs/index.md
+#reason docs/getting-started.md New users had no instruction on how to begin, so it says to start by prompting the AI chat.
+#reason docs/index.md Readers of the docs index should learn from the entry that Lantern is driven by chat prompts.
+#story Starting work with a prompt
+#step actor A new user
+#file docs/getting-started.md
+#step action reads how to begin
+#step subject the AI chat in their project
+#file docs/index.md
+#below interaction Can ask the chat in plain words to map, plan or delegate
+#below consequence The docs never said how to start work => The docs open with example prompts
