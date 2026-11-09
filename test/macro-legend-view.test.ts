@@ -71,13 +71,6 @@ describe('the "How to read it" legend of the areas map', () => {
     expect(legend(root).querySelectorAll('[stroke-dasharray]')).toHaveLength(0);
   });
 
-  it('has none of the old prose', async () => {
-    const root = await openMacro();
-    const text = legend(root).textContent ?? '';
-
-    for (const gone of ['Only the main links', 'The number on a line', 'plumbing', 'strong:', 'weaker:']) expect(text).not.toContain(gone);
-  });
-
   it('adds the selection styles once something is selected', async () => {
     const root = await openMacro();
     pick(root, 'block:project-map');

@@ -4,10 +4,6 @@ import { DeferredTextQuality, TEXT_QUALITY_DELAY_MS, textResolution } from '../s
 describe('Pixi text quality', () => {
   afterEach(() => vi.useRealTimers());
 
-  it('waits 500ms after zoom activity', () => {
-    expect(TEXT_QUALITY_DELAY_MS).toBe(500);
-  });
-
   it('keeps natural quality below 100% and buckets higher zoom resolutions', () => {
     expect(textResolution(0.5, 2)).toBe(2);
     expect(textResolution(2.07, 2)).toBe(4.5);

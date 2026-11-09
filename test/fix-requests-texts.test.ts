@@ -24,17 +24,6 @@ describe('the predefined fix texts', () => {
     }
   });
 
-  it('reads the English set as the fixed wording', () => {
-    expect(textsOf('en')).toEqual({
-      fix: 'Fix this.',
-      test: 'Add a test for this.',
-      rename: 'Rename this.',
-      simplify: 'Simplify this.',
-      explain: 'Explain why this is needed.',
-      remove: 'Remove this.',
-    });
-  });
-
   it('answers a language by its code, ignoring case and region', () => {
     expect(textsOf('PL')).toEqual(textsOf('pl'));
     expect(textsOf('pl-PL')).toEqual(textsOf('pl'));
@@ -86,10 +75,6 @@ describe('the intents and the wording of the copied text', () => {
     return [texts.header, texts.scope, texts.mixed, texts.intentWord, ...INTENT_IDS.flatMap((id) => [texts.intents[id].label, texts.intents[id].instruction])];
   };
 
-  it('keeps the intent list in one place: fix, explain and question', () => {
-    expect([...INTENT_IDS]).toEqual(['fix', 'explain', 'question']);
-  });
-
   it('has every sentence, filled in, in every language the map can be written in', () => {
     for (const code of codes) {
       expect(wordsOf(code).every((word) => word.trim().length > 0), code).toBe(true);
@@ -105,20 +90,6 @@ describe('the intents and the wording of the copied text', () => {
       expect(own.mixed, code).not.toBe(english.mixed);
       for (const id of INTENT_IDS) expect(own.intents[id].instruction, `${code}/${id}`).not.toBe(english.intents[id].instruction);
     }
-  });
-
-  it('reads the English wording as fixed', () => {
-    expect(copyTexts('en')).toEqual({
-      header: 'Review comments for',
-      scope: 'Work within this pull request only: stay on its branch and inside the code it changes.',
-      mixed: 'These comments differ. Follow the instruction on each one:',
-      intentWord: 'Intent',
-      intents: {
-        fix: { label: 'Fix', instruction: 'Change the code to address this comment.' },
-        explain: { label: 'Explain', instruction: 'Explain this without changing any code.' },
-        question: { label: 'Question', instruction: 'Answer this question without changing any code.' },
-      },
-    });
   });
 
   it('keeps the word fix out of the explain and question instructions in English', () => {

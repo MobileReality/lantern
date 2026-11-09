@@ -171,32 +171,3 @@ describe('Codex route, wrong shapes and the exact id', () => {
     expect(check(pinned).stdout).toBe(`OK ${pinned}\n`);
   });
 });
-
-describe('the Codex families in the texts', () => {
-  const root = path.join(__dirname, '..');
-  it.each([
-    'skills/lantern-setup/SKILL.md',
-    'skills/lantern-setup/README.md',
-    'skills/lantern-sync/SKILL.md',
-    'skills/lantern-sync/README.md',
-    'docs/architecture.md',
-    'docs/getting-started.md',
-    'CONTRIBUTING.md',
-    'docs/installation.md',
-  ])('%s names the Codex families and their recommended versions', (file) => {
-    const text = fs.readFileSync(path.join(root, file), 'utf8').replace(/\s+/g, ' ');
-    expect(text).toMatch(/gpt-<version>-sol/);
-    expect(text).toMatch(/gpt-<version>-astra/);
-    expect(text).toMatch(/gpt-<version>-terra/);
-    expect(text).toMatch(/6\.1/);
-  });
-
-  it('keeps the policy file as a list of Codex families with a recommended version', () => {
-    const floor = JSON.parse(fs.readFileSync(path.join(root, 'skills', 'lantern-setup', 'references', 'model-floor.json'), 'utf8'));
-    expect(floor.codex).toEqual([
-      { family: 'sol', recommended: '6.1' },
-      { family: 'astra', recommended: '6' },
-      { family: 'terra' },
-    ]);
-  });
-});

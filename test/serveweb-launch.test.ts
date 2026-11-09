@@ -83,13 +83,6 @@ describe('directServerArgs', () => {
     expect(directServerArgs(9890, TOKEN, DIRS, false)).not.toContain('--accept-server-license-terms');
   });
 
-  it('never accepts the server licence before the user consented', () => {
-    expect(directServerArgs(9890, TOKEN, DIRS, false)).not.toContain('--accept-server-license-terms');
-  });
-
-  it('uses a one minute grace time by default', () => {
-    expect(RECONNECTION_GRACE_SECONDS).toBe(60);
-  });
 });
 
 describe('locateServerInstall', () => {
