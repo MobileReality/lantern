@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://docs.thelantern.dev/
+    about: Read the docs before opening an issue.
+  - name: Report a security vulnerability
+    url: https://github.com/MobileReality/lantern/security/advisories/new
+    about: Report security problems privately, never in a public issue.
