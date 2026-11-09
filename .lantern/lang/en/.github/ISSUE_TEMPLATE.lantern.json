@@ -1,0 +1,5 @@
+{
+ "text": {
+  "config.yml": "Turns off blank GitHub issues so reporters pick a template, and links the documentation site and private vulnerability reporting for security problems"
+ }
+}
