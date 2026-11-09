@@ -5,7 +5,7 @@ lantern-pr 1
 #branch chore/ci-build-matrix-2
 #base origin/main
 #opened 2026-11-09
-#head d77d6672bb322be615262cf7b57528e934744151
+#head 795e69a5eb90efd7aa3bfa9505f5d24638c7dee9
 #describe what CI gains a build matrix on ubuntu-24.04, macos-15 and windows-2022 that packages without uploading anything.
 #describe before CI only ran typecheck, lint and tests on Ubuntu.
 #describe after A broken macOS or Windows package turns CI red on every push and pull request.
