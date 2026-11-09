@@ -143,6 +143,19 @@ describe('the project file', () => {
       expect(fs.existsSync(projectFile())).toBe(false);
     });
 
+    it('refuses an unknown slot and a value that is not a list', () => {
+      expect(() => write('planning', ['a'], project)).toThrow();
+      expect(() => write('delegate', 'a' as never, project)).toThrow();
+      expect(fs.existsSync(projectFile())).toBe(false);
+    });
+
+    it('drops a locked name found by hand on read and removes it on the next write', () => {
+      put(projectFile(), { delegate: ['lantern-commit', 'typescript'], reviewer: ['lantern-code-reviewer'] });
+      expect(read(project)).toEqual({ delegate: ['typescript'], orchestrator: [], reviewer: [] });
+      write('orchestrator', ['x'], project);
+      expect(JSON.parse(fs.readFileSync(projectFile(), 'utf8'))).toEqual({ delegate: ['typescript'], reviewer: [], orchestrator: ['x'] });
+    });
+
     it('refuses a damaged file by name and leaves it untouched', () => {
       put(projectFile(), '{not json');
       expect(() => read(project)).toThrow(projectFile());

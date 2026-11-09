@@ -16,7 +16,7 @@ function hygieneOf(name: string, source: string) {
   return {
     name,
     uses: matches(source, /^\s*-?\s*uses:\s*(.+?)\s*$/gm),
-    runners: matches(source, /^\s*runs-on:\s*(\S+)\s*$/gm),
+    runners: matches(source, /^\s*runs-on:\s*(.*?)\s*$/gm),
     pnpmVersions: matches(source, /^\s*version:\s*['"]?([^'"\s]+)['"]?\s*$/gm),
   };
 }
@@ -51,8 +51,9 @@ describe('workflow hygiene', () => {
     for (const runner of runners) expect(runner).toMatch(PINNED_RUNNER);
   });
 
-  it.each(WORKFLOWS)('$name uses the pnpm version pinned in package.json', ({ pnpmVersions }) => {
+  it.each(WORKFLOWS)('$name uses the pnpm version pinned in package.json', ({ uses, pnpmVersions }) => {
     expect(PINNED_PNPM).toMatch(/^\d+\.\d+\.\d+$/);
+    if (uses.some((ref) => ref.startsWith('pnpm/action-setup@'))) expect(pnpmVersions.length).toBeGreaterThan(0);
     for (const version of pnpmVersions) expect(version).toBe(PINNED_PNPM);
   });
 
