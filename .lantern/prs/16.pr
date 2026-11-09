@@ -3,9 +3,9 @@ lantern-pr 1
 #title Remove tests that only check skill prose
 #url https://github.com/MobileReality/lantern/pull/16
 #branch chore/remove-skill-prose-tests
-#base main
+#base chore/remove-pointless-tests-1
 #opened 2026-11-09
-#head bdf49e347b58c0bac40a120922ecd41b9850c907
+#head 5eddf819f8c05692d9a527e1b61743bb7c76573e
 #describe what Removes tests that only checked words in skill, agent and protocol markdown.
 #describe before Rewording a skill could fail the suite.
 #describe after Only structural guards on skills remain.
@@ -14,7 +14,6 @@ lantern-pr 1
 ~ test/lantern-code-reviewer.test.ts
 ~ test/lantern-delegate-complex.test.ts
 ~ test/lantern-delegate-delivery.test.ts
-~ test/lantern-delegate-host-skills.test.ts
 ~ test/lantern-delegate-required-skills.test.ts
 ~ test/lantern-delegate-skill.test.ts
 ~ test/lantern-headless-permissions.test.ts
@@ -26,17 +25,15 @@ lantern-pr 1
 #order test/lantern-delegate-complex.test.ts
 #order test/lantern-delegate-required-skills.test.ts
 #order test/lantern-delegate-delivery.test.ts
-#order test/lantern-delegate-host-skills.test.ts
 #order test/lantern-code-reviewer.test.ts
 #order test/lantern-plan-skills.test.ts
 #order test/lantern-headless-permissions.test.ts
 #order test/lantern-bundle.test.ts
 #order test/lantern-sync-selftest.test.ts
-#reason test/lantern-bundle.test.ts A test of description wording for integration skills is dropped.
+#reason test/lantern-bundle.test.ts The description-wording test is dropped; the length cap on descriptions stays as its own test.
 #reason test/lantern-code-reviewer.test.ts The two prose tests on the reviewer skill and agent are dropped; the list tests stay.
 #reason test/lantern-delegate-complex.test.ts Prose about heavy tasks and the mapper is dropped; model kinds, policy and transcript lint stay.
 #reason test/lantern-delegate-delivery.test.ts Protocol sentence tests go; the delivery values still match the bullets.
-#reason test/lantern-delegate-host-skills.test.ts A source-text grep for identity variables and a file-absence check add nothing.
 #reason test/lantern-delegate-required-skills.test.ts Protocol and agent wording tests go; the lists and the names-none guards stay.
 #reason test/lantern-delegate-skill.test.ts Wording of SKILL.md and protocol.md is not behaviour; structure and the command lint stay.
 #reason test/lantern-headless-permissions.test.ts Wording assertions on SKILL.md and mapper.md go; command coverage stays.

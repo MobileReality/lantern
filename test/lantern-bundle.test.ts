@@ -159,6 +159,14 @@ describe('default integration skills', () => {
     expect(result.skills['lantern-github']).toBe('home');
     expect(fs.existsSync(skillDir('lantern-github'))).toBe(false);
   });
+
+  it('keeps each integration skill description within the length cap', () => {
+    for (const name of INTEGRATION_SKILLS) {
+      const text = fs.readFileSync(path.join(bundledSkillsRoot(), name, 'SKILL.md'), 'utf8');
+      const description = /^description: (.+)$/m.exec(text)?.[1] ?? '';
+      expect(description.length, name).toBeLessThanOrEqual(1536);
+    }
+  });
 });
 
 describe('Codex bundle', () => {
