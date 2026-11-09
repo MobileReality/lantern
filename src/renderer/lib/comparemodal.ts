@@ -4,6 +4,7 @@ import type { CompareCommit, CompareRefs, CompareStat } from '../../shared/local
 import { mountDropdown } from './comparedropdown';
 import type { DropItem, Dropdown } from './comparedropdown';
 import { esc } from './lanternctx';
+import { plural } from './util';
 
 type Side = 'base' | 'head';
 
@@ -35,10 +36,6 @@ function point(pick: Pick) {
 function pickLabel(pick: Pick) {
   if (pick.branch === WORKTREE) return 'Working tree';
   return pick.commit ? `${pick.branch} @ ${pick.commit.slice(0, 7)}` : pick.branch;
-}
-
-function plural(n: number, word: string) {
-  return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
 function clipText(text: string) {

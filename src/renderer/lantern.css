@@ -37,12 +37,12 @@
 .lt-setup { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
 .lt-empty .hint { font-size: var(--fs-sm); margin-top: 16px; }
 
-.lt-panel {
+.lt-panel, .pr-card {
   --lt-glow: #ffb422;
   --lt-glow-soft: rgba(255, 180, 34, 0.22);
 }
 
-.lt-panel, .lt-root {
+.lt-panel, .lt-root, .pr-card {
   --lt-ink: var(--text);
   --lt-ink-2: #b4bdd4;
   --lt-ink-3: var(--muted);

@@ -72,6 +72,59 @@ describe('host state mapping', () => {
     expect(load.prs).toMatchObject([{ id: '126', state: 'open', hostBase: 'develop' }]);
   });
 
+  it('carries who opened it, when, the counts and the reviewers with their verdicts, with avatars as data', async () => {
+    const png = new Uint8Array([137, 80, 78, 71]);
+    const fetchAvatar = vi.fn(async (url: string | URL | Request) => new Response(String(url).includes('bad') ? 'nope' : png, { headers: { 'content-type': String(url).includes('bad') ? 'text/html' : 'image/png' } }));
+    const user = (name: string, uuid: string, avatar?: string) => ({ display_name: name, uuid, ...(avatar ? { links: { avatar: { href: avatar } } } : {}) });
+    fake.reply(126, {
+      body: JSON.stringify({
+        state: 'OPEN',
+        draft: true,
+        author: user('Patryk Babula', '{p}', 'https://avatars.example/p.png'),
+        created_on: '2026-10-30T10:00:00.000000+00:00',
+        updated_on: '2026-10-30T11:55:00.000000+00:00',
+        comment_count: 4,
+        task_count: 1,
+        reviewers: [user('Ada', '{a}', 'https://avatars.example/bad.png'), user('Alan', '{t}', 'http://avatars.example/t.png')],
+        participants: [
+          { user: user('Grace', '{g}'), role: 'PARTICIPANT', approved: true, state: 'approved' },
+          { user: user('Linus', '{l}'), role: 'PARTICIPANT', approved: false, state: null },
+          { user: user('Ada', '{a}'), role: 'REVIEWER', approved: true, state: 'approved' },
+          { user: user('Alan', '{t}'), role: 'REVIEWER', approved: false, state: 'changes_requested' },
+        ],
+      }),
+    });
+    const { load } = await stateOf(service({ fetchAvatar }), [126]);
+    expect(load.prs[0].info).toEqual({
+      from: 'host',
+      author: { name: 'Patryk Babula', avatar: 'data:image/png;base64,iVBORw==' },
+      created: '2026-10-30T10:00:00.000000+00:00',
+      updated: '2026-10-30T11:55:00.000000+00:00',
+      comments: 4,
+      tasks: 1,
+      reviewers: [
+        { name: 'Ada', approved: true, changes: false },
+        { name: 'Alan', approved: false, changes: true },
+        { name: 'Grace', approved: true, changes: false },
+      ],
+      draft: true,
+    });
+    expect(fetchAvatar.mock.calls.map(([url]) => url)).toEqual(['https://avatars.example/p.png', 'https://avatars.example/bad.png']);
+  });
+
+  it('keeps what git knows when the host answer has no author or dates', async () => {
+    fake.reply(126, { body: JSON.stringify({ state: 'OPEN', comment_count: 2 }) });
+    const { load } = await stateOf(service(), [126]);
+    expect(load.prs[0].info).toMatchObject({ from: 'host', author: { name: 'Tester' }, comments: 2 });
+  });
+
+  it('falls back to the authors and dates of the branch commits when the host says nothing', async () => {
+    const { load } = await stateOf(service(), [126]);
+    expect(load.prs[0].info).toMatchObject({ from: 'git', author: { name: 'Tester' } });
+    expect(load.prs[0].info).not.toHaveProperty('created');
+    expect(Date.parse(load.prs[0].info?.updated ?? '')).not.toBeNaN();
+  });
+
   it('leaves the host base off when the host names none or a malformed one', async () => {
     fake.reply(126, { body: JSON.stringify({ state: 'OPEN' }) });
     fake.reply(127, { body: JSON.stringify({ state: 'OPEN', destination: { branch: { name: 'bad\nname' } } }) });

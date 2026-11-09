@@ -77,11 +77,13 @@ function fillDescription(host: Element, pr: LanternPr, expanded: boolean, onTogg
   const collapsed = long && !expanded;
   host.replaceChildren(...(collapsed ? leadBlocks(blocks) : blocks).map(blockElement));
   host.classList.toggle('collapsed', collapsed);
+  const slot = host.closest('.pr-head')?.querySelector('.pr-desc-slot');
+  slot?.replaceChildren();
   if (!long) return;
   const toggle = element('button', 'pr-desc-toggle', expanded ? 'Hide details' : 'Show details');
   toggle.setAttribute('aria-expanded', String(expanded));
   toggle.addEventListener('click', onToggle);
-  host.append(toggle);
+  (slot ?? host).append(toggle);
 }
 
 function fillDescriptions(root: ParentNode, pr: LanternPr, isExpanded: () => boolean, onToggle: () => void) {

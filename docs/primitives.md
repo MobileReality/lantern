@@ -214,12 +214,15 @@ checks every file is one well-formed svg hidden from screen readers.
 ### Tooltips and popovers
 `src/renderer/tooltip/index.ts` (`installTooltips`, installed once per window) and
 `src/renderer/popover/index.ts` (`mountPopover`, `rovingFocus`), styled and animated in
-`src/renderer/floating.css`. Both draw in the browser's top layer (`popover="manual"`) and are placed
-with CSS anchor positioning, flipping when there is no room, so no z-index or clipping parent matters.
+`src/renderer/floating.css`. Both draw in the browser's top layer (`popover="manual"`), so no z-index
+or clipping parent matters; a popover is placed with CSS anchor positioning and a tooltip by the module,
+both flipping when there is no room.
 A tooltip is `data-tip="…"` on any element (`dataset.tip` in code); `data-tip-command="<command id>"`
 adds the command's key chips from the user's keymap, and `data-tip-at="pointer"` follows the pointer
 (the graph canvas). It shows after 500 ms, at once while another was just shown, on keyboard focus
-too, and describes the element for screen readers unless it repeats the label. A popover is any
+too, and describes the element for screen readers unless it repeats the label. `setTipCard(el, render)`
+shows a rich card built when the tip opens instead of the text (the pull request card from
+`src/renderer/pr-info`); the element keeps its `data-tip` as the plain text. A popover is any
 element passed to `mountPopover(trigger, pop, { placement })`: it handles the click toggle,
 `aria-expanded`, focus on open and back to the trigger, a press outside, Escape (the topmost only,
 never reaching the page below) and focus leaving; nested popovers stay open together. Never set a
@@ -227,8 +230,9 @@ native `title` in the renderer: `test/no-native-titles.test.ts` fails it.
 
 ### Dates
 `formatDay(ms, { year, utc })` and `DATE_LOCALE` in `src/renderer/lib/util.ts`. Use to show a day
-anywhere in the renderer; it returns an empty string for an invalid time. Never call
-`toLocaleDateString` with a locale of your own.
+anywhere in the renderer; it returns an empty string for an invalid time. `timeAgo(stamp, now)`
+("2 hours ago", "yesterday") and `exactTime(stamp)` (the full date and time, for its tooltip) take an
+ISO stamp or a date-only `YYYY-MM-DD` day. Never call `toLocaleDateString` with a locale of your own.
 
 ### Path aliases
 `@shared/*`, `@main/*`, `@renderer/*` map to `src/shared`, `src/main`, `src/renderer`

@@ -9,9 +9,10 @@ import { PR_DIR, parsePrRecord } from './lantern-pr-parse';
 import type { ParsedPr } from './lantern-pr-parse';
 import { MAX_BRANCHES, REMOTE_PREFIX, scanRemote } from './lantern-pr-remote';
 import type { PrRevisions } from './lantern-pr-revisions';
-import type { LanternPr, LanternPrState } from './lantern-types';
+import type { LanternPr, LanternPrInfo, LanternPrState } from './lantern-types';
 
 const MAX_MERGE_LOG = 5000;
+const MAX_BRANCH_COMMITS = 500;
 const MAX_CACHED_BASES = 32;
 const MENTION = /pull request #(\d+)/g;
 const STATE_RANK: Record<LanternPrState, number> = { open: 0, merged: 1, closed: 2, declined: 2 };
@@ -165,6 +166,20 @@ async function isNewerRecord(root: string, known: Found, remote: ParsedPr) {
   return (await git(root, ['merge-base', '--is-ancestor', known.pr.head, remote.head])).ok;
 }
 
+function commitLines(res: { ok: boolean; stdout: string }) {
+  return res.ok ? res.stdout.split('\n').filter((line) => line.includes('\x1f')) : [];
+}
+
+async function gitInfo(root: string, pr: ParsedPr, end: string): Promise<LanternPrInfo | undefined> {
+  const format = '--format=%an%x1f%aI';
+  let lines = commitLines(await git(root, ['log', '--no-merges', format, `--max-count=${MAX_BRANCH_COMMITS}`, end, '--not', `${REMOTE_PREFIX}${pr.base}`]));
+  if (!lines.length) lines = commitLines(await git(root, ['log', '-1', format, end]));
+  if (!lines.length) return undefined;
+  const [, updated] = lines[0].split('\x1f');
+  const [name] = lines[lines.length - 1].split('\x1f');
+  return { from: 'git', ...(name ? { author: { name } } : {}), ...(updated ? { updated } : {}) };
+}
+
 async function loadGitPrs(root: string, mapped: Set<string>): Promise<PrLoadDetailed> {
   const warnings: string[] = [];
   const mergeCommits = new Map<string, string>();
@@ -212,6 +227,7 @@ async function loadGitPrs(root: string, mapped: Set<string>): Promise<PrLoadDeta
     if (merged?.commit) mergeCommits.set(pr.id, merged.commit);
     const state: LanternPrState = merged ? 'merged' : remoteTips.has(pr.branch) ? 'open' : 'closed';
     const tip = state === 'open' ? remoteTips.get(pr.branch) : undefined;
+    const info = await gitInfo(root, pr, tip ?? pr.head);
     prs.push({
       id: pr.id,
       title: pr.title,
@@ -230,6 +246,7 @@ async function loadGitPrs(root: string, mapped: Set<string>): Promise<PrLoadDeta
       state,
       ...(tip ? { tip } : {}),
       ...(merged?.at ? { mergedAt: merged.at } : {}),
+      ...(info ? { info } : {}),
       source,
     });
   }

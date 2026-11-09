@@ -24,6 +24,7 @@ let pressed: HTMLElement | null = null;
 let pressedTip: string | undefined;
 let pointer = { x: 0, y: 0 };
 let keysFor: KeysFor = () => undefined;
+const cards = new WeakMap<Element, () => Node | null>();
 const watcher = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => refresh());
 
 function tipped(node: EventTarget | null) {
@@ -56,6 +57,13 @@ function describe(el: HTMLElement, on: boolean) {
 function fill(el: HTMLElement) {
   if (!tip) return;
   const text = el.dataset.tip ?? '';
+  const card = cards.get(el)?.() ?? null;
+  tip.classList.toggle('is-card', !!card);
+  if (card) {
+    tip.replaceChildren(card);
+    describe(el, true);
+    return;
+  }
   tip.textContent = '';
   tip.append(text);
   const chips = el.dataset.tipCommand ? keysFor(el.dataset.tipCommand) : undefined;
@@ -231,9 +239,13 @@ function installTooltips(options: TooltipOptions = {}) {
   return tip;
 }
 
+function setTipCard(el: Element, render: () => Node | null) {
+  cards.set(el, render);
+}
+
 function hideTooltip() {
   hide();
 }
 
-export { SHOW_DELAY_MS, SKIP_DELAY_MS, hideTooltip, installTooltips };
+export { SHOW_DELAY_MS, SKIP_DELAY_MS, hideTooltip, installTooltips, setTipCard };
 export type { TooltipOptions };
