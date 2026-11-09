@@ -5,7 +5,7 @@ lantern-pr 1
 #branch chore/release-workflow
 #base main
 #opened 2026-11-09
-#head 1eababbd79dfbc464c13bbcc02b728c4f942f497
+#head 19f766d12fa5bd6d9f3c792eb2d5cc48fb390b71
 #describe what A Release workflow builds the macOS and Windows packages and attaches them to a tag's GitHub Release.
 #describe what It starts on a pushed v* tag or by hand for an existing tag; the steps are documented in the installation guide.
 #describe before Packages were built by hand with the package scripts and shared as files.
