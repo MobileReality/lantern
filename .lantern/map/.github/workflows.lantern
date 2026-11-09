@@ -8,5 +8,7 @@ lantern 1
 .github/workflows/deploy-docs.yml . infra 41b0263d580d
   > website/package.json
 
-.github/workflows/release.yml . infra 7510d1ca0106
+.github/workflows/release.yml . infra c4bd3239b533
   > package.json
+  > scripts/mac-ci-keychain.sh
+  > scripts/mac-sign-notarize.sh

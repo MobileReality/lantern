@@ -74,6 +74,10 @@ scripts/lsp-runtime.mjs . script b3acf6f8f38b
   < pnpm-workspace.yaml
   = ext:pnpm
 
+scripts/mac-ci-keychain.sh . script 634daf525661
+
+scripts/mac-sign-notarize.sh . script 8145417f6eb0
+
 scripts/make-icon.js . script dc8e7152c288
 
 scripts/material-file-icons.mjs . script ba05c878ebd7
