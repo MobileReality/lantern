@@ -3,5 +3,7 @@ lantern 1
 
 .github/workflows/ci.yml . infra 3b2522d281ab
 
+.github/workflows/codeql.yml . infra d64b441a205c
+
 .github/workflows/deploy-docs.yml . infra 41b0263d580d
   > website/package.json
