@@ -1,8 +1,9 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { PLAN_REF, SLUG } from '../skills/lantern-plan/scripts/plan-format.mjs';
 import { parsePrRecord } from '../src/main/lantern-pr-parse';
-import { SKILLS, importScript } from './helpers/lantern-plan-world';
+import { REPO, SKILLS, importScript } from './helpers/lantern-plan-world';
 
 type Constants = Record<string, unknown>;
 
@@ -14,9 +15,27 @@ beforeAll(async () => {
   parsePr = (await import(path.join(SKILLS, 'lantern-setup', 'scripts', 'prs.mjs'))).parsePr;
 });
 
+const DECLARATION = fs.readFileSync(path.join(REPO, 'src', 'main', 'skill-scripts.d.ts'), 'utf8');
+const PLAN_FORMAT_BLOCK = DECLARATION.slice(DECLARATION.indexOf("declare module '*/lantern-plan/scripts/plan-format.mjs'"));
 const OBJECTS = ['TAG', 'SECTION', 'SCOPE_SIDE', 'TARGET_KIND', 'ITEM_STATUS', 'SECTION_STATE', 'PLAN_STATE', 'PR_STATE'];
+const SCALARS = ['PLAN_HEADER', 'PLAN_DIR', 'PLAN_EXT', 'PLAN_LEVEL', 'DIGEST_LENGTH', 'SLUG', 'STAGE_ID', 'ITEM_ID', 'QUESTION_ID', 'PLAN_REF', 'WHO', 'ISO_DATE', 'DIGEST', 'hasControlCharacter', 'TAG_LINE', 'ID_LINE', 'LIMITS', 'TARGET_KINDS', 'tagLine', 'isIsoDate', 'isPathKind'];
 
-describe('the constants of plan-format.mjs', () => {
+describe('the typed view of plan-format.mjs matches the module', () => {
+  it.each(OBJECTS)('%s lists the same keys and values as the declaration', (name) => {
+    for (const [key, value] of Object.entries(format[name] as Record<string, string>)) expect(PLAN_FORMAT_BLOCK, `${name}.${key}`).toContain(`readonly ${key}: '${value}'`);
+  });
+
+  it.each(SCALARS)('%s is declared', (name) => {
+    expect(format).toHaveProperty(name);
+    expect(PLAN_FORMAT_BLOCK).toMatch(new RegExp(`export (const|function) ${name}\\b`));
+  });
+
+  it('declares nothing the module does not export', () => {
+    const declared = [...PLAN_FORMAT_BLOCK.matchAll(/export (?:const|function) (\w+)/g)].map((m) => m[1]);
+    expect(declared.sort()).toEqual([...OBJECTS, ...SCALARS].sort());
+    expect(Object.keys(format).sort()).toEqual(declared.sort());
+  });
+
   it('freezes the const objects', () => {
     for (const name of OBJECTS) expect(Object.isFrozen(format[name]), name).toBe(true);
   });
