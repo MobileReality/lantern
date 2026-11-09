@@ -1,0 +1,47 @@
+lantern-pr 1
+# 13
+#title chore: add CODEOWNERS, changelog, badges and download links (LAN-119)
+#url https://github.com/MobileReality/lantern/pull/13
+#branch chore/repo-extras
+#base main
+#opened 2026-11-09
+#head 71dc473264fb8928173718f8b1a990fc9606d91d
+#describe what Adds CODEOWNERS, release-notes categories, a CHANGELOG with a 0.2.0 entry, README badges and Download sections in the README and docs/installation.md.
+#describe before No badges, no Download section and no changelog.
+#describe after The README shows CI, license and release badges and links to the releases page for Lantern-mac.zip and Lantern-win-x64.zip, with the signing notes.
+#describe verified typecheck, lint and test green; a reviewer's blocking changelog finding was fixed.
++ .github/CODEOWNERS
++ .github/release.yml
++ CHANGELOG.md
+~ README.md
+~ docs/installation.md
+#order CHANGELOG.md
+#order README.md
+#order docs/installation.md
+#order .github/release.yml
+#order .github/CODEOWNERS
+#reason .github/CODEOWNERS Makes the maintainer the default reviewer of every path in the public repository.
+#reason .github/release.yml Gives generated GitHub release notes readable categories instead of one flat list.
+#reason CHANGELOG.md Gives readers a record of what each release contains, starting with 0.2.0.
+#reason README.md Shows project status at a glance and tells visitors where to download Lantern.
+#reason docs/installation.md Puts the download route and its signing caveats next to the build-from-source steps.
+#story A visitor downloads Lantern
+#step actor A visitor
+#file README.md
+#step action opens the repository page
+#file README.md
+#step subject the README
+#file README.md
+#file docs/installation.md
+#below interaction Finds badges and a Download section with the releases link
+#below consequence No download guidance => Packages and signing notes are explained
+#story A maintainer publishes a release
+#step actor A maintainer
+#file CHANGELOG.md
+#step action publishes a release
+#file .github/release.yml
+#step subject the release notes
+#file .github/release.yml
+#file .github/CODEOWNERS
+#below interaction Gets categorised notes and a changelog to follow
+#below consequence One flat list of pull requests => Notes grouped by label

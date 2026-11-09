@@ -1,5 +1,6 @@
 {
  "text": {
-  "dependabot.yml": "Opens one weekly grouped pull request for the pinned workflow actions and weekly grouped minor and patch updates for the root and website packages, so the pinned SHAs stay current"
+  "dependabot.yml": "Opens one weekly grouped pull request for the pinned workflow actions and weekly grouped minor and patch updates for the root and website packages, so the pinned SHAs stay current",
+  "release.yml": "Groups the pull requests in generated GitHub release notes into categories by label and leaves out skipped and Dependabot ones, so each release lists its changes readably"
  }
 }
