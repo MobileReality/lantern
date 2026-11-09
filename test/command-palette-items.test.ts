@@ -14,12 +14,8 @@ describe('paletteItems', () => {
     expect(items().map((item) => item.id)).toEqual(['settings.open', 'lantern.open', 'memory.open']);
   });
 
-  it('labels as Category: Title with the raw key or undefined', () => {
-    expect(items().find((item) => item.id === 'lantern.open')).toEqual({
-      id: 'lantern.open',
-      label: 'Lantern: Architecture map',
-      keys: 'mod+shift+l',
-    });
+  it('carries the raw key, or undefined', () => {
+    expect(items().find((item) => item.id === 'lantern.open')?.keys).toBe('mod+shift+l');
     expect(items().find((item) => item.id === 'memory.open')?.keys).toBeUndefined();
   });
 

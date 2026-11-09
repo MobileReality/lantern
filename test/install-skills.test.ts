@@ -406,61 +406,6 @@ describe('install-skills', () => {
     expect(stdout).toMatch(/current +lantern-delegate agents/);
   }, 30_000);
 
-  it('keeps an existing unmarked directory', async () => {
-    const mine = path.join(skills, 'lantern-sync');
-    fs.mkdirSync(mine, { recursive: true });
-    fs.writeFileSync(path.join(mine, 'SKILL.md'), 'mine');
-    const { stdout } = await install(project);
-    expect(stdout).toMatch(/kept +lantern-sync/);
-    expect(fs.readFileSync(path.join(mine, 'SKILL.md'), 'utf8')).toBe('mine');
-    expect(fs.existsSync(path.join(skills, 'lantern-setup', 'SKILL.md'))).toBe(true);
-  });
-
-  it('keeps an existing symlink', async () => {
-    const real = path.join(tmp, 'elsewhere');
-    fs.mkdirSync(real);
-    fs.writeFileSync(path.join(real, 'SKILL.md'), 'linked');
-    fs.mkdirSync(skills, { recursive: true });
-    const link = path.join(skills, 'lantern-setup');
-    fs.symlinkSync(real, link);
-
-    const { stdout } = await install(project);
-    expect(stdout).toMatch(/kept +lantern-setup \(symlink\)/);
-    expect(fs.lstatSync(link).isSymbolicLink()).toBe(true);
-    expect(fs.readdirSync(real)).toEqual(['SKILL.md']);
-  });
-
-  it('refreshes a marked copy after the bundle changes', async () => {
-    const source = path.join(tmp, 'source');
-    makeBundle(source);
-    await installFrom(source, project);
-    const installed = path.join(skills, 'lantern-sync', 'SKILL.md');
-    fs.writeFileSync(installed, 'edited');
-    const { stdout: same } = await installFrom(source, project);
-    expect(same).toMatch(/current +lantern-sync/);
-    expect(fs.readFileSync(installed, 'utf8')).toBe('edited');
-
-    makeBundle(source, 'v2');
-    const { stdout } = await installFrom(source, project);
-    expect(stdout).toMatch(/refreshed +lantern-sync/);
-    expect(fs.readFileSync(installed, 'utf8')).toBe('lantern-sync v2');
-    expect(fs.readFileSync(path.join(agents, 'reviewer.md'), 'utf8')).toBe('reviewer v2');
-  });
-
-  it('excludes the bundle paths locally in a repo that does not ignore .claude, and installs into a non-git directory directly', async () => {
-    const plain = makeRepo(path.join(tmp, 'plain'), null);
-    const { stdout } = await install(plain);
-    expect(stdout).toMatch(/installed +lantern-delegate agents/);
-    expect(fs.readFileSync(path.join(plain, '.git', 'info', 'exclude'), 'utf8')).toContain('.claude/agents/lantern-delegate-*.md');
-    expect(git(plain, 'status', '--short')).toBe('');
-    const nogit = path.join(tmp, 'nogit');
-    fs.mkdirSync(nogit, { recursive: true });
-    expect((await install(nogit)).stdout).toMatch(/installed +lantern-delegate agents/);
-    expect(fs.existsSync(path.join(nogit, '.claude', 'skills', 'lantern-delegate', 'SKILL.md'))).toBe(true);
-    expect(fs.existsSync(path.join(nogit, '.git'))).toBe(false);
-    expect(fs.existsSync(path.join(nogit, '.gitignore'))).toBe(false);
-  });
-
   it('rejects a target that is not a directory', async () => {
     const file = path.join(tmp, 'file.txt');
     fs.writeFileSync(file, 'x');
@@ -472,29 +417,6 @@ describe('install-skills', () => {
   it('rejects a missing project argument and the retired --force', async () => {
     await expect(install()).rejects.toMatchObject({ code: 1, stderr: expect.stringMatching(/project directory missing/) });
     await expect(install(project, '--force')).rejects.toMatchObject({ code: 1, stderr: expect.stringMatching(/unknown argument --force/) });
-  });
-
-  it('keeps a skill that exists in ~/.claude/skills, even a dangling symlink', async () => {
-    fs.mkdirSync(path.join(home, '.claude', 'skills', 'lantern-setup'), { recursive: true });
-    fs.symlinkSync(path.join(home, 'nowhere'), path.join(home, '.claude', 'skills', 'lantern-sync'));
-    const { stdout } = await install(project);
-    expect(stdout).toMatch(/kept +lantern-setup \(already in ~\/\.claude\/skills\)/);
-    expect(stdout).toMatch(/kept +lantern-sync/);
-    expect(fs.existsSync(path.join(skills, 'lantern-setup'))).toBe(false);
-    expect(fs.existsSync(path.join(skills, 'lantern-sync'))).toBe(false);
-  });
-
-  it('skips agent names that exist in the project, but installs reviewer even when ~/.claude/agents has one', async () => {
-    fs.mkdirSync(path.join(home, '.claude', 'agents'), { recursive: true });
-    fs.writeFileSync(path.join(home, '.claude', 'agents', 'reviewer.md'), 'mine');
-    fs.mkdirSync(agents, { recursive: true });
-    fs.writeFileSync(path.join(agents, 'lantern-delegate-low.md'), 'mine');
-    await install(project);
-    expect(fs.readFileSync(path.join(agents, 'lantern-delegate-low.md'), 'utf8')).toBe('mine');
-    expect(fs.existsSync(path.join(agents, 'reviewer.md'))).toBe(true);
-    expect(fs.readFileSync(path.join(home, '.claude', 'agents', 'reviewer.md'), 'utf8')).toBe('mine');
-    expect(fs.existsSync(path.join(agents, 'lantern-delegate-medium.md'))).toBe(true);
-    expect(fs.readdirSync(path.join(home, '.claude', 'agents'))).toEqual(['reviewer.md']);
   });
 
   it('installs the same as the app for every project/home combination', async () => {

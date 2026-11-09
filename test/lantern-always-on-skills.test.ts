@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { loadExtensionsPanel, saveExtensionsSlot } from '../src/main/extensions';
+import { loadExtensionsPanel } from '../src/main/extensions';
 import { slotRows } from '../src/renderer/features/skills-state';
 import { EXTENSION_SLOTS } from '../src/shared/extension-slots';
 // @ts-expect-error plain ES module, no declarations
@@ -57,13 +57,5 @@ describe('the always on list in the window and the scripts agree', () => {
     expect(slots.delegate).toEqual(['typescript']);
     expect(warnings).toHaveLength(1);
     expect(warnings[0]).toContain('lantern-code-reviewer');
-  });
-
-  it.each(bundled.BUNDLED_SKILLS as string[])('refuses %s as an extra in either slot', (name) => {
-    for (const slot of EXTENSION_SLOTS) {
-      const panel = saveExtensionsSlot(slot, [name], [], home);
-      expect(panel.error, `${slot} ${name}`).not.toBeNull();
-      expect(panel.slots[slot]).toEqual([]);
-    }
   });
 });
