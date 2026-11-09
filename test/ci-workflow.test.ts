@@ -9,6 +9,8 @@ const PINNED_PNPM = PACKAGE.packageManager.replace(/^pnpm@/, '');
 const RUN_STEPS = [...WORKFLOW.matchAll(/^\s*-?\s*run:\s*(.+?)\s*$/gm)].map((match) => match[1]);
 const USES_LINES = [...WORKFLOW.matchAll(/^\s*-?\s*uses:\s*(.+?)\s*$/gm)].map((match) => match[1]);
 const RUNNERS = [...WORKFLOW.matchAll(/^\s*runs-on:\s*(\S+)\s*$/gm)].map((match) => match[1]);
+const MATRIX_OS = (WORKFLOW.match(/^\s*os:\s*\[(.+)\]\s*$/m)?.[1] ?? '').split(',').map((os) => os.trim());
+const PACKAGING_STEPS = ['pnpm run dist:share', 'pnpm run build:win'];
 
 describe('ci workflow', () => {
   it('runs on push and pull_request', () => {
@@ -33,7 +35,8 @@ describe('ci workflow', () => {
   it('uses the pnpm version pinned in package.json', () => {
     expect(PINNED_PNPM).toMatch(/^\d+\.\d+\.\d+$/);
     const versions = [...WORKFLOW.matchAll(/^\s*version:\s*['"]?([^'"\s]+)['"]?\s*$/gm)].map((match) => match[1]);
-    expect(versions).toEqual([PINNED_PNPM]);
+    expect(versions.length).toBeGreaterThan(0);
+    for (const version of versions) expect(version).toBe(PINNED_PNPM);
   });
 
   it('grants read-only contents permission', () => {
@@ -47,10 +50,27 @@ describe('ci workflow', () => {
 
   it('uses a pinned runner image, never a floating label', () => {
     expect(RUNNERS.length).toBeGreaterThan(0);
-    for (const runner of RUNNERS) expect(runner).toMatch(/^ubuntu-\d+\.\d+$/);
+    for (const runner of RUNNERS) expect(runner).toMatch(/^(ubuntu-\d+\.\d+|\$\{\{ matrix\.os \}\})$/);
+    for (const os of MATRIX_OS) expect(os).toMatch(/^(ubuntu-\d+\.\d+|macos-\d+|windows-\d{4})$/);
+  });
+
+  it('keeps the check job and builds on ubuntu, macos and windows without failing fast', () => {
+    expect(WORKFLOW).toMatch(/^ {2}check:\s*$/m);
+    expect(MATRIX_OS.some((os) => os.startsWith('ubuntu-'))).toBe(true);
+    expect(MATRIX_OS.some((os) => os.startsWith('macos-'))).toBe(true);
+    expect(MATRIX_OS.some((os) => os.startsWith('windows-'))).toBe(true);
+    expect(WORKFLOW).toMatch(/fail-fast:\s*false/);
+  });
+
+  it('packages on macos and windows with the release scripts', () => {
+    for (const step of PACKAGING_STEPS) expect(RUN_STEPS).toContain(step);
+  });
+
+  it('uploads and publishes nothing', () => {
+    expect(WORKFLOW).not.toMatch(/upload-artifact|gh release|contents:\s*write/);
   });
 
   it('launches no Electron, e2e or signing step', () => {
-    for (const step of RUN_STEPS) expect(step).not.toMatch(/playwright|test:graph|dist|sign|electron|start/);
+    for (const step of RUN_STEPS.filter((run) => !PACKAGING_STEPS.includes(run))) expect(step).not.toMatch(/playwright|test:graph|dist|sign|electron|start/);
   });
 });

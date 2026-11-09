@@ -29,3 +29,37 @@ jobs:
       - run: pnpm run lint
 
       - run: pnpm test
+
+  build:
+    name: build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2022]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 10.28.0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Compile
+        if: runner.os == 'Linux'
+        run: pnpm run compile
+
+      - name: Package for macOS
+        if: runner.os == 'macOS'
+        run: pnpm run dist:share
+
+      - name: Package for Windows
+        if: runner.os == 'Windows'
+        run: pnpm run build:win
