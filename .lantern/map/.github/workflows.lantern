@@ -1,7 +1,7 @@
 lantern 1
 # .github/workflows
 
-.github/workflows/ci.yml . infra 52d5176dc97d
+.github/workflows/ci.yml . infra 6ac1a56f38b3
 
 .github/workflows/codeql.yml . infra d64b441a205c
 
