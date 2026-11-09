@@ -6,11 +6,9 @@ settings:
   injectWorkspacePackages: true
 
 overrides:
-  '@xmldom/xmldom': ^0.9.12
-  brace-expansion: ^5.0.12
-  glob: ^14.0.2
-  minimatch: ^11.0.1
-  nanoid: ^3.3.18
+  '@electron/asar>glob': ^14.0.2
+  '@electron/asar>minimatch': ^11.0.1
+  plist>@xmldom/xmldom: ^0.9.12
   postcss: ^8.5.23
   source-map-js: ^1.2.2
   undici: ^7.30.2
@@ -22,7 +20,7 @@ importers:
     dependencies:
       '@lantern/lsp-runtime':
         specifier: workspace:*
-        version: file:packages/lsp-runtime
+        version: link:packages/lsp-runtime
       dompurify:
         specifier: ^3.4.17
         version: 3.4.17
@@ -612,9 +610,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lantern/lsp-runtime@file:packages/lsp-runtime':
-    resolution: {directory: packages/lsp-runtime, type: directory}
-
   '@malept/cross-spawn-promise@2.0.0':
     resolution: {integrity: sha512-1DpKU0Z5ThltBwjNySMC14g0CkbyhCaz9FkhxqNsZI6uAPJXFS8cMXlBKo26FJ8ZuW6S9GCMcR9IO5k2X5/9Fg==}
     engines: {node: '>= 12.13.0'}
@@ -875,6 +870,10 @@ packages:
 
   '@webgpu/types@0.1.74':
     resolution: {integrity: sha512-lgiI4hbuLcI9unnm2cL/tvCaQU45dp0xcLWJh5uB/9MBGvIA4F8XIk7nSiBeg+K4xWGYwgZKn80LmERI5CxoTA==}
+
+  '@xmldom/xmldom@0.8.15':
+    resolution: {integrity: sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==}
+    engines: {node: '>=10.0.0'}
 
   '@xmldom/xmldom@0.9.12':
     resolution: {integrity: sha512-5AXjrcMClTryPe9LgZrygpB1lj7s0S9E0+W+AHaVKAVyHanafK86iPSvG5xHVSp/jC+VH1UXu0TAEmY279xH7A==}
@@ -1953,11 +1952,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lantern/lsp-runtime@file:packages/lsp-runtime':
-    dependencies:
-      '@vtsls/language-server': 0.3.0
-      vscode-jsonrpc: 8.2.1
-
   '@malept/cross-spawn-promise@2.0.0':
     dependencies:
       cross-spawn: 7.0.6
@@ -2196,6 +2190,8 @@ snapshots:
   '@vtsls/vscode-fuzzy@0.1.0': {}
 
   '@webgpu/types@0.1.74': {}
+
+  '@xmldom/xmldom@0.8.15': {}
 
   '@xmldom/xmldom@0.9.12': {}
 
@@ -2598,7 +2594,7 @@ snapshots:
       '@types/css-font-loading-module': 0.0.12
       '@types/earcut': 3.0.0
       '@webgpu/types': 0.1.74
-      '@xmldom/xmldom': 0.9.12
+      '@xmldom/xmldom': 0.8.15
       earcut: 3.2.4
       eventemitter3: 5.0.4
       gifuct-js: 2.1.2
