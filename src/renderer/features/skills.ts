@@ -371,8 +371,8 @@ function renderRepoSettings(error?: string) {
 async function applyRepoLocation(dir: string | null, onError: (error?: string) => void) {
   if (!dir) return;
   skRepoError = undefined;
-  skBody.innerHTML = `<div class="sk-msg">Setting up ${dir}…</div>`;
-  skFoot.innerHTML = '';
+  skBody.replaceChildren(el('div', 'sk-msg', `Setting up ${dir}…`));
+  skFoot.replaceChildren();
   const res = await window.ccmws.skillsClone(dir, skRemoteDraft.trim());
   skData = await window.ccmws.skillsList(activeProjectPath());
   if (res.ok) showSkillsFresh();

@@ -233,7 +233,7 @@ describe('review order (#order): both parsers agree on valid records', () => {
       expect(appAccepts).toBe(true);
       const bySkill = inReviewOrder(skill.files, skill.order).map((f) => f.path);
       expect(app.pr!.files.map((f) => f.path)).toEqual(bySkill);
-      expect(skill.order).toEqual(order.map((p) => p.replace('%20', ' ')));
+      expect(skill.order).toEqual(order.map((p) => decodeURIComponent(p)));
     }
   });
 
@@ -362,6 +362,9 @@ describe('description (#describe): both parsers agree', () => {
     ['a comment marker', '<!-- internal --> Admins can refund.', 'Admins can refund.'],
     ['an unclosed comment marker', 'Admins can refund. <!-- cut', 'Admins can refund.'],
     ['a stray comment end', 'Admins can refund. -->', 'Admins can refund.'],
+    ['a comment the browser closes with --!>', 'Admins <!-- internal --!>can refund.', 'Admins can refund.'],
+    ['a comment marker that only appears once the first comment is gone', 'Admins <!<!-- x -->-- can refund.', 'Admins'],
+    ['a comment end that only appears once the first one is gone', 'Admins can refund.--<!-- x -->>', 'Admins can refund.'],
   ])('both strip %s', (_label, raw, shown) => {
     const { skill, app, skillAccepts } = both(record([...VALID, describe_('what', raw), ...files]), '7.pr');
     expect(skillAccepts).toBe(true);
