@@ -50,8 +50,14 @@ test/bundled-skills-standalone.test.ts . test cb4f3ecf7da0
 #feature skill-installer
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
 
-test/ci-workflow.test.ts . test 617b2a498cf9
+test/ci-workflow.test.ts . test 48e2d6aac9fb
   < .github/workflows/ci.yml
+
+test/workflow-hygiene.test.ts . test 719dc6301c5b
+  < .github/workflows/ci.yml
+  < .github/workflows/codeql.yml
+  < .github/workflows/deploy-docs.yml
+  < .github/workflows/release.yml
   < package.json
 
 test/claude-bin.test.ts . test 2faabe2ffd2b
@@ -104,7 +110,7 @@ test/command-keys.test.ts . test 59b273de14b9
   = src/main/commands/index.ts
   < src/shared/commands/keymap.ts
 
-test/command-palette-items.test.ts . test 777fd6360aa5
+test/command-palette-items.test.ts . test e2adafd87b0b
 #feature command-palette
   = src/renderer/command-palette/items.ts
   < src/shared/commands/keymap.ts#defaultBindings
@@ -267,8 +273,7 @@ test/lantern-delegate-skill.test.ts . test eb1c76c67eb9
   < skills/lantern-delegate/protocol.md
   < skills/lantern-sync/SKILL.md
 
-test/deploy-docs-workflow.test.ts . test 934bedf83c2d
-  < .github/workflows/ci.yml
+test/deploy-docs-workflow.test.ts . test 9aafbcf66d29
   < .github/workflows/deploy-docs.yml
   < package.json
   < website/package.json
@@ -397,7 +402,7 @@ test/idle-tabs.test.ts . test 7dece3b876fc
 #feature serve-web
   = src/renderer/lib/idle-tabs.ts
 
-test/install-skills.test.ts . test 59ee6442716f
+test/install-skills.test.ts . test 646437f73dc3
 #feature skill-installer
   = scripts/install-skills.mjs
   = scripts/lantern-bundle.mjs
@@ -1646,7 +1651,7 @@ test/lsp-snapshot.test.ts . test d4c083b645a5
   = src/main/lsp/snapshot-root.ts
   = test/helpers/git-repo.ts
 
-test/macro-legend-view.test.ts . test 3e0a8ec0e0b3
+test/macro-legend-view.test.ts . test 4574a62d4028
 #feature macro-view
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-macro-areas-payload.ts#areasPayload
@@ -1654,7 +1659,7 @@ test/macro-legend-view.test.ts . test 3e0a8ec0e0b3
   = test/helpers/macro-uses-world.ts#usesPayload
   = test/helpers/macroview-host.ts#pick
 
-test/macro-legend.test.ts . test b29311e5300f
+test/macro-legend.test.ts . test 2971d21903fd
 #feature macro-view
   = src/renderer/lib/lanternmacrolegend.ts#legendEntries
   = src/renderer/lib/lanternmacrolegendhtml.ts#legendHtml
@@ -2209,14 +2214,14 @@ test/skills-unconfigured.test.ts . test a11a60f25614
   = src/main/skills.ts
   = src/renderer/features/skills.ts
 
-test/extensions-panel.test.ts . test 07bc83382cc2
+test/extensions-panel.test.ts . test 9e35e042f6ab
 #feature skill-installer
   < skills/lantern-delegate/scripts/bundled-skills.mjs
   = src/main/extensions.ts
   = src/main/skills.ts#installedNames
   = src/renderer/features/skills-state.ts#pickerSkills
 
-test/extensions-project.test.ts . test 8927fd430333
+test/extensions-project.test.ts . test 072a15ff261f
 #feature skill-installer
   = skills/lantern-delegate/scripts/extension-skills.mjs#configuredExtras
   = skills/lantern-delegate/scripts/extensions.mjs
@@ -2225,7 +2230,7 @@ test/extensions-project.test.ts . test 8927fd430333
   < src/shared/extension-slots.ts#EXTENSION_SCOPES
   = test/support/bundle-fixtures.ts
 
-test/lantern-always-on-skills.test.ts . test 46c558615ac3
+test/lantern-always-on-skills.test.ts . test 56959f2b6526
 #feature skill-installer
   < skills/lantern-delegate/scripts/bundled-skills.mjs
   < skills/lantern-delegate/scripts/extension-skills.mjs#configuredExtras
