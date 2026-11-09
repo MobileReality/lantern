@@ -1,0 +1,10 @@
+lantern 1
+# src/renderer/pr-info
+
+src/renderer/pr-info/index.ts . component bd569d868f1d
+#feature pull-requests
+  < src/main/lantern.ts
+  < src/renderer/lib/lanternctx.ts#esc
+  < src/renderer/lib/util.ts#exactTime
+  < src/renderer/lib/util.ts#plural
+  < src/renderer/lib/util.ts#timeAgo

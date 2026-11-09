@@ -41,7 +41,7 @@ src/renderer/lantern-macroview.css . style 14604f7b1dc4
 src/renderer/lantern-plans.css . style 18e809058f89
 #feature planning
 
-src/renderer/lantern-prs.css . style eb97f5d2a154
+src/renderer/lantern-prs.css . style 1aa6cda1dcb3
 #feature pull-requests
 
 src/renderer/lantern-relation.css . style 22c56f6957c8
@@ -59,7 +59,7 @@ src/renderer/lantern-select.css . style d9561106c5e3
 src/renderer/lantern-setup.css . style ee7ca9584ee0
 #feature map-setup
 
-src/renderer/lantern.css . style 0061226e6a12
+src/renderer/lantern.css . style 3b7485822aad
 #feature file-graph
 
 src/renderer/memory.css . style 63701ca4d113
@@ -88,7 +88,7 @@ src/renderer/settings.css . style 7a4eb2109b6e
 src/renderer/state.ts . state b7d0fb62c8e6
   < src/renderer/lib/editorload.ts
 
-src/renderer/theme.css . style 3095f20e8f5d
+src/renderer/theme.css . style ac3f2c57508f
 
 src/renderer/tray-popover.css . style 829054adf0cf
 #feature session-monitoring
@@ -159,4 +159,4 @@ src/renderer/workspace.ts . entry 20c6e8c34375
 src/renderer/integrations.css . style 78029c94fea7
 #feature integrations
 
-src/renderer/floating.css . style 235ae7bf4763
+src/renderer/floating.css . style 5ab1c77ca052

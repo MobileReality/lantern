@@ -1,6 +1,7 @@
 lantern 1
 # src/renderer/lantern-problems
 
-src/renderer/lantern-problems/index.ts . component 7c837491adfb
+src/renderer/lantern-problems/index.ts . component 15ee0aa78e21
 #feature file-graph
   = src/renderer/popover/index.ts#mountPopover
+  < src/renderer/lib/util.ts#plural
