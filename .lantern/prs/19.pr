@@ -1,0 +1,140 @@
+lantern-pr 1
+# 19
+#title feat: richer pull request details in the hover card and sidebar
+#url https://github.com/MobileReality/lantern/pull/19
+#branch feat/pr-details
+#base main
+#opened 2026-11-09
+#head 7712584ad936a06bd589ca8c6efeb4053dbb95fa
+#summary Author, dates, comments and reviewer verdicts in the PR hover card and sidebar, and a PR-like header for local comparisons
+#describe what The PR hover card and the sidebar header show the author with avatar, when the PR was opened and last updated, comment counts, a draft badge and the reviewers with their approvals or change requests
+#describe what Details come from Bitbucket or GitHub when an account is added, otherwise the author and last update come from the branch's commits
+#describe what A local comparison uses the same header as a remote PR, with a local badge and a Context section for missing reasons and unmapped files
+#describe before The hover card showed only the title, state and branch, and a local comparison had its own plain layout
+#describe after The card and header show who opened the PR, when, and where review stands; errors from writing reasons go to the problems log
+#describe verified Typecheck, lint and the test suite pass except the known licences and pr-explain-service failures
+#describe verified New tests cover the Bitbucket and GitHub detail parsing, avatar inlining, the info overlay and the card rendering
++ src/main/lantern-host-avatar.ts
++ src/renderer/assets/icons/pen.svg
++ src/renderer/pr-info/index.ts
++ test/lantern-host-avatar.test.ts
++ test/lantern-host-info.test.ts
++ test/pr-info.test.ts
+~ docs/primitives.md
+~ src/main/lantern-host-github.ts
+~ src/main/lantern-host-request.ts
+~ src/main/lantern-host-status.ts
+~ src/main/lantern-prs.ts
+~ src/main/lantern-types.ts
+~ src/renderer/features/lantern.ts
+~ src/renderer/floating.css
+~ src/renderer/lantern-problems/index.ts
+~ src/renderer/lantern-prs.css
+~ src/renderer/lantern.css
+~ src/renderer/lib/comparemodal.ts
+~ src/renderer/lib/lanternmacro.ts
+~ src/renderer/lib/lanternprdescribe.ts
+~ src/renderer/lib/lanternprpanel.ts
+~ src/renderer/lib/lanternprs.ts
+~ src/renderer/lib/lanternview.ts
+~ src/renderer/lib/util.ts
+~ src/renderer/theme.css
+~ src/renderer/tooltip/index.ts
+~ test/lantern-host-status.test.ts
+~ test/lantern-pr-describe-card.test.ts
+~ test/lantern-pr-panel.test.ts
+~ test/lantern-pr-refresh.test.ts
+~ test/lantern-pr-visibility.test.ts
+~ test/tooltip.test.ts
+#order src/main/lantern-types.ts
+#order src/main/lantern-host-request.ts
+#order src/main/lantern-host-github.ts
+#order src/main/lantern-host-avatar.ts
+#order src/main/lantern-host-status.ts
+#order src/main/lantern-prs.ts
+#order src/renderer/lib/util.ts
+#order src/renderer/pr-info/index.ts
+#order src/renderer/tooltip/index.ts
+#order src/renderer/lib/lanternprs.ts
+#order src/renderer/lib/lanternprpanel.ts
+#order src/renderer/features/lantern.ts
+#order src/renderer/lantern-problems/index.ts
+#order src/renderer/lib/comparemodal.ts
+#order src/renderer/lib/lanternmacro.ts
+#order src/renderer/lib/lanternprdescribe.ts
+#order src/renderer/lib/lanternview.ts
+#order src/renderer/assets/icons/pen.svg
+#order src/renderer/floating.css
+#order src/renderer/lantern-prs.css
+#order src/renderer/lantern.css
+#order src/renderer/theme.css
+#order test/lantern-host-avatar.test.ts
+#order test/lantern-host-info.test.ts
+#order test/lantern-host-status.test.ts
+#order test/lantern-pr-describe-card.test.ts
+#order test/lantern-pr-panel.test.ts
+#order test/lantern-pr-refresh.test.ts
+#order test/lantern-pr-visibility.test.ts
+#order test/pr-info.test.ts
+#order test/tooltip.test.ts
+#order docs/primitives.md
+#reason src/main/lantern-host-avatar.ts Turns host avatar URLs into capped data URIs in the main process, since the renderer's CSP cannot load remote images
+#reason src/renderer/assets/icons/pen.svg Icon for the reasons row in the local comparison's Context section
+#reason src/renderer/pr-info/index.ts Builds the PR hover card and the sidebar byline and footer from one place so both stay in sync
+#reason test/lantern-host-avatar.test.ts Covers avatar fetching: size cap, image types, redirects and the failure cache
+#reason test/lantern-host-info.test.ts Covers reading PR details from Bitbucket and GitHub replies, keeping only well-formed fields
+#reason test/pr-info.test.ts Covers the PR card and sidebar byline: dates, avatars, approvals, escaping and the local card
+#reason docs/primitives.md Documents setTipCard for rich tooltip cards and the new timeAgo and exactTime date helpers so other features reuse them
+#reason src/main/lantern-host-github.ts Reads author, dates, comment count, draft flag and requested reviewers from the GitHub reply so GitHub PRs get the same hover card as Bitbucket ones
+#reason src/main/lantern-host-request.ts Reads author, dates, comment counts and reviewer verdicts from the Bitbucket reply, and shares its field readers with the GitHub request
+#reason src/main/lantern-host-status.ts Carries the host's PR info with avatars into the PR list and refreshes it when reviews or the update time change
+#reason src/main/lantern-prs.ts Gives PRs without host data an author and last update from git, so every card can still say who opened it
+#reason src/main/lantern-types.ts Adds the PR info shape (author, dates, reviewers, draft) shared by the host and git sources and the renderer
+#reason src/renderer/features/lantern.ts Reports a failed reasons run in the bottom-bar problems log instead of inside the sidebar
+#reason src/renderer/floating.css Gives the PR hover card a fixed width so its rows line up
+#reason src/renderer/lantern-problems/index.ts Uses the shared plural helper instead of its own copy
+#reason src/renderer/lantern-prs.css Styles the PR card, the one-card sidebar header with its action bar, and the Context section for local comparisons
+#reason src/renderer/lantern.css Gives the PR hover card the Lantern colour tokens, since the tooltip renders outside the Lantern panel
+#reason src/renderer/lib/comparemodal.ts Uses the shared plural helper instead of its own copy
+#reason src/renderer/lib/lanternmacro.ts Uses the shared plural helper instead of its own copy
+#reason src/renderer/lib/lanternprdescribe.ts Puts the Show details toggle in the header's action bar so it sits with the other PR actions
+#reason src/renderer/lib/lanternprpanel.ts Rebuilds the sidebar PR header as one card with an action bar, and gives local comparisons a Context section for reasons and mapping
+#reason src/renderer/lib/lanternprs.ts Shows the PR card on hovering a PR tab and drops the tooltip from the close buttons
+#reason src/renderer/lib/lanternview.ts Stops passing the reasons note to the panel now that errors go to the problems log
+#reason src/renderer/lib/util.ts Shares plural, timeAgo and exactTime so PR dates and counts read the same everywhere
+#reason src/renderer/theme.css Adds a stronger border and a secondary button colour that keep the navy hue of the top bar
+#reason src/renderer/tooltip/index.ts Lets a tooltip show a rich card built when it opens, for the PR hover card
+#reason test/lantern-host-status.test.ts Covers merging host PR info into the list and refreshing when reviews change
+#reason test/lantern-pr-describe-card.test.ts Follows the description moving into the card's story section
+#reason test/lantern-pr-panel.test.ts Follows the byline replacing the old people row in the sidebar header
+#reason test/lantern-pr-refresh.test.ts Checks the Context section's Write reasons button and that a failure lands in the problems log
+#reason test/lantern-pr-visibility.test.ts Follows the close button losing its tooltip
+#reason test/tooltip.test.ts Covers tooltips that show a rich card
+#story Hovering a pull request shows who, when and where review stands
+#step actor Reviewer
+#step action hovers a pull request tab or opens it in the sidebar
+#file src/renderer/lib/lanternprs.ts
+#file src/renderer/tooltip/index.ts
+#step subject a GitHub or Bitbucket pull request
+#file src/main/lantern-host-request.ts
+#file src/main/lantern-host-github.ts
+#file src/main/lantern-host-status.ts
+#below interaction sees author with avatar, age, comments and reviewer verdicts
+#file src/renderer/pr-info/index.ts
+#file src/main/lantern-host-avatar.ts
+#below consequence only title, state and branch => who opened it, when, and who approved it
+#file src/renderer/pr-info/index.ts
+#file src/renderer/lib/lanternprpanel.ts
+#below interaction without a host account, sees the author from the branch commits
+#file src/main/lantern-prs.ts
+#story A local comparison looks like a pull request
+#step actor Developer
+#step action compares their branch with a base locally
+#file src/renderer/lib/lanternprpanel.ts
+#step subject the files changed on the branch
+#below interaction writes missing reasons or maps missing files from a Context section
+#file src/renderer/lib/lanternprpanel.ts
+#file src/renderer/lantern-prs.css
+#below consequence a failed reasons run shown in the panel => shown in the problems log
+#file src/renderer/features/lantern.ts
+#file src/renderer/lantern-problems/index.ts

@@ -42,6 +42,7 @@ interface Panel {
   problems: ProblemList;
   fetchError: string | null;
   runError: string | null;
+  reasonsError: string | null;
   dismissed: Set<string>;
   actions: HTMLElement;
   view: LanternView | null;
@@ -127,7 +128,7 @@ function makePanel(project: string): Panel {
     now: Date.now,
   });
   const planFix = createPlanFix({ copy: (text) => navigator.clipboard.writeText(text), runner: planFixRunner });
-  const panel: Panel = { el, head, stats, sessions, refocusReload: false, noteEl: note, problems: mountProblems(problemsHost, (where) => openCodeModal(el, (file) => window.ccmws.projectReadFile(project, file), where.file, '', undefined, undefined, (file, source) => window.ccmws.semanticHighlight({ project, path: file, source }), false, where.line)), fetchError: null, runError: null, dismissed: new Set(), body, actions, view: null, data: null, run, screen: null, offer: null, timer: null, lastPhase: 'idle', loadToken: 0, langEl: null, stamp: null, loadedAt: 0, integrations, planFix, disposeProvider };
+  const panel: Panel = { el, head, stats, sessions, refocusReload: false, noteEl: note, problems: mountProblems(problemsHost, (where) => openCodeModal(el, (file) => window.ccmws.projectReadFile(project, file), where.file, '', undefined, undefined, (file, source) => window.ccmws.semanticHighlight({ project, path: file, source }), false, where.line)), fetchError: null, runError: null, reasonsError: null, dismissed: new Set(), body, actions, view: null, data: null, run, screen: null, offer: null, timer: null, lastPhase: 'idle', loadToken: 0, langEl: null, stamp: null, loadedAt: 0, integrations, planFix, disposeProvider };
   planFix.onChange(() => syncProblems(project, panel));
   run.subscribe(() => onRunChange(project, panel));
   renderSessions(panel.sessions, sessionsOf(project), assistantName(project));
@@ -345,8 +346,14 @@ function renderBody(project: string, panel: Panel) {
         await load(project);
       },
       onGenerateReasons: async (id) => {
-        const result = await window.ccmws.lanternLocalReasons(project, id);
+        panel.reasonsError = null;
+        syncProblems(project, panel);
+        const result = await window.ccmws.lanternLocalReasons(project, id).catch((e: Error) => ({ ok: false as const, error: e.message }));
         if (result.ok) await load(project);
+        else {
+          panel.reasonsError = `Could not write reasons: ${result.error}`;
+          syncProblems(project, panel);
+        }
         return result;
       },
       onRefreshPrs: async () => {
@@ -393,6 +400,12 @@ function syncProblems(project: string, panel: Panel) {
   if (panel.runError) {
     items.push({ id: 'run:failed', severity: 'error', toast: true, message: panel.runError, actions: [{ label: 'Dismiss', run: () => {
       panel.runError = null;
+      syncProblems(project, panel);
+    } }] });
+  }
+  if (panel.reasonsError) {
+    items.push({ id: 'reasons:failed', severity: 'error', toast: true, message: panel.reasonsError, actions: [{ label: 'Dismiss', run: () => {
+      panel.reasonsError = null;
       syncProblems(project, panel);
     } }] });
   }

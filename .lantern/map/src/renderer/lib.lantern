@@ -26,10 +26,11 @@ src/renderer/lib/comparedropdown.ts . component 8a0e23203bbf
   = src/renderer/lib/lanternctx.ts#esc
   = src/renderer/popover/index.ts#mountPopover
 
-src/renderer/lib/comparemodal.ts . component 09e6b8474a55
+src/renderer/lib/comparemodal.ts . component 9d3dfd45fc38
 #feature pull-requests
   = src/renderer/lib/comparedropdown.ts#mountDropdown
   < src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/util.ts#plural
   < src/shared/local-review.ts#compareId
 
 src/renderer/lib/diffcollapse.ts . pure 2938067b7e60
@@ -109,7 +110,7 @@ src/renderer/lib/lanternlock.ts . component 1fbd951084c9
   = src/renderer/lib/lanternctx.ts#esc
   = src/renderer/lib/util.ts#fileLabel
 
-src/renderer/lib/lanternmacro.ts . pure b4241148ab15
+src/renderer/lib/lanternmacro.ts . pure 0966650e7a05
 #feature macro-view
   < src/main/lantern-macro-foundation.ts#FoundationLink
   < src/main/lantern-macro-foundation.ts#PlatformUses
@@ -119,6 +120,7 @@ src/renderer/lib/lanternmacro.ts . pure b4241148ab15
   < src/renderer/lib/lanternctx.ts#GLYPH
   = src/renderer/lib/lanternmacronames.ts#blockName
   = src/renderer/lib/lanternmacrorest.ts#mainLinkPairs
+  = src/renderer/lib/util.ts#plural
 
 src/renderer/lib/lanternmacroareas.ts . pure 9fe192472813
 #feature product-areas
@@ -403,19 +405,22 @@ src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
   < src/renderer/lib/lanternplanfocus.ts#planFilePaths
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lanternprpanel.ts . component fe71baae7045
+src/renderer/lib/lanternprpanel.ts . component f602e679baec
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml
   = src/renderer/lib/lanternctx.ts
   < src/renderer/lib/lanternflow.ts#PickedStep
-  = src/renderer/lib/lanternprs.ts#fileCount
   = src/renderer/lib/lanternprdescribe.ts#descriptionHostHtml
+  = src/renderer/pr-info/index.ts#prInfoHtml
 
-src/renderer/lib/lanternprs.ts . component 21f381d33e4f
+src/renderer/lib/lanternprs.ts . component 80e6b3d662a5
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/lanternctx.ts#esc
+  = src/renderer/lib/util.ts#plural
+  = src/renderer/pr-info/index.ts#prCard
+  > src/renderer/tooltip/index.ts#setTipCard
 
 src/renderer/lib/lanternrelview.ts . pure 9cc7d752f475
 #feature file-graph
@@ -457,7 +462,7 @@ src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
 #feature file-graph
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternview.ts . component a439767ea58c
+src/renderer/lib/lanternview.ts . component 1a59029e7842
 #feature file-graph
   < src/main/lantern.ts
   < src/main/local-reasons.ts#LocalReasonsResult
@@ -667,14 +672,14 @@ src/renderer/lib/tray-popover-view.ts . component 1311309093ae
   < src/shared/tray-keys.ts#trayIntent
   < src/shared/tray-model.ts#TrayModel
 
-src/renderer/lib/util.ts . util 1ea99a7e1736
+src/renderer/lib/util.ts . util e6e3ecad8968
   < src/shared/platform.ts#PlatformName
 
 src/renderer/lib/lanternpanewidths.ts . state 5af72c8d0e8d
 #feature review-screen
   = src/renderer/lib/lanternregions.ts#regionKeyFor
 
-src/renderer/lib/lanternprdescribe.ts . component cdfd42ceca7d
+src/renderer/lib/lanternprdescribe.ts . component 6013334b9f32
 #feature pull-requests
   < src/main/lantern.ts
 

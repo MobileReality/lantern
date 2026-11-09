@@ -1,7 +1,10 @@
 import CLOSE_ICON from '@renderer/assets/icons/close.svg';
 import PLUS_ICON from '@renderer/assets/icons/plus.svg';
-import type { LanternPr } from '../../main/lantern';
+import type { LanternPr } from '@main/lantern';
+import { localCard, prCard, stateClass } from '@renderer/pr-info';
+import { setTipCard } from '@renderer/tooltip';
 import { esc } from './lanternctx';
+import { plural } from './util';
 
 const RECENT_MS = 2 * 24 * 60 * 60 * 1000;
 
@@ -26,15 +29,11 @@ interface PrStrip {
 }
 
 function fileCount(pr: LanternPr) {
-  return `${pr.files.length} ${pr.files.length === 1 ? 'file' : 'files'}`;
+  return plural(pr.files.length, 'file');
 }
 
 function isDeclined(pr: LanternPr) {
   return pr.state === 'closed' || pr.state === 'declined';
-}
-
-function stateClass(pr: LanternPr) {
-  return pr.state === 'declined' ? 'pr-declined-state' : `pr-${pr.state}`;
 }
 
 function isRecent(stamp: string, now: number) {
@@ -66,7 +65,7 @@ function isLocal(pr: LanternPr) {
 
 function localChipHtml(pr: LanternPr, on: boolean) {
   const chip = `<button class="pr-chip pr-local" data-pr="${esc(pr.id)}" aria-pressed="${on}" data-tip="${esc(`${pr.branch} compared with where it left ${pr.base}`)}"><span class="pr-branch">${esc(pr.title)}</span></button>`;
-  return `<span class="pr-item pr-local">${chip}<button class="pr-dismiss" data-pr-remove="${esc(pr.id)}" data-tip="Stop reviewing this here" aria-label="Remove ${esc(pr.title)}">${CLOSE_ICON}</button></span>`;
+  return `<span class="pr-item pr-local">${chip}<button class="pr-dismiss" data-pr-remove="${esc(pr.id)}" aria-label="Remove ${esc(pr.title)}">${CLOSE_ICON}</button></span>`;
 }
 
 function chipHtml(pr: LanternPr, on: boolean) {
@@ -76,7 +75,7 @@ function chipHtml(pr: LanternPr, on: boolean) {
   const chip = isDeclined(pr)
     ? `<button class="pr-chip ${stateClass(pr)} pr-declined" data-pr="${esc(pr.id)}" aria-disabled="true" aria-label="${name}" tabindex="-1" data-tip="${esc(`Declined: ${pr.title}`)}">${label}</button>`
     : `<button class="pr-chip ${stateClass(pr)}" data-pr="${esc(pr.id)}" aria-pressed="${on}" data-tip="${esc(pr.title)}">${label}</button>`;
-  const dismiss = isDismissible(pr) ? `<button class="pr-dismiss" data-pr-dismiss="${esc(pr.id)}" data-tip="Hide this pull request" aria-label="Hide pull request #${esc(pr.id)}">${CLOSE_ICON}</button>` : '';
+  const dismiss = isDismissible(pr) ? `<button class="pr-dismiss" data-pr-dismiss="${esc(pr.id)}" aria-label="Hide pull request #${esc(pr.id)}">${CLOSE_ICON}</button>` : '';
   return `<span class="pr-item ${stateClass(pr)}">${chip}${dismiss}</span>`;
 }
 
@@ -136,6 +135,10 @@ function mountPrStrip(host: PrStripHost): PrStrip {
     }
     const restore = hiddenCount ? `<button class="pr-restore" data-pr-restore data-tip="Show the hidden pull requests again">Hidden (${hiddenCount}) — restore</button>` : '';
     el.innerHTML = `<div class="pr-chips">${prs.map((p) => chipHtml(p, p.id === selected)).join('')}${restore}</div>${addHtml()}`;
+    for (const chip of el.querySelectorAll<HTMLElement>('.pr-chip[data-pr]')) {
+      const pr = prs.find((p) => p.id === chip.dataset.pr);
+      if (pr) setTipCard(chip, () => (isLocal(pr) ? localCard(pr) : prCard(pr, clock())));
+    }
     el.querySelector<HTMLElement>('.pr-chip[aria-pressed="true"]')?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
     restoreFocus();
   }
@@ -184,5 +187,5 @@ function mountPrStrip(host: PrStripHost): PrStrip {
   };
 }
 
-export { RECENT_MS, fileCount, isNoOrigin, isSelectable, mountPrStrip, shortError, stateClass, visiblePrs };
+export { RECENT_MS, fileCount, isNoOrigin, isSelectable, mountPrStrip, shortError, visiblePrs };
 export type { FetchResult, PrStrip };

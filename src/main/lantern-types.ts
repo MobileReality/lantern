@@ -193,6 +193,27 @@ interface LanternPrPlanRef {
   item: string;
 }
 
+interface LanternPrPerson {
+  name: string;
+  avatar?: string;
+}
+
+interface LanternPrReviewer extends LanternPrPerson {
+  approved: boolean;
+  changes: boolean;
+}
+
+interface LanternPrInfo {
+  from: 'host' | 'git';
+  author?: LanternPrPerson;
+  created?: string;
+  updated?: string;
+  comments?: number;
+  tasks?: number;
+  reviewers?: LanternPrReviewer[];
+  draft?: boolean;
+}
+
 interface LanternPr {
   id: string;
   title: string;
@@ -213,6 +234,7 @@ interface LanternPr {
   revision?: string;
   hostBase?: string;
   mergedAt?: string;
+  info?: LanternPrInfo;
   source: 'tree' | 'remote' | 'local';
 }
 
@@ -276,8 +298,11 @@ export type {
   LanternPrDescriptionSection,
   LanternPrFile,
   LanternPrFileKind,
+  LanternPrInfo,
   LanternPrOverlay,
+  LanternPrPerson,
   LanternPrPlanRef,
+  LanternPrReviewer,
   LanternPrState,
   LanternPlatform,
   LanternRelation,

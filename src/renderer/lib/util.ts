@@ -54,6 +54,49 @@ export interface DayOptions {
   utc?: boolean;
 }
 
+export function plural(n: number, word: string): string {
+  return `${n} ${word}${n === 1 ? '' : 's'}`;
+}
+
+const MINUTE_MS = 60_000;
+const DAY_MS = 24 * 60 * MINUTE_MS;
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
+  ['year', 365 * DAY_MS],
+  ['month', 30 * DAY_MS],
+  ['week', 7 * DAY_MS],
+  ['day', DAY_MS],
+  ['hour', 60 * MINUTE_MS],
+  ['minute', MINUTE_MS],
+];
+const relativeTime = new Intl.RelativeTimeFormat(DATE_LOCALE, { numeric: 'auto' });
+const fullStamp = new Intl.DateTimeFormat(DATE_LOCALE, { dateStyle: 'medium', timeStyle: 'short' });
+
+export function stampTime(stamp: string): number {
+  if (!DATE_ONLY.test(stamp)) return Date.parse(stamp);
+  const [y, m, d] = stamp.split('-').map(Number);
+  return new Date(y, m - 1, d).getTime();
+}
+
+export function timeAgo(stamp: string, now: number): string {
+  const t = stampTime(stamp);
+  if (!Number.isFinite(t)) return stamp;
+  if (DATE_ONLY.test(stamp)) {
+    const today = new Date(now);
+    const days = Math.round((t - new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()) / DAY_MS);
+    if (Math.abs(days) < 7) return relativeTime.format(days, 'day');
+  }
+  const diff = t - now;
+  for (const [unit, ms] of TIME_UNITS) if (Math.abs(diff) >= ms) return relativeTime.format(Math.round(diff / ms), unit);
+  return 'just now';
+}
+
+export function exactTime(stamp: string): string {
+  const t = stampTime(stamp);
+  if (!Number.isFinite(t)) return stamp;
+  return DATE_ONLY.test(stamp) ? formatDay(t) : fullStamp.format(t);
+}
+
 export function formatDay(ms: number, { year = true, utc = false }: DayOptions = {}): string {
   const date = new Date(ms);
   if (Number.isNaN(date.getTime())) return '';

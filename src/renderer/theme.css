@@ -28,12 +28,14 @@
   --toolbar: #0e1a3b;
   --card: #16244a; /* navy card */
   --card-hover: #1e3160;
+  --btn-secondary: #1e3160;
   --primary: #f53103; /* Primary 500 */
   --primary-600: #c42702;
   --navy-400: #182a57; /* Secondary 400 */
   --text: #f6f8f9; /* Neutral 50 */
   --muted: #8b94ad;
   --border: #1b2a4d;
+  --border-strong: #233664;
   --accent: #f53103;
   --success: #28b13e;
   --warning: #ff9900;

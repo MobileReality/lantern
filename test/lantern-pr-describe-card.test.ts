@@ -35,7 +35,7 @@ describe('pull request card: description', () => {
     expect(head.querySelector('.pr-describe')?.textContent).toContain('The refund button refunds in one click.');
     expect([...head.querySelectorAll('.pr-desc-label')].map((l) => l.textContent)).toEqual(['Before', 'After']);
     expect(head.querySelector('.pr-desc-toggle')).toBeNull();
-    const order = [...head.children].map((c) => c.className);
+    const order = [...(head.querySelector('.pr-story') as HTMLElement).children].map((c) => c.className);
     expect(order.indexOf('pr-summary')).toBeLessThan(order.indexOf('pr-describe'));
   });
 

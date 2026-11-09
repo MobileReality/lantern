@@ -177,7 +177,7 @@ describe('generated reasons on a local comparison', () => {
         }),
       ],
     });
-  const button = () => document.querySelector('.pr-reasons') as HTMLButtonElement;
+  const button = () => document.querySelector('[data-pr-reasons]') as HTMLButtonElement;
 
   async function openOn(load: ReturnType<typeof vi.fn>) {
     state.app.lanternPr.clear();
@@ -189,7 +189,7 @@ describe('generated reasons on a local comparison', () => {
   it('runs on click, shows the busy label, reloads and shows every reason', async () => {
     const load = vi.fn().mockResolvedValue(localMap(false));
     await openOn(load);
-    expect(button().textContent).toBe('Write reasons for 1 file');
+    expect(button().textContent).toBe('Write reasons');
     expect(document.querySelectorAll('.pr-reason')).toHaveLength(1);
     let finish: (result: unknown) => void = () => {};
     window.ccmws.lanternLocalReasons = vi.fn(() => new Promise((r) => (finish = r))) as never;
@@ -198,7 +198,7 @@ describe('generated reasons on a local comparison', () => {
     await vi.waitFor(() => expect(button().disabled).toBe(true));
     expect(button().textContent).toBe('Writing reasons…');
     finish({ ok: true, written: 1, skipped: 0, left: 0 });
-    await vi.waitFor(() => expect(document.querySelector('.pr-reasons-row')?.textContent).toContain('Reasons written by Claude'));
+    await vi.waitFor(() => expect(document.querySelector('.pr-context-box')).toBeNull());
     expect(window.ccmws.lanternLocalReasons).toHaveBeenCalledWith('/proj', localId);
     expect(document.querySelectorAll('.pr-reason')).toHaveLength(2);
   });
@@ -207,9 +207,9 @@ describe('generated reasons on a local comparison', () => {
     await openOn(vi.fn().mockResolvedValue(localMap(false)));
     window.ccmws.lanternLocalReasons = vi.fn().mockResolvedValue({ ok: false, error: 'boom' }) as never;
     button().click();
-    await vi.waitFor(() => expect(document.querySelector('.pr-reasons-note')?.textContent).toBe('boom'));
+    await vi.waitFor(() => expect([...document.querySelectorAll('.lt-diag-text')].map((e) => e.textContent)).toContain('Could not write reasons: boom'));
     expect(button().disabled).toBe(false);
-    expect(button().textContent).toBe('Write reasons for 1 file');
+    expect(button().textContent).toBe('Write reasons');
   });
 });
 

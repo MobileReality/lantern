@@ -4,6 +4,7 @@ import type { LanternPr } from '../src/main/lantern';
 import { parsePrRecord } from '../src/main/lantern-pr-parse';
 import { mapOf, node, pr } from './helpers/lantern-map';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
+import { formatDay } from '../src/renderer/lib/util';
 import type { ViewOptions } from '../src/renderer/lib/lanternview';
 
 const NODES = [node('src/page.tsx', 'page'), node('src/svc.ts', 'service'), node('src/deep/repo.ts', 'repository')];
@@ -44,7 +45,8 @@ describe('pull request panel', () => {
     expect(head.querySelector('.pr-badge')?.textContent).toBe('open');
     expect(head.querySelector('.pr-badge')?.classList.contains('pr-open')).toBe(true);
     expect(head.textContent).toContain('fix/guard → main');
-    expect(head.textContent).toContain('Opened 2026-09-29');
+    expect(head.querySelector('.pr-card-by')?.textContent).toMatch(/^Opened /);
+    expect(head.querySelector('.pr-card-by time')?.getAttribute('data-tip')).toBe(formatDay(new Date(2026, 8, 29).getTime()));
     expect(head.querySelector('.pr-summary')?.textContent).toBe('Guards process.kill in tests.');
     expect(root.querySelector('.search')).toBeNull();
   });

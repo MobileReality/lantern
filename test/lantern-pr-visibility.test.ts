@@ -142,7 +142,7 @@ describe('dismissing merged and declined PRs', () => {
     for (const id of ['2', '3']) {
       const b = x(root, id) as HTMLButtonElement;
       expect(b.tagName).toBe('BUTTON');
-      expect(b.dataset.tip).toBe('Hide this pull request');
+      expect(b.dataset.tip).toBeUndefined();
       expect(b.getAttribute('aria-label')).toBe(`Hide pull request #${id}`);
     }
   });

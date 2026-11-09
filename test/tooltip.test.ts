@@ -98,6 +98,24 @@ describe('tooltips', () => {
     expect(tipEl().hidden).toBe(true);
   });
 
+  it('shows a registered card in place of the text, and plain text again on the next element', async () => {
+    const { SHOW_DELAY_MS, setTipCard } = await setup();
+    setTipCard($('b'), () => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.textContent = 'Opened by Ada';
+      return card;
+    });
+    over($('b'));
+    vi.advanceTimersByTime(SHOW_DELAY_MS);
+    expect(tipEl().querySelector('.card')?.textContent).toBe('Opened by Ada');
+    expect(tipEl().classList.contains('is-card')).toBe(true);
+    expect($('b').getAttribute('aria-describedby')).toBe('lt-tip');
+    over($('a'));
+    expect(tipEl().textContent).toBe('Reload the map');
+    expect(tipEl().classList.contains('is-card')).toBe(false);
+  });
+
   it('follows the pointer on a canvas whose tip changes under it', async () => {
     const { SHOW_DELAY_MS } = await setup();
     move($('g'), 40, 50);
