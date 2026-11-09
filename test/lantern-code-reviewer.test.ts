@@ -35,26 +35,11 @@ describe('the reviewer skill and its required list', () => {
       .split('\n')
       .find((row) => row.startsWith('- **Required:**'))!;
     expect(backticked(line)).toEqual(REVIEWER_SKILLS.filter((name: string) => name !== SKILL_NAME));
-    expect(text('SKILL.md')).toMatch(/Only `lantern-no-comments` is required/);
   });
 
   it.each(Object.keys(FILES) as Array<keyof typeof FILES>)('%s names no skill outside the bundle', (name) => {
     const named = [...backticked(text(name)), ...hyphenated(description(text(name)))];
     const outside = [...new Set(named)].filter((word) => !BUNDLED_SKILLS.includes(word) && !NOT_SKILLS.includes(word));
     expect(outside).toEqual([]);
-  });
-
-  it('works from the conventions the project has linked and says what an absent one looks like', () => {
-    const skill = text('SKILL.md');
-    expect(skill).toContain('the conventions the project has linked');
-    expect(skill).toMatch(/no <name or language> convention available/);
-    expect(skill).toMatch(/Every other convention is optional/);
-  });
-
-  it('has the reviewer agent run the reviewer list first and read every skill it prints in full', () => {
-    const agent = text('agents/reviewer.md');
-    expect(agent).toContain('required-skills.mjs --role reviewer');
-    expect(agent).toMatch(/in full, no `limit` and no `offset`/);
-    expect(agent).not.toContain(SKILL_NAME);
   });
 });

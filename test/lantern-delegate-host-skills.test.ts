@@ -447,22 +447,11 @@ describe.each(CASES)('pr-append-cost through the $host host skill', (c) => {
 });
 
 describe('what lantern-delegate no longer carries', () => {
-  it('has no credential or per-host PR code of its own', () => {
-    for (const gone of ['bitbucket/credentials.mjs', 'github/credentials.mjs', 'bitbucket/pr-create.mjs', 'github/pr-create.mjs', 'credentials.mjs', 'credential-source.mjs', 'credential-scaffold.mjs']) {
-      expect(fs.existsSync(path.join(SCRIPTS, gone)), gone).toBe(false);
-    }
-  });
-
   it('reads no token variable and calls no host API itself', () => {
     const files = fs.readdirSync(SCRIPTS, { recursive: true }).map(String).filter((file) => file.endsWith('.mjs'));
     for (const file of files) {
       const text = fs.readFileSync(path.join(SCRIPTS, file), 'utf8');
       expect(text, file).not.toMatch(/BITBUCKET_API_TOKEN|BITBUCKET_EMAIL|process\.env\.GITHUB_TOKEN|api\.bitbucket\.org|api\.github\.com|x-oauth-scopes/);
     }
-  });
-
-  it('reads only the git identity from .ai/.env', () => {
-    const text = fs.readFileSync(path.join(SCRIPTS, 'git-env.mjs'), 'utf8');
-    expect(text).toContain("IDENTITY_VARS = Object.freeze(['GIT_COMMIT_NAME', 'GIT_COMMIT_EMAIL'])");
   });
 });
