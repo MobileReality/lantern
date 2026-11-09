@@ -117,7 +117,8 @@ describe('release workflow, build-mac job', () => {
     expect(SIGN_SCRIPT).toContain('--options runtime');
     expect(SIGN_SCRIPT).toContain('+=(--timestamp)');
     expect(SIGN_SCRIPT).toContain('MACOS_SIGNING_IDENTITY');
-    expect(SIGN_SCRIPT).not.toMatch(/--deep.*--sign|--sign.*--deep/);
+    const deepLines = SIGN_SCRIPT.split('\n').filter((line) => line.includes('--deep'));
+    for (const line of deepLines) expect(line).toContain('--verify --deep');
   });
 });
 

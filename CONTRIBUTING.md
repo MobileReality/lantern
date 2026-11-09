@@ -224,7 +224,7 @@ because library validation rejects ad-hoc frameworks, so use it only as a dry ru
 (the helper apps and the bundled Node). Add nothing to them without a reason you can state: `allow-jit`
 is what lets V8 run under the hardened runtime; the app alone also holds `audio-input` and `camera` (voice
 input and the editor's webviews) and `automation.apple-events` (jumping to a terminal tab through
-`osascript`). Library validation stays on, since every binary in the bundle carries the same signature.
+`osascript`). Library validation stays on, since every binary in the bundle carries the same Team ID.
 
 ## Code conventions
 

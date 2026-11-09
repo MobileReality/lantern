@@ -17,9 +17,11 @@ Packages are attached to each release on the
 Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
 build Lantern from source as described below.
 
-The macOS app is signed with a Developer ID certificate and notarized by Apple, so
-`Lantern-mac.zip` opens without a Gatekeeper warning. The Windows build is not code-signed, so
-SmartScreen may warn on first launch.
+The macOS app of a release built by the current workflow is signed with a Developer ID certificate
+and notarized by Apple, so macOS only asks once to confirm opening `Lantern-mac.zip`'s app. Earlier
+releases are signed ad hoc and need the steps in
+[CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-build-to-share-distshare). The Windows build is not
+code-signed, so SmartScreen may warn on first launch.
 
 ## Install and run from source
 
@@ -67,7 +69,9 @@ generated release notes, and uploads both files; running it again replaces them.
 - **Release a tag that already exists**: in GitHub, open Actions, choose **Release**, pick the tag
   itself under **Use workflow from**, click **Run workflow** and type the same tag (for example
   `v0.2.0`). It builds that tag's commit, so nothing needs re-tagging. The macOS job refuses to run
-  from a branch, or when the typed tag differs from the one picked.
+  from a branch, or when the typed tag differs from the one picked. The workflow file is the one at
+  that tag, so only a tag whose commit already holds the signing job produces a signed app; an
+  older tag is rebuilt ad hoc.
 
 The macOS build is signed with a Developer ID Application certificate, hardened runtime on, and
 notarized and stapled by Apple, so a downloaded `Lantern-mac.zip` opens without a Gatekeeper
