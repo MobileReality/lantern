@@ -3,9 +3,9 @@ lantern-pr 1
 #title Remove tests that only check skill prose
 #url https://github.com/MobileReality/lantern/pull/16
 #branch chore/remove-skill-prose-tests
-#base chore/remove-pointless-tests-1
+#base main
 #opened 2026-11-09
-#head 6191f09a118390539323a46c0496c520584cbfe8
+#head bdf49e347b58c0bac40a120922ecd41b9850c907
 #describe what Removes tests that only checked words in skill, agent and protocol markdown.
 #describe before Rewording a skill could fail the suite.
 #describe after Only structural guards on skills remain.
