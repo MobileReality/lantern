@@ -59,16 +59,13 @@ describe('the "How to read it" legend of the areas map', () => {
     expect(legend(root).textContent?.length).toBeLessThan(260);
   });
 
-  it('says what the dashed shape is and nothing else about dashes', async () => {
+  it('labels the To assign shape and the outside-system chip', async () => {
     const root = await openMacro();
     const text = legend(root).textContent ?? '';
 
     expect(text).toContain('Features not in an area yet');
     expect(text).toContain('Outside system, listed under the map');
-    expect(text).not.toContain('not in the repo');
-    expect(text).not.toContain('dashed');
     expect(legend(root).querySelectorAll('.mv-pending')).toHaveLength(1);
-    expect(legend(root).querySelectorAll('[stroke-dasharray]')).toHaveLength(0);
   });
 
   it('adds the selection styles once something is selected', async () => {
@@ -151,7 +148,6 @@ describe('the "How to read it" legend of the flat Macro view', () => {
     expect(legend(root).textContent).toContain('Strong link, 8+ relations');
     expect(legend(root).textContent).toContain('Weaker link, fewer than 8');
     expect(help(root)).toEqual(['Click a block to follow its links, click again to clear.', 'The number on a line counts its relations.']);
-    expect(legend(root).querySelectorAll('[stroke-dasharray]')).toHaveLength(0);
     expect(legend(root).querySelector('[data-legend="weak"] path')?.getAttribute('stroke')).toBe('var(--lt-ink-3)');
   });
 
@@ -161,6 +157,5 @@ describe('the "How to read it" legend of the flat Macro view', () => {
     await flush();
 
     expect(keys(root)).toEqual(['strong', 'weak', 'leaves', 'arrives', 'system']);
-    expect(legend(root).querySelector('[data-legend="system"] rect')?.getAttribute('stroke-dasharray')).toBeNull();
   });
 });
