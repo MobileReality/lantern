@@ -10,7 +10,18 @@ the app itself, see [getting-started.md](getting-started.md).
 - git, which the review, worktree and map features run.
 - Claude Code or Codex, for the assistant features: maps, explainers, plans and delegates.
 
-## Install and run
+## Download
+
+Packages are attached to each release on the
+[releases page](https://github.com/MobileReality/lantern/releases): `Lantern-mac.zip` for
+Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
+build Lantern from source as described below.
+
+The macOS app is signed ad hoc only, so Gatekeeper quarantines a downloaded zip; the steps to open
+it are in [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-release-build-distshare). The Windows
+build is not code-signed, so SmartScreen may warn on first launch.
+
+## Install and run from source
 
 Lantern is an Electron app built with pnpm (Node 22).
 
