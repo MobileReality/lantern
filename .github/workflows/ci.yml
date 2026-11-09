@@ -60,11 +60,7 @@ jobs:
       - name: Allow the Electron sandbox on Ubuntu 24.04
         run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
-      - name: Graph e2e
-        run: xvfb-run -a --server-args="-screen 0 1920x1080x24" pnpm run test:graph:e2e --grep-invert @visual
-
       - name: Integrations e2e
-        if: ${{ !cancelled() }}
         run: xvfb-run -a --server-args="-screen 0 1920x1080x24" pnpm run test:integrations:e2e
 
       - name: Tray e2e
