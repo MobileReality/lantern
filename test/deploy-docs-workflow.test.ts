@@ -12,6 +12,12 @@ describe('deploy-docs workflow', () => {
     expect(SITE_PACKAGE.packageManager).toBe(PACKAGE.packageManager);
   });
 
+  it('deploys on push to main, builds on pull requests, and can be started by hand', () => {
+    expect(WORKFLOW).toMatch(/^on:\s*\n\s+push:\s*\n\s+branches:\s*\[main\]/m);
+    expect(WORKFLOW).toMatch(/^\s+pull_request:/m);
+    expect(WORKFLOW).toMatch(/^\s+workflow_dispatch:/m);
+  });
+
   it('grants read-only contents by default and Pages rights only to the deploy job', () => {
     expect(WORKFLOW).toMatch(/^permissions:\s*\n\s+contents:\s*read\s*$/m);
     const deployAt = WORKFLOW.indexOf('\n  deploy:');

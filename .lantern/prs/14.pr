@@ -1,0 +1,27 @@
+lantern-pr 1
+# 14
+#title LAN-114: build and package on ubuntu, macOS and Windows in CI
+#url https://github.com/MobileReality/lantern/pull/14
+#branch chore/ci-build-matrix-2
+#base origin/main
+#opened 2026-11-09
+#head 795e69a5eb90efd7aa3bfa9505f5d24638c7dee9
+#describe what CI gains a build matrix on ubuntu-24.04, macos-15 and windows-2022 that packages without uploading anything.
+#describe before CI only ran typecheck, lint and tests on Ubuntu.
+#describe after A broken macOS or Windows package turns CI red on every push and pull request.
+#describe verified typecheck, lint and pnpm test green; the workflow itself is unrun.
+~ .github/workflows/ci.yml
+~ test/ci-workflow.test.ts
+#order .github/workflows/ci.yml
+#order test/ci-workflow.test.ts
+#reason .github/workflows/ci.yml A broken macOS or Windows package should turn CI red before a release tag finds it.
+#reason test/ci-workflow.test.ts The guard test must accept the three-OS build matrix and still forbid uploads and publishing.
+#story Packaging is checked on every OS
+#step actor A contributor
+#step action pushes a branch or opens a PR
+#step subject CI
+#file .github/workflows/ci.yml
+#below interaction Sees a red build for macOS or Windows packaging
+#file .github/workflows/ci.yml
+#below consequence Only Ubuntu was built and tested => Ubuntu, macOS and Windows all build
+#file test/ci-workflow.test.ts

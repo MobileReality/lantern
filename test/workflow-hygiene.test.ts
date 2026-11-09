@@ -10,13 +10,16 @@ const PINNED_PNPM = PACKAGE.packageManager.replace(/^pnpm@/, '');
 const SHA_PIN = /^[\w.-]+\/[\w.-]+(\/[\w.-]+)*@[0-9a-f]{40} # v\d+\.\d+\.\d+$/;
 const PINNED_RUNNER = /^(ubuntu-\d+\.\d+|macos-\d+|windows-\d{4})$/;
 
-const matches = (source: string, pattern: RegExp) => [...source.matchAll(pattern)].map((match) => match[1]);
+const MATRIX_RUNNER = /^\$\{\{ matrix\.os \}\}$/;
+
+const matches =(source: string, pattern: RegExp) => [...source.matchAll(pattern)].map((match) => match[1]);
 
 function hygieneOf(name: string, source: string) {
   return {
     name,
     uses: matches(source, /^\s*-?\s*uses:\s*(.+?)\s*$/gm),
     runners: matches(source, /^\s*runs-on:\s*(.*?)\s*$/gm),
+    matrixImages: (source.match(/^\s*os:\s*\[(.+)\]\s*$/m)?.[1] ?? '').split(',').map((os) => os.trim()).filter(Boolean),
     pnpmVersions: matches(source, /^\s*version:\s*['"]?([^'"\s]+)['"]?\s*$/gm),
   };
 }
@@ -46,9 +49,11 @@ describe('workflow hygiene', () => {
     for (const ref of uses) expect(ref).toMatch(SHA_PIN);
   });
 
-  it.each(WORKFLOWS)('$name uses a pinned runner image, never a floating label', ({ runners }) => {
+  it.each(WORKFLOWS)('$name uses a pinned runner image, never a floating label', ({ runners, matrixImages }) => {
     expect(runners.length).toBeGreaterThan(0);
-    for (const runner of runners) expect(runner).toMatch(PINNED_RUNNER);
+    for (const runner of runners) expect(runner).toMatch(MATRIX_RUNNER.test(runner) ? MATRIX_RUNNER : PINNED_RUNNER);
+    if (runners.some((runner) => MATRIX_RUNNER.test(runner))) expect(matrixImages.length).toBeGreaterThan(0);
+    for (const image of matrixImages) expect(image).toMatch(PINNED_RUNNER);
   });
 
   it.each(WORKFLOWS)('$name uses the pnpm version pinned in package.json', ({ uses, pnpmVersions }) => {
