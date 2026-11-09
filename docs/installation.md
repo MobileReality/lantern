@@ -40,6 +40,25 @@ only writes with a model the lantern-setup model policy accepts (on Codex: `gpt-
 same provider and project root. Claude keeps its existing resume behavior. Codex forks the
 latest valid context, preserves the parent thread, and runs the child from that project root.
 
+## Releases
+
+`.github/workflows/release.yml` builds Lantern and attaches the packages to a GitHub Release. It
+runs the same package scripts as a local build: `pnpm run dist:share` on a macOS runner gives
+`Lantern-mac.zip` (Apple silicon), and `pnpm run build:win` on a Windows runner gives
+`Lantern-win-x64.zip`. A last job creates the release for the tag when it is missing, with
+generated release notes, and uploads both files; running it again replaces them.
+
+- **Release a new version**: push a tag that starts with `v`, for example
+  `git tag v0.2.1 && git push origin v0.2.1`. The workflow starts on the push.
+- **Release a tag that already exists**: in GitHub, open Actions, choose **Release**, click
+  **Run workflow** and type the tag (for example `v0.2.0`). It builds that tag's commit, so
+  nothing needs re-tagging.
+
+The macOS build is signed ad hoc only. There is no Developer ID certificate and no notarization,
+so a downloaded `Lantern-mac.zip` is quarantined by Gatekeeper; the steps to open it anyway are in
+the `dist:share` section of [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-release-build-distshare).
+The Windows build is not code-signed, so SmartScreen may warn on first launch.
+
 ## Use Lantern with any setup
 
 Lantern is files plus scripts. The app reads a project's `.lantern/` folder (the map, plans, pull

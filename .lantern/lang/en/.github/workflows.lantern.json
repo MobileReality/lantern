@@ -2,6 +2,7 @@
  "text": {
   "ci.yml": "Runs the install, typecheck, lint and unit tests on every push and pull request on a pinned Ubuntu runner with SHA-pinned actions",
   "codeql.yml": "Scans the JavaScript and TypeScript sources with CodeQL on pushes to main, on pull requests and weekly, with read-only contents access, write access to security events only and SHA-pinned actions",
-  "deploy-docs.yml": "Builds the documentation site on every change to its sources and on pull requests, and publishes it to GitHub Pages from main with SHA-pinned actions, defaulting the site URL to docs.thelantern.dev"
+  "deploy-docs.yml": "Builds the documentation site on every change to its sources and on pull requests, and publishes it to GitHub Pages from main with SHA-pinned actions, defaulting the site URL to docs.thelantern.dev",
+  "release.yml": "Builds the macOS and Windows packages with the package scripts when a v* tag is pushed or a tag is chosen by hand, and attaches them to that tag's GitHub Release, which is created with generated notes when missing"
  }
 }

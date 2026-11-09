@@ -1,0 +1,35 @@
+lantern-pr 1
+# 12
+#title LAN-113: add release workflow publishing packages to GitHub Releases
+#url https://github.com/MobileReality/lantern/pull/12
+#branch chore/release-workflow
+#base main
+#opened 2026-11-09
+#head 19f766d12fa5bd6d9f3c792eb2d5cc48fb390b71
+#describe what A Release workflow builds the macOS and Windows packages and attaches them to a tag's GitHub Release.
+#describe what It starts on a pushed v* tag or by hand for an existing tag; the steps are documented in the installation guide.
+#describe before Packages were built by hand with the package scripts and shared as files.
+#describe after Pushing a v* tag, or running the workflow for v0.2.0, yields a release with Lantern-mac.zip and Lantern-win-x64.zip.
+#describe verified Typecheck, lint and unit tests pass and the workflow parses as YAML with every action pinned by SHA; the workflow itself has not been run.
++ .github/workflows/release.yml
+~ docs/installation.md
+#order .github/workflows/release.yml
+#order docs/installation.md
+#reason .github/workflows/release.yml Releases need packages built on macOS and Windows runners and attached to a tag's GitHub Release without a manual upload.
+#reason docs/installation.md Maintainers need the tag-or-manual-run release steps and the ad-hoc signing caveat written down next to the build info.
+#story Publishing a release
+#step actor A maintainer
+#step action pushes a v* tag or runs the Release workflow for an existing tag
+#file .github/workflows/release.yml
+#step subject the tag's GitHub Release
+#file .github/workflows/release.yml
+#below interaction Download Mac and Windows packages from the release page
+#below consequence Packages were built and shared by hand => Packages are built on CI and attached to the release
+#story Following the release steps
+#step actor A maintainer
+#step action reads how to release
+#file docs/installation.md
+#step subject the installation guide
+#file docs/installation.md
+#below interaction Tag a version or rerun an old tag without guessing
+#below consequence No written release procedure => Steps and the ad-hoc signing caveat are documented
