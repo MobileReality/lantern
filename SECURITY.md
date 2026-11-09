@@ -2,7 +2,9 @@
 
 ## Reporting a vulnerability
 
-Please report security problems privately by e-mail to **hello@themobilereality.com**. Do not open a public issue, pull request or discussion for a vulnerability, because that makes it public before a fix exists.
+Report security problems privately through GitHub: open the repository's **Security** tab, choose **Report a vulnerability** and fill in the private advisory form (private vulnerability reporting). Do not open a public issue, pull request or discussion for a vulnerability, because that makes it public before a fix exists.
+
+If you cannot use GitHub, e-mail **hello@themobilereality.com** instead.
 
 Lantern is an Electron desktop app that stores access tokens for code hosts and ticket trackers and starts coding agents on your machine, so reports about credential handling, the IPC surface, the embedded editor and the agent permissions are especially welcome.
 
