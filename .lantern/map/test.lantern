@@ -50,7 +50,7 @@ test/bundled-skills-standalone.test.ts . test cb4f3ecf7da0
 #feature skill-installer
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
 
-test/ci-workflow.test.ts . test beb9110cb536
+test/ci-workflow.test.ts . test 32fa993b7344
   < .github/workflows/ci.yml
   < package.json
 
