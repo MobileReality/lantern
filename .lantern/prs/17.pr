@@ -1,0 +1,60 @@
+lantern-pr 1
+# 17
+#title chore: merge duplicate unit tests
+#url https://github.com/MobileReality/lantern/pull/17
+#branch chore/merge-duplicate-tests
+#base chore/remove-skill-prose-tests
+#opened 2026-11-09
+#head 4c3f49757bd6c19c189e4e1e87908d637303e895
+#describe what Duplicated unit tests in five groups now live in one place each; a new hygiene test covers every workflow file.
+#describe before Pin, runner and pnpm checks repeated per workflow test; extension refusals and install guards asserted at several layers.
+#describe after One parametrised workflow-hygiene test; one refusal set at the config layer; install guards in lantern-bundle only.
+#describe verified pnpm run typecheck, pnpm run lint and pnpm test are green; the hygiene test fails on an unpinned action.
++ test/workflow-hygiene.test.ts
+~ test/ci-workflow.test.ts
+~ test/command-palette-items.test.ts
+~ test/deploy-docs-workflow.test.ts
+~ test/extensions-panel.test.ts
+~ test/extensions-project.test.ts
+~ test/install-skills.test.ts
+~ test/lantern-always-on-skills.test.ts
+~ test/macro-legend-view.test.ts
+~ test/macro-legend.test.ts
+#order test/workflow-hygiene.test.ts
+#order test/ci-workflow.test.ts
+#order test/deploy-docs-workflow.test.ts
+#order test/extensions-project.test.ts
+#order test/extensions-panel.test.ts
+#order test/lantern-always-on-skills.test.ts
+#order test/install-skills.test.ts
+#order test/command-palette-items.test.ts
+#order test/macro-legend.test.ts
+#order test/macro-legend-view.test.ts
+#reason test/workflow-hygiene.test.ts One hygiene check over every workflow file replaces the pin, runner and pnpm checks repeated per file.
+#reason test/ci-workflow.test.ts Pin, runner and pnpm checks moved to the hygiene test; run-string copies dropped.
+#reason test/command-palette-items.test.ts The Category: Title label is pinned once in the commands registry test.
+#reason test/deploy-docs-workflow.test.ts Keeps only permission, secret and deploy-from-main checks; shared hygiene and config copies dropped.
+#reason test/extensions-panel.test.ts The reviewer-slot locked refusal is already asserted by the config layer and the panel table.
+#reason test/extensions-project.test.ts Full refusal set lives at the config layer, so the project layer keeps one case per behaviour it owns.
+#reason test/install-skills.test.ts Install guards are asserted once in lantern-bundle, which owns the behaviour; the CLI keeps its output wording.
+#reason test/lantern-always-on-skills.test.ts Per-skill refusal loop duplicated the config layer; the list-agreement checks stay.
+#reason test/macro-legend-view.test.ts Dashed-outline meaning is asserted once in the legend unit test, not again in the mounted view.
+#reason test/macro-legend.test.ts The solid-outline uses check is subsumed by the single-dashed-rule check.
+#story A maintainer changes a workflow
+#step actor A maintainer
+#file test/workflow-hygiene.test.ts
+#file test/ci-workflow.test.ts
+#step action edits any workflow file
+#step subject the repository checks
+#below actor A maintainer
+#below interaction sees one failing hygiene check naming the file
+#below consequence The same rule failed in several test files => The same rule fails once
+#story A maintainer breaks an install or extension rule
+#step actor A maintainer
+#file test/extensions-project.test.ts
+#file test/install-skills.test.ts
+#step action breaks a refusal or install guard
+#step subject the unit tests
+#below actor A maintainer
+#below interaction sees the test of the layer that owns the rule fail
+#below consequence Many copies failed at once => One test fails
