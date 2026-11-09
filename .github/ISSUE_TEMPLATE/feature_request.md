@@ -1,6 +1,7 @@
 ---
 name: Feature request
 about: Suggest something Lantern should do
+title: "[Feature] "
 labels: enhancement
 ---
 

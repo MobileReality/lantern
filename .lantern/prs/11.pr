@@ -1,0 +1,32 @@
+lantern-pr 1
+# 11
+#title LAN-117: add CodeQL workflow and private vulnerability reporting
+#url https://github.com/MobileReality/lantern/pull/11
+#branch chore/codeql-security-policy
+#base main
+#opened 2026-11-09
+#head 30cfcb949308b58ff451520472bfad958ac17cbd
+#describe what Adds a CodeQL workflow for JavaScript and TypeScript and points the security policy at GitHub private vulnerability reporting.
+#describe before Vulnerabilities were reported by e-mail only and no code scanning ran.
+#describe after Reports go through the Security tab first, and CodeQL runs on pushes to main, pull requests and weekly.
+#describe verified Typecheck, lint and the unit tests are green; the workflow YAML parses and its actions are SHA-pinned. The workflow itself is unrun.
++ .github/workflows/codeql.yml
+~ SECURITY.md
+#order .github/workflows/codeql.yml
+#order SECURITY.md
+#reason .github/workflows/codeql.yml Static analysis of the JavaScript and TypeScript code must run on every change and weekly to surface vulnerabilities.
+#reason SECURITY.md Public repo needs a private reporting channel so vulnerabilities are not disclosed in public issues.
+#story Reporting a vulnerability
+#step actor A security researcher
+#step action reports a problem in Lantern
+#step subject the maintainers
+#file SECURITY.md
+#below interaction Uses the private GitHub advisory form, not a public issue
+#below consequence Reports came by e-mail only => Reports arrive privately on GitHub
+#story Code scanning
+#step actor A contributor
+#step action pushes or opens a pull request
+#step subject the code scanner
+#file .github/workflows/codeql.yml
+#below interaction Sees security findings in the Security tab
+#below consequence No automated security analysis => CodeQL scans every change and weekly

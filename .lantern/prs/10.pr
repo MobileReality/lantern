@@ -1,0 +1,28 @@
+lantern-pr 1
+# 10
+#title chore: add issue template config (LAN-118)
+#url https://github.com/MobileReality/lantern/pull/10
+#branch chore/issue-template-config
+#base main
+#opened 2026-11-09
+#head 787ab60b44f957bc165921b3c182eee820e30ccd
+#describe what Adds an issue template config that disables blank issues and links the docs and security reporting.
+#describe before No config.yml; blank issues allowed.
+#describe after Blank issues disabled; docs and security links shown.
+#describe verified pnpm run typecheck and pnpm test pass.
++ .github/ISSUE_TEMPLATE/config.yml
+~ .github/ISSUE_TEMPLATE/bug_report.md
+~ .github/ISSUE_TEMPLATE/feature_request.md
+#order .github/ISSUE_TEMPLATE/config.yml
+#order .github/ISSUE_TEMPLATE/bug_report.md
+#order .github/ISSUE_TEMPLATE/feature_request.md
+#reason .github/ISSUE_TEMPLATE/config.yml Disables blank issues and points reporters to the docs and private security reporting.
+#reason .github/ISSUE_TEMPLATE/bug_report.md Gives bug reports a recognisable default title prefix.
+#reason .github/ISSUE_TEMPLATE/feature_request.md Gives feature requests a recognisable default title prefix.
+#story Reporting an issue
+#step actor A reporter
+#step action opens
+#file .github/ISSUE_TEMPLATE/config.yml
+#step subject the new issue page
+#below interaction Can pick a template or follow the docs and security links
+#below consequence Blank issues were allowed => Only templates are offered
