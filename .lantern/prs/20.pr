@@ -1,0 +1,66 @@
+lantern-pr 1
+# 20
+#title Sign and notarize the macOS release build
+#url https://github.com/MobileReality/lantern/pull/20
+#branch feat/mac-sign-notarize
+#base origin/main
+#opened 2026-11-09
+#head 1a40ce67264b5cfa1836c621a448bbbe60cda2b0
+#describe what The release workflow's macOS job signs the app with the Developer ID certificate, notarizes it, staples the ticket and checks it, in a protected release environment, only from a v* tag.
+#describe what Signing and notarization are unrun: the first v* tag is the real test.
+#describe before The macOS zip was ad hoc signed and not notarized, so Gatekeeper quarantined it.
+#describe after The zip is built, signed inside out with hardened runtime, notarized, stapled, verified and then zipped under the same name.
+#describe verified typecheck, lint and the full test suite pass; plutil and bash -n pass; sign ran ad hoc on a built app and notarize against a stub xcrun. No real signing or notarization ran.
++ build/entitlements.mac.inherit.plist
++ build/entitlements.mac.plist
++ scripts/mac-ci-keychain.sh
++ scripts/mac-sign-notarize.sh
++ test/release-workflow.test.ts
+~ .github/workflows/release.yml
+~ CONTRIBUTING.md
+~ README.md
+~ docs/installation.md
+~ test/workflow-hygiene.test.ts
+#order .github/workflows/release.yml
+#order scripts/mac-sign-notarize.sh
+#order scripts/mac-ci-keychain.sh
+#order build/entitlements.mac.plist
+#order build/entitlements.mac.inherit.plist
+#order test/release-workflow.test.ts
+#order test/workflow-hygiene.test.ts
+#order CONTRIBUTING.md
+#order docs/installation.md
+#order README.md
+#reason build/entitlements.mac.inherit.plist Helper apps and the bundled node only need JIT, so they get nothing else
+#reason build/entitlements.mac.plist Hardened runtime blocks JIT, the microphone, the camera and Apple events unless the app asks for exactly those
+#reason scripts/mac-ci-keychain.sh The runner has no keychain holding the certificate, so a throwaway one is built from the secret and always deleted
+#reason scripts/mac-sign-notarize.sh Keeps the signing logic in one readable script that CI and the maintainer run the same way, instead of a long inline YAML
+#reason test/release-workflow.test.ts A mistake in the signing job would leak a secret or ship an unsigned app, so its shape is pinned
+#reason .github/workflows/release.yml Releases must ship an app Gatekeeper trusts, so signing and notarizing run in a protected environment, tag-only, with secrets scoped to single steps
+#reason CONTRIBUTING.md The maintainer needs the environment, secrets, tag ruleset and local signing steps written down, without any real value
+#reason README.md The download note still said the macOS app was ad hoc signed
+#reason docs/installation.md Download and Releases told users the build was ad hoc; they now describe the signed build and how an older tag behaves
+#reason test/workflow-hygiene.test.ts Secrets must never spread to other workflows or jobs, so every workflow is checked for them
+#story A maintainer ships a signed macOS release
+#step actor Maintainer
+#file .github/workflows/release.yml
+#step action pushes a v* tag and approves the release deployment
+#file .github/workflows/release.yml
+#file CONTRIBUTING.md
+#step subject the macOS app in the release
+#file scripts/mac-sign-notarize.sh
+#file scripts/mac-ci-keychain.sh
+#file build/entitlements.mac.plist
+#below interaction People download Lantern-mac.zip and macOS asks only once to open it
+#file docs/installation.md
+#file README.md
+#below consequence Ad hoc signed, quarantined by Gatekeeper => Developer ID signed, notarized and stapled
+#story Nobody else can reach the signing secrets
+#step actor Anyone starting the workflow
+#file .github/workflows/release.yml
+#step action runs it from a branch, a fork or a mismatched tag
+#file test/release-workflow.test.ts
+#step subject the signing job
+#file test/workflow-hygiene.test.ts
+#below interaction The job stops before any secret is delivered
+#below consequence Release job had no guard on the ref => Only a v* tag in the release environment signs
