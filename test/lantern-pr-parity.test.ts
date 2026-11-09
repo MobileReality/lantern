@@ -363,6 +363,7 @@ describe('description (#describe): both parsers agree', () => {
     ['an unclosed comment marker', 'Admins can refund. <!-- cut', 'Admins can refund.'],
     ['a stray comment end', 'Admins can refund. -->', 'Admins can refund.'],
     ['a comment the browser closes with --!>', 'Admins <!-- internal --!>can refund.', 'Admins can refund.'],
+    ['a comment closed at once by <!-->', 'Admins<!--> can refund.', 'Admins can refund.'],
     ['a comment marker that only appears once the first comment is gone', 'Admins <!<!-- x -->-- can refund.', 'Admins'],
     ['a comment end that only appears once the first one is gone', 'Admins can refund.--<!-- x -->>', 'Admins can refund.'],
   ])('both strip %s', (_label, raw, shown) => {
