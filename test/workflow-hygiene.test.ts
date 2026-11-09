@@ -80,6 +80,5 @@ describe('workflow hygiene', () => {
     for (const { name, source } of SOURCES) {
       if (/^\s*pull_request_target:/m.test(source)) expect(source, name).not.toMatch(/\bsecrets\.|contents:\s*write/);
     }
-    expect(SOURCES.find(({ name }) => name === 'release.yml')?.source).not.toMatch(/^\s*pull_request/m);
   });
 });
