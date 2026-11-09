@@ -1,0 +1,22 @@
+lantern-pr 1
+# 8
+#title docs: explain the macOS App Management notification
+#url https://github.com/MobileReality/lantern/pull/8
+#branch docs/macos-app-management-notice
+#base main
+#opened 2026-11-09
+#head f0075a9c32a3ce58deb72c22cc57b628abc80caf
+#describe what Adds a troubleshooting section for the macOS App Management notification blaming Lantern.
+#describe before No entry explained the notification.
+#describe after The page explains the cause, that it is harmless, and how to grant App Management access.
+#describe verified pnpm run typecheck and pnpm test green.
+~ TROUBLESHOOTING.md
+#order TROUBLESHOOTING.md
+#reason TROUBLESHOOTING.md Users hit the App Management notification with no explanation of the cause or fix.
+#story Understanding the macOS notification
+#step actor A Lantern user
+#step action reads the troubleshooting page
+#step subject the App Management notification
+#file TROUBLESHOOTING.md
+#below interaction Can grant Lantern App Management access
+#below consequence The notification had no explanation => The cause and the fix are documented
