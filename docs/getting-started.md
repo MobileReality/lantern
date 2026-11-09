@@ -15,21 +15,21 @@ embedded editor.
 
 ## Work through an AI chat
 
-Lantern is meant to be used by talking to an AI chat in your project, in any harness. Installing the
-Lantern skills into a project and using them is done by asking the AI, not by running scripts by hand.
+Lantern is meant to be used by talking to an AI chat in your project. Opening a project in Lantern installs
+its skills; using them is done by asking the AI, not by running scripts by hand.
 You write the opening prompt in your own words. For example:
 
 - "Set up the Lantern map for this project" (`lantern-setup`).
-- "Plan this with lantern-plan before we start: <feature>" (`lantern-plan`).
-- "Delegate this with lantern-delegate: <task>" (`lantern-delegate`).
+- "Plan this with lantern-plan before we start: `<feature>`" (`lantern-plan`).
+- "Delegate this with lantern-delegate: `<task>`" (`lantern-delegate`).
 - "Record the PR in Lantern" (`lantern-sync`).
 
 What happens next:
 
 - A delegated task is scoped by the chat, which dispatches a background delegate in its own git worktree
   and stays free for you.
-- The delegate opens a pull request that ends with a `.lantern/prs/<id>.pr` record, which Lantern shows.
-- A plan is approved section by section in the Lantern app before any delegate runs it.
+- When you chose pull requests, the delegate opens one that ends with a `.lantern/prs/<id>.pr` record, which Lantern shows.
+- You approve a plan section by section in the chat before any delegate runs it; Lantern shows it next to the map.
 
 The chat is where you talk; Lantern shows the result: the map, the pull requests and the plans.
 
