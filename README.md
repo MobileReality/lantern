@@ -74,7 +74,9 @@ pnpm run lint        # biome lint --diagnostic-level=error
 pnpm test
 ```
 
-CI never launches Electron, runs the Playwright e2e or signs anything. The stack, the project
+CI runs the unit tests, builds on Linux, macOS and Windows, runs the Playwright e2e for integrations,
+the tray, pull request host state and skills (the graph suite is not run in CI), and publishes a coverage
+report as a build artifact. It signs nothing. The stack, the project
 layout, the code and testing conventions and the build pipeline are in
 [CONTRIBUTING.md](CONTRIBUTING.md); a map of the source is in [docs/architecture.md](docs/architecture.md).
 

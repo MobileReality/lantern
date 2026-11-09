@@ -114,10 +114,13 @@ pnpm run build:win      # Windows build
 ```
 
 **Before opening a PR:** `pnpm run typecheck`, `pnpm run lint` and `pnpm test` must all be clean.
-`.github/workflows/ci.yml` runs exactly these three on every push and pull request, on a plain Linux
-runner (Node 22, `pnpm install --frozen-lockfile`). It never launches Electron, runs the Playwright
-e2e or signs anything; `test/ci-workflow.test.ts` fails when the workflow drops any of the three
-commands or its pnpm version differs from `packageManager`.
+`.github/workflows/ci.yml` runs these three on every push and pull request on a plain Linux runner
+(Node 22, `pnpm install --frozen-lockfile`), builds on Linux, macOS and Windows, and has two more jobs:
+`e2e` runs the Playwright suites for integrations, the tray, pull request host state and skills under
+`xvfb-run` with the harness windows shown (`LANTERN_GRAPH_VISIBLE=1`, `LANTERN_HARNESS_VISIBLE=1`); the graph
+suite is not run in CI because WebGL is unavailable there. `coverage` runs `pnpm coverage`, writes the totals to
+the job summary and uploads `coverage/` as an artifact. Nothing is signed or published;
+`test/ci-workflow.test.ts` pins where Electron runs and artifacts may be uploaded.
 
 ## Build pipeline
 
