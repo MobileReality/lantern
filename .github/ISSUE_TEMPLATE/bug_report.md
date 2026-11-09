@@ -1,6 +1,7 @@
 ---
 name: Bug report
 about: Something in Lantern does not work as it should
+title: "[Bug] "
 labels: bug
 ---
 
