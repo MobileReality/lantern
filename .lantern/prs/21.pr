@@ -1,0 +1,27 @@
+lantern-pr 1
+# 21
+#title docs: add the GitHub social preview image
+#url https://github.com/MobileReality/lantern/pull/21
+#branch docs/social-preview
+#base main
+#opened 2026-11-09
+#head 64fa7784943e357dcc785984c107a15bffcf3b88
+#describe what Adds the 1280x640 GitHub social preview card and the self-contained HTML it is rendered from, plus the one-line re-render command.
+#describe before No social preview image; GitHub shows its generic repository card.
+#describe after A ready PNG (167 KB) with the logo, name and README tagline, to upload in Settings, General, Social preview.
+#describe verified pnpm run typecheck, pnpm test, and file on the PNG (1280 x 640), all green.
++ docs/assets/social-preview/README.md
++ docs/assets/social-preview/social-preview.html
++ docs/assets/social-preview/social-preview.png
+#order docs/assets/social-preview/social-preview.html
+#order docs/assets/social-preview/social-preview.png
+#order docs/assets/social-preview/README.md
+#reason docs/assets/social-preview/README.md Records how to re-render the card so the next edit does not need rediscovering.
+#reason docs/assets/social-preview/social-preview.html Gives the repository a branded card source that stays editable and re-renderable.
+#reason docs/assets/social-preview/social-preview.png GitHub needs a 1280x640 image to show instead of its generic repository card.
+#story The maintainer sets the repository's social preview
+#step actor The maintainer
+#step action uploads the committed image in the repository settings
+#step subject the GitHub repository page
+#below interaction Share the repository link and see the Lantern card
+#below consequence Links show GitHub's generic card => Links show the Lantern logo and tagline
