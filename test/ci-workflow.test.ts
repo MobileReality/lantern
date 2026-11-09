@@ -86,15 +86,22 @@ describe('ci workflow', () => {
   });
 
   it('uploads artifacts only from the e2e and coverage jobs', () => {
-    for (const job of ['check', 'build']) expect(JOBS.get(job)).not.toMatch(/upload-artifact/);
+    for (const [job, text] of JOBS) if (!['e2e', 'coverage'].includes(job)) expect(text, job).not.toMatch(/upload-artifact/);
     for (const job of ['e2e', 'coverage']) expect(JOBS.get(job)).toMatch(/actions\/upload-artifact@/);
   });
 
   it('launches no Electron, e2e or signing step outside the e2e job and the packaging steps', () => {
-    for (const job of ['check', 'coverage']) {
-      for (const step of runStepsOf(job)) expect(step).not.toMatch(/playwright|test:graph|dist|sign|electron|start|xvfb/);
+    for (const job of JOBS.keys()) {
+      if (job === 'e2e') continue;
+      for (const step of runStepsOf(job).filter((run) => !PACKAGING_STEPS.includes(run))) expect(step, job).not.toMatch(/playwright|test:graph|dist|sign|electron|start|xvfb/);
     }
-    for (const step of runStepsOf('build').filter((run) => !PACKAGING_STEPS.includes(run))) expect(step).not.toMatch(/playwright|test:graph|dist|sign|electron|start|xvfb/);
+  });
+
+  it('hides no command in a block run step except the coverage summary', () => {
+    for (const [job, text] of JOBS) {
+      const blocks = [...text.matchAll(/^\s*-?\s*run:\s*[|>][-+]?\s*$/gm)];
+      expect(blocks.length, job).toBe(job === 'coverage' ? 1 : 0);
+    }
   });
 
   it('never lets a failing step pass', () => {
