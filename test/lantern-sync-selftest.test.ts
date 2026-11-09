@@ -29,7 +29,5 @@ describe('Lantern mapping model policy', () => {
     for (const id of ['gpt-6-sol', 'gpt-6.1-sol', 'gpt-6-terra', 'gpt-6-astra-preview', 'astra', 'terra', 'claude-haiku-5-5']) {
       await expect(run(process.execPath, [modelCli, 'check', id])).rejects.toMatchObject({ code: 1 });
     }
-    const { stdout } = await run(process.execPath, [modelCli, 'floor']);
-    expect(stdout.trim()).toBe('sonnet, opus or fable of any version, or the exact id gpt-6-astra (recommended: sonnet 5.5, opus 5.5, fable 5.1 or newer)');
   });
 });

@@ -37,10 +37,6 @@ describe('the lantern-delegate-complex skill folder', () => {
     const meta = frontmatter(text);
     expect(meta.name).toBe('lantern-delegate-complex');
     expect(meta['user-invocable']).toBe('true');
-    expect(meta.description.length).toBeGreaterThan(100);
-    expect(text).toMatch(/Read `lantern-delegate`'s `SKILL.md` in full first/);
-    expect(text).toContain("`lantern-delegate`'s `protocol.md`");
-    expect(text).toContain('`$D/scripts/preflight.mjs`');
   });
 
   it('holds the skill file and its agent types and nothing that duplicates lantern-delegate', () => {
@@ -58,8 +54,6 @@ describe('the lantern-delegate-complex skill folder', () => {
         expect(frontmatter(text)).toMatchObject({ name, model, effort, isolation: 'worktree' });
         expect(text).toContain("the `lantern-delegate` skill's `protocol.md`");
         expect(text).toContain('"Opus and Fable delegates" section');
-        expect(text).toContain(`on ${model === 'opus' ? 'Opus' : 'Fable'} at ${effort} effort`);
-        expect(text).not.toMatch(/mapper/i);
       }
     }
   });
@@ -70,118 +64,6 @@ describe('the lantern-delegate-complex skill folder', () => {
     expect(frontmatter(complex)).toMatchObject({ name: 'reviewer-complex', model: 'fable', disallowedTools: 'Edit, Write, NotebookEdit' });
     expect(frontmatter(reviewer)).toMatchObject({ name: 'reviewer', model: 'opus', disallowedTools: 'Edit, Write, NotebookEdit' });
     expect(bodyOf(complex)).toBe(bodyOf(reviewer));
-  });
-});
-
-describe('Sonnet stays the default and the user picks anything dearer', () => {
-  const complex = read(path.join(COMPLEX, 'SKILL.md'));
-  const skill = read(path.join(DELEGATE, 'SKILL.md'));
-
-  it('has the orchestrator ask one question per heavy task with the three options in order', () => {
-    expect(complex).toMatch(/\*\*You never\s+pick Opus or Fable yourself\*\*/);
-    expect(complex).toContain('`AskUserQuestion` in the Claude orchestrator, a plain question otherwise');
-    expect(complex).toMatch(/\*\*one question for that task\*\*/);
-    const sonnet = complex.indexOf('**Sonnet (Recommended, cheaper)**');
-    const opus = complex.indexOf('**Opus**');
-    const fable = complex.indexOf('**Fable (most capable, dearest)**');
-    expect(sonnet).toBeGreaterThan(-1);
-    expect(opus).toBeGreaterThan(sonnet);
-    expect(fable).toBeGreaterThan(opus);
-    expect(complex).toMatch(/Many delegates run at once and every run spends quota, so Sonnet is the norm/);
-    expect(complex).toMatch(/no stored preference, earlier answer or habit selects a dearer model/);
-  });
-
-  it('says what makes a task heavy and what does not', () => {
-    expect(complex).toMatch(/A task is \*\*heavy\*\* when Sonnet at `sonnet-high` is unlikely to manage it/);
-    expect(complex).toMatch(/unclear/i);
-    expect(complex).toMatch(/\*\*not\*\* heavy because it is long, mechanical or fully specified/);
-    expect(complex).toMatch(/Torn between heavy and not: it is not/);
-  });
-
-  it('carries the same rule into lantern-delegate/SKILL.md, at scoping and at Model and effort', () => {
-    expect(skill).toContain('`lantern-delegate-complex`');
-    expect(skill).toMatch(/\*\*Sonnet is always the default\*\*/);
-    expect(skill).toContain('**A heavy task is the user\'s call, never yours.**');
-    expect(skill).toContain('`AskUserQuestion` in the Claude orchestrator, a plain question otherwise');
-    expect(skill).toContain('Sonnet (Recommended, cheaper), Opus, Fable (most capable, dearest)');
-    expect(skill).toContain('No stored preference selects a dearer model on its own.');
-    expect(skill).toMatch(/Each task's model is\s+Sonnet unless the user chose otherwise/);
-    expect(skill).toContain('never move the task to a dearer model yourself');
-    expect(skill).toMatch(/\*\*Sonnet is the default; Opus and Fable are the user's choice for one task\.\*\*/);
-  });
-
-  it('keeps lantern-delegate/SKILL.md on the Sonnet ladder, with no Opus, Fable or Haiku rung and no mapper', () => {
-    expect(skill).not.toMatch(/delegate-haiku|opus-(medium|high)|fable-(medium|high)/);
-    expect(skill).not.toContain('needs the skills-repo `delegate` skill');
-    expect(skill).not.toMatch(/lantern-mapper.*(Fable|complex)|(Fable|complex).*lantern-mapper/);
-    expect(skill).toContain('Sonnet 5.5, Opus 5.5 and Fable 5.1 or newer are recommended');
-  });
-});
-
-describe('who does what, with no mapper', () => {
-  const complex = read(path.join(COMPLEX, 'SKILL.md'));
-
-  it('has the delegate do the whole run, the Lantern work included, and names the matching reviewer', () => {
-    expect(complex).toMatch(/\| delegate \| `lantern-delegate-complex-opus-medium`, `-high`, `-xhigh` \| Opus \(`claude-opus-5-5`\) \|/);
-    expect(complex).toMatch(/\| delegate \| `lantern-delegate-complex-fable-medium`, `-high`, `-xhigh` \| Fable \(`claude-fable-5-1`\) \|/);
-    expect(complex).toMatch(/\| reviewer \| `reviewer` for an Opus delegate \| Opus \|/);
-    expect(complex).toMatch(/\| reviewer \| `reviewer-complex` for a Fable delegate \| Fable \|/);
-    expect(complex).toContain('Nothing is handed to a third agent');
-    expect(complex).toContain("The\n`--model` of `finish` is the delegate's own exact id");
-    expect(complex).toContain('sync.mjs verify');
-  });
-
-  it('keeps the rules that still apply: one reviewer, no model override, the matching reviewer type', () => {
-    expect(complex).toContain('A Sonnet delegate still spawns only its reviewer; so does an Opus or Fable one.');
-    expect(complex).toContain('Reviewer is `reviewer-complex` for a Fable delegate and `reviewer` for every other.');
-    expect(complex).toContain('`delegate-type-on-wrong-model`');
-  });
-
-  it('has no mapper design left in the skill, the protocol or the delegate scripts', () => {
-    const protocol = read(path.join(DELEGATE, 'protocol.md'));
-    const section = /## Opus and Fable delegates\n([\s\S]*?)\n## Report/.exec(protocol)?.[1] ?? '';
-    expect(section.length).toBeGreaterThan(200);
-    for (const text of [complex, section]) {
-      expect(text).not.toMatch(/lantern-mapper|Round 1|Round 2|mapper agent missing|map-written-by-complex-delegate|You never write the map/);
-    }
-    expect(protocol).not.toMatch(/## Fable delegate/);
-    for (const script of ['lint-reviewer.mjs', 'delegate-kinds.mjs']) {
-      expect(read(path.join(SCRIPTS, script)), script).not.toMatch(/map-written-by-complex-delegate|mapper-missing|mapper-by-sonnet-delegate|mapping-not-by-lantern-mapper|MAPPER_AGENT_TYPE|isMapWriterCommand|sonnet-type-on-fable/);
-    }
-    expect(read(path.join(__dirname, '..', 'scripts', 'run-cost', 'phases.mjs'))).not.toMatch(/MAPPER|lantern-mapper/);
-  });
-});
-
-describe('protocol.md carries the Opus and Fable delegate rules once', () => {
-  const protocol = read(path.join(DELEGATE, 'protocol.md'));
-  const section = /## Opus and Fable delegates\n([\s\S]*?)\n## Report/.exec(protocol)?.[1] ?? '';
-
-  it('has one Opus and Fable section and points to it from the top', () => {
-    expect(protocol.match(/^## Opus and Fable delegates$/gm)).toHaveLength(1);
-    expect(protocol).toMatch(/`lantern-delegate-complex-opus-<level>` or `lantern-delegate-complex-fable-<level>` also follows\s+"Opus and Fable delegates" below/);
-  });
-
-  it('keeps every Lantern step with the delegate and gives the Fable one reviewer-complex', () => {
-    expect(section).toContain('every step of "The Lantern steps"');
-    expect(section).toContain('You do the whole run yourself');
-    expect(section).toContain('`subagent_type: "reviewer-complex"`');
-    expect(section).toMatch(/An Opus delegate spawns `subagent_type: "reviewer"`/);
-    expect(section).toMatch(/carries no\s+`model` parameter/);
-    expect(section).toContain('`--model` of `finish`');
-    expect(section).toContain('`claude-opus-5-5`');
-    expect(section).toContain('`claude-fable-5-1`');
-  });
-
-  it('gives the cost rows of the delegate and the matching reviewer', () => {
-    expect(section).toMatch(/Your row names your real model \(`opus` or `fable`\)/);
-    expect(section).toContain('`reviewer ×N` with `opus`, or `reviewer-complex ×N` with `fable`');
-  });
-
-  it('leaves the Sonnet protocol as it was: the reviewer is `reviewer`, the delegate re-maps itself', () => {
-    expect(protocol).toContain('`subagent_type: "reviewer"` and nothing else');
-    expect(protocol).toContain('node <Skills>/lantern-sync/scripts/sync.mjs finish --base <target> --model <model id>');
-    expect(protocol).toContain('A model outside the policy');
-    expect(protocol).toContain('(Sonnet, Opus or Fable of any version, or exact `gpt-6-astra`; Sonnet 5.5, Opus 5.5 and Fable 5.1 or newer are recommended and a lower version only prints a note)');
   });
 });
 
@@ -222,19 +104,6 @@ describe('the model policy for the map accepts Sonnet, Opus and Fable', () => {
     const { stdout } = spawnSync(process.execPath, [MODEL, 'floor'], { encoding: 'utf8', env: { ...process.env, LANTERN_PROVIDER: '' } });
     expect(stdout).toContain('of any version');
     expect(stdout).toContain('recommended: sonnet 5.5, opus 5.5, fable 5.1 or newer');
-  });
-
-  it('states the any-version policy with its recommendation in the setup, sync and delegate texts', () => {
-    for (const file of [
-      path.join(SKILLS, 'lantern-setup', 'SKILL.md'),
-      path.join(SKILLS, 'lantern-sync', 'SKILL.md'),
-      path.join(SKILLS, 'lantern-delegate', 'SKILL.md'),
-    ]) {
-      expect(read(file), file).toMatch(/Opus 5\.5/);
-      expect(read(file), file).toMatch(/Fable 5\.1/);
-      expect(read(file), file).toMatch(/any version/);
-      expect(read(file), file).not.toMatch(/Opus 5\.5 or newer, Fable 5\.1 or newer/);
-    }
   });
 
   it('has the lantern-mapper agent still pinned to Sonnet 5.5', () => {

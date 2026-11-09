@@ -211,13 +211,6 @@ test/lantern-delegate-scripts.test.ts . test 328e1f1fcfcc
   = skills/lantern-delegate/scripts/preflight.mjs
   = skills/lantern-sync/scripts/sync.mjs
 
-test/lantern-delegate-pick-conventions.test.ts . test a6afc42c7c75
-#feature delegate-runs
-  < skills/lantern-delegate/SKILL.md
-  < skills/lantern-delegate/agents/reviewer.md
-  < skills/lantern-code-reviewer/README.md
-  < skills/lantern-code-reviewer/SKILL.md
-
 test/lantern-delegate-lint-reviewer.test.ts . test b98b884bab07
 #feature delegate-runs
   = skills/lantern-delegate/scripts/lint-reviewer.mjs
@@ -229,7 +222,7 @@ test/lantern-delegate-check-skill-use.test.ts . test 4b6d542ec7f6
   = skills/lantern-delegate/scripts/required-skills.mjs
   < skills/lantern-delegate/protocol.md
 
-test/lantern-delegate-complex.test.ts . test 7bd6d5268e2d
+test/lantern-delegate-complex.test.ts . test 09d25326981e
 #feature delegate-runs
   < skills/lantern-delegate-complex/SKILL.md
   < skills/lantern-delegate-complex/agents/lantern-delegate-complex-fable-high.md
@@ -250,7 +243,7 @@ test/lantern-delegate-complex.test.ts . test 7bd6d5268e2d
   = skills/lantern-delegate/scripts/required-skills.mjs
   = skills/lantern-setup/scripts/model.mjs
 
-test/lantern-delegate-required-skills.test.ts . test b09e41a02f5e
+test/lantern-delegate-required-skills.test.ts . test e514add15be6
 #feature delegate-runs
   < skills/lantern-delegate/scripts/bundled-skills.mjs
   = skills/lantern-delegate/scripts/required-skills.mjs
@@ -262,7 +255,7 @@ test/lantern-delegate-skill-reads.test.ts . test 7ec978bdd63d
 #feature delegate-runs
   = skills/lantern-delegate/scripts/lint-skill-reads.mjs
 
-test/lantern-delegate-skill.test.ts . test 5a2c9392d823
+test/lantern-delegate-skill.test.ts . test eb1c76c67eb9
 #feature delegate-runs
   < skills/lantern-delegate/README.md
   < skills/lantern-delegate/SKILL.md
@@ -498,7 +491,7 @@ test/lantern-bundle-switched-off.test.ts . test 61856ebc5ef4
   < src/main/main.ts
   = test/support/bundle-fixtures.ts
 
-test/lantern-bundle.test.ts . test c76dc513c6fa
+test/lantern-bundle.test.ts . test 0a101a6540a9
 #feature skill-installer
   = scripts/lantern-bundle.mjs
   = src/main/agent.ts
@@ -508,7 +501,7 @@ test/lantern-bundle.test.ts . test c76dc513c6fa
   < src/main/windows.ts
   = test/support/bundle-fixtures.ts
 
-test/lantern-code-reviewer.test.ts . test 40b4968256c9
+test/lantern-code-reviewer.test.ts . test 51453ba4c0e2
 #feature skill-installer
   < skills/lantern-delegate/agents/reviewer.md
   < skills/lantern-delegate/scripts/bundled-skills.mjs#BUNDLED_SKILLS
@@ -627,7 +620,7 @@ test/lantern-focus.test.ts . test 1e93d0c3439e
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-headless-permissions.test.ts . test c4ec78a004f8
+test/lantern-headless-permissions.test.ts . test 5670925862a3
 #feature agent-runs
   = skills/lantern-setup/SKILL.md
   = skills/lantern-setup/agents/lantern-mapper.md
@@ -1175,7 +1168,7 @@ test/lantern-plan-question-modal.test.ts . test 639ac49dd82f
   = test/helpers/lantern-macro-fixture.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-plan-skills.test.ts . test 964b4ca1151c
+test/lantern-plan-skills.test.ts . test e8d623973820
 #feature planning
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
   = skills/lantern-plan/scripts/plan.mjs
@@ -1549,7 +1542,7 @@ test/lantern-sync-record-mirror.test.ts . test 6ade1aeb2746
   = test/helpers/git-repo.ts
   = test/helpers/lantern-plan-world.ts
 
-test/lantern-sync-selftest.test.ts . test b2c73eaf95b1
+test/lantern-sync-selftest.test.ts . test 8a7a15c03f9c
 #feature map-sync
   = skills/lantern-setup/scripts/model.mjs
   = skills/lantern-sync/scripts/selftest.mjs
@@ -2450,7 +2443,7 @@ test/lantern-delegate-delivery-flow.test.ts . test b55eee1a502f
   = scripts/e2e-delegate/fake-lantern.mjs
   = scripts/skill-test/run.mjs
 
-test/lantern-delegate-delivery.test.ts . test 068733564c6b
+test/lantern-delegate-delivery.test.ts . test b65c16bfca54
 #feature delegate-runs
   < skills/lantern-delegate/SKILL.md
   < skills/lantern-delegate/protocol.md

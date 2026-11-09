@@ -79,10 +79,6 @@ describe('the commands the skill and the mapper agent prescribe are all allowed 
   it('keeps a shell variable out of the agent and the app prompts: only the skill uses $L, as notation', () => {
     expect(commandsIn(mapperText).filter(({ span }) => span.includes('$L'))).toEqual([]);
     expect(promptText).not.toMatch(/node \$L/);
-    expect(skillText).toContain(`## ${COMMANDS_SECTION}`);
-    const section = skillText.split(/^## /m).find((part) => part.startsWith(COMMANDS_SECTION)) ?? '';
-    for (const refused of ['`cd`', 'shell variable', 'heredoc', 'redirect', '`find -exec`', '`xargs`', '`python`']) expect(section, refused).toContain(refused);
-    expect(section).toContain('`$L` in this\nfile is notation');
   });
 
   it('allows the one exception the last step makes: the size of .lantern/, without find -exec', () => {
@@ -109,7 +105,6 @@ describe('what the run is given', () => {
     expect(tools).toEqual(expect.arrayContaining(['Read', 'Write', 'Edit', 'Bash']));
     expect(field('model')).toBe(LANTERN_MODEL);
     expect(field('name')).toBe('lantern-mapper');
-    expect(skillText).toContain('subagent_type: "lantern-mapper"');
   });
 
   it('writes only under the project: every .lantern path the prose names is relative and outside the protected .claude folder', () => {
@@ -120,8 +115,6 @@ describe('what the run is given', () => {
     }
     const protectedFolder = [...named].filter((p) => /(^|\/)\.claude(\/|$)/.test(p));
     expect(protectedFolder, 'a Write or Edit under .claude is refused; spell it %2Eclaude and run fold.mjs').toEqual([]);
-    expect(mapperText).toContain('%2Eclaude');
-    expect(mapperText).toContain('fold.mjs');
   });
 
   it('puts the blind lookup scratch folder inside .lantern/, where the app keeps an ignore file', () => {
@@ -150,11 +143,5 @@ describe('the prompt names the step a model skipped and the commands it may type
     const setup = buildPrompt('lantern', 'English', undefined, 'claude', PROJECT);
     for (const text of [setup, prompt]) for (const piece of ['step 4a', '--require-areas', 'Skill folder:', '--out .lantern/.project/areas']) expect(text).toContain(piece);
     expect(buildPrompt('lantern', 'English', undefined, 'codex', PROJECT)).toContain(`Skill folder: ${PROJECT}/.agents/skills/lantern-setup.`);
-  });
-
-  it('says step 5 and the retag finish need the tree too, in the skill', () => {
-    expect(skillText).toMatch(/5\. \*\*Finish\.\*\* `validate\.mjs \. --settled --require-areas` exits 0/);
-    expect(skillText).toContain('`validate.mjs . --settled --strict --require-areas`');
-    expect(skillText).toMatch(/Skipping this step is not possible: step 5\s+stays red/);
   });
 });

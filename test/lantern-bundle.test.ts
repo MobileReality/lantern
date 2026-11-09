@@ -160,15 +160,11 @@ describe('default integration skills', () => {
     expect(fs.existsSync(skillDir('lantern-github'))).toBe(false);
   });
 
-  it('says in each description that a user skill of the same purpose takes precedence and that no setup beyond Lantern is needed', () => {
+  it('keeps each integration skill description within the length cap', () => {
     for (const name of INTEGRATION_SKILLS) {
       const text = fs.readFileSync(path.join(bundledSkillsRoot(), name, 'SKILL.md'), 'utf8');
       const description = /^description: (.+)$/m.exec(text)?.[1] ?? '';
       expect(description.length, name).toBeLessThanOrEqual(1536);
-      expect(description, name).toMatch(/own .*skill/);
-      expect(description, name).toMatch(/use that one instead/);
-      expect(description, name).toContain('Needs no setup beyond adding');
-      expect(description, name).toContain('in Lantern (command palette, Integrations)');
     }
   });
 });

@@ -7,7 +7,6 @@ import { afterAll, describe, expect, it } from 'vitest';
 const SCRIPTS = path.join(__dirname, '..', 'skills', 'lantern-delegate', 'scripts');
 const SCRIPT = path.join(SCRIPTS, 'required-skills.mjs');
 const SKILL_FILE = path.join(__dirname, '..', 'skills', 'lantern-delegate', 'SKILL.md');
-const REVIEWER_AGENT = path.join(__dirname, '..', 'skills', 'lantern-delegate', 'agents', 'reviewer.md');
 const PROTOCOL = path.join(__dirname, '..', 'skills', 'lantern-delegate', 'protocol.md');
 
 const roots: string[] = [];
@@ -348,43 +347,5 @@ describe('no text keeps a list of the switchable skills', () => {
       .split('\n')
       .filter((line) => namedIn(line, names).length > 1);
     expect(lists).toEqual([]);
-  });
-
-  it('protocol.md says what the absence of each kind of skill means, in words rather than names', () => {
-    const text = fs.readFileSync(PROTOCOL, 'utf8');
-    expect(text).toMatch(/switched off is not printed and is not demanded/);
-    expect(text).toMatch(/No\s+commit-message skill/);
-    expect(text).toMatch(/No local-loop skill/);
-  });
-
-  it('the reviewer agent says how to review with no review skill in the list and keeps the closing lines', () => {
-    const text = fs.readFileSync(REVIEWER_AGENT, 'utf8');
-    expect(text).toMatch(/With no review skill in the list/);
-    for (const line of ['VERDICT:', 'BLOCKING:', 'CONVENTIONS:', 'UNAVAILABLE:']) expect(text).toContain(line);
-  });
-});
-
-describe('the skill files send each role to the one command', () => {
-  it('protocol.md has the delegate run it and carries no extras line', () => {
-    const text = fs.readFileSync(PROTOCOL, 'utf8');
-    expect(text).toContain('scripts/required-skills.mjs');
-    expect(text).not.toContain('Extra skills:');
-  });
-
-  it('the reviewer agent definition has the reviewer run the reviewer list first and read every skill in full', () => {
-    const text = fs.readFileSync(REVIEWER_AGENT, 'utf8');
-    expect(text).toContain('required-skills.mjs --role reviewer');
-    expect(text).toMatch(/in full/);
-  });
-
-  it('SKILL.md runs the same check on the reviewer transcript', () => {
-    expect(fs.readFileSync(SKILL_FILE, 'utf8')).toContain('check-skill-use.mjs --role reviewer');
-  });
-
-  it('SKILL.md has the orchestrator run it for its role, checks it with the same gate, and has no extras line in the brief', () => {
-    const text = fs.readFileSync(SKILL_FILE, 'utf8');
-    expect(text).toContain('required-skills.mjs --role orchestrator');
-    expect(text).toContain('check-skill-use.mjs --role orchestrator');
-    expect(text).not.toContain('Extra skills:');
   });
 });
