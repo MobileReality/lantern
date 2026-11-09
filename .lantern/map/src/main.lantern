@@ -181,6 +181,10 @@ src/main/lantern-git.ts . gateway 38b1cd7ee2d4
 #feature pull-requests
   = ext:git
 
+src/main/lantern-host-avatar.ts . gateway 56618ca503b1
+#feature pull-requests
+  < src/main/lantern-types.ts#LanternPrInfo
+
 src/main/lantern-host-credentials.ts . service 2b383882e31b
 #feature pull-requests
 
@@ -190,18 +194,20 @@ src/main/lantern-host-origin.ts . service 560aa714cfb1
   < src/shared/providers.ts#CODE_HOST_IDS
   = ext:ssh
 
-src/main/lantern-host-request.ts . gateway 14e9bb1646a5
+src/main/lantern-host-request.ts . gateway 1a99851f21b5
 #feature pull-requests
   < src/shared/control-characters.ts#hasControlCharacter
   < src/main/lantern-host-credentials.ts#HostCredentials
   < src/main/lantern-host-origin.ts#BitbucketRepo
-  > ext:bitbucket-api
+  < src/main/lantern-types.ts#LanternPrInfo
+  = ext:bitbucket-api
 
-src/main/lantern-host-status.ts . service d38b6cef5ecc
+src/main/lantern-host-status.ts . service 7b8d2196bbe1
 #feature pull-requests
   = src/main/lantern-batch.ts
   = src/main/lantern-host-drivers.ts#DRIVERS
   = src/main/lantern-host-origin.ts#codeHostOf
+  = src/main/lantern-host-avatar.ts#withAvatars
   < src/main/lantern-host-github.ts#isRateLimited
   < src/main/lantern-host-request.ts#HostAnswer
   < src/shared/providers.ts#PROVIDERS
@@ -395,7 +401,7 @@ src/main/lantern-proverlay.ts . service 0442b90dfd9c
   < src/main/lantern-types.ts
   = src/main/lantern-local.ts
 
-src/main/lantern-prs.ts . service cf28511c8166
+src/main/lantern-prs.ts . service 8e6758fc6848
 #feature pull-requests
   = src/main/lantern-git.ts
   = src/main/lantern-host-status.ts
@@ -427,7 +433,7 @@ src/main/lantern-texts.ts . service 18029fc1c004
   = src/main/lantern-parse.ts
   < src/main/lantern-types.ts
 
-src/main/lantern-types.ts . model 10ebbc6c5b7b
+src/main/lantern-types.ts . model 2e25e38c51b2
 #feature file-graph
   < src/main/lantern-plan-view-types.ts#LanternPlanView
   < src/shared/lantern-plan-fix.ts#LanternBrokenPlan
@@ -906,8 +912,9 @@ src/main/lantern-host-drivers.ts . service 380ff5f434e3
   < src/main/lantern-types.ts#LanternPrState
   < src/shared/providers.ts#CODE_HOST_IDS
 
-src/main/lantern-host-github.ts . gateway ed2d386671b8
+src/main/lantern-host-github.ts . gateway b232d281b77a
 #feature pull-requests
   < src/main/lantern-host-origin.ts#CodeHost
   = src/main/lantern-host-request.ts#getReply
-  > ext:github-api
+  < src/main/lantern-types.ts#LanternPrInfo
+  = ext:github-api

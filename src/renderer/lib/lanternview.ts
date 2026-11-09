@@ -1043,7 +1043,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   let reasons: { id: string; busy: boolean; note: string } | null = null;
 
   function prRowsContext(pr: LanternPr, activeFilters: number): PrPanelContext {
-    return { pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, reasonsNote: reasons?.id === pr.id ? reasons.note : '', canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
+    return { pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
   }
 
   let refreshing: { id: string; busy: boolean; note: string } | null = null;

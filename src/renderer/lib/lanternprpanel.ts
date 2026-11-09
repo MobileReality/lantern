@@ -1,6 +1,8 @@
 import type { LanternNode, LanternPr, LanternPrFile, LanternPrFileKind } from '../../main/lantern';
 import { codeButton, esc } from './lanternctx';
-import { fileCount, stateClass } from './lanternprs';
+import PEN_ICON from '@renderer/assets/icons/pen.svg';
+import UNMAPPED_ICON from '@renderer/assets/icons/stat-unmapped.svg';
+import { diffHtml, prInfoHtml, stateClass } from '@renderer/pr-info';
 import { descriptionHostHtml } from './lanternprdescribe';
 import { fileLabelHtml } from './file-label';
 import type { PickedStep } from './lanternflow';
@@ -29,7 +31,6 @@ interface PrPanelContext {
   unmapped?: ReadonlySet<string>;
   reasonsBusy?: boolean;
   reasonsRunning?: boolean;
-  reasonsNote?: string;
   canRefresh?: boolean;
   refreshBusy?: boolean;
   refreshNote?: string;
@@ -109,45 +110,68 @@ function orderedHtml(ctx: PrPanelContext) {
   return `<h2 class="pr-review"><span>Review order</span><em>${files.length}</em></h2><ul class="pr-files pr-ordered">${files.map((f, i) => fileRow(ctx, f, i + 1)).join('')}</ul>`;
 }
 
-function reasonsHtml(ctx: PrPanelContext) {
+function contextRow(icon: string, count: number, text: string, button: string) {
+  return `<div class="pr-ctx-row"><span class="pr-ctx-icon">${icon}</span><span class="pr-ctx-text"><b>${count} file${count === 1 ? '' : 's'}</b> ${text}</span>${button}</div>`;
+}
+
+function contextHtml(ctx: PrPanelContext) {
   const files = ctx.pr.files;
-  if (!ctx.canGenerateReasons || !files.length) return '';
   const missing = files.filter((f) => !f.reason).length;
-  const note = ctx.reasonsNote ? `<span class="pr-reasons-note" role="status">${esc(ctx.reasonsNote)}</span>` : '';
-  if (!missing && !ctx.reasonsRunning) return `<div class="pr-meta pr-reasons-row" tabindex="-1"><span>Reasons written by Claude from the diff</span>${note}</div>`;
-  const label = ctx.reasonsRunning ? 'Writing reasons…' : `Write reasons for ${missing} file${missing === 1 ? '' : 's'}`;
-  return `<div class="pr-meta pr-reasons-row" tabindex="-1"><button class="pr-reasons" data-pr-reasons data-tip="Ask Claude for a one-sentence why per changed file, from the diff"${ctx.reasonsBusy ? ' disabled aria-busy="true"' : ''}>${label}</button>${note}</div>`;
+  const unmapped = files.filter((f) => !ctx.byPath.has(f.path) && ctx.unmapped?.has(f.path)).length;
+  const reasons =
+    ctx.canGenerateReasons && (missing || ctx.reasonsRunning)
+      ? contextRow(PEN_ICON, missing, 'without a reason', `<button class="lt-btn lt-primary" data-pr-reasons data-tip="Ask Claude for a one-sentence why per changed file, from the diff"${ctx.reasonsBusy ? ' disabled aria-busy="true"' : ''}>${ctx.reasonsRunning ? 'Writing reasons…' : 'Write reasons'}</button>`)
+      : '';
+  const map = ctx.canMapMissing && unmapped ? contextRow(UNMAPPED_ICON, unmapped, 'not in the map', `<button class="lt-btn pr-secondary" data-pr-map data-tip="Refresh the Lantern map with Claude so these files get their records and connections">Map ${unmapped} file${unmapped === 1 ? '' : 's'}</button>`) : '';
+  if (!reasons && !map) return '';
+  return `<h2 class="pr-context"><span>Context</span></h2><div class="pr-context-box pr-reasons-row" tabindex="-1">${reasons}${map}</div>`;
+}
+
+function mapPillHtml(ctx: PrPanelContext) {
+  const missing = ctx.pr.files.filter((f) => !ctx.byPath.has(f.path) && ctx.unmapped?.has(f.path)).length;
+  if (!ctx.canMapMissing || !missing) return '';
+  return `<button class="pr-reasons" data-pr-map data-tip="Refresh the Lantern map with Claude so these files get their records and connections">Map ${missing} missing file${missing === 1 ? '' : 's'}</button>`;
 }
 
 function mapMissingHtml(ctx: PrPanelContext) {
-  const missing = ctx.pr.files.filter((f) => !ctx.byPath.has(f.path) && ctx.unmapped?.has(f.path)).length;
-  if (!ctx.canMapMissing || !missing) return '';
-  return `<div class="pr-meta pr-reasons-row"><button class="pr-reasons" data-pr-map data-tip="Refresh the Lantern map with Claude so these files get their records and connections">Map ${missing} missing file${missing === 1 ? '' : 's'}</button></div>`;
+  const pill = mapPillHtml(ctx);
+  return pill ? `<div class="pr-meta pr-map-row">${pill}</div>` : '';
 }
 
-function refreshHtml(ctx: PrPanelContext) {
-  if (!ctx.canRefresh) return '';
+function actionsHtml(ctx: PrPanelContext, description: string) {
+  const pr = ctx.pr;
+  const link = isHttpsUrl(pr.url) ? `<a class="lt-btn lt-primary pr-open-link" href="${esc(pr.url)}" target="_blank" rel="noopener noreferrer">Open PR</a>` : '';
+  const refresh = ctx.canRefresh ? `<button class="lt-btn pr-secondary pr-refresh" data-pr-refresh data-tip="Fetch from the remote and read this pull request again"${ctx.refreshBusy ? ' disabled aria-busy="true"' : ''}>${ctx.refreshBusy ? 'Refreshing…' : 'Refresh'}</button>` : '';
   const note = ctx.refreshNote ? `<span class="pr-reasons-note" role="status">${esc(ctx.refreshNote)}</span>` : '';
-  return `<div class="pr-meta pr-reasons-row pr-refresh-row" tabindex="-1"><button class="pr-reasons" data-pr-refresh data-tip="Fetch from the remote and read this pull request again"${ctx.refreshBusy ? ' disabled aria-busy="true"' : ''}>${ctx.refreshBusy ? 'Refreshing…' : 'Refresh'}</button>${note}</div>`;
+  if (!link && !refresh && !description) return '';
+  return `<div class="pr-actions pr-refresh-row" tabindex="-1"><span class="pr-desc-slot"></span><span class="pr-actions-gap"></span>${note}${refresh}${link}</div>`;
 }
 
 function localHeaderHtml(ctx: PrPanelContext) {
   const pr = ctx.pr;
-  const meta = `<div class="pr-meta"><code>${esc(pr.branch)}</code> compared with where it left <code>${esc(pr.base)}</code></div>`;
   const summary = pr.summary ? `<p class="pr-summary">${esc(pr.summary)}</p>` : '';
-  return `<div class="pr-head pr-local"><div class="pr-id"><span class="pr-badge pr-local">local</span></div><h1 class="pr-title">${esc(pr.title)}</h1>${meta}<div class="pr-meta">${fileCount(pr)}</div>${summary}${descriptionHostHtml(pr)}${mapMissingHtml(ctx)}${reasonsHtml(ctx)}</div>`;
+  const description = descriptionHostHtml(pr);
+  const story = summary || description ? `<div class="pr-story">${summary}${description}</div>` : '';
+  const bar = description ? '<div class="pr-actions" tabindex="-1"><span class="pr-desc-slot"></span></div>' : '';
+  return (
+    `<div class="pr-head pr-local"><div class="pr-head-card"><div class="pr-head-top"><div class="pr-id"><span>local comparison</span><span class="pr-badge pr-local">local</span></div>` +
+    `<h1 class="pr-title">${esc(pr.title)}</h1>` +
+    `<div class="pr-meta"><code>${esc(pr.branch)}</code> compared with where it left <code>${esc(pr.base)}</code></div>` +
+    `<div class="pr-card-foot"><span>${diffHtml(pr)}</span></div></div>${story}${bar}</div></div>${contextHtml(ctx)}`
+  );
 }
 
 function headerHtml(ctx: PrPanelContext) {
   const pr = ctx.pr;
   if (pr.source === 'local') return localHeaderHtml(ctx);
-  const link = isHttpsUrl(pr.url) ? `<a class="pr-open-link" href="${esc(pr.url)}" target="_blank" rel="noopener noreferrer">Open PR</a>` : '';
   const summary = pr.summary ? `<p class="pr-summary">${esc(pr.summary)}</p>` : '';
+  const description = descriptionHostHtml(pr);
+  const story = summary || description ? `<div class="pr-story">${summary}${description}</div>` : '';
   return (
-    `<div class="pr-head ${stateClass(pr)}"><div class="pr-id"><span>#${esc(pr.id)}</span><span class="pr-badge ${stateClass(pr)}" aria-label="Pull request state: ${pr.state}">${pr.state}</span></div>` +
+    `<div class="pr-head ${stateClass(pr)}"><div class="pr-head-card"><div class="pr-head-top"><div class="pr-id"><span>#${esc(pr.id)}</span><span class="pr-badge ${stateClass(pr)}" aria-label="Pull request state: ${pr.state}">${pr.state}</span></div>` +
     `<h1 class="pr-title">${esc(pr.title)}</h1>` +
     `<div class="pr-meta"><code>${esc(pr.branch)}</code> → <code>${esc(pr.base)}</code></div>` +
-    `<div class="pr-meta">Opened ${esc(pr.opened)} · ${fileCount(pr)}</div>${summary}${descriptionHostHtml(pr)}${link}${mapMissingHtml(ctx)}${refreshHtml(ctx)}</div>`
+    `${prInfoHtml(pr, Date.now())}${mapMissingHtml(ctx)}</div>${story}${actionsHtml(ctx, description)}</div></div>`
   );
 }
 

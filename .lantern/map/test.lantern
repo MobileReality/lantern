@@ -632,6 +632,10 @@ test/lantern-headless-permissions.test.ts . test 5670925862a3
   = skills/lantern-setup/agents/lantern-mapper.md
   = src/main/agent.ts
 
+test/lantern-host-avatar.test.ts . test f35c262270fb
+#feature pull-requests
+  = src/main/lantern-host-avatar.ts#avatarData
+
 test/lantern-host-cache.test.ts . test d067f01b2172
 #feature pull-requests
   = src/main/lantern-host-status.ts
@@ -644,6 +648,11 @@ test/lantern-host-credentials.test.ts . test 7c71a48a33aa
   = src/main/lantern-host-credentials.ts
   = test/helpers/git-repo.ts
 
+test/lantern-host-info.test.ts . test d61c2222fa88
+#feature pull-requests
+  = src/main/lantern-host-request.ts#hostInfoOf
+  = src/main/lantern-host-github.ts#githubInfoOf
+
 test/lantern-host-leak.test.ts . test 2ebeb98a1a04
 #feature pull-requests
   = src/main/lantern-host-status.ts
@@ -652,7 +661,7 @@ test/lantern-host-leak.test.ts . test 2ebeb98a1a04
   = test/helpers/git-repo.ts
   = test/helpers/host-world.ts
 
-test/lantern-host-status.test.ts . test f6459dced2dd
+test/lantern-host-status.test.ts . test 619f7e29dbc0
 #feature pull-requests
   = src/main/lantern-host-status.ts
   = src/main/lantern-host-account.ts#accountLookup
@@ -1235,8 +1244,9 @@ test/lantern-pr-declined.test.ts . test b26ab7f12071
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-describe-card.test.ts . test cfec4c4d7fc7
+test/lantern-pr-describe-card.test.ts . test 29aa8efe4383
 #feature pull-requests
+  < src/main/lantern.ts
   = src/main/lantern-pr-parse.ts
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
@@ -1296,11 +1306,12 @@ test/lantern-pr-overlay.test.ts . test 884efd8c4d68
   = src/main/lantern.ts
   = test/helpers/git-repo.ts
 
-test/lantern-pr-panel.test.ts . test 40a54cf46830
+test/lantern-pr-panel.test.ts . test 1853abf01ead
 #feature pull-requests
   = src/main/lantern-pr-parse.ts
   < src/main/lantern.ts
   = src/renderer/lib/lanternview.ts
+  < src/renderer/lib/util.ts#formatDay
   = test/helpers/lantern-map.ts
 
 test/lantern-pr-parity.test.ts . test effafcc835ce
@@ -1318,7 +1329,7 @@ test/lantern-pr-refresh-button.test.ts . test 9b7612f311b2
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-refresh.test.ts . test fa1efa296d68
+test/lantern-pr-refresh.test.ts . test 77f8fb8ddf36
 #feature pull-requests
   < src/main/lantern.ts
   > src/renderer/features/lantern.ts
@@ -1333,7 +1344,7 @@ test/lantern-pr-steps.test.ts . test 404cb7923c9d
   < src/shared/code-highlighting.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-visibility.test.ts . test 5653b6c28bca
+test/lantern-pr-visibility.test.ts . test c0fa92be7615
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/lanternview.ts
@@ -1876,6 +1887,13 @@ test/pr-explain-view.test.ts . test 015e9a897d43
   = src/renderer/lib/prexplain.ts#createExplainHub
   < src/shared/pr-explain.ts
   = test/helpers/lantern-map.ts#mapOf
+
+test/pr-info.test.ts . test 4a9c1305d4f5
+#feature pull-requests
+  < src/main/lantern.ts
+  = src/renderer/pr-info/index.ts#prCard
+  = src/renderer/lib/util.ts#timeAgo
+  = test/helpers/lantern-map.ts
 
 test/preflight-broken-settings.test.ts . test d7a721d27191
 #feature delegate-runs
@@ -2575,5 +2593,5 @@ test/providers-table.test.ts . test 903bbab8c445
 #feature integrations
   > src/shared/providers.ts#PROVIDERS
 
-test/tooltip.test.ts . test f1117b5d2835
+test/tooltip.test.ts . test d319a7cde68e
   = src/renderer/tooltip/index.ts#installTooltips

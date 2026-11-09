@@ -3,6 +3,7 @@ import { PROVIDERS } from '@shared/providers';
 import type { CodeHostId } from '@shared/providers';
 import type { AccountLookup } from './lantern-host-account';
 import { mapInBatches } from './lantern-batch';
+import { withAvatars } from './lantern-host-avatar';
 import { DRIVERS, recordBelongsTo } from './lantern-host-drivers';
 import { isRateLimited } from './lantern-host-github';
 import { codeHostOf } from './lantern-host-origin';
@@ -32,6 +33,7 @@ interface HostStatusOptions {
   env?: NodeJS.ProcessEnv;
   account?: AccountLookup;
   resolveHostname?: HostnameResolver;
+  fetchAvatar?: typeof fetch;
 }
 
 interface Entry extends HostAnswer {
@@ -68,7 +70,7 @@ function createHostStatus(options: HostStatusOptions = {}) {
   }
 
   function signature(status: ProjectStatus) {
-    return `${status.unavailable}|${[...status.entries].map(([id, e]) => `${id}:${e.state}:${e.base ?? ''}`).sort().join(',')}`;
+    return `${status.unavailable}|${[...status.entries].map(([id, e]) => JSON.stringify([id, e.state, e.base, e.info?.updated, e.info?.reviewers?.map((r) => [r.approved, r.changes])])).sort().join(',')}`;
   }
 
   function isFresh(entry: Entry | undefined) {
@@ -94,7 +96,8 @@ function createHostStatus(options: HostStatusOptions = {}) {
       if (paused()) return [id, null] as const;
       const answer = await driver.fetch(host, id, credentials, options);
       if (answer && isRateLimited(answer)) status.pausedUntil = now() + ttlMs;
-      return [id, answer] as const;
+      if (!answer || isRateLimited(answer) || !answer.info) return [id, answer] as const;
+      return [id, { ...answer, info: await withAvatars(answer.info, options.fetchAvatar) }] as const;
     };
     const answers = await mapInBatches(due, ask, MAX_PARALLEL);
     let failed = false;
@@ -136,10 +139,11 @@ function createHostStatus(options: HostStatusOptions = {}) {
     const next = prs.map((p) => {
       const entry = DRIVERS[provider].asks(p.state) ? status.entries.get(p.id) : undefined;
       if (!entry) return p;
-      if (entry.state === 'merged' && p.state === 'merged') return p;
-      if (entry.state !== 'open') return withHostState(p, entry.state);
-      if (p.state !== 'open') return withHostState(p, 'open', entry.base);
-      return entry.base ? { ...p, hostBase: entry.base } : p;
+      const info = entry.info ? { info: { ...p.info, ...entry.info } } : {};
+      if (entry.state === 'merged' && p.state === 'merged') return { ...p, ...info };
+      if (entry.state !== 'open') return { ...withHostState(p, entry.state), ...info };
+      if (p.state !== 'open') return { ...withHostState(p, 'open', entry.base), ...info };
+      return { ...p, ...(entry.base ? { hostBase: entry.base } : {}), ...info };
     });
     return { prs: next, note: status.unavailable ? noteOf(status.unavailable, provider) : null };
   }

@@ -1,6 +1,6 @@
 {
  "text": {
-  "index.ts": "Shows the window's one shared tooltip for any element with a data-tip attribute: after a short delay (none while another was just shown), on keyboard focus too, placed above the element or following the pointer for data-tip-at=pointer, with the shortcut chips of the command named in data-tip-command, and described to screen readers unless it repeats the label",
+  "index.ts": "Shows the window's one shared tooltip for any element with a data-tip attribute: after a short delay (none while another was just shown), on keyboard focus too, placed above the element or following the pointer for data-tip-at=pointer, with the shortcut chips of the command named in data-tip-command, or a rich card an element registered for itself in place of the text, and described to screen readers unless it repeats the label",
   "index.ts gotcha": "A press, scroll or Escape hides it; a pressed element stays quiet until the pointer leaves it"
  }
 }

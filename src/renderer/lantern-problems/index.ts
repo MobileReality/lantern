@@ -1,3 +1,4 @@
+import { plural } from '@renderer/lib/util';
 import { mountPopover } from '@renderer/popover';
 import error from '@renderer/assets/icons/problem-error.svg';
 import warning from '@renderer/assets/icons/problem-warning.svg';
@@ -29,10 +30,6 @@ interface ProblemList {
 
 function compactCount(n: number) {
   return n >= 10_000 ? `${Math.floor(n / 1000)}K` : n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K` : String(n);
-}
-
-function plural(n: number, word: string) {
-  return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
 function mountProblems(host: HTMLElement, onOpen?: (location: { file: string; line?: number }) => void): ProblemList {

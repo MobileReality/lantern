@@ -5,6 +5,7 @@ import { SMALL_MAP_FILES } from './lanterncollapse';
 import { ARROWS, GLYPH, KIND_TEXT } from './lanternctx';
 import { blockName, isFoundationId, systemName } from './lanternmacronames';
 import { mainLinkPairs, pairKey } from './lanternmacrorest';
+import { plural } from './util';
 
 const MACRO_MIN_FILES = SMALL_MAP_FILES;
 const BLOCK_KEY = 'block:';
@@ -130,10 +131,6 @@ function macroGraph(view: MacroView, texts: MacroTexts = {}): MacroGraph {
 
 function macroAvailable(data: LanternMap) {
   return data.exists && data.nodes.length > MACRO_MIN_FILES;
-}
-
-function plural(count: number, noun: string) {
-  return `${count} ${noun}${count === 1 ? '' : 's'}`;
 }
 
 function blockCaption(files: number) {

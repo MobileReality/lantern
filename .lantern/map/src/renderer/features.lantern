@@ -38,13 +38,12 @@ src/renderer/features/explain.ts . component 8d84de6f1aef
   = src/renderer/commands/index.ts#registerCommand
   < src/shared/project-data.ts#EXPLAINS_DIR
 
-src/renderer/features/lantern.ts . component be160edd7758
+src/renderer/features/lantern.ts . component 9afb04f01169
 #feature file-graph
   < src/main/lantern.ts
   < src/main/setup-progress.ts
   = src/preload/workspace.ts
   = src/renderer/features/agent-run.ts
-  > src/renderer/features/explain.ts#openExplain
   < src/renderer/lib/providers.ts#assistantName
   < src/renderer/lib/providers.ts#providerForProject
   < src/renderer/lib/providers.ts#providerLabel

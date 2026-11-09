@@ -1,0 +1,5 @@
+{
+ "text": {
+  "index.ts": "Builds a pull request's hover card and the sidebar header lines: number, state or draft badge, title, branch into base, author with avatar or initials and when it was opened or merged, files by kind and the reviewers' approvals or change requests, plus a card for a local comparison counting the files that have reasons"
+ }
+}
