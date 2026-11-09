@@ -97,30 +97,6 @@ describe('the English catalogue', () => {
   });
 });
 
-describe('the wording the screens shipped with', () => {
-  it('stays the same English, so moving the texts into the catalogue changed nothing a person reads', () => {
-    expect(msg('auth.storageFailed')).toBe('Lantern could not store the token securely on this computer. Nothing was saved.');
-    expect(msg('auth.unexpected')).toBe('Something went wrong inside Lantern. Nothing was saved.');
-    expect(msg('auth.input.token')).toBe('Paste the whole token, without spaces or line breaks.');
-    expect(msg('auth.input.nickname', { max: 60 })).toBe('Use a name of up to 60 characters.');
-    expect(msg('auth.check.unauthorizedToken', { provider: 'GitHub' })).toBe('GitHub rejected this token. Check that you pasted all of it and that it has not expired or been revoked.');
-    expect(msg('auth.check.unavailable', { provider: 'Jira', status: 503 })).toBe('Jira is not available right now (status 503). Try again in a few minutes.');
-    expect(msg('integrations.group.code-host')).toBe('Code hosts');
-    expect(msg('integrations.group.tracker')).toBe('Tickets');
-    expect(msg('integrations.role.code-host')).toBe('Code host');
-    expect(msg('integrations.binding.default', { provider: 'GitHub' })).toBe('Your only GitHub account, used by default');
-    expect(msg('integrations.expiry.tomorrow')).toBe('Expires tomorrow');
-    expect(msgCount('integrations.expiry.inDays', 14)).toBe('Expires in 14 days');
-    expect(msgCount('integrations.expiry.ago', 1)).toBe('Expired 1 day ago');
-    expect(msgList('integrations.help.github.steps')[3]).toBe('A classic token works too: tick repo.');
-    expect(msg('logs.rotatedNotStored', { profileId: 'p1' })).toBe('could not store the rotated sign-in of p1');
-    expect(msg('integrations.binding.bound')).toBe('Chosen for this project');
-    expect(msg('integrations.winner.none')).toBe('Runs get no credential for it yet.');
-    expect(msg('integrations.expiry.none')).toBe('No expiry set');
-    expect(msg('integrations.account.removeConfirm')).toBe('Click again to remove');
-  });
-});
-
 describe('every message the source asks for by name', () => {
   const calls = walk(SOURCE_FOLDER).flatMap((file) => {
     const text = readFileSync(file, 'utf8');

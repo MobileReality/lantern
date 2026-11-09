@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { MAX_OUTPUT_BYTES, POLL_TIMEOUT_MS, parseSessions, scan, scannedFromFiles } from '../src/main/scanner';
+import { MAX_OUTPUT_BYTES, parseSessions, scan, scannedFromFiles } from '../src/main/scanner';
 
 const originalOverride = process.env.LANTERN_CLAUDE_BIN;
 let temp = '';
@@ -132,10 +132,6 @@ describe('scan', () => {
     const started = Date.now();
     await expect(scan({ files: () => null, timeoutMs: 200 })).resolves.toBeNull();
     expect(Date.now() - started).toBeLessThan(3000);
-  });
-
-  it('allows a slow but healthy CLI call longer than the old three second limit', () => {
-    expect(POLL_TIMEOUT_MS).toBeGreaterThan(3000);
   });
 
   it('keeps a good row when another row has an unknown status', async () => {

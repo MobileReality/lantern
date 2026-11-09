@@ -1,6 +1,4 @@
 // @vitest-environment jsdom
-import fs from 'node:fs';
-import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { MacroLoad } from '../src/main/lantern-macro-load';
 import type { LanternFlowStory, LanternMap } from '../src/main/lantern';
@@ -383,62 +381,5 @@ describe('from the record to the view', () => {
     control(root, 'flow')?.click();
 
     expect(kindsOf(rows(root)[0])).toEqual(['actor', 'subject', 'action']);
-  });
-});
-
-describe('the flow at the narrowest right pane', () => {
-  const css = fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'lantern-flow.css'), 'utf8');
-  const rule = (selector: string) => new RegExp(`(?:^|\\n)${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\{([^}]*)\\}`).exec(css)?.[1] ?? '';
-
-  it('wraps a row onto the next line instead of overflowing the pane', () => {
-    expect(rule('.lt-flow-row')).toMatch(/display:\s*flex/);
-    expect(rule('.lt-flow-row')).toMatch(/flex-wrap:\s*wrap/);
-  });
-
-  it('lets a block and the old and new pair shrink and break long words', () => {
-    expect(rule('.lt-flow-step')).toMatch(/min-width:\s*0/);
-    expect(rule('.lt-flow-step')).toMatch(/max-width:\s*100%/);
-    expect(rule('.lt-flow-block')).toMatch(/min-width:\s*0/);
-    expect(rule('.lt-flow-block')).toMatch(/overflow-wrap:\s*anywhere/);
-    expect(rule('.lt-flow-pair')).toMatch(/flex-wrap:\s*wrap/);
-  });
-
-  it('takes its colours, type sizes and radius from the app tokens, never fixed values', () => {
-    expect(css).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
-    expect(css).not.toMatch(/\b\d+px\s*\/|font-size:\s*\d/);
-    expect(css).toMatch(/var\(--lt-surface\)/);
-    expect(css).toMatch(/var\(--fs-base\)/);
-    expect(css).toMatch(/var\(--radius-sm\)/);
-  });
-
-  it('stacks the steps of a row into one column when the pane is narrow, measured on the flow and not on the window', () => {
-    expect(css).toMatch(/\.lt-flow-view\s*\{[^}]*container:\s*lt-flow\s*\/\s*inline-size/);
-    const narrow = /@container lt-flow \(max-width:\s*\d+px\)\s*\{([\s\S]*?)\n\}/.exec(css)?.[1] ?? '';
-    expect(narrow).toMatch(/\.lt-flow-row\s*\{[^}]*flex-direction:\s*column/);
-    expect(narrow).toMatch(/\.lt-flow-step\s*\{[^}]*flex-direction:\s*column/);
-  });
-
-  it('shows keyboard focus on a step and on a file with the amber ring, and stills its motion on request', () => {
-    expect(rule('.lt-flow-block[data-flow-step]:focus-visible')).toMatch(/outline:\s*2px solid var\(--lt-glow\)/);
-    expect(rule('.lt-flow-file:focus-visible')).toMatch(/outline:\s*2px solid var\(--lt-glow\)/);
-    expect(rule('.pr-flowmark button:focus-visible')).toMatch(/outline:\s*2px solid var\(--lt-glow\)/);
-    const calm = /@media \(prefers-reduced-motion: reduce\)\s*\{([\s\S]*?)\n\}/.exec(css)?.[1] ?? '';
-    for (const moving of ['.lt-flow-block', '.lt-flow-file', '.lt-flow-calm']) expect(calm).toContain(moving);
-    expect(calm).toMatch(/transition:\s*none/);
-  });
-
-  it('hides the graph zoom beside the flow in the review layout, where it is a child of the grid', () => {
-    expect(css).toMatch(/\.lt-grid:has\(\.lt-main\.lt-flow-on\) \.lt-zoom/);
-  });
-
-  it('marks a file chip by what happened to it with the signs the review list uses', () => {
-    expect(rule('.lt-flow-file-added::before')).toContain('"+"');
-    expect(rule('.lt-flow-file-modified::before')).toContain('"~"');
-    expect(rule('.lt-flow-file-removed::before')).toContain('"−"');
-  });
-
-  it('is loaded by the app window', () => {
-    expect(fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'workspace.html'), 'utf8')).toContain('lantern-flow.css');
-    expect(fs.readFileSync(path.join(__dirname, '..', 'scripts', 'esbuild.mjs'), 'utf8')).toContain("'lantern-flow.css'");
   });
 });

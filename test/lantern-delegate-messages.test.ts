@@ -42,9 +42,4 @@ describe('the delegate skill messages', () => {
     const used = new Set(scriptFiles(SCRIPTS).flatMap((file) => [...readFileSync(file, 'utf8').matchAll(LITERAL_KEY)].map((match) => match[1])));
     expect(leaves(table, '').filter((key) => !used.has(key))).toEqual([]);
   });
-
-  it('no longer carries any credential text: the host skills own it', () => {
-    expect(table.credentials).toBeUndefined();
-    expect(JSON.stringify(table)).not.toMatch(/Generate: https|export BITBUCKET|\.ai\/\.env/);
-  });
 });

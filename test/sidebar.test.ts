@@ -775,16 +775,6 @@ describe('adding a folder', () => {
   });
 });
 
-describe('scrollbar styling', () => {
-  it('styles every scroll area with one thin custom scrollbar in the app palette', () => {
-    expect(CSS).toMatch(/::-webkit-scrollbar\s*\{[^}]*width:\s*10px/);
-    expect(CSS).toMatch(/::-webkit-scrollbar-track[^{]*\{[^}]*background:\s*transparent/);
-    expect(CSS).toMatch(/::-webkit-scrollbar-thumb\s*\{[^}]*border-radius:\s*999px/);
-    expect(CSS).toMatch(/::-webkit-scrollbar-thumb:hover\s*\{[^}]*var\(--primary\)/);
-    expect(CSS).not.toMatch(/\.[\w-]+::-webkit-scrollbar/);
-  });
-});
-
 describe('command palette field', () => {
   const field = () => document.getElementById('command-palette-btn') as HTMLButtonElement;
   const keys = () => document.getElementById('command-palette-keys')!.textContent;

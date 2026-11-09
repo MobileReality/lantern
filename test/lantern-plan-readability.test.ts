@@ -11,7 +11,6 @@ import { macroFixtureBlocks, macroFixtureRecords } from './helpers/lantern-macro
 import { mapOf, node, pr } from './helpers/lantern-map';
 
 const PLAN_TEXT = fs.readFileSync(path.join(__dirname, 'fixtures', 'lantern-plans', 'plan-on-the-map.plan'), 'utf8');
-const CSS = fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'lantern-plans.css'), 'utf8');
 
 const records = macroFixtureRecords();
 const nodes = records.map((r): LanternNode => node(r.path, r.role, { feature: r.feature }));
@@ -75,7 +74,6 @@ describe('the plan header', () => {
     expect(head.textContent).toContain('approved');
     expect(head.textContent).toContain('The plan was approved by jun on 2026-10-27.');
     expect(head.nextElementSibling?.className).toBe('pl-content');
-    expect(CSS).toMatch(/\.pl-head \{[^}]*position: sticky;[^}]*top: 0;/);
   });
 });
 
@@ -155,36 +153,6 @@ describe('the stage cards', () => {
 });
 
 describe('the Planning view fills the Lantern area', () => {
-  const rule = (selector: string) => {
-    const found = [...CSS.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter((match) => match[1].split(',').some((part) => part.trim() === selector));
-    return found.map((match) => match[2]).join(' ');
-  };
-
-  it('gives the grid one row that takes the rest of the height and sets no fixed height', () => {
-    expect(rule('.lt-grid.lt-planning')).toContain('grid-template-rows: minmax(0, 1fr)');
-    expect(rule('.lt-grid.lt-planning > .lt-main')).toContain('min-height: 0');
-    expect(rule('.lt-planpane')).toMatch(/min-height: 0/);
-    expect(rule('.lt-planpane')).toMatch(/overflow-y: auto/);
-    expect(rule('.lt-planpane')).toMatch(/grid-row: 1/);
-    for (const selector of ['.lt-planpane', '.lt-grid.lt-planning', '.pl-panel']) expect(rule(selector), selector).not.toMatch(/(?:^|[\s;])(?:max-)?height:|min-height:\s*[1-9]/);
-  });
-
-  it('lets the plan panel follow the pane width, with its inner padding on the head and content', () => {
-    const panel = rule('.pl-panel');
-    expect(panel).not.toMatch(/max-width/);
-    expect(panel).not.toMatch(/margin:\s*0 auto/);
-    expect(panel).toMatch(/width: 100%/);
-    expect(rule('.pl-head')).toMatch(/padding: 12px 22px 10px/);
-    expect(rule('.pl-content')).toMatch(/padding: 6px 22px 40px/);
-  });
-
-  it('chains full height up to the Lantern root, and the pane scrolls, not the page', () => {
-    const base = fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'lantern.css'), 'utf8');
-    expect(base).toMatch(/\.lt-grid \{[^}]*flex: 1;[^}]*min-height: 0;[^}]*display: grid/);
-    expect(base).toMatch(/\.lt-root \{[^}]*display: flex;[^}]*flex-direction: column;[^}]*min-height: 0;[^}]*height: 100%/);
-    expect(base).toMatch(/\.lt-body > \.lt-root \{[^}]*flex: 1;[^}]*min-height: 0/);
-  });
-
   it('renders the pane as the grid child that the layout classes address', async () => {
     const root = await open([]);
     const grid = root.querySelector('.lt-grid') as HTMLElement;

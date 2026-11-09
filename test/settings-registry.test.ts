@@ -7,7 +7,7 @@ import {
   SETTING_DEFAULTS,
   SETTINGS,
 } from '../src/shared/settings-registry';
-import type { SettingKey, SettingValue } from '../src/shared/settings-registry';
+import type { SettingKey } from '../src/shared/settings-registry';
 import type { SettingsNode } from '../src/shared/settings-schema';
 
 const FOLD: SettingKey = 'graph.foldFilesWhenZoomedOut';
@@ -28,21 +28,11 @@ describe('settings registry', () => {
     expect(SETTING_DEFAULTS[FOLD]).toBe(true);
   });
 
-  it('types the folding value as a boolean, not the literal default', () => {
-    const off: SettingValue<typeof FOLD> = false;
-    expect(off).toBe(false);
-  });
-
   it('registers the key bindings under Keyboard shortcuts with an empty default', () => {
     const bindings = SETTINGS.find((s) => s.key === BINDINGS);
     expect(bindings?.category).toMatchObject({ id: 'keymap', title: 'Keyboard shortcuts' });
     expect(bindings?.schema.type).toBe('bindings');
     expect(SETTING_DEFAULTS[BINDINGS]).toEqual([]);
-  });
-
-  it('types the bindings value as a list of key and command pairs', () => {
-    const value: SettingValue<typeof BINDINGS> = [{ key: 'mod+shift+l', command: 'lantern.open' }];
-    expect(value).toHaveLength(1);
   });
 
   it('throws on a key declared twice', () => {

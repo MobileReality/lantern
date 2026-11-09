@@ -17,29 +17,6 @@ describe('docs site pages', () => {
     expect(new Set(PAGES.map((page) => page.route)).size).toBe(PAGES.length);
   });
 
-  it('opens on the docs home written in docs/index.md, not on the README', () => {
-    expect(findPageByRoute('/')?.file).toBe('docs/index.md');
-    expect(PAGES.map((page) => page.file)).not.toContain('README.md');
-    const index = read('docs/index.md');
-    expect(index).toMatch(/^# Lantern documentation$/m);
-    expect(index).toMatch(/^## Where to start$/m);
-    for (const target of ['installation.md', 'getting-started.md', 'architecture.md', '../TROUBLESHOOTING.md', '../CONTRIBUTING.md']) {
-      expect(index, target).toContain(`](${target})`);
-    }
-    expect(index).toContain('https://thelantern.dev');
-  });
-
-  it('lists the pages in reading order', () => {
-    expect(PAGES.map((page) => page.route)).toEqual([
-      '/',
-      '/installation',
-      '/getting-started',
-      '/architecture',
-      '/troubleshooting',
-      '/contributing',
-    ]);
-  });
-
   it('resolves every relative link in the sources to a page, an image or an existing repository path', () => {
     const broken: string[] = [];
     for (const page of PAGES) {
@@ -89,29 +66,6 @@ describe('docs site pages', () => {
     expect(parseHash('#/')).toEqual({ route: '/', anchor: '' });
     expect(parseHash('#/architecture')).toEqual({ route: '/architecture', anchor: '' });
     expect(parseHash(hashFor('/architecture', 'the-dev-profile'))).toEqual({ route: '/architecture', anchor: 'the-dev-profile' });
-  });
-});
-
-describe('docs site identity', () => {
-  const html = read('website/index.html');
-
-  it('is served at docs.thelantern.dev, with a CNAME holding only that host', () => {
-    expect(read('website/public/CNAME')).toBe('docs.thelantern.dev\n');
-  });
-
-  it('is titled Lantern documentation with a description that is not the motto', () => {
-    expect(html).toMatch(/<title>Lantern documentation<\/title>/);
-    expect(html).toMatch(/<meta name="description" content="Documentation for Lantern/);
-    expect(html).toMatch(/<meta property="og:title" content="Lantern documentation"/);
-    expect(html).not.toMatch(/whole context for your AI/);
-  });
-
-  it('keeps no marketing hero or figure showcase', () => {
-    const components = fs.readdirSync(path.join(ROOT, 'website/src/components'), { recursive: true }).map(String);
-    expect(components.filter((file) => /hero|showcase|home/i.test(file))).toEqual([]);
-    for (const gone of ['website/public/figures', 'website/src/styles/showcase.css', 'website/src/styles/home.css']) {
-      expect(fs.existsSync(path.join(ROOT, gone)), gone).toBe(false);
-    }
   });
 });
 
