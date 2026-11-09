@@ -87,6 +87,30 @@ The app probes port 9888 and reuses or respawns `code serve-web`. If it's stuck:
 - Make sure nothing else is using port 9888.
 - Confirm the VS Code CLI exists: `ls "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"`.
 
+## macOS: "Attempt to modify an app by “Lantern” was prevented"
+
+macOS shows this notification (Privacy & Protection, App Management) while the
+embedded editor is running.
+
+### Why it happens
+
+Lantern starts VS Code (`code serve-web`, from `/Applications/Visual Studio Code.app`)
+for the embedded editor. When VS Code touches its own app bundle, macOS treats
+Lantern as the responsible process, so App Management protection
+(`kTCCServiceSystemPolicyAppBundles`) blocks the write and reports it as Lantern's.
+Lantern itself does not write into other apps.
+
+It is harmless: only that write is blocked and the embedded editor keeps working.
+
+### Fix
+
+Open **System Settings → Privacy & Security → App Management** and enable
+**Lantern**. If it is not in the list, add it with **+**.
+
+> Builds signed ad hoc (`sign:adhoc`, a local reinstall) change identity, so macOS
+> may forget the permission after each reinstall and you grant it again. A Developer
+> ID signature avoids that.
+
 ## App won't launch / "running in Node mode"
 
 This Mac has `ELECTRON_RUN_AS_NODE=1` set in the shell, which makes Electron run as
