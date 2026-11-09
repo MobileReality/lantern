@@ -144,7 +144,7 @@ skills/lantern-setup/scripts/platforms.mjs . service e6f11a43e2e0
   = skills/lantern-setup/scripts/ignore.mjs
   = skills/lantern-setup/scripts/texts.mjs
 
-skills/lantern-setup/scripts/prdescribe.mjs . pure 742d32fedea4
+skills/lantern-setup/scripts/prdescribe.mjs . pure 5ad2f81d3f4e
 #feature pull-requests
   = skills/lantern-setup/scripts/lib.mjs#hasControlCharacter
 
