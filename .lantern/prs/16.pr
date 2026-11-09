@@ -5,7 +5,7 @@ lantern-pr 1
 #branch chore/remove-skill-prose-tests
 #base main
 #opened 2026-11-09
-#head 6be64238ad996bd53e6a884f9c27e776db1cf8b7
+#head f5fec4791eb9b546792524c174b804d2d6ecb52b
 #describe what Removes tests that only checked words in skill, agent and protocol markdown.
 #describe before Rewording a skill could fail the suite.
 #describe after Only structural guards on skills remain.
