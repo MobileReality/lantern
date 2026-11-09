@@ -17,6 +17,12 @@
 
 <p align="center"><a href="https://thelantern.dev">Website</a> · <a href="https://docs.thelantern.dev">Documentation</a></p>
 
+<p align="center">
+  <a href="https://github.com/MobileReality/lantern/actions/workflows/ci.yml"><img src="https://github.com/MobileReality/lantern/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/MobileReality/lantern" alt="License"></a>
+  <a href="https://github.com/MobileReality/lantern/releases"><img src="https://img.shields.io/github/v/release/MobileReality/lantern" alt="Latest release"></a>
+</p>
+
 ## What it does
 
 - **Watches every session** across your harness and shows a live dashboard of
@@ -35,6 +41,17 @@
   editor. Pick the output **language per project** and repair broken output in place.
 
 Sessions are told apart by their working directory: one entry per VS Code project window.
+
+## Download
+
+Packages are attached to each release on the
+[releases page](https://github.com/MobileReality/lantern/releases): `Lantern-mac.zip` for
+Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
+build Lantern from source ([installation](docs/installation.md#install-and-run-from-source)).
+
+The macOS app is signed ad hoc only, so Gatekeeper quarantines a downloaded zip; the steps to open
+it are in [CONTRIBUTING.md](CONTRIBUTING.md#producing-a-release-build-distshare). The Windows build
+is not code-signed, so SmartScreen may warn on first launch.
 
 ## Documentation
 
