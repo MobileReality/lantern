@@ -491,7 +491,7 @@ test/lantern-bundle-switched-off.test.ts . test 61856ebc5ef4
   < src/main/main.ts
   = test/support/bundle-fixtures.ts
 
-test/lantern-bundle.test.ts . test ff12bbb35292
+test/lantern-bundle.test.ts . test 0a101a6540a9
 #feature skill-installer
   = scripts/lantern-bundle.mjs
   = src/main/agent.ts
@@ -2449,7 +2449,7 @@ test/lantern-delegate-delivery.test.ts . test b65c16bfca54
   < skills/lantern-delegate/protocol.md
   < skills/lantern-delegate/scripts/preferences.mjs#DELIVERY
 
-test/lantern-delegate-host-skills.test.ts . test b82babee27b4
+test/lantern-delegate-host-skills.test.ts . test 0191145cf775
 #feature delegate-runs
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
   < test/helpers/fake-host.ts#startFakeHost
