@@ -54,7 +54,7 @@ test/ci-workflow.test.ts . test 32fa993b7344
   < .github/workflows/ci.yml
   < package.json
 
-test/workflow-hygiene.test.ts . test 719dc6301c5b
+test/workflow-hygiene.test.ts . test 6d4a7d006d82
   < .github/workflows/ci.yml
   < .github/workflows/codeql.yml
   < .github/workflows/deploy-docs.yml
@@ -1958,6 +1958,10 @@ test/reason-definition.test.ts . test 550e8f81a437
   = skills/lantern-setup/references/reason.md
   = src/shared/reason.ts
   < skills/lantern-setup/scripts/prs.mjs#REASON_MAX_CHARS
+
+test/release-workflow.test.ts . test 4e110666c136
+  < .github/workflows/release.yml
+  < scripts/mac-sign-notarize.sh
 
 test/renderer-stylesheets.test.ts . test df6d913c3bdd
   < scripts/esbuild.mjs

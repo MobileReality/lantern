@@ -22,11 +22,32 @@ concurrency:
 jobs:
   build-mac:
     runs-on: macos-15
-    timeout-minutes: 45
+    timeout-minutes: 60
+    environment: release
+    permissions:
+      contents: read
+    env:
+      MACOS_SIGNING_IDENTITY: "Developer ID Application: Mobile Reality sp. z o.o. (D8226MY2E7)"
     steps:
+      - name: Refuse to sign outside a v* tag
+        env:
+          REF: ${{ github.ref }}
+          REF_NAME: ${{ github.ref_name }}
+          TAG_INPUT: ${{ inputs.tag }}
+        run: |
+          case "$REF" in
+            refs/tags/v*) ;;
+            *) echo "Signing runs only from a v* tag, not from '$REF'. Start the workflow from the tag."; exit 1 ;;
+          esac
+          if [ -n "$TAG_INPUT" ] && [ "$TAG_INPUT" != "$REF_NAME" ]; then
+            echo "The tag input '$TAG_INPUT' is not the tag the workflow runs from ('$REF_NAME')."
+            exit 1
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ inputs.tag || github.ref }}
+          ref: ${{ github.ref }}
+          persist-credentials: false
 
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         with:
@@ -39,13 +60,40 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm run dist:share
+      - run: pnpm run build
+
+      - run: pnpm run fuses
+
+      - name: Import the Developer ID certificate into a temporary keychain
+        env:
+          MACOS_CERTIFICATE_P12_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: bash scripts/mac-ci-keychain.sh create
+
+      - name: Sign the app
+        run: bash scripts/mac-sign-notarize.sh sign
+
+      - name: Notarize with notarytool and staple the ticket with stapler
+        env:
+          APPLE_API_KEY_P8_BASE64: ${{ secrets.APPLE_API_KEY_P8_BASE64 }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+        run: bash scripts/mac-sign-notarize.sh notarize
+
+      - name: Check the signature, the ticket and Gatekeeper
+        run: bash scripts/mac-sign-notarize.sh verify
+
+      - run: pnpm run pack
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Lantern-mac
           path: dist/Lantern-mac.zip
           if-no-files-found: error
+
+      - name: Delete the temporary keychain and key files
+        if: always()
+        run: bash scripts/mac-ci-keychain.sh delete
 
   build-windows:
     runs-on: windows-2022

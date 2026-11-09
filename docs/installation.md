@@ -17,9 +17,11 @@ Packages are attached to each release on the
 Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
 build Lantern from source as described below.
 
-The macOS app is signed ad hoc only, so Gatekeeper quarantines a downloaded zip; the steps to open
-it are in [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-release-build-distshare). The Windows
-build is not code-signed, so SmartScreen may warn on first launch.
+The macOS app of a release built by the current workflow is signed with a Developer ID certificate
+and notarized by Apple, so macOS only asks once to confirm opening `Lantern-mac.zip`'s app. Earlier
+releases are signed ad hoc and need the steps in
+[CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-build-to-share-distshare). The Windows build is not
+code-signed, so SmartScreen may warn on first launch.
 
 ## Install and run from source
 
@@ -34,8 +36,9 @@ pnpm start       # launches the app
 ports, so several dev builds run beside each other and beside an installed Lantern. The details
 are in [architecture.md](architecture.md#the-dev-profile).
 
-For a packaged build you can share (an ad-hoc signed `Lantern-mac.zip` for Apple-silicon Macs),
-see the `dist:share` section of [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-release-build-distshare).
+For a packaged build of your own (an ad-hoc signed, not notarized `Lantern-mac.zip` for
+Apple-silicon Macs), see the `dist:share` section of
+[CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-build-to-share-distshare).
 
 To try the pull request review flow with synthetic data, run `pnpm demo:pr-review`. It opens a
 sample file diff; use the left and right arrow keys to move between files, or close the preview
@@ -54,21 +57,28 @@ latest valid context, preserves the parent thread, and runs the child from that 
 ## Releases
 
 `.github/workflows/release.yml` builds Lantern and attaches the packages to a GitHub Release. It
-runs the same package scripts as a local build: `pnpm run dist:share` on a macOS runner gives
-`Lantern-mac.zip` (Apple silicon), and `pnpm run build:win` on a Windows runner gives
-`Lantern-win-x64.zip`. A last job creates the release for the tag when it is missing, with
+runs the same package scripts as a local build. On a macOS runner, `pnpm run build` and
+`pnpm run fuses` build the app, `scripts/mac-sign-notarize.sh` signs and notarizes it, and
+`pnpm run pack` gives `Lantern-mac.zip` (Apple silicon). `pnpm run build:win` on a Windows runner
+gives `Lantern-win-x64.zip`. A last job creates the release for the tag when it is missing, with
 generated release notes, and uploads both files; running it again replaces them.
 
 - **Release a new version**: push a tag that starts with `v`, for example
-  `git tag v0.2.1 && git push origin v0.2.1`. The workflow starts on the push.
-- **Release a tag that already exists**: in GitHub, open Actions, choose **Release**, click
-  **Run workflow** and type the tag (for example `v0.2.0`). It builds that tag's commit, so
-  nothing needs re-tagging.
+  `git tag v0.2.1 && git push origin v0.2.1`. The workflow starts on the push, and the macOS job
+  waits for a reviewer to approve the `release` environment.
+- **Release a tag that already exists**: in GitHub, open Actions, choose **Release**, pick the tag
+  itself under **Use workflow from**, click **Run workflow** and type the same tag (for example
+  `v0.2.0`). It builds that tag's commit, so nothing needs re-tagging. The macOS job refuses to run
+  from a branch, or when the typed tag differs from the one picked. The workflow file is the one at
+  that tag, so only a tag whose commit already holds the signing job produces a signed app; an
+  older tag is rebuilt ad hoc.
 
-The macOS build is signed ad hoc only. There is no Developer ID certificate and no notarization,
-so a downloaded `Lantern-mac.zip` is quarantined by Gatekeeper; the steps to open it anyway are in
-the `dist:share` section of [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-release-build-distshare).
-The Windows build is not code-signed, so SmartScreen may warn on first launch.
+The macOS build is signed with a Developer ID Application certificate, hardened runtime on, and
+notarized and stapled by Apple, so a downloaded `Lantern-mac.zip` opens without a Gatekeeper
+warning. The certificate and the notarization key are secrets of the protected `release` environment;
+how a maintainer sets them up is in
+[CONTRIBUTING.md](../CONTRIBUTING.md#release-signing-setup). The Windows build is not code-signed,
+so SmartScreen may warn on first launch.
 
 ## Use Lantern with any setup
 

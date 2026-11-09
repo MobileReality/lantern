@@ -17,7 +17,9 @@
     "licenses.mjs": "Writes the licence folder of the packaged app: Lantern's licence, the third-party notices, the font licence and a generated, repeatable file with the licence text of every production dependency, and adds Electron's own licence files to the packaged app's resources",
     "package-licences.mjs": "Command run after packaging that copies Electron's licence and Chromium notices into the packaged app's licence folder for a given platform and architecture",
     "lsp-runtime.mjs": "Caches and validates bundled Node and language-server deployments against build inputs",
-    "make-icon.js": "Generates Lantern application and tray icons for desktop platforms",
+    "mac-ci-keychain.sh": "On a CI runner, builds a temporary keychain with a random masked password from the Developer ID certificate secret and puts it on the search list, or deletes it with the decoded certificate and notarization scratch folders",
+    "mac-sign-notarize.sh": "Signs the packaged macOS app inside out with a Developer ID, hardened runtime and entitlements, notarizes it with Apple through an API key or a stored profile, staples the ticket and checks the signature and Gatekeeper verdict",
+    "make-icon.js":"Generates Lantern application and tray icons for desktop platforms",
     "material-file-icons.mjs": "Validates or refreshes the icon manifest and copies its licensed SVG assets",
     "patch-claude-mic.js": "Applies, checks or reverts the local Claude extension voice guard patch by hand",
     "pr-review-demo.mjs": "Builds and launches the interactive pull request review fixture, opened on its rich flow"
