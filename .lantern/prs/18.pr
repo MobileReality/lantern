@@ -5,7 +5,7 @@ lantern-pr 1
 #branch chore/ci-e2e-coverage-lan-115
 #base main
 #opened 2026-11-09
-#head 2e5d805219d54d6abd5257f916cd0859ad63c0e4
+#head edf81e598405be6a23eeaf501be601fc1f29bea3
 #describe what CI gets an e2e job (headless Playwright/Electron under xvfb) and a coverage job (job summary plus uploaded coverage artifact), with no external service or secret.
 #describe before CI ran typecheck, lint and the unit tests, and built; e2e and coverage never ran there.
 #describe after Five e2e suites run without the pixel snapshots, and a coverage table is written to the job summary; either failing turns CI red.
