@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lantern social preview</title>
+<style>
+  :root {
+    --bg: #061230;
+    --ink: #e2eafa;
+    --ink-soft: #b0c0e0;
+    --line: #4d6fae;
+    --lit: #ff6a2e;
+    --glow: #ff9646;
+    --font: 'Overpass', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'Overpass Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1280px; height: 640px; overflow: hidden; background: var(--bg); }
+  body {
+    position: relative;
+    font-family: var(--font);
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 242px 320px, rgba(255, 150, 70, 0.28), transparent 330px),
+      radial-gradient(circle, rgba(139, 148, 173, 0.24) 2px, transparent 2.5px) 0 0 / 32px 32px,
+      var(--bg);
+  }
+  .card {
+    position: absolute;
+    inset: 0;
+    padding: 64px 72px;
+    display: flex;
+    align-items: center;
+    gap: 72px;
+  }
+  .logo {
+    flex: none;
+    width: 340px;
+    height: 340px;
+    border-radius: 76px;
+    box-shadow: 0 0 0 2px var(--line), 0 0 90px 10px rgba(255, 150, 70, 0.35);
+  }
+  .text { flex: 1; min-width: 0; }
+  .name {
+    font-size: 120px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .rule {
+    width: 96px;
+    height: 6px;
+    margin: 30px 0 32px;
+    border-radius: 3px;
+    background: var(--lit);
+    box-shadow: 0 0 18px 3px rgba(255, 150, 70, 0.6);
+  }
+  .tagline {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .sub {
+    margin-top: 20px;
+    font-size: 28px;
+    line-height: 1.35;
+    color: var(--ink-soft);
+  }
+  .url {
+    position: absolute;
+    right: 72px;
+    bottom: 48px;
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--glow);
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <img class="logo" src="../logo.png" alt="">
+    <div class="text">
+      <h1 class="name">Lantern</h1>
+      <div class="rule"></div>
+      <p class="tagline">Your project, your codebase, is the whole context for your AI.</p>
+      <p class="sub">Manage that context well. Lantern will help you with that.</p>
+    </div>
+  </main>
+  <span class="url">thelantern.dev</span>
+</body>
+</html>
