@@ -49,9 +49,9 @@ Packages are attached to each release on the
 Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
 build Lantern from source ([installation](docs/installation.md#install-and-run-from-source)).
 
-The macOS app is signed ad hoc only, so Gatekeeper quarantines a downloaded zip; the steps to open
-it are in [CONTRIBUTING.md](CONTRIBUTING.md#producing-a-release-build-distshare). The Windows build
-is not code-signed, so SmartScreen may warn on first launch.
+The macOS app is signed with a Developer ID certificate and notarized by Apple, so the zip opens
+without a Gatekeeper warning. The Windows build is not code-signed, so SmartScreen may warn on
+first launch.
 
 ## Documentation
 
