@@ -10,7 +10,7 @@ app itself.
 ## Where to start
 
 - [Installation and command line](installation.md): install and run the app, and use Lantern from any terminal or harness.
-- [Getting started](getting-started.md): a walk from the first launch to a reviewed change.
+- [Getting started](getting-started.md): a walk from the first launch to a reviewed change, and how to drive Lantern by prompting your AI chat (for example "delegate this with lantern-delegate").
 - [Architecture](architecture.md): how the app is put together and where each part lives.
 - [Troubleshooting](../TROUBLESHOOTING.md): known problems and their fixes.
 - [Contributing](../CONTRIBUTING.md): how to work on the app, test it and build it.
