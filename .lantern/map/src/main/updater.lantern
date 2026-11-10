@@ -8,7 +8,7 @@ src/main/updater/controller.ts . handler 5552f35936fd
   = src/main/updater/service.ts#Updater
   < src/shared/updates.ts#parseUpdateAction
 
-src/main/updater/dialogs.ts . pure 2698746db949
+src/main/updater/dialogs.ts . pure 0b8341cca2e5
 #feature app-updates
   < src/main/updater/feed.ts#RELEASES_URL
   < src/main/updater/guard.ts#LiveParts
@@ -21,9 +21,8 @@ src/main/updater/feed.ts . gateway c94a2fbe3c61
   = ext:electron-update-service
   = ext:github-api
 
-src/main/updater/guard.ts . pure 87b19495b84f
+src/main/updater/guard.ts . pure 2110f685c5af
 #feature app-updates
-  < src/shared/session-liveness.ts#liveSessionCount
 
 src/main/updater/native.ts . gateway 4c9b40c58772
 #feature app-updates
@@ -36,7 +35,7 @@ src/main/updater/process-activity.ts . service a7d95c85b333
   < src/main/updater/guard.ts#ProcessActivity
   = ext:macos-process-tools
 
-src/main/updater/service.ts . service a746896abcd7
+src/main/updater/service.ts . service 81f08eeb646d
 #feature app-updates
   < src/main/updater/feed.ts#readLatestRelease
   < src/main/updater/feed.ts#readMacFeed

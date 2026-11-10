@@ -7,7 +7,7 @@
     "feed.ts gotcha": "The release page link is built from the tag on the fixed repository, never taken from the answer.",
     "feed.ts = ext:electron-update-service": "asks for the newest build for this platform and version",
     "feed.ts = ext:github-api": "asks for the latest release without a token",
-    "guard.ts": "Decides whether an update may install now: false while any watched session, run started by Lantern, editor terminal or editor process is alive, or when that cannot be read.",
+    "guard.ts": "Decides whether an update may install now: false while a run started by Lantern, an editor terminal or an editor process is alive, or when that cannot be read; sessions in other terminals do not count.",
     "native.ts": "Adapts Electron's Squirrel updater to a small interface: set the feed, check, install, and downloaded, none-available and error events.",
     "native.ts = ext:electron-update-service": "has Squirrel read the JSON feed and download the build",
     "process-activity.ts": "Counts the terminals and the running commands, agents, tests and servers below Lantern from the process list, so a restart's cost is known.",

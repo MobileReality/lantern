@@ -1,8 +1,8 @@
 {
  "text": {
-  "update-notice.test.ts": "Checks the update notice card shows the waiting message, sends the pressed button's action and follows a pushed notice, and that the idle tabs and the update guard share one definition of a live session",
+  "update-notice.test.ts": "Checks the update notice card shows the waiting message, sends the pressed button's action and follows a pushed notice",
   "updater-feed.test.ts": "Checks the update feed and latest-release readers: 204, 200, 404, failures, no token, a release page link only on the fixed repository",
-  "updater-guard.test.ts": "Checks canInstallNow is false for each live case and unreadable activity and true when idle, and the terminal and running-process count from a process list",
+  "updater-guard.test.ts": "Checks canInstallNow is false for a run started by Lantern, a terminal, a running process and unreadable activity, true when idle or when only watched sessions in other terminals are alive, and the terminal and running-process count from a process list",
   "updater-service.test.ts": "Checks the updater: a 204 does nothing, a 200 starts a download, failures are logged and never shown, the off switch and unpackaged builds make no request, the guard never lets a restart through while it is false, and Restart now confirms first",
   "updater-surface.test.ts": "Checks the Squirrel adapter, the Check for Updates menu item and its result texts, the restart confirmation, the update IPC and the setting's default",
   "updater-version.test.ts": "Checks semantic version parsing and ordering, pre-releases included",

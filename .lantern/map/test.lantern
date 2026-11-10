@@ -2350,28 +2350,27 @@ test/tray-model.test.ts . test 27cb07f5afd3
 #feature session-monitoring
   = src/shared/tray-model.ts
 
-test/update-notice.test.ts . test 5ccaca5b14c8
+test/update-notice.test.ts . test 64ceb9f3ffb3
 #feature app-updates
   = src/renderer/features/update-notice.ts
   = src/renderer/lib/idle-tabs.ts
   < src/renderer/workspace.html
-  = src/shared/session-liveness.ts
 
 test/updater-feed.test.ts . test c9db44290e43
 #feature app-updates
   = src/main/updater/feed.ts
 
-test/updater-guard.test.ts . test 3331dbcf03e9
+test/updater-guard.test.ts . test 034892cd9043
 #feature app-updates
   = src/main/updater/guard.ts
   = src/main/updater/process-activity.ts
 
-test/updater-service.test.ts . test 08453bfeb777
+test/updater-service.test.ts . test cdbf79c98b9b
 #feature app-updates
   = src/main/updater/service.ts
   < test/helpers/updater-world.ts#updaterWorld
 
-test/updater-surface.test.ts . test becc10cea4f8
+test/updater-surface.test.ts . test db01b0c9b0e6
 #feature app-updates
   = src/main/app-menu.ts
   = src/main/updater/controller.ts
