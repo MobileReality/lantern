@@ -39,12 +39,12 @@ function loadWorkspaceHtml() {
   document.body.innerHTML = doc.body.innerHTML;
 }
 
-async function bootView() {
+async function bootView(shown: DiagnosticsListing = listing()) {
   vi.resetModules();
   loadWorkspaceHtml();
   let push: (entry: DiagnosticEntry) => void = () => {};
   const bridge = {
-    diagnosticsWatch: vi.fn().mockResolvedValue(listing()),
+    diagnosticsWatch: vi.fn().mockResolvedValue(shown),
     diagnosticsCopy: vi.fn().mockResolvedValue({ ok: true, count: 4 }),
     diagnosticsGithub: vi.fn().mockResolvedValue({ ok: true, copied: false, truncated: false }),
     onDiagnosticsUpdate: vi.fn((cb) => (push = cb)),
@@ -226,5 +226,37 @@ describe('forwarding window errors', () => {
     expect(report).not.toHaveBeenCalled();
     expect(() => win.fire('error', { message: 'real problem', filename: 'app.js', lineno: 3, colno: 4 })).not.toThrow();
     expect(report.mock.calls[0]).toEqual([{ kind: 'error', message: 'real problem', stack: 'app.js:3:4' }]);
+  });
+});
+
+describe('editor entries in the Diagnostics view', () => {
+  const withEditor = (): DiagnosticsListing => ({
+    session: 'now',
+    entries: [
+      entry({ id: 'n', severity: 'warning', source: 'editor', message: 'console noise', session: 'now' }),
+      entry({ id: 'l', severity: 'error', source: 'editor', message: 'The editor failed to load: ERR_CONNECTION_REFUSED (-102)', session: 'now' }),
+      entry({ id: 'm', severity: 'warning', source: 'main', message: 'slow', session: 'now' }),
+    ],
+  });
+
+  it('hides editor console warnings by default but keeps a load failure visible', () => {
+    const e = withEditor().entries;
+    expect(applyFilter(e, { severity: ANY, source: ANY }).map((x) => x.id)).toEqual(['m', 'l']);
+    expect(applyFilter(e, { severity: ANY, source: ANY, editor: true }).map((x) => x.id)).toEqual(['m', 'l', 'n']);
+    expect(applyFilter(e, { severity: ANY, source: 'editor' }).map((x) => x.id)).toEqual(['l', 'n']);
+  });
+
+  it('shows them after ticking the chip and sends that choice with the report', async () => {
+    const { open, bridge } = await bootView(withEditor());
+    await open();
+    expect(rows().map((r) => r.querySelector('.dg-message')!.textContent)).toEqual(['slow', 'The editor failed to load: ERR_CONNECTION_REFUSED (-102)']);
+    button('Copy report').click();
+    await vi.waitFor(() => expect(bridge.diagnosticsCopy).toHaveBeenCalledWith({}));
+    const chip = document.querySelector<HTMLInputElement>('.dg-toggle input')!;
+    chip.checked = true;
+    chip.dispatchEvent(new Event('change'));
+    expect(rows()).toHaveLength(3);
+    button('Copy report').click();
+    await vi.waitFor(() => expect(bridge.diagnosticsCopy).toHaveBeenLastCalledWith({ editor: true }));
   });
 });

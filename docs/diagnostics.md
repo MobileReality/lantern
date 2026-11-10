@@ -9,7 +9,7 @@ If the editor does not start, the failure screen has a **Show diagnostics** link
 Problems of the app itself, never of your AI assistant: errors in the main process and in its windows,
 a window or helper process that crashed or stopped responding, requests from a window that failed, and
 the editor (VS Code server): a failed start, a non-zero exit with its last output, error output and a
-health check that never got an answer. Nothing from agent sessions, prompts or skill runs is read or stored.
+health check that never got an answer. Console errors, a failed load or a freeze of the editor page are recorded as **Editor**; its console warnings stay hidden, and out of reports, until you tick **Editor console warnings**. Nothing from agent sessions, prompts or skill runs is read or stored.
 
 The log is one file in Lantern's user data folder (`diagnostics/events.jsonl`). It keeps at most 2,000 entries,
 about 2 MB and 30 days, dropping the oldest first. It stays across restarts, so a crash shows up on the next start.

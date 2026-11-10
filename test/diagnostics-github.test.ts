@@ -224,6 +224,19 @@ describe('the diagnostics IPC handlers', () => {
     expect(await handlers.get('diagnostics:notice')!({})).toBeNull();
   });
 
+  it('leaves editor console warnings out of a whole-log report unless asked, and always includes a chosen one', async () => {
+    const { service, call, writeClipboard } = ipcWorld();
+    const quiet = service.record({ source: 'editor', severity: 'warning', message: 'editor console noise' })!;
+    service.record({ source: 'editor', severity: 'error', message: 'The editor failed to load' });
+    await call('diagnostics:copy', {});
+    expect(writeClipboard.mock.lastCall![0]).not.toContain('editor console noise');
+    expect(writeClipboard.mock.lastCall![0]).toContain('The editor failed to load');
+    await call('diagnostics:copy', { editor: true });
+    expect(writeClipboard.mock.lastCall![0]).toContain('editor console noise');
+    await call('diagnostics:copy', { entryId: quiet.id });
+    expect(writeClipboard.mock.lastCall![0]).toContain('editor console noise');
+  });
+
   it('pushes new entries to a window that is watching, until it stops', () => {
     const { service, callFrom } = ipcWorld();
     const win = viewer();

@@ -5,8 +5,8 @@ const modal = byId('diagnostics-modal');
 const body = byId('diagnostics-body');
 const closeButton = byId('diagnostics-close');
 const view = createDiagnosticsView(body, {
-  copy: (entryId) => window.ccmws.diagnosticsCopy(entryId ? { entryId } : {}),
-  github: (entryId) => window.ccmws.diagnosticsGithub(entryId ? { entryId } : {}),
+  copy: (entryId, editor) => window.ccmws.diagnosticsCopy({ ...(entryId ? { entryId } : {}), ...(editor ? { editor } : {}) }),
+  github: (entryId, editor) => window.ccmws.diagnosticsGithub({ ...(entryId ? { entryId } : {}), ...(editor ? { editor } : {}) }),
 });
 let isOpen = false;
 let isListening = false;

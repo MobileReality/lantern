@@ -1,17 +1,23 @@
-import { DIAGNOSTIC_SEVERITIES, LIST_LIMIT, type DiagnosticEntry, type DiagnosticSeverity, type DiagnosticSource } from '../../shared/diagnostics';
+import { DIAGNOSTIC_SEVERITIES, LIST_LIMIT, isQuietEditorEntry, type DiagnosticEntry, type DiagnosticSeverity, type DiagnosticSource } from '../../shared/diagnostics';
 
 export const ANY = 'all';
 
 export interface DiagnosticsFilter {
   severity: DiagnosticSeverity | typeof ANY;
   source: DiagnosticSource | typeof ANY;
+  editor?: boolean;
 }
 
 export const NO_FILTER: DiagnosticsFilter = { severity: ANY, source: ANY };
 
+export function isShown(entry: DiagnosticEntry, filter: DiagnosticsFilter): boolean {
+  if (filter.source === 'editor') return true;
+  return Boolean(filter.editor) || !isQuietEditorEntry(entry);
+}
+
 export function applyFilter(entries: DiagnosticEntry[], filter: DiagnosticsFilter): DiagnosticEntry[] {
   return entries
-    .filter((entry) => (filter.severity === ANY || entry.severity === filter.severity) && (filter.source === ANY || entry.source === filter.source))
+    .filter((entry) => isShown(entry, filter) && (filter.severity === ANY || entry.severity === filter.severity) && (filter.source === ANY || entry.source === filter.source))
     .reverse();
 }
 

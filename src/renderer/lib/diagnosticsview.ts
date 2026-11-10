@@ -8,12 +8,12 @@ import {
   type DiagnosticsListing,
   type GithubOutcome,
 } from '../../shared/diagnostics';
-import { ANY, NO_FILTER, applyFilter, mergeEntry, previousRun, severityCounts, type DiagnosticsFilter } from './diagnostics-model';
+import { ANY, NO_FILTER, applyFilter, isShown, mergeEntry, previousRun, severityCounts, type DiagnosticsFilter } from './diagnostics-model';
 import { el, exactTime, timeAgo } from './util';
 
 export interface DiagnosticsActions {
-  copy(entryId?: string): Promise<CopyOutcome>;
-  github(entryId?: string): Promise<GithubOutcome>;
+  copy(entryId?: string, editor?: boolean): Promise<CopyOutcome>;
+  github(entryId?: string, editor?: boolean): Promise<GithubOutcome>;
 }
 
 export const GITHUB_OPENED = 'GitHub is open in your browser. Read the report there: nothing is sent until you submit the issue.';
@@ -62,11 +62,19 @@ export function createDiagnosticsView(root: HTMLElement, actions: DiagnosticsAct
     filter = { ...filter, source: value as DiagnosticsFilter['source'] };
     render();
   });
+  const editorToggle = el('label', 'dg-toggle');
+  const editorBox = el('input', '');
+  editorBox.type = 'checkbox';
+  editorBox.addEventListener('change', () => {
+    filter = { ...filter, editor: editorBox.checked };
+    render();
+  });
+  editorToggle.append(editorBox, el('span', '', 'Editor console warnings'));
   const counts = el('span', 'dg-counts');
-  const copyAll = button('Copy report', () => void run(actions.copy().then((r) => (r.ok ? copiedMessage(r.count) : REPORT_FAILED))));
+  const copyAll = button('Copy report', () => void run(actions.copy(undefined, filter.editor).then((r) => (r.ok ? copiedMessage(r.count) : REPORT_FAILED))));
   const githubAll = button('Report on GitHub', () => void run(openGithub()), true);
   const toolbar = el('div', 'dg-toolbar');
-  toolbar.append(severitySelect, sourceSelect, counts, el('span', 'dg-spacer'), copyAll, githubAll);
+  toolbar.append(severitySelect, sourceSelect, editorToggle, counts, el('span', 'dg-spacer'), copyAll, githubAll);
 
   const status = el('p', 'dg-status');
   status.setAttribute('role', 'status');
@@ -87,7 +95,7 @@ export function createDiagnosticsView(root: HTMLElement, actions: DiagnosticsAct
   }
 
   async function openGithub(entryId?: string) {
-    const outcome = await actions.github(entryId);
+    const outcome = await actions.github(entryId, filter.editor);
     if (!outcome.ok) return REPORT_FAILED;
     return outcome.copied ? GITHUB_CLIPBOARD : GITHUB_OPENED;
   }
@@ -139,7 +147,7 @@ export function createDiagnosticsView(root: HTMLElement, actions: DiagnosticsAct
 
   function render() {
     const visible = applyFilter(entries, filter);
-    const totals = severityCounts(entries);
+    const totals = severityCounts(entries.filter((entry) => isShown(entry, filter)));
     counts.textContent = [plural(totals.fatal, 'crash', 'crashes'), plural(totals.error, 'error', 'errors'), plural(totals.warning, 'warning', 'warnings')].join(' · ');
     const empty = entries.length ? NOTHING_MATCHES : EMPTY_LOG;
     list.replaceChildren(...(visible.length ? visible.map(row) : [el('li', 'dg-empty', empty)]));

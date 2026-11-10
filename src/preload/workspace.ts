@@ -128,8 +128,8 @@ contextBridge.exposeInMainWorld('ccmws', {
 
   reportRendererError: (report: { kind: string; message: string; stack?: string }) => ipcRenderer.invoke(DIAGNOSTICS_REPORT_CHANNEL, report),
   diagnosticsWatch: (on: boolean) => ipcRenderer.invoke(DIAGNOSTICS_WATCH_CHANNEL, on),
-  diagnosticsCopy: (request: { entryId?: string }) => ipcRenderer.invoke(DIAGNOSTICS_COPY_CHANNEL, request),
-  diagnosticsGithub: (request: { entryId?: string; crash?: boolean }) => ipcRenderer.invoke(DIAGNOSTICS_GITHUB_CHANNEL, request),
+  diagnosticsCopy: (request: { entryId?: string; editor?: boolean }) => ipcRenderer.invoke(DIAGNOSTICS_COPY_CHANNEL, request),
+  diagnosticsGithub: (request: { entryId?: string; crash?: boolean; editor?: boolean }) => ipcRenderer.invoke(DIAGNOSTICS_GITHUB_CHANNEL, request),
   diagnosticsNotice: () => ipcRenderer.invoke(DIAGNOSTICS_NOTICE_CHANNEL),
   diagnosticsDismissNotice: () => ipcRenderer.invoke(DIAGNOSTICS_DISMISS_CHANNEL),
   onDiagnosticsUpdate: (cb: Cb) => ipcRenderer.on(DIAGNOSTICS_UPDATE_CHANNEL, (_e, entry) => cb(entry)),
