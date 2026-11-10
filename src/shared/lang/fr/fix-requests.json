@@ -5,7 +5,10 @@
   "rename": "Renomme ceci.",
   "simplify": "Simplifie ceci.",
   "explain": "Explique pourquoi c'est nécessaire.",
-  "remove": "Supprime ceci."
+  "remove": "Supprime ceci.",
+  "what": "Que fait ceci ?",
+  "why": "Pourquoi comme ça ?",
+  "covered": "Est-ce couvert par un test ?"
  },
  "copy": {
   "header": "Commentaires de relecture pour",

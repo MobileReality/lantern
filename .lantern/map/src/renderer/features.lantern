@@ -38,7 +38,7 @@ src/renderer/features/explain.ts . component 8d84de6f1aef
   = src/renderer/commands/index.ts#registerCommand
   < src/shared/project-data.ts#EXPLAINS_DIR
 
-src/renderer/features/lantern.ts . component 9afb04f01169
+src/renderer/features/lantern.ts . component e997c9cb29f8
 #feature file-graph
   < src/main/lantern.ts
   < src/main/setup-progress.ts

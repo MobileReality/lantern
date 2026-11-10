@@ -5,7 +5,10 @@
   "rename": "Das umbenennen.",
   "simplify": "Das vereinfachen.",
   "explain": "Erklären, warum das nötig ist.",
-  "remove": "Das entfernen."
+  "remove": "Das entfernen.",
+  "what": "Was macht das?",
+  "why": "Warum so?",
+  "covered": "Ist das durch einen Test abgedeckt?"
  },
  "copy": {
   "header": "Review-Kommentare zu",

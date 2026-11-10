@@ -25,6 +25,7 @@ const local = {
   settingsRemoveLocalReview: vi.fn().mockResolvedValue({}),
   lanternPrFileDiff: vi.fn(() => new Promise(() => {})),
   lanternPrFile: vi.fn(() => new Promise(() => {})),
+  lanternPrFileStats: vi.fn().mockResolvedValue({}),
 };
 
 async function open(load: ReturnType<typeof vi.fn>, fetchPrs = vi.fn().mockResolvedValue({ ok: true })) {
@@ -240,7 +241,7 @@ describe('files outside the map', () => {
     (document.querySelector('.pr-chip[data-pr="5"]') as HTMLElement).click();
     await vi.waitFor(() => expect(document.querySelector('[data-pr-map]')).not.toBeNull());
     expect(document.querySelector('[data-pr-map]')?.textContent).toBe('Map 2 missing files');
-    expect(document.querySelector('li.pr-file[data-tip="notes.md"] .pr-tag')?.textContent).toBe('not in map');
+    expect(document.querySelector('li.pr-file.off [data-pr-go="notes.md"] .pr-tag')?.textContent).toBe('not in map');
     const { startRun } = await import('../src/renderer/features/agent-run');
     (document.querySelector('[data-pr-map]') as HTMLElement).click();
     await vi.waitFor(() => expect(startRun).toHaveBeenCalled());

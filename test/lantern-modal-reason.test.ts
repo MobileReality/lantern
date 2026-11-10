@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { openCodeModal } from '../src/renderer/lib/codemodal';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const REASON = 'Rejects a negative pid <b>before</b> it reaches kill()';
 const PR = pr('24', {
@@ -26,18 +27,17 @@ function open() {
   return root;
 }
 
-const click = (root: HTMLElement, attr: string, path: string) => (root.querySelector(`[${attr}="${path}"]`) as HTMLElement).click();
-
 afterEach(() => {
+  localStorage.clear();
   for (const view of mounted.splice(0)) view.dispose();
   document.body.textContent = '';
 });
 
 describe('reason at the top of the PR review pane', () => {
-  for (const [name, attr, bodySel] of [['diff', 'data-pr-diff', '.lt-code-body'], ['code', 'data-pr-code', '.lt-code-body']] as const) {
+  for (const [name, mode, bodySel] of [['diff', 'diff', '.lt-code-body'], ['code', 'file', '.lt-code-body']] as const) {
     it(`${name} view shows the reason before the body, as text`, async () => {
       const root = open();
-      click(root, attr, 'test/new-a.ts');
+      openPrFile(root, 'test/new-a.ts', mode);
       await flush();
       const reason = root.querySelector('.lt-modal-reason') as HTMLElement;
       const body = root.querySelector(bodySel) as HTMLElement;
@@ -50,7 +50,7 @@ describe('reason at the top of the PR review pane', () => {
 
     it(`${name} view shows nothing without a reason`, async () => {
       const root = open();
-      click(root, attr, 'test/new-b.ts');
+      openPrFile(root, 'test/new-b.ts', mode);
       await flush();
       expect(root.querySelector('.lt-review .lt-code-path')?.textContent).toContain('new-b.ts');
       expect(root.querySelector('.lt-modal-reason')).toBeNull();
@@ -68,7 +68,7 @@ describe('reason at the top of the PR review pane', () => {
 
   it('clicking the reason in the review pane expands it', async () => {
     const root = open();
-    click(root, 'data-pr-diff', 'test/new-a.ts');
+    openPrFile(root, 'test/new-a.ts', 'diff');
     const reason = root.querySelector('.lt-modal-reason') as HTMLElement;
     reason.click();
     expect(reason.classList.contains('open')).toBe(true);

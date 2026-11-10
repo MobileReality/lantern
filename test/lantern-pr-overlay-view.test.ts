@@ -2,6 +2,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { LanternMap, LanternPrOverlay } from '../src/main/lantern';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import type { ViewOptions } from '../src/renderer/lib/lanternview';
 import { withOverlay } from '../src/renderer/lib/lanternoverlay';
@@ -22,6 +23,7 @@ const MERGED = pr('5', { state: 'merged', files: [{ path: 'src/new.ts', kind: 'a
 const mounted: ReturnType<typeof mountLanternView>[] = [];
 
 afterEach(() => {
+  localStorage.clear();
   for (const view of mounted.splice(0)) view.dispose();
   document.body.replaceChildren();
 });
@@ -58,7 +60,7 @@ const chip = (root: HTMLElement, id: string) => root.querySelector(`.pr-chip[dat
 const names = (root: HTMLElement) => [...root.querySelectorAll('.lt-pixi-node-access')].map((n) => n.textContent).sort();
 const nodeEl = (root: HTMLElement, name: string) => [...root.querySelectorAll('.lt-pixi-node-access')].find((g) => g.textContent === name) as SVGGElement;
 const relatedPaths = (root: HTMLElement) => [...root.querySelectorAll('.lt-pixi-node-access')].filter((node) => node.getAttribute('aria-description')?.match(/selected|related/)).map((node) => node.getAttribute('aria-label')).sort();
-const rowOf = (root: HTMLElement, path: string) => [...root.querySelectorAll('.pr-file')].find((li) => li.getAttribute('data-tip') === path || li.querySelector(`[data-pr-go="${path}"]`)) as HTMLElement;
+const rowOf = (root: HTMLElement, path: string) => [...root.querySelectorAll('.pr-file')].find((li) => li.querySelector(`.file-label[data-tip="${path}"]`)) as HTMLElement;
 
 function overlayReader(by: Record<string, LanternPrOverlay> = { '9': overlayOf('9', 'tip-9'), '10': overlayOf('10', 'tip-10', { nodes: [node('src/other.ts', 'util', { prNew: true })], relations: [], missing: [] }) }) {
   return vi.fn(async (id: string) => by[id]);
@@ -139,18 +141,25 @@ describe('pull request mode with the branch overlay', () => {
     expect(names(root)).toEqual(['app.ts', 'page.tsx', 'repo.ts']);
   });
 
-  it('turns the panel row of an added file into a jump with the branch code and diff actions, and keeps "not in map" for the rest', async () => {
-    const { root } = mount(mapWith(), { readPrOverlay: overlayReader(), readFile: vi.fn(), readPrFile: vi.fn(), readPrDiff: vi.fn() });
+  it('turns the panel row of an added file into a jump that opens the branch version and diff, and keeps "not in map" for the rest', async () => {
+    const readPrFile = vi.fn(async () => ({ ok: true, text: 'branch text\n', truncated: false, binary: false, version: 'branch' as const }));
+    const readPrDiff = vi.fn(async () => ({ ok: true, diff: '@@ -0,0 +1 @@\n+branch text', truncated: false, binary: false }));
+    const { root } = mount(mapWith(), { readPrOverlay: overlayReader(), readFile: vi.fn(), readPrFile, readPrDiff });
     chip(root, '9').click();
     expect(rowOf(root, 'src/new.ts').classList.contains('off')).toBe(true);
     await settle();
     const row = rowOf(root, 'src/new.ts');
     expect(row.classList.contains('off')).toBe(false);
-    expect(row.querySelector('[data-pr-go="src/new.ts"]')).not.toBeNull();
-    expect(row.querySelector('[data-pr-code="src/new.ts"]')?.textContent).toBe('</>');
-    expect(row.querySelector('[data-code]')).toBeNull();
-    expect(row.querySelector('[data-pr-diff="src/new.ts"]')).not.toBeNull();
+    expect(row.querySelectorAll('button')).toHaveLength(1);
+    expect(row.querySelector('button.pr-path[data-pr-go="src/new.ts"]')).not.toBeNull();
+    expect(row.querySelector('[data-pr-code], [data-code], [data-pr-diff]')).toBeNull();
     expect(row.querySelector('.pr-tag')?.textContent).toBe('new');
+    openPrFile(root, 'src/new.ts', 'file');
+    await settle();
+    expect(readPrFile).toHaveBeenCalledWith('9', 'src/new.ts');
+    openPrFile(root, 'src/new.ts', 'diff');
+    await settle();
+    expect(readPrDiff).toHaveBeenCalledWith('9', 'src/new.ts');
     const missing = rowOf(root, 'lib/nomap.ts');
     expect(missing.classList.contains('off')).toBe(true);
     expect(missing.querySelector('.pr-tag')?.textContent).toBe('not in map');

@@ -1,6 +1,6 @@
 {
  "text": {
-  "box.ts": "Builds the inline comment box: a text area under the code with the predefined texts as chips that insert into it, a Fix, Explain or Question radio group that a chip may suggest into but never over a choice the user made, saving on Ctrl or Cmd+Enter and cancelling on Escape",
+  "box.ts": "Builds the inline comment box: a heading with the Fix, Explain or Question radio group, a text area under the code, the predefined texts of the chosen intent as chips below it that insert into the area, a hint with the save shortcut as key caps (with the plus sign off macOS), saving on Ctrl or Cmd+Enter and cancelling on Escape",
   "card.ts": "Builds the compact comment card with its lines, a quiet label for the intent it has, text, edit and delete and a fold that keeps its state across repaints",
   "controller.ts": "Runs the inline comments of the review pane: which comment box is open, saving to the per-pull-request store with the chosen intent, the file and diff layers, focus after save or cancel, the jump to a listed comment, the remembered Copy all default intent and Copy all",
   "float.ts": "Shows the small Comment button next to the selected lines of the code or diff and comments on them from a click or Alt+Shift+C",
@@ -9,6 +9,6 @@
   "layer.ts gotcha": "Ignores its own elements by their lt-cm- class prefix when watching repaints, so new classes must keep it",
   "note.ts": "Builds the note that says how many comments are not in the current view and offers the other view",
   "rows.ts": "Reads the numbered rows of a code or diff body, maps a text selection to its first and last line and quotes lines, numbering diff rows by new-file line",
-  "tools.ts": "Builds the review header controls: Comment on the file, the Comments count with its popover list grouped by file, and Copy all with the select for its default intent, its list popover mounted through the shared popover module"
+  "tools.ts": "Builds the review header controls: Comment on the file with the Comments count and its popover list grouped by file as one split control, and Copy all with the select for its default intent as another, each with an icon, its list popover mounted through the shared popover module"
  }
 }

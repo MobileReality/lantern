@@ -6,6 +6,7 @@ import { byId, el, currentPlatform } from '../lib/util';
 import { ariaShortcut, keyChips, keyLabel, resolveUserKeymap } from '../../shared/commands/keymap';
 import { affectsSetting } from '../../shared/settings-registry';
 import type { CommandId } from '../../shared/commands';
+import { keyCaps } from '../lib/keycaps';
 import { trapTab } from '../lib/modal-focus';
 import CLOSE_ICON from '@renderer/assets/icons/close.svg';
 
@@ -84,12 +85,8 @@ function openPalette(opener: Element | null): void {
         const group = groupAt[i];
         if (group) row.append(el('span', 'pl-group', group));
         if (item.keys) {
-          const kbd = el('kbd', 'pl-keys');
-          kbd.setAttribute('aria-hidden', 'true');
-          keyChips(item.keys, platform).forEach((chip, n) => {
-            if (n > 0 && platform !== 'mac') kbd.append(el('span', 'pl-key-sep', '+'));
-            kbd.append(el('span', 'pl-key', chip));
-          });
+          const kbd = keyCaps(keyChips(item.keys, platform), platform !== 'mac');
+          kbd.classList.add('pl-keys');
           row.setAttribute('aria-keyshortcuts', ariaShortcut(item.keys, platform));
           row.append(kbd);
         }

@@ -72,5 +72,15 @@ const providersWithRole = (role: ProviderRole): ProviderId[] => PROVIDER_IDS.fil
 
 const CODE_HOST_IDS = PROVIDER_IDS.filter((id): id is CodeHostId => PROVIDERS[id].role === PROVIDER_ROLE.codeHost);
 
-export { CODE_HOST_IDS, PROVIDER, PROVIDER_IDS, PROVIDER_ROLE, PROVIDERS, TOKEN_FIELD, providersWithRole };
+const PROVIDER_OF_HOSTNAME = new Map(CODE_HOST_IDS.flatMap((id) => [...PROVIDERS[id].hosts, ...PROVIDERS[id].remoteAliases].map((hostname) => [hostname, id] as const)));
+
+function providerOfRecordUrl(url: string): CodeHostId | null {
+  try {
+    return PROVIDER_OF_HOSTNAME.get(new URL(url).hostname.toLowerCase().replace(/^www\./, '')) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export { CODE_HOST_IDS, PROVIDER, PROVIDER_IDS, PROVIDER_ROLE, PROVIDERS, TOKEN_FIELD, providerOfRecordUrl, providersWithRole };
 export type { CodeHostId, ProviderId, ProviderInfo, ProviderRole, TokenField };

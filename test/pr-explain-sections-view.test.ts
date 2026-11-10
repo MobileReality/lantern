@@ -6,6 +6,7 @@ import { createExplainHub } from '../src/renderer/lib/prexplain';
 import type { ExplainHub, PrExplainClient } from '../src/renderer/lib/prexplain';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const HEAD = 'a'.repeat(40);
 const TARGET = { pr: '24', path: 'test/new-a.ts', head: HEAD };
@@ -35,6 +36,7 @@ let hub: ExplainHub | undefined;
 const mounted: ReturnType<typeof mountLanternView>[] = [];
 
 afterEach(() => {
+  localStorage.clear();
   hub?.dispose();
   hub = undefined;
   for (const view of mounted.splice(0)) view.dispose();
@@ -193,11 +195,11 @@ describe('the collapse control', () => {
         readPrDiff: async () => ({ ok: true, diff: '@@ -1 +1 @@\n-a\n+b', truncated: false, binary: false }),
       }),
     );
-    (root.querySelector('[data-pr-code="test/new-a.ts"]') as HTMLElement).click();
+    openPrFile(root, 'test/new-a.ts', 'file');
     await flush();
     toggle(root.querySelector('.lt-explain') as HTMLElement).click();
     expect(onExplainCollapsed).toHaveBeenCalledWith(true);
-    (root.querySelector('[data-pr-code="test/new-b.ts"]') as HTMLElement).click();
+    openPrFile(root, 'test/new-b.ts', 'file');
     await flush();
     const next = root.querySelector('.lt-explain') as HTMLElement;
     expect(body(next).hidden).toBe(true);

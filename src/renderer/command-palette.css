@@ -59,20 +59,7 @@
 .pl-hl { color: var(--primary); font-weight: 700; }
 .pl-row[aria-selected='true'] .pl-hl { color: #fff; }
 .pl-group { flex: 0 0 auto; color: var(--muted); font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
-.pl-keys { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 3px; font: inherit; color: var(--muted); }
-.pl-key {
-  display: inline-block;
-  min-width: 18px;
-  padding: 2px 5px 1px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--card);
-  font-size: var(--fs-sm);
-  line-height: 12px;
-  text-align: center;
-  color: var(--muted);
-}
-.pl-key-sep { font-size: var(--fs-sm); }
+.pl-keys { flex: 0 0 auto; }
 .pl-row[aria-selected='true'] .pl-group,
 .pl-row[aria-selected='true'] .pl-keys { color: rgba(255, 255, 255, 0.85); }
-.pl-row[aria-selected='true'] .pl-key { color: #fff; background: rgba(255, 255, 255, 0.18); border-color: transparent; }
+.pl-row[aria-selected='true'] .lt-key { color: #fff; background: rgba(255, 255, 255, 0.18); border-color: transparent; }

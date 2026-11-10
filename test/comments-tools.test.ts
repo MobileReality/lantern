@@ -145,7 +145,7 @@ describe('the default intent of Copy all', () => {
   it('sits after Copy all, labelled, with per comment and one entry per intent', () => {
     const { view } = tools();
 
-    expect(button(view.el, 'copy').nextElementSibling).toBe(select(view.el));
+    expect(button(view.el, 'copy').nextElementSibling?.firstElementChild).toBe(select(view.el));
     expect(select(view.el).getAttribute('aria-label')).toBe('Copy all, default intent');
     expect([...select(view.el).options].map((each) => each.value)).toEqual(['per-comment', 'fix', 'explain', 'question']);
   });
@@ -153,6 +153,7 @@ describe('the default intent of Copy all', () => {
   it('shows the choice it is painted with and tells the owner about a change', () => {
     const { view, onChoice } = tools(ITEMS, 'explain');
     expect(select(view.el).value).toBe('explain');
+    expect(select(view.el).parentElement?.dataset.tip).toMatch(/: Default: \S/);
 
     select(view.el).value = 'question';
     select(view.el).dispatchEvent(new Event('change', { bubbles: true }));

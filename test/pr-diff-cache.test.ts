@@ -9,6 +9,7 @@ import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { branchOff, commitFile, commitRecord, git, makeWorld } from './helpers/git-repo';
 import type { World } from './helpers/git-repo';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 vi.setConfig({ testTimeout: 60_000, hookTimeout: 60_000 });
 
@@ -203,12 +204,12 @@ describe('opening a PR in the Lantern view', () => {
     const files = paths(16);
     const read = vi.fn(async (_pr: string, path: string) => good(path));
     const root = mount(files, 'a'.repeat(40), read);
-    (root.querySelector(`[data-pr-diff="${files[0]}"]`) as HTMLElement).click();
+    openPrFile(root, files[0], 'diff');
     await flush();
     await flush();
     expect(read.mock.calls.map((c) => c[1]).sort()).toEqual([...files].sort());
     const before = read.mock.calls.length;
-    (root.querySelector(`[data-pr-diff="${files[9]}"]`) as HTMLElement).click();
+    openPrFile(root, files[9], 'diff');
     await flush();
     expect(read).toHaveBeenCalledTimes(before);
   });

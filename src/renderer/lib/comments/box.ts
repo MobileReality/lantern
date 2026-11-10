@@ -1,7 +1,9 @@
-import { DEFAULT_INTENT, INTENT_IDS, isIntentId, suggestedIntent } from '../../../shared/lang/fix-requests';
+import { DEFAULT_INTENT, INTENT_IDS, isIntentId, presetsOf } from '../../../shared/lang/fix-requests';
 import type { FixPreset, IntentId } from '../../../shared/lang/fix-requests';
 import { intentLabel } from '../fixrequests/intent';
-import { el, isMac } from '../util';
+import { keyChips } from '../../../shared/commands/keymap';
+import { keyCaps } from '../keycaps';
+import { currentPlatform, el } from '../util';
 
 interface BoxSpec {
   heading: string;
@@ -38,8 +40,9 @@ const TEXT = {
   chips: 'Predefined texts',
   intent: 'Intent',
   comment: 'Comment',
-  placeholder: 'Write a comment, or pick a text above',
+  placeholder: 'Write a comment, or pick a text below',
   cancel: 'Cancel',
+  save: 'to save',
   needComment: 'Write a comment or pick a text.',
 } as const;
 
@@ -73,6 +76,7 @@ function createCommentBox(handlers: BoxHandlers): CommentBox {
   form.hidden = true;
   form.noValidate = true;
   const heading = el('p', 'lt-cm-box-title');
+  const head = el('div', 'lt-cm-box-head');
   const chips = el('div', 'lt-cm-chips');
   chips.setAttribute('role', 'group');
   chips.setAttribute('aria-label', TEXT.chips);
@@ -81,10 +85,11 @@ function createCommentBox(handlers: BoxHandlers): CommentBox {
   intents.setAttribute('aria-label', TEXT.intent);
   const groupName = `lt-cm-intent-${++boxCount}`;
   const segments = INTENT_IDS.map((id) => intentChoice(groupName, id));
-  intents.append(el('span', 'lt-cm-intent-name', TEXT.intent), ...segments.map((each) => each.label));
+  intents.append(...segments.map((each) => each.label));
+  head.append(heading, intents);
   const text = el('textarea', 'lt-cm-text');
   text.name = 'comment';
-  text.rows = 3;
+  text.rows = 7;
   text.placeholder = TEXT.placeholder;
   text.setAttribute('aria-label', TEXT.comment);
   const error = el('p', 'lt-cm-error');
@@ -94,19 +99,24 @@ function createCommentBox(handlers: BoxHandlers): CommentBox {
   submit.type = 'submit';
   const cancel = el('button', 'lt-cm-btn', TEXT.cancel);
   cancel.type = 'button';
-  const hint = el('span', 'lt-cm-hint', `${isMac() ? '⌘' : 'Ctrl'}+Enter to save · Esc to cancel`);
+  const hint = el('span', 'lt-cm-hint');
+  hint.append(keyCaps(keyChips('mod+enter', currentPlatform()), currentPlatform() !== 'mac'), TEXT.save);
   const actions = el('div', 'lt-cm-actions');
-  actions.append(submit, cancel, hint);
-  form.append(heading, chips, intents, text, error, actions);
+  actions.append(hint, cancel, submit);
+  form.append(head, text, chips, error, actions);
 
   let preset = '';
   let intent: IntentId | undefined;
-  let picked = false;
   let fallback: IntentId = DEFAULT_INTENT;
+  let presets: readonly FixPreset[] = [];
   let focused = false;
 
-  function showIntent(id: IntentId | undefined) {
-    for (const each of segments) each.input.checked = each.input.value === (id ?? fallback);
+  function showIntent() {
+    const shown = intent ?? fallback;
+    for (const each of segments) each.input.checked = each.input.value === shown;
+    const offered = presetsOf(shown, presets);
+    chips.replaceChildren(...offered.map(chip));
+    chips.hidden = offered.length === 0;
   }
 
   function fail(message: string) {
@@ -122,11 +132,7 @@ function createCommentBox(handlers: BoxHandlers): CommentBox {
     text.value = next.value;
     text.setSelectionRange(next.caret, next.caret);
     preset = button.dataset.preset ?? '';
-    const suggestion = suggestedIntent(preset);
-    if (suggestion && !picked) {
-      intent = suggestion;
-      showIntent(intent);
-    }
+    intent ??= fallback;
     error.hidden = true;
     text.focus();
   });
@@ -134,7 +140,7 @@ function createCommentBox(handlers: BoxHandlers): CommentBox {
     const input = ev.target instanceof HTMLInputElement ? ev.target : null;
     if (!input || !isIntentId(input.value)) return;
     intent = input.value;
-    picked = true;
+    showIntent();
   });
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
@@ -167,14 +173,12 @@ function createCommentBox(handlers: BoxHandlers): CommentBox {
       heading.textContent = spec.heading;
       submit.textContent = spec.submit;
       form.setAttribute('aria-label', spec.heading);
-      chips.replaceChildren(...spec.presets.map(chip));
-      chips.hidden = spec.presets.length === 0;
+      presets = spec.presets;
       text.value = spec.comment;
       preset = spec.preset;
       intent = spec.intent;
       fallback = spec.fallback ?? DEFAULT_INTENT;
-      picked = spec.intent !== undefined;
-      showIntent(intent);
+      showIntent();
       error.hidden = true;
       form.hidden = false;
     },

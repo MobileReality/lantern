@@ -3,7 +3,7 @@ lantern 1
 
 src/renderer/svg.d.ts . schema 0f5231031c58
 
-src/renderer/global.d.ts . schema 4f7a1764acba
+src/renderer/global.d.ts . schema 68af8f249324
   < src/main/cli.ts#CliStatus
   < src/main/dev-instance.ts#DevInstance
   < src/main/extensions.ts#ExtensionsPanel
@@ -29,7 +29,7 @@ src/renderer/global.d.ts . schema 4f7a1764acba
   < src/shared/providers.ts#ProviderId
   < src/shared/tray-model.ts#TrayModel
 
-src/renderer/command-palette.css . style dffe98a602f6
+src/renderer/command-palette.css . style b1ca77622d39
 #feature command-palette
 
 src/renderer/lantern-flow.css . style 934625fc4247
@@ -41,25 +41,25 @@ src/renderer/lantern-macroview.css . style 14604f7b1dc4
 src/renderer/lantern-plans.css . style 18e809058f89
 #feature planning
 
-src/renderer/lantern-prs.css . style 1aa6cda1dcb3
+src/renderer/lantern-prs.css . style 1cbb697a6c59
 #feature pull-requests
 
 src/renderer/lantern-relation.css . style 22c56f6957c8
 #feature file-graph
 
-src/renderer/lantern-review.css . style 39bc1638441d
+src/renderer/lantern-review.css . style 12acd03a1fdb
 #feature review-screen
 
 src/renderer/lantern-sections.css . style b393efd2a26f
 #feature lantern-sections
 
-src/renderer/lantern-select.css . style d9561106c5e3
+src/renderer/lantern-select.css . style 55a994a1e274
 #feature review-screen
 
 src/renderer/lantern-setup.css . style ee7ca9584ee0
 #feature map-setup
 
-src/renderer/lantern.css . style 3b7485822aad
+src/renderer/lantern.css . style 996edba103b0
 #feature file-graph
 
 src/renderer/memory.css . style 63701ca4d113
@@ -127,7 +127,7 @@ src/renderer/workspace.html . entry bd9de8e0aee7
   > src/renderer/workspace.ts
   < src/renderer/integrations.css
 
-src/renderer/workspace.ts . entry 20c6e8c34375
+src/renderer/workspace.ts . entry a7d1aceb9704
   = ext:vscode-serve-web
   = src/preload/workspace.ts
   = src/renderer/features/editor-tab.ts
@@ -159,4 +159,4 @@ src/renderer/workspace.ts . entry 20c6e8c34375
 src/renderer/integrations.css . style 78029c94fea7
 #feature integrations
 
-src/renderer/floating.css . style 5ab1c77ca052
+src/renderer/floating.css . style 1352d5520907

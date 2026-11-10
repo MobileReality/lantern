@@ -81,7 +81,7 @@ test/e2e/app/integrations.html . test c5ca8885c3a1
 test/e2e/app/main.cjs . test 847289af4668
   > test/e2e/app/index.html
 
-test/e2e/app/renderer.ts . test 89342a75e346
+test/e2e/app/renderer.ts . test 8a81d4321d96
   < src/main/lantern-macro-load.ts#MacroLoad
   < src/main/lantern-macro.ts#MacroView
   < src/main/lantern.ts

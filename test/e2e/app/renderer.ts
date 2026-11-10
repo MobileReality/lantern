@@ -68,7 +68,10 @@ async function bootstrap() {
     ...(isPrReview ? { readFile: readDemoFile, readPrFile: readDemoPrFile, readPrDiff: readDemoPrDiff, readPrOverlay: readDemoPrOverlay } : {}),
     ...(isAreasPr || isMacroLab || isMacroSized ? { readFile: readAreasFile, readPrFile: readAreasPrFile, readPrDiff: readAreasPrDiff } : {}),
   });
-  if (isPrReview) root?.querySelector<HTMLButtonElement>('[data-pr-diff="src/checkout/order-summary.tsx"]')?.click();
+  if (isPrReview) {
+    root?.querySelector<HTMLButtonElement>('[data-pr-go="src/checkout/order-summary.tsx"]')?.click();
+    root?.querySelector<HTMLButtonElement>('.lt-review [data-review-mode="diff"]')?.click();
+  }
 }
 
 void bootstrap();

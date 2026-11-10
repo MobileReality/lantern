@@ -5,7 +5,10 @@
   "rename": "Renomeie isto.",
   "simplify": "Simplifique isto.",
   "explain": "Explique por que isto é necessário.",
-  "remove": "Remova isto."
+  "remove": "Remova isto.",
+  "what": "O que isto faz?",
+  "why": "Por que assim?",
+  "covered": "Isto está coberto por um teste?"
  },
  "copy": {
   "header": "Comentários de revisão de",

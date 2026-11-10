@@ -7,6 +7,7 @@ import { mountLanternView } from '../src/renderer/lib/lanternview';
 import type { ViewOptions } from '../src/renderer/lib/lanternview';
 import { macroFixtureBlocks, macroFixtureRecords, macroFixtureView, repoFeatureTexts, repoPrRecord } from './helpers/lantern-macro-fixture';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const PR_ID = '108';
 const view = macroFixtureView();
@@ -169,7 +170,7 @@ describe('a file that is in no feature block', () => {
   it('says so for a file that is not in the map', async () => {
     const root = await openMacro();
 
-    (root.querySelector(`.lt-side-list [data-pr-diff="${unmapped}"]`) as HTMLElement).click();
+    openPrFile(root, unmapped, 'diff');
     await flush();
 
     expect(shown(root)).toBe(unmapped);

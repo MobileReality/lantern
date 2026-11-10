@@ -1,4 +1,5 @@
 import CLOSE_ICON from '@renderer/assets/icons/close.svg';
+import UNFOLD_ICON from '@renderer/assets/icons/unfold.svg';
 import { fileLabelHtml } from './file-label';
 import { isLocalId, prRef } from '../../shared/local-review';
 import type { PrFileDiff } from '../../main/lantern-prdiff';
@@ -54,7 +55,9 @@ function paintChrome(chrome: DiffChrome, rows: DiffRow[], foldable: boolean) {
   del.dataset.tip = `${removed} removed`;
   chrome.stat.append(add, document.createTextNode(' '), del);
   chrome.toggle.hidden = !foldable;
-  chrome.toggle.textContent = showAllLines ? 'Collapse unchanged' : 'Show all lines';
+  const label = showAllLines ? 'Collapse unchanged lines' : 'Show all lines';
+  chrome.toggle.dataset.tip = label;
+  chrome.toggle.setAttribute('aria-label', label);
   chrome.toggle.setAttribute('aria-pressed', String(showAllLines));
 }
 
@@ -131,8 +134,9 @@ interface DiffView {
 
 function createDiffView(read: ReadDiff, readSemantic?: ReadSemantic): DiffView {
   const stat = el('span', 'lt-diff-stat');
-  const toggle = el('button', 'lt-diff-toggle');
+  const toggle = el('button', 'lt-diff-fold');
   toggle.type = 'button';
+  toggle.innerHTML = UNFOLD_ICON;
   toggle.hidden = true;
   const chrome: DiffChrome = { stat, toggle };
   const body = el('div', 'rv-code lt-code-body');
@@ -236,7 +240,6 @@ function openPrDiffModal(host: HTMLElement, read: ReadDiff, pr: string, path: st
     stepper?.update(index);
     title.dataset.tip = file.path;
     title.innerHTML = fileLabelHtml(file.path);
-    title.append(document.createTextNode(' '), el('span', 'sym', prRef(pr)));
     modal.setAttribute('aria-label', `Diff of ${file.path} in ${isLocalId(pr) ? 'local comparison' : 'pull request'} ${prRef(pr)}`);
     reasonEl?.remove();
     reasonEl = reasonBlock(file.reason);

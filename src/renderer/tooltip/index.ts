@@ -1,3 +1,5 @@
+import { keyCaps } from '../lib/keycaps';
+
 const SHOW_DELAY_MS = 500;
 const SKIP_DELAY_MS = 300;
 const WATCH_MS = 200;
@@ -68,13 +70,8 @@ function fill(el: HTMLElement) {
   tip.append(text);
   const chips = el.dataset.tipCommand ? keysFor(el.dataset.tipCommand) : undefined;
   if (chips?.length) {
-    const keys = document.createElement('span');
-    keys.className = 'lt-tip-keys';
-    for (const chip of chips) {
-      const kbd = document.createElement('kbd');
-      kbd.textContent = chip;
-      keys.append(kbd);
-    }
+    const keys = keyCaps(chips);
+    keys.classList.add('lt-tip-keys');
     tip.append(keys);
   }
   describe(el, !repeatsLabel(el, text) || !!chips?.length);

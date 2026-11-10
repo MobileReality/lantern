@@ -72,17 +72,24 @@
 .pr-desc-toggle { margin-top: 6px; padding: 2px 9px; border: 1px solid var(--lt-rule); border-radius: var(--radius-sm); background: var(--lt-surface); color: var(--lt-ink); font: inherit; font-size: var(--fs-sm); cursor: default; }
 .pr-desc-toggle:hover { border-color: var(--lt-ink-3); }
 .pr-desc-toggle:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 2px; }
-.pr-open-link { text-decoration: none; }
+.pr-open-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.pr-open-link .prov-logo { width: 14px; height: 14px; color: currentColor; }
 .lt-side h2.pr-added span, .lt-side h2.pr-modified span, .lt-side h2.pr-removed span { color: var(--lt-glow); }
 .lt-side h2 em { font-style: normal; font-variant-numeric: tabular-nums; }
-.pr-files { list-style: none; margin: 0; padding: 0; }
-.pr-file { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; padding: 2px 4px; border-radius: 4px; }
-.pr-file .pr-reason { flex: 0 0 100%; margin: 1px 0 3px; color: var(--lt-ink-2); font-size: var(--fs-xs); line-height: 1.4; overflow-wrap: anywhere; }
-.pr-file.sel { background: var(--lt-surface); box-shadow: inset 3px 0 0 var(--lt-glow); }
-.pr-file .pr-path { flex: 1 1 10em; min-width: 0; border: 0; background: none; padding: 0; text-align: left; color: var(--lt-ink); font: var(--fs-base) var(--lt-mono); overflow-wrap: break-word; cursor: default; }
-.pr-file span.pr-path, .pr-file.off .pr-path { color: var(--lt-ink-3); }
-.pr-file .pr-path b { font-weight: 700; }
-.pr-file:not(.off):hover { background: var(--lt-surface); }
+.pr-files { display: flex; flex-direction: column; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.pr-file { border-radius: 6px; }
+.pr-file .pr-path { display: flex; flex-direction: column; gap: 5px; box-sizing: border-box; width: 100%; padding: 4px 8px 5px; border: 0; border-radius: 6px; background: none; color: var(--lt-ink); font: inherit; text-align: left; cursor: default; }
+.pr-file .pr-path:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: -2px; }
+.pr-file.sel .pr-path, .pr-file .pr-path[aria-expanded="true"] { background: var(--lt-surface); }
+.pr-file:not(.sel) button.pr-path:hover { background: color-mix(in srgb, var(--lt-surface) 55%, transparent); }
+.pr-row-top { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.pr-row-top .file-label { flex: 0 1 auto; }
+.pr-row-top .file-name { flex: 0 0 auto; max-width: calc(100% - 22px); font: 600 var(--fs-base) var(--lt-mono); }
+.pr-row-top .file-directory { flex: 0 1 auto; font: var(--fs-sm) var(--lt-mono); }
+.pr-file.off .file-name { color: var(--lt-ink-3); }
+.pr-row-top .file-label + * { margin-left: auto; }
+.pr-stat { flex: none; display: inline-flex; gap: 5px; padding-left: 6px; font: 700 var(--fs-xs) var(--lt-mono); font-variant-numeric: tabular-nums; }
+.pr-file .pr-reason { display: block; margin-left: 22px; color: var(--lt-ink-2); font-size: var(--fs-base); line-height: 1.45; overflow-wrap: anywhere; }
 .pr-reasons-row, .pr-map-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .pr-reasons { border: 1px dashed var(--lt-ink-3); border-radius: 999px; background: none; color: var(--lt-ink-2); font: inherit; font-size: var(--fs-xs); padding: 1px 9px; cursor: default; }
 .pr-reasons:hover:not(:disabled) { color: var(--lt-ink); border-style: solid; }
@@ -92,10 +99,6 @@
 .pr-tag { flex: none; padding: 0 6px; border: 1px dashed var(--lt-ink-3); border-radius: 999px; color: var(--lt-ink-3); font-size: var(--fs-xs); }
 .lt-side .pr-head + .clear-all { display: block; }
 .lt-side h2.pr-review span { color: var(--lt-glow); }
-.pr-file .pr-num { flex: none; min-width: 20px; padding: 0 5px; border-radius: 999px; background: var(--lt-glow-soft); color: var(--lt-ink); font: 700 var(--fs-xs) var(--lt-mono); text-align: center; font-variant-numeric: tabular-nums; }
-.pr-file .pr-kind { flex: none; color: var(--lt-glow); font: 700 var(--fs-sm) var(--lt-mono); }
-.pr-file .code-open { margin-left: 0; }
-.pr-file .diff-open { flex: none; margin-left: 0; }
 
 .lt-plat.lt-prmark { margin-left: auto; border-left: 3px solid var(--lt-pr-open); }
 .lt-prsum { margin: 12px 0; padding: 8px 10px; border-left: 3px solid var(--lt-glow); background: var(--lt-surface); border-radius: var(--radius-sm); }

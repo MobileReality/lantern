@@ -1,11 +1,14 @@
 lantern 1
 # src/renderer/lib/comments
 
-src/renderer/lib/comments/box.ts . component 1f896a1d8cc1
+src/renderer/lib/comments/box.ts . component 86f5168f233e
 #feature review-comments
   < src/renderer/lib/fixrequests/intent.ts#intentLabel
   < src/renderer/lib/util.ts#el
-  < src/shared/lang/fix-requests.ts#suggestedIntent
+  < src/shared/lang/fix-requests.ts#presetsOf
+  < src/shared/commands/keymap.ts#keyChips
+  = src/renderer/lib/keycaps.ts#keyCaps
+  < src/renderer/lib/util.ts#currentPlatform
 src/renderer/lib/comments/card.ts . component 4e9d6dfd4b1a
 #feature review-comments
   < src/renderer/lib/fixrequests/intent.ts#intentLabel
@@ -43,7 +46,7 @@ src/renderer/lib/comments/note.ts . component dd5a2bac9ad2
   < src/renderer/lib/util.ts#el
 src/renderer/lib/comments/rows.ts . util 3c80a282242a
 #feature review-comments
-src/renderer/lib/comments/tools.ts . component 73e0c43aec0e
+src/renderer/lib/comments/tools.ts . component a8162c422f83
 #feature review-comments
   = src/renderer/lib/comments/card.ts#whereLabel
   < src/renderer/lib/fixrequests/format.ts#sortFixItems
