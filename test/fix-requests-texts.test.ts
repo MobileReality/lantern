@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
-import { INTENT_IDS, PRESET_IDS, copyTexts, fixPresets, presetText, suggestedIntent } from '../src/shared/lang/fix-requests';
+import { INTENT_IDS, PRESET_IDS, copyTexts, fixPresets, presetText, presetsOf } from '../src/shared/lang/fix-requests';
 import { LANGUAGES, languageCode } from '../src/shared/languages';
 
 const textsOf = (code?: string) => Object.fromEntries(fixPresets(code).map((preset) => [preset.id, preset.text]));
@@ -52,11 +52,12 @@ describe('the predefined fix texts', () => {
     expect(fixPresets('en', {})).toEqual([]);
   });
 
-  it('suggests an intent for the text that asks for an explanation and none for the others', () => {
-    expect(suggestedIntent('explain')).toBe('explain');
-    for (const id of PRESET_IDS.filter((each) => each !== 'explain')) expect(suggestedIntent(id), id).toBeUndefined();
-    expect(suggestedIntent(undefined)).toBeUndefined();
-    expect(suggestedIntent('constructor')).toBeUndefined();
+  it('gives every text to exactly one intent', () => {
+    const ids = (intent: (typeof INTENT_IDS)[number]) => presetsOf(intent, fixPresets('en')).map((preset) => preset.id);
+    expect(ids('fix')).toEqual(['fix', 'test', 'rename', 'simplify', 'remove']);
+    expect(ids('explain')).toEqual(['explain', 'what']);
+    expect(ids('question')).toEqual(['why', 'covered']);
+    expect(INTENT_IDS.flatMap(ids).sort()).toEqual([...PRESET_IDS].sort());
   });
 
   it('finds the text of a chosen preset, or nothing for an unknown one', () => {

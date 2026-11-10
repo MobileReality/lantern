@@ -2,7 +2,7 @@ import type { ServerInfo } from './state';
 import type { DevInstance } from '../main/dev-instance';
 import type { LanternCoverage, LanternMap, LanternPrOverlay } from '../main/lantern';
 import type { ProjectFile } from '../main/filecontent';
-import type { PrFileDiff } from '../main/lantern-prdiff';
+import type { PrFileDiff, PrFileStats } from '../main/lantern-prdiff';
 import type { PrSides } from '../main/lantern-pr-revisions';
 import type { PrFile } from '../main/lantern-prfile';
 import type { NotificationCard } from '../main/session-notification';
@@ -67,6 +67,7 @@ interface CcmwsBridge {
   semanticHighlight(request: SemanticHighlightRequest): Promise<SemanticHighlightResult>;
   lanternPrFile(project: string, pr: string, file: string): Promise<PrFile>;
   lanternPrFileDiff(project: string, pr: string, file: string, sides?: PrSides): Promise<PrFileDiff>;
+  lanternPrFileStats(project: string, pr: string): Promise<PrFileStats>;
   lanternPrOverlay(project: string, pr: string, lang?: string): Promise<LanternPrOverlay>;
   explainsList(project: string): Promise<MetaFileDto[]>;
   explainsRemove(project: string, name: string): Promise<MetaFileDto[]>;

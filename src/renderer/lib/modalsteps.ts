@@ -11,6 +11,7 @@ interface StepNav {
 interface Stepper {
   el: HTMLElement;
   update(index: number): void;
+  step(delta: number): boolean;
   handleKey(ev: KeyboardEvent): boolean;
 }
 
@@ -48,8 +49,9 @@ function createStepper(nav: StepNav, go: (index: number) => void, onBlocked: () 
   }
   function step(delta: number) {
     const to = at + delta;
-    if (to < 0 || to >= total) return;
+    if (to < 0 || to >= total) return false;
     go(to);
+    return true;
   }
   prev.addEventListener('click', () => step(-1));
   next.addEventListener('click', () => step(1));
@@ -62,7 +64,7 @@ function createStepper(nav: StepNav, go: (index: number) => void, onBlocked: () 
     return true;
   }
   update(nav.index);
-  return { el, update, handleKey };
+  return { el, update, step, handleKey };
 }
 
 export { createStepper };

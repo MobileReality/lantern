@@ -22,6 +22,7 @@ describe('review pane reloads', () => {
     expect(pane.el.querySelector('.lt-code-path')?.textContent).not.toContain('local:cmp');
     expect(pane.el.getAttribute('aria-label')).toBe('Diff of src/a.ts in local comparison origin/main → working tree');
     pane.show({ pr: '12', path: 'src/a.ts' });
-    expect(pane.el.querySelector('.sym')?.textContent).toBe('#12');
+    expect(pane.el.querySelector('.sym')).toBeNull();
+    expect(pane.el.getAttribute('aria-label')).toBe('Diff of src/a.ts in pull request #12');
   });
 });

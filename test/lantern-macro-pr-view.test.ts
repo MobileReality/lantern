@@ -7,6 +7,7 @@ import { mountLanternView } from '../src/renderer/lib/lanternview';
 import type { ViewOptions } from '../src/renderer/lib/lanternview';
 import { FIXTURE_ROOT, macroFixtureBlocks, macroFixtureRecords, macroFixtureView, repoFeatureTexts, repoPrRecord } from './helpers/lantern-macro-fixture';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const view = macroFixtureView();
 const names = new Map(macroGraph(view).blocks.map((block) => [block.id, block.name]));
@@ -124,11 +125,11 @@ describe('selecting a lit block', () => {
     const expected = record.files.filter((f) => loaded.ok && loaded.blockByPath[f.path] === 'projects-hub');
     expect(expected).toHaveLength(4);
     expect(rows.map((row) => row.querySelector('.pr-path')?.getAttribute('data-pr-go'))).toEqual(expected.map((f) => f.path));
-    expect(rows.map((row) => row.querySelector('.pr-reason')?.textContent)).toEqual(expected.map((f) => f.reason));
+    expect(rows.map((row) => row.querySelector('.pr-path[data-pr-go] .pr-reason')?.textContent)).toEqual(expected.map((f) => f.reason));
     expect(expected.every((f) => !!f.reason)).toBe(true);
-    const steps = rows.map((row) => Number(row.querySelector('.pr-num')?.textContent));
-    expect(steps).toEqual(expected.map((f) => record.files.findIndex((candidate) => candidate.path === f.path) + 1));
-    expect([...steps].sort((a, b) => a - b)).toEqual(steps);
+    expect(detail(root).querySelector('.pr-num')).toBeNull();
+    const order = rows.map((row) => record.files.findIndex((candidate) => candidate.path === row.querySelector('.pr-path')?.getAttribute('data-pr-go')));
+    expect([...order].sort((a, b) => a - b)).toEqual(order);
   });
 
   it('lists nothing for a block the pull request does not touch', async () => {
@@ -155,15 +156,16 @@ describe('selecting a lit block', () => {
     expect(root.querySelector('.lt-side .pr-file.sel .pr-path')?.getAttribute('data-pr-go')).toBe(path);
   });
 
-  it('offers the diff of a changed file from the list', async () => {
+  it('offers the diff of a changed file from its row in the list', async () => {
     const readPrDiff = vi.fn(() => new Promise<never>(() => undefined));
     const { root } = await openMacro(BIG, { readPrDiff: readPrDiff as unknown as ViewOptions['readPrDiff'] });
     blockButton(root, 'projects-hub').click();
-    const button = detail(root).querySelector<HTMLButtonElement>('[data-pr-diff]') as HTMLButtonElement;
+    expect(detail(root).querySelector('[data-pr-diff]')).toBeNull();
+    const path = detail(root).querySelector('.pr-path[data-pr-go]')?.getAttribute('data-pr-go') as string;
 
-    button.click();
+    openPrFile(root, path, 'diff');
 
-    expect(readPrDiff).toHaveBeenCalledWith(PR_ID, button.getAttribute('data-pr-diff'));
+    expect(readPrDiff).toHaveBeenCalledWith(PR_ID, path);
   });
 
   it('says a lit outside system is touched by the pull request', async () => {

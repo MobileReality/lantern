@@ -311,6 +311,7 @@ function renderBody(project: string, panel: Panel) {
       readSemantic: (file, source) => window.ccmws.semanticHighlight({ project, path: file, source }),
       readPrFile: (pr, file) => window.ccmws.lanternPrFile(project, pr, file),
       readPrDiff: (pr, file, sides) => window.ccmws.lanternPrFileDiff(project, pr, file, sides),
+      readPrStats: (pr) => window.ccmws.lanternPrFileStats(project, pr),
       readPrOverlay: (pr, lang) => window.ccmws.lanternPrOverlay(project, pr, lang),
       readMacro: () => window.ccmws.lanternMacro(project, app.lanternLang.get(project)),
       explain: projectExplainClient(project),
@@ -442,6 +443,11 @@ function toggleProblems() {
   const project = activeProjectPath();
   const panel = project ? panels.get(project) : undefined;
   if (panel && project && app.lanternFront.has(project)) panel.problems.toggle();
+}
+
+function stepLanternFile(delta: number) {
+  const project = activeProjectPath();
+  if (project && app.lanternFront.has(project)) panels.get(project)?.view?.stepFile(delta);
 }
 
 function syncSessions() {
@@ -678,4 +684,4 @@ window.addEventListener('focus', () => {
   void reloadIfChanged(project);
   autoFetch(project);
 });
-export { disposeLantern, hideLantern, refreshMap, openLantern, showCompare, syncSessions, sync as syncLantern, toggleProblems };
+export { disposeLantern, hideLantern, refreshMap, openLantern, showCompare, stepLanternFile, syncSessions, sync as syncLantern, toggleProblems };

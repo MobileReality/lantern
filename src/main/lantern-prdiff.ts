@@ -26,12 +26,16 @@ interface PrFileDiff {
   candidates?: PrChoices;
 }
 
+type PrFileStats = Record<string, { added: number; removed: number }>;
+
 const MAX_SIDE_NAME = 255;
 const EMPTY_TREE = '4b825dc642cb6eb9a060e54bf8d3b4cdc89c4ca7';
 const DIFF_ARGS = ['--literal-pathspecs', 'diff', '--no-color', '--no-ext-diff', '--no-renames'];
 const FULL_CONTEXT = '--unified=1000000';
 const PLAIN_CONTEXT = '--unified=3';
 const BINARY = /^Binary files .* differ$/m;
+const NUMSTAT_ARGS = ['diff', '--no-color', '--no-ext-diff', '--no-renames', '--numstat', '-z'];
+const NUMSTAT_ENTRY = /^(\d+)\t(\d+)\t(.+)$/s;
 const PR_ID = /^\d{1,12}$/;
 
 function unavailable(reason: string): PrFileDiff {
@@ -159,10 +163,50 @@ async function readPrFileDiff(project: unknown, prId: unknown, rel: unknown, sid
   }
 }
 
+function numstatOf(stdout: string): PrFileStats {
+  const stats: PrFileStats = {};
+  for (const entry of stdout.split('\0')) {
+    const match = NUMSTAT_ENTRY.exec(entry.replace(/^\n/, ''));
+    if (match) stats[match[3]] = { added: Number(match[1]), removed: Number(match[2]) };
+  }
+  return stats;
+}
+
+async function statsOf(root: string, range: string[]): Promise<PrFileStats> {
+  const res = await git(root, [...NUMSTAT_ARGS, ...range]);
+  return res.ok ? numstatOf(res.stdout) : {};
+}
+
+async function readPrFileStats(project: unknown, prId: unknown): Promise<PrFileStats> {
+  if (typeof project !== 'string' || !project.trim()) return {};
+  if (typeof prId !== 'string' || !(PR_ID.test(prId) || isLocalId(prId))) return {};
+  try {
+    const root = path.resolve(project);
+    if (isLocalId(prId)) {
+      const revisions = await localRevisions(root, prId);
+      if (!revisions) return {};
+      return statsOf(root, revisions.branch ? [revisions.before, revisions.branch] : [revisions.before]);
+    }
+    const load = await loadPrsDetailed(root, new Set());
+    const pr = load.prs.find((p) => p.id === prId);
+    if (!pr || unreadableReason(pr)) return {};
+    const revisions = await resolvePrRevisions(root, pr, load);
+    if (!revisions?.before) return {};
+    return statsOf(root, pr.state === 'open' ? [`${revisions.before}...${revisions.branch}`] : [revisions.before, revisions.branch]);
+  } catch {
+    return {};
+  }
+}
+
+async function readRegisteredPrFileStats(isRegistered: (dir: string) => boolean, project: unknown, prId: unknown): Promise<PrFileStats> {
+  if (typeof project !== 'string' || !project.trim() || !isRegistered(project)) return {};
+  return readPrFileStats(project, prId);
+}
+
 async function readRegisteredPrFileDiff(isRegistered: (dir: string) => boolean, project: unknown, prId: unknown, rel: unknown, sides?: unknown): Promise<PrFileDiff> {
   if (typeof project !== 'string' || !project.trim() || !isRegistered(project)) return unavailable('not a registered project');
   return readPrFileDiff(project, prId, rel, sides);
 }
 
-export { readPrFileDiff, readRegisteredPrFileDiff };
-export type { PrFileDiff };
+export { numstatOf, readPrFileDiff, readPrFileStats, readRegisteredPrFileDiff, readRegisteredPrFileStats };
+export type { PrFileDiff, PrFileStats };

@@ -1,3 +1,6 @@
+import CHEVRON_ICON from '@renderer/assets/icons/chevron-down.svg';
+import COMMENT_ICON from '@renderer/assets/icons/comment.svg';
+import COPY_ICON from '@renderer/assets/icons/copy.svg';
 import { mountPopover } from '@renderer/popover';
 import { sortFixItems } from '../fixrequests/format';
 import { COPY_CHOICES, PER_COMMENT, intentLabel, isCopyChoice } from '../fixrequests/intent';
@@ -35,6 +38,7 @@ const TEXT = {
   fileTitle: 'Comment on this whole file',
   fileLabel: 'Comment on this file',
   list: 'Comments',
+  listTitle: 'All comments in this pull request',
   copy: 'Copy all',
   choice: 'Copy all, default intent',
   choiceTitle: 'The intent copied for comments that have none of their own',
@@ -48,10 +52,12 @@ const COPIED_MS = 1500;
 
 let toolsCount = 0;
 
-function pill(act: string, text: string) {
-  const b = el('button', 'lt-cm-pill', text);
+function pill(act: string, icon: string, text = '') {
+  const b = el('button', 'lt-cm-pill');
   b.type = 'button';
   b.dataset.cmTool = act;
+  b.innerHTML = icon;
+  if (text) b.append(el('span', 'lt-cm-pill-text', text));
   return b;
 }
 
@@ -62,7 +68,6 @@ function choiceText(choice: CopyChoice) {
 function choiceSelect() {
   const select = el('select', 'lt-cm-choice');
   select.setAttribute('aria-label', TEXT.choice);
-  select.dataset.tip = TEXT.choiceTitle;
   for (const choice of COPY_CHOICES) {
     const option = el('option', '', choiceText(choice));
     option.value = choice;
@@ -110,15 +115,21 @@ function popGroup(group: { path: string; items: FixItem[] }) {
 
 function createCommentTools(handlers: ToolsHandlers): CommentTools {
   const root = el('div', 'lt-cm-tools');
-  const file = pill('file', TEXT.file);
+  const file = pill('file', COMMENT_ICON, TEXT.file);
   file.dataset.tip = TEXT.fileTitle;
   file.setAttribute('aria-label', TEXT.fileLabel);
-  const list = pill('list', TEXT.list);
+  const list = pill('list', '');
   const badge = el('span', 'lt-cm-count');
-  list.append(badge);
+  list.prepend(badge);
+  list.insertAdjacentHTML('beforeend', CHEVRON_ICON);
+  list.dataset.tip = TEXT.listTitle;
   list.setAttribute('aria-haspopup', 'dialog');
-  const copy = pill('copy', TEXT.copy);
+  const copy = pill('copy', COPY_ICON, TEXT.copy);
+  const copyText = copy.querySelector('.lt-cm-pill-text') as HTMLElement;
   const choice = choiceSelect();
+  const choiceWrap = el('span', 'lt-cm-choice-wrap');
+  choiceWrap.innerHTML = CHEVRON_ICON;
+  choiceWrap.prepend(choice);
   const pop = el('div', 'lt-cm-pop');
   pop.id = `lt-cm-pop-${++toolsCount}`;
   pop.setAttribute('role', 'dialog');
@@ -126,9 +137,11 @@ function createCommentTools(handlers: ToolsHandlers): CommentTools {
   pop.tabIndex = -1;
   const live = el('span', 'lt-cm-announce');
   live.setAttribute('role', 'status');
-  const copyGroup = el('span', 'lt-cm-copy-group');
-  copyGroup.append(copy, choice);
-  root.append(file, list, copyGroup, pop, live);
+  const commentGroup = el('span', 'lt-cm-split');
+  commentGroup.append(file, list);
+  const copyGroup = el('span', 'lt-cm-split lt-cm-copy-group');
+  copyGroup.append(copy, choiceWrap);
+  root.append(commentGroup, copyGroup, pop, live);
 
   let copyTimer: ReturnType<typeof setTimeout> | undefined;
   let painted = '';
@@ -157,7 +170,11 @@ function createCommentTools(handlers: ToolsHandlers): CommentTools {
 
   file.addEventListener('click', () => handlers.onFile());
   copy.addEventListener('click', () => handlers.onCopy());
+  function tipChoice() {
+    if (isCopyChoice(choice.value)) choiceWrap.dataset.tip = `${TEXT.choiceTitle}: ${choiceText(choice.value)}`;
+  }
   choice.addEventListener('change', () => {
+    tipChoice();
     if (isCopyChoice(choice.value)) handlers.onChoice(choice.value);
   });
   pop.addEventListener('click', (ev) => {
@@ -177,6 +194,7 @@ function createCommentTools(handlers: ToolsHandlers): CommentTools {
       list.setAttribute('aria-label', `${TEXT.list}, ${countLabel(state.items.length)}`);
       copy.disabled = state.items.length === 0;
       choice.value = state.choice;
+      tipChoice();
       file.disabled = !state.canComment;
       paintPopover(state.items, state.order);
     },
@@ -188,10 +206,10 @@ function createCommentTools(handlers: ToolsHandlers): CommentTools {
         live.textContent = TEXT.copyFailed;
         return;
       }
-      copy.textContent = TEXT.copied;
+      copyText.textContent = TEXT.copied;
       clearTimeout(copyTimer);
       copyTimer = setTimeout(() => {
-        copy.textContent = TEXT.copy;
+        copyText.textContent = TEXT.copy;
       }, COPIED_MS);
     },
     closePopover: () => close(true),

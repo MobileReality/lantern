@@ -6,6 +6,7 @@ import { openCodeModal } from '../src/renderer/lib/codemodal';
 import type { CodeSource, SemanticHighlightResult } from '../src/shared/code-highlighting';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const ORDERED = pr('24', {
   ordered: true,
@@ -37,16 +38,19 @@ function open(p = ORDERED) {
   return { root, readPrDiff, readPrFile };
 }
 
-const click = (root: HTMLElement, selector: string) => (root.querySelector(selector) as HTMLElement).click();
 const key = (root: HTMLElement, name: string, init: KeyboardEventInit = {}) => (root.querySelector('.lt-review') as HTMLElement).dispatchEvent(new KeyboardEvent('keydown', { key: name, bubbles: true, cancelable: true, ...init }));
 const counter = (root: HTMLElement) => root.querySelector('.lt-review .lt-step-count')?.textContent;
-const titleOf = (root: HTMLElement) => root.querySelector('.lt-review .lt-code-path')?.textContent;
+const titleOf = (root: HTMLElement) => {
+  const title = root.querySelector('.lt-review .lt-code-path');
+  return title ? `${title.querySelector('.file-name')?.textContent} ${title.querySelector('.file-directory')?.textContent}` : undefined;
+};
 const reasonOf = (root: HTMLElement) => root.querySelector('.lt-review .lt-modal-reason .lt-reason-text')?.textContent ?? null;
 const prev = (root: HTMLElement) => root.querySelector('.lt-review .lt-step-prev') as HTMLButtonElement;
 const next = (root: HTMLElement) => root.querySelector('.lt-review .lt-step-next') as HTMLButtonElement;
 const selectedRow = (root: HTMLElement) => root.querySelector('.lt-side .pr-file.sel .pr-path')?.textContent;
 
 afterEach(() => {
+  localStorage.clear();
   for (const view of mounted.splice(0)) view.dispose();
   document.body.textContent = '';
 });
@@ -54,7 +58,7 @@ afterEach(() => {
 describe('stepping through a pull request in the diff view', () => {
   it('shows n / total and both arrows in the header, with the first file reached from its own row', async () => {
     const { root } = open();
-    click(root, '[data-pr-diff="src/gone.ts"]');
+    openPrFile(root, 'src/gone.ts', 'diff');
     await flush();
     expect(counter(root)).toBe('2 / 3');
     expect(root.querySelector('.lt-review .lt-review-head .lt-steps')).not.toBeNull();
@@ -64,31 +68,31 @@ describe('stepping through a pull request in the diff view', () => {
 
   it('steps with the arrow buttons in review order, loads that file and updates the reason', async () => {
     const { root, readPrDiff } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
-    expect(titleOf(root)).toBe('types.ts src/ #24');
+    expect(titleOf(root)).toBe('types.ts src/');
     expect(reasonOf(root)).toBe('Defines the contract.');
     next(root).click();
     await flush();
     expect(counter(root)).toBe('2 / 3');
-    expect(titleOf(root)).toBe('gone.ts src/ #24');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(reasonOf(root)).toBe('Nothing calls it any more.');
     expect(readPrDiff).toHaveBeenCalledWith('24', 'src/gone.ts');
     expect(root.querySelector('.lt-review .cl.add')?.textContent).toContain('new src/gone.ts');
     next(root).click();
     await flush();
-    expect(titleOf(root)).toBe('new-a.ts test/ #24');
+    expect(titleOf(root)).toBe('new-a.ts test/');
     expect(reasonOf(root)).toBeNull();
     expect(root.querySelector('.lt-review .lt-modal-reason')).toBeNull();
     prev(root).click();
     await flush();
-    expect(titleOf(root)).toBe('gone.ts src/ #24');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(reasonOf(root)).toBe('Nothing calls it any more.');
   });
 
   it('steps with Left and Right inside the pane and stops at both ends without wrapping', async () => {
     const { root } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
     expect(prev(root).disabled).toBe(true);
     key(root, 'ArrowLeft');
@@ -102,28 +106,64 @@ describe('stepping through a pull request in the diff view', () => {
     key(root, 'ArrowRight');
     await flush();
     expect(counter(root)).toBe('3 / 3');
-    expect(titleOf(root)).toBe('new-a.ts test/ #24');
+    expect(titleOf(root)).toBe('new-a.ts test/');
     key(root, 'ArrowLeft');
     await flush();
     expect(counter(root)).toBe('2 / 3');
   });
 
-  it('leaves Left and Right alone outside the pane', async () => {
+  it('leaves Up and Down to scroll the pane, and steps with them on the file rows', async () => {
     const { root } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
-    const ev = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
-    (root.querySelector('.lt-side') as HTMLElement).dispatchEvent(ev);
-    expect(ev.defaultPrevented).toBe(false);
+    const scroll = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true });
+    (root.querySelector('.lt-review') as HTMLElement).dispatchEvent(scroll);
+    await flush();
+    expect(scroll.defaultPrevented).toBe(false);
     expect(counter(root)).toBe('1 / 3');
+    const row = () => root.querySelector('.lt-side .pr-file.sel .pr-path') as HTMLElement;
+    row().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
+    await flush();
+    expect(counter(root)).toBe('2 / 3');
+    expect(titleOf(root)).toBe('gone.ts src/');
+    row().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }));
+    await flush();
+    expect(counter(root)).toBe('1 / 3');
+  });
+
+  it('leaves an arrow another handler already took', async () => {
+    const { root } = open();
+    openPrFile(root, 'src/types.ts', 'diff');
+    await flush();
+    const taken = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
+    taken.preventDefault();
+    (root.querySelector('.lt-review') as HTMLElement).dispatchEvent(taken);
+    await flush();
+    expect(counter(root)).toBe('1 / 3');
+  });
+
+  it('steps from the file list too, and leaves the arrows alone outside the pane and the list', async () => {
+    const { root } = open();
+    openPrFile(root, 'src/types.ts', 'diff');
+    await flush();
+    const outside = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
+    document.body.dispatchEvent(outside);
+    expect(outside.defaultPrevented).toBe(false);
+    expect(counter(root)).toBe('1 / 3');
+    const inList = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
+    (root.querySelector('.lt-side') as HTMLElement).dispatchEvent(inList);
+    await flush();
+    expect(inList.defaultPrevented).toBe(true);
+    expect(counter(root)).toBe('2 / 3');
   });
 
   it('ignores arrow keys with a modifier and stops the others from reaching other handlers', async () => {
     const { root } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
     key(root, 'ArrowRight', { shiftKey: true });
     key(root, 'ArrowRight', { metaKey: true });
+    key(root, 'ArrowDown', { altKey: true });
     expect(counter(root)).toBe('1 / 3');
     const other = vi.fn();
     document.addEventListener('keydown', other);
@@ -134,7 +174,7 @@ describe('stepping through a pull request in the diff view', () => {
 
   it('scrolls the body to the top on every step', async () => {
     const { root } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
     const body = root.querySelector('.lt-review .lt-code-body:not([hidden])') as HTMLElement;
     body.scrollTop = 120;
@@ -155,7 +195,7 @@ describe('stepping through a pull request in the diff view', () => {
       pending[path] = resolve;
     });
     mounted.push(mountLanternView(root, mapOf({ nodes: [node('src/types.ts', 'service')], prs: [ORDERED] }), { pr: '24', readPrDiff }));
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     key(root, 'ArrowRight');
     pending['src/gone.ts'](diffOf('src/gone.ts'));
     pending['src/types.ts'](diffOf('src/types.ts'));
@@ -166,7 +206,7 @@ describe('stepping through a pull request in the diff view', () => {
 
   it('lets a removed file be stepped onto in diff mode, where the diff shows its deleted lines', async () => {
     const { root, readPrDiff } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
     key(root, 'ArrowRight');
     await flush();
@@ -176,22 +216,22 @@ describe('stepping through a pull request in the diff view', () => {
 
   it('follows the panel order of an unordered pull request: added, then modified, then removed', async () => {
     const { root } = open(PLAIN);
-    click(root, '[data-pr-diff="test/new-a.ts"]');
+    openPrFile(root, 'test/new-a.ts', 'diff');
     await flush();
     expect(counter(root)).toBe('1 / 3');
     expect(reasonOf(root)).toBe('Covers the guard.');
     key(root, 'ArrowRight');
     await flush();
-    expect(titleOf(root)).toBe('types.ts src/ #25');
+    expect(titleOf(root)).toBe('types.ts src/');
     key(root, 'ArrowRight');
     await flush();
-    expect(titleOf(root)).toBe('gone.ts src/ #25');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(counter(root)).toBe('3 / 3');
   });
 
   it('keeps the highlighted row of the list on the file the pane shows, mapped or not', async () => {
     const { root } = open();
-    click(root, '[data-pr-diff="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'diff');
     await flush();
     expect(selectedRow(root)).toContain('types.ts');
     next(root).click();
@@ -204,15 +244,15 @@ describe('stepping through a pull request in the diff view', () => {
 describe('stepping through a pull request in the file view', () => {
   it('shows n / total and steps in the same mode: file stays file, in review order', async () => {
     const { root, readPrFile, readPrDiff } = open();
-    click(root, '[data-pr-code="src/gone.ts"]');
+    openPrFile(root, 'src/gone.ts', 'file');
     await flush();
     expect(counter(root)).toBe('2 / 3');
-    expect(titleOf(root)).toBe('gone.ts src/ #24');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(root.querySelector('.lt-review .lt-code-note')?.textContent).toBe('version before PR #24');
     key(root, 'ArrowRight');
     await flush();
     expect(counter(root)).toBe('3 / 3');
-    expect(titleOf(root)).toBe('new-a.ts test/ #24');
+    expect(titleOf(root)).toBe('new-a.ts test/');
     expect(readPrFile).toHaveBeenLastCalledWith('24', 'test/new-a.ts');
     expect(root.querySelector('.lt-review .lt-code-body')?.textContent).toContain('content of test/new-a.ts');
     expect(root.querySelector('.lt-review .lt-code-note')?.textContent).toBe('PR #24 branch version');
@@ -221,12 +261,12 @@ describe('stepping through a pull request in the file view', () => {
 
   it('updates the reason, clears the previous file note, and the removed file shows the version before the PR', async () => {
     const { root } = open();
-    click(root, '[data-pr-code="test/new-a.ts"]');
+    openPrFile(root, 'test/new-a.ts', 'file');
     await flush();
     expect(reasonOf(root)).toBeNull();
     prev(root).click();
     await flush();
-    expect(titleOf(root)).toBe('gone.ts src/ #24');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(reasonOf(root)).toBe('Nothing calls it any more.');
     expect(root.querySelector('.lt-review .lt-code-note')?.textContent).toBe('version before PR #24');
     expect(root.querySelector('.lt-review .lt-code-body')?.textContent).toContain('content of src/gone.ts');
@@ -237,24 +277,24 @@ describe('stepping through a pull request in the file view', () => {
     document.body.appendChild(root);
     const readPrFile = vi.fn(async (_pr: string, path: string): Promise<PrFile> => (path === 'src/gone.ts' ? { ok: false, text: '', truncated: false, binary: false, version: 'before', reason: 'the pull request base is not available locally' } : fileOf(path)));
     mounted.push(mountLanternView(root, mapOf({ nodes: [node('src/types.ts', 'service')], prs: [ORDERED] }), { pr: '24', readPrFile }));
-    click(root, '[data-pr-code="test/new-a.ts"]');
+    openPrFile(root, 'test/new-a.ts', 'file');
     await flush();
     key(root, 'ArrowLeft');
     await flush();
     expect(root.querySelector('.lt-review .lt-code-body')?.textContent).toContain('File not available: the pull request base is not available locally');
     key(root, 'ArrowRight');
     await flush();
-    expect(titleOf(root)).toBe('new-a.ts test/ #24');
+    expect(titleOf(root)).toBe('new-a.ts test/');
   });
 
   it('stops at both ends: disabled arrows and no wrap', async () => {
     const { root } = open();
-    click(root, '[data-pr-code="test/new-a.ts"]');
+    openPrFile(root, 'test/new-a.ts', 'file');
     await flush();
     expect(next(root).disabled).toBe(true);
     key(root, 'ArrowRight');
     await flush();
-    expect(titleOf(root)).toBe('new-a.ts test/ #24');
+    expect(titleOf(root)).toBe('new-a.ts test/');
     key(root, 'ArrowLeft');
     key(root, 'ArrowLeft');
     await flush();
@@ -262,12 +302,12 @@ describe('stepping through a pull request in the file view', () => {
     expect(prev(root).disabled).toBe(true);
     key(root, 'ArrowLeft');
     await flush();
-    expect(titleOf(root)).toBe('types.ts src/ #24');
+    expect(titleOf(root)).toBe('types.ts src/');
   });
 
   it('keeps focus in the pane when the arrow it was on becomes disabled', async () => {
     const { root } = open();
-    click(root, '[data-pr-code="src/gone.ts"]');
+    openPrFile(root, 'src/gone.ts', 'file');
     await flush();
     next(root).focus();
     next(root).click();
@@ -288,14 +328,14 @@ describe('stepping through a pull request in the file view', () => {
     };
     const readSemantic = (path: string) => new Promise<SemanticHighlightResult>((resolve) => pending.set(path, resolve));
     mounted.push(mountLanternView(root, mapOf({ nodes: [node('src/types.ts', 'service')], prs: [ORDERED] }), { pr: '24', readPrFile, readSemantic }));
-    click(root, '[data-pr-code="test/new-a.ts"]');
+    openPrFile(root, 'test/new-a.ts', 'file');
     await flush();
     key(root, 'ArrowLeft');
     await flush();
     pending.get('test/new-a.ts')?.({ ok: false, source: sources.get('test/new-a.ts')!, spans: [], reason: 'revision snapshot exceeds the preview safety limit' });
     await flush();
 
-    expect(titleOf(root)).toBe('gone.ts src/ #24');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(root.querySelector('.semantic-limit-notice')).toBeNull();
   });
 });
@@ -315,19 +355,19 @@ describe('modals outside a pull request step', () => {
   });
 });
 
-describe('the code button of a pull request row', () => {
-  it('steps through exact pull request revisions for mapped and unmapped files', async () => {
+describe('a pull request row in the file view', () => {
+  it('opens the exact pull request revision and steps through mapped and unmapped files', async () => {
     const { root, readPrFile } = open();
-    click(root, '.pr-file [data-code="src/types.ts"]');
+    openPrFile(root, 'src/types.ts', 'file');
     await flush();
     expect(counter(root)).toBe('1 / 3');
-    expect(titleOf(root)).toBe('types.ts src/ #24');
+    expect(titleOf(root)).toBe('types.ts src/');
     expect(reasonOf(root)).toBe('Defines the contract.');
     expect(root.querySelector('.lt-review .lt-code-body')?.textContent).toContain('content of src/types.ts');
     expect(readPrFile).toHaveBeenLastCalledWith('24', 'src/types.ts');
     key(root, 'ArrowRight');
     await flush();
-    expect(titleOf(root)).toBe('gone.ts src/ #24');
+    expect(titleOf(root)).toBe('gone.ts src/');
     expect(readPrFile).toHaveBeenLastCalledWith('24', 'src/gone.ts');
     expect(root.querySelector('.lt-review .lt-code-note')?.textContent).toBe('version before PR #24');
   });

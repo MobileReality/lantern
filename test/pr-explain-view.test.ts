@@ -6,6 +6,7 @@ import { projectExplainClient } from '../src/renderer/lib/prexplain-client';
 import type { ExplainHub, PrExplainClient } from '../src/renderer/lib/prexplain';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const HEAD = 'a'.repeat(40);
 const OLD_HEAD = 'b'.repeat(40);
@@ -58,6 +59,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  localStorage.clear();
   hub?.dispose();
   hub = undefined;
   document.body.textContent = '';
@@ -113,7 +115,7 @@ describe('the explainer switch in the row', () => {
       readPrFile: async () => ({ ok: true, text: 'const a = 1;\n', truncated: false, binary: false, version: 'branch' }),
       readPrDiff: async () => ({ ok: true, diff: '@@ -1 +1 @@\n-a\n+b', truncated: false, binary: false }),
     });
-    (root.querySelector('[data-pr-code="test/new-a.ts"]') as HTMLElement).click();
+    openPrFile(root, 'test/new-a.ts', 'file');
     expect(root.querySelector('button[data-explain="start"]')).toBeNull();
     view.dispose();
   });
@@ -389,7 +391,7 @@ describe('in the review pane', () => {
   it('puts the row directly under the reason and shows nothing without a client', async () => {
     const fake = fakeClient();
     const root = mount(fake.client);
-    (root.querySelector('[data-pr-diff="test/new-a.ts"]') as HTMLElement).click();
+    openPrFile(root, 'test/new-a.ts', 'diff');
     await flush();
     const reason = root.querySelector('.lt-modal-reason') as HTMLElement;
     const row = root.querySelector('.lt-explain') as HTMLElement;
@@ -400,7 +402,7 @@ describe('in the review pane', () => {
     for (const view of mounted.splice(0)) view.dispose();
     document.body.textContent = '';
     const plain = mount();
-    (plain.querySelector('[data-pr-diff="test/new-a.ts"]') as HTMLElement).click();
+    openPrFile(plain, 'test/new-a.ts', 'diff');
     await flush();
     expect(plain.querySelector('.lt-explain')).toBeNull();
   });
@@ -408,7 +410,7 @@ describe('in the review pane', () => {
   it('keeps the row for a file without a reason and for the file view too', async () => {
     const fake = fakeClient();
     const root = mount(fake.client);
-    (root.querySelector('[data-pr-code="test/new-b.ts"]') as HTMLElement).click();
+    openPrFile(root, 'test/new-b.ts', 'file');
     await flush();
     expect(root.querySelector('.lt-modal-reason')).toBeNull();
     expect(root.querySelector('.lt-explain')).not.toBeNull();

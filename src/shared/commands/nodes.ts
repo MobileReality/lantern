@@ -42,6 +42,8 @@ export const LANTERN_COMMANDS = {
     'lantern.open': { title: 'Architecture map', keys: 'mod+shift+l' },
     'lantern.refresh': { title: 'Refresh map' },
     'lantern.problems': { title: 'Problems', keys: 'mod+shift+m' },
+    'lantern.previousFile': { title: 'Previous file' },
+    'lantern.nextFile': { title: 'Next file' },
   },
 } satisfies CommandsNode;
 

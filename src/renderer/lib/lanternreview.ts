@@ -1,7 +1,8 @@
 import { createCodeView } from './codemodal';
 import { isLocalId, prRef } from '../../shared/local-review';
 import type { ReadFile } from './codemodal';
-import { fileLabelHtml } from './file-label';
+import { fileIconHtml } from './file-icons';
+import { esc } from './lanternctx';
 import { createStepper } from './modalsteps';
 import type { StepNav, Stepper } from './modalsteps';
 import { reasonBlock } from './modalreason';
@@ -23,6 +24,7 @@ interface ReviewTarget {
   head?: string;
   version?: string;
   nav?: StepNav;
+  stat?: { added: number; removed: number };
 }
 
 interface ReviewOptions {
@@ -41,6 +43,7 @@ interface ReviewPane {
   mode(): ReviewMode;
   focus(): void;
   canStep(): boolean;
+  step(delta: number): boolean;
   stepKey(ev: KeyboardEvent): boolean;
   dispose(): void;
 }
@@ -48,6 +51,21 @@ interface ReviewPane {
 const EMPTY_TEXT = 'Pick a file in the list or on the graph to read it here.';
 const NO_READER_TEXT = 'Files and diffs cannot be read in this window.';
 const MODE_LABEL: Record<ReviewMode, string> = { file: 'File', diff: 'Diff' };
+const MODE_KEY = 'lantern.reviewMode';
+
+function savedMode(): ReviewMode {
+  try {
+    return localStorage.getItem(MODE_KEY) === 'diff' ? 'diff' : 'file';
+  } catch {
+    return 'file';
+  }
+}
+
+function saveMode(mode: ReviewMode) {
+  try {
+    localStorage.setItem(MODE_KEY, mode);
+  } catch {}
+}
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, text = '') {
   const e = document.createElement(tag);
@@ -63,20 +81,59 @@ function modeButton(mode: ReviewMode) {
   return button;
 }
 
+function titleHtml(path: string) {
+  const normalized = path.replaceAll('\\', '/');
+  const cut = normalized.lastIndexOf('/');
+  return `${fileIconHtml(path, 'file-label-icon')}<span class="lt-review-name"><b class="file-name">${esc(normalized.slice(cut + 1))}</b><span class="lt-review-path"><span class="file-directory">${esc(normalized.slice(0, cut + 1))}</span></span></span>`;
+}
+
+function statOf(stat: { added: number; removed: number }) {
+  const box = el('span', 'lt-diff-stat');
+  const add = el('span', 'df-stat-add', `+${stat.added}`);
+  const del = el('span', 'df-stat-del', `\u2212${stat.removed}`);
+  add.dataset.tip = `${stat.added} added`;
+  del.dataset.tip = `${stat.removed} removed`;
+  box.append(add, document.createTextNode(' '), del);
+  return box;
+}
+
 function sameTarget(a: ReviewTarget | null, b: ReviewTarget | null) {
   return a?.pr === b?.pr && a?.path === b?.path && a?.reason === b?.reason && a?.head === b?.head && a?.version === b?.version && a?.nav?.index === b?.nav?.index && a?.nav?.files.length === b?.nav?.files.length;
 }
 
+function sameStat(a: ReviewTarget, b: ReviewTarget) {
+  return a.stat?.added === b.stat?.added && a.stat?.removed === b.stat?.removed;
+}
+
 function keepsItsArrows(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
-  return target.isContentEditable || target.closest('input, textarea, select, [role="separator"], [role="tab"], .lt-cm-box, .lt-cm-pop') !== null;
+  return target.isContentEditable || target.closest('input, textarea, select, [role="separator"], [role="tab"], .lt-cm-box, .lt-cm-pop, .lt-cm-add, [role="menu"]') !== null;
+}
+
+const SIDEWAYS: Record<string, -1 | 1> = { ArrowLeft: -1, ArrowRight: 1 };
+const ANY_WAY: Record<string, -1 | 1> = { ...SIDEWAYS, ArrowUp: -1, ArrowDown: 1 };
+
+function fileStepDelta(ev: KeyboardEvent, upDown: boolean): -1 | 1 | 0 {
+  if (ev.defaultPrevented || ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey || keepsItsArrows(ev.target)) return 0;
+  return (upDown ? ANY_WAY : SIDEWAYS)[ev.key] ?? 0;
+}
+
+function runFileStep(ev: KeyboardEvent, step: (delta: number) => unknown, upDown = false) {
+  const delta = fileStepDelta(ev, upDown);
+  if (!delta) return false;
+  ev.preventDefault();
+  ev.stopImmediatePropagation();
+  step(delta);
+  return true;
 }
 
 function createReviewPane(opts: ReviewOptions): ReviewPane {
   const pane = el('section', 'lt-review');
   pane.tabIndex = -1;
   const head = el('div', 'lt-review-head');
-  const title = el('span', 'lt-code-path');
+  const top = el('div', 'lt-review-top');
+  const bar = el('div', 'lt-review-bar');
+  const title = el('div', 'lt-code-path lt-review-id');
   const modes = el('div', 'lt-review-modes');
   modes.setAttribute('role', 'group');
   modes.setAttribute('aria-label', 'Show the file or its diff');
@@ -89,9 +146,11 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
   const codeChrome = el('span', 'lt-review-chrome');
   const diffChrome = el('span', 'lt-review-chrome');
   if (code) codeChrome.append(code.note, code.toggle);
-  if (diff) diffChrome.append(diff.stat, diff.toggle);
+  if (diff) diffChrome.append(diff.toggle);
   const steps = el('div', 'lt-review-steps');
-  head.append(title, codeChrome, diffChrome, modes, steps);
+  top.append(title, steps);
+  bar.append(modes, codeChrome, diffChrome);
+  head.append(top, bar);
   const body = el('div', 'lt-review-body');
   if (code) body.append(code.body);
   if (diff) body.append(diff.body);
@@ -100,7 +159,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
   empty.setAttribute('role', 'status');
   pane.append(head, fileComments, body, empty);
 
-  let wanted: ReviewMode = 'file';
+  let wanted: ReviewMode = savedMode();
   let target: ReviewTarget | null = null;
   let painted: { target: ReviewTarget; mode: ReviewMode } | null = null;
   const loaded: Record<ReviewMode, string> = { file: '', diff: '' };
@@ -126,7 +185,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
         },
       })
     : null;
-  if (comments) modes.before(comments.tools);
+  if (comments) bar.append(comments.tools);
 
   function paintSteps(nav: StepNav | undefined, pr: string) {
     steps.hidden = !nav;
@@ -141,10 +200,15 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     stepper.update(nav.index);
   }
 
+  function paintStat(next: ReviewTarget) {
+    title.querySelector('.lt-diff-stat')?.remove();
+    if (next.stat) title.querySelector('.lt-review-path')?.append(statOf(next.stat));
+  }
+
   function paintHead(next: ReviewTarget, mode: ReviewMode) {
     title.dataset.tip = next.path;
-    title.innerHTML = fileLabelHtml(next.path);
-    if (!isLocalId(next.pr)) title.append(document.createTextNode(' '), el('span', 'sym', prRef(next.pr)));
+    title.innerHTML = titleHtml(next.path);
+    paintStat(next);
     pane.setAttribute('aria-label', `${MODE_LABEL[mode]} of ${next.path} in ${isLocalId(next.pr) ? 'local comparison' : 'pull request'} ${prRef(next.pr)}`);
     for (const each of available) buttons[each].setAttribute('aria-pressed', String(each === mode));
     codeChrome.hidden = mode !== 'file';
@@ -191,7 +255,11 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
       pane.setAttribute('aria-label', 'Selected file');
       return;
     }
-    if (painted && painted.mode === mode && sameTarget(painted.target, current)) return;
+    if (painted && painted.mode === mode && sameTarget(painted.target, current)) {
+      if (!sameStat(painted.target, current)) paintStat(current);
+      painted = { target: current, mode };
+      return;
+    }
     const switched = !!painted && painted.mode !== mode;
     painted = { target: current, mode };
     paintHead(current, mode);
@@ -199,15 +267,20 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     load(current, mode);
   }
 
+  function step(delta: number) {
+    return !!target?.nav && !!stepper?.step(delta);
+  }
+
   modes.addEventListener('click', (ev) => {
     const button = (ev.target as Element).closest('button[data-review-mode]') as HTMLElement | null;
     if (!button) return;
     wanted = button.dataset.reviewMode as ReviewMode;
+    saveMode(wanted);
     render();
   });
 
   pane.addEventListener('keydown', (ev) => {
-    if (target?.nav && !keepsItsArrows(ev.target)) stepper?.handleKey(ev);
+    if (target?.nav) runFileStep(ev, step);
   });
 
   render();
@@ -223,6 +296,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     mode: () => effectiveMode() ?? wanted,
     focus: () => pane.focus({ preventScroll: true }),
     canStep: () => !!target?.nav && !!stepper,
+    step,
     stepKey: (ev) => !keepsItsArrows(ev.target) && !!target?.nav && !!stepper?.handleKey(ev),
     dispose() {
       comments?.dispose();
@@ -230,5 +304,5 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
   };
 }
 
-export { createReviewPane };
+export { createReviewPane, runFileStep };
 export type { ReviewMode, ReviewPane, ReviewTarget };

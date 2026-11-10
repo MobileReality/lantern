@@ -446,10 +446,12 @@ describe('the intent of a comment', () => {
     expect(tags(root)).toEqual(['Fix']);
   });
 
-  it('lets the text that asks for an explanation suggest the Explain intent', async () => {
+  it('offers the texts of the chosen intent, and a text saves with that intent', async () => {
     const root = await open();
     tool(root, 'file').click();
+    radios(root)[1].click();
 
+    expect(chip(root, 'rename')).toBeNull();
     chip(root, 'explain').click();
 
     expect(checked(root)).toBe('explain');
@@ -458,26 +460,15 @@ describe('the intent of a comment', () => {
     expect(stored()[0].intent).toBe('explain');
   });
 
-  it('does not let a text override an intent the user chose, and a text that suggests nothing leaves it alone', async () => {
+  it('saves a text with the intent it was offered under', async () => {
     const root = await open();
     tool(root, 'file').click();
-    radios(root)[2].click();
 
-    chip(root, 'explain').click();
     chip(root, 'rename').click();
+    save(root, 'Rename this.');
+    await flush();
 
-    expect(checked(root)).toBe('question');
-  });
-
-  it('lets a later text change a suggestion but not a choice made after it', async () => {
-    const root = await open();
-    tool(root, 'file').click();
-    chip(root, 'explain').click();
-    radios(root)[0].click();
-
-    chip(root, 'explain').click();
-
-    expect(checked(root)).toBe('fix');
+    expect(stored()[0].intent).toBe('fix');
   });
 
   it('opens an edit with the saved intent selected and keeps a comment without one unset', async () => {
