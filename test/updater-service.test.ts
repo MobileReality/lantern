@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { CHECK_INTERVAL_MS, GUARD_INTERVAL_MS, INITIAL_CHECK_DELAY_MS } from '../src/main/updater/service';
 import { BUSY, FEED_NEWER, IDLE, LATEST_NEWER, type WorldOptions, flush, updaterWorld } from './helpers/updater-world';
 
@@ -284,6 +284,30 @@ describe('Restart now', () => {
     const world = await waiting();
     await world.updater.handle('restart');
     expect(world.confirmRestart).toHaveBeenCalledOnce();
+  });
+
+  it('keeps waiting, and can install again, when Squirrel reports the install failed afterwards', async () => {
+    const world = await waiting();
+    await world.updater.restartNow();
+    world.handlers.error?.('could not replace the app');
+    expect(world.logs.at(-1)).toEqual({ severity: 'warning', message: 'The update could not be installed', detail: 'could not replace the app' });
+    expect(world.clock.running().some((timer) => timer.ms === GUARD_INTERVAL_MS)).toBe(true);
+    expect(await world.updater.restartNow()).toBe(true);
+    expect(world.native.quitAndInstall).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not read the activity while an install on its own is off the table', async () => {
+    const activity = vi.fn(async () => BUSY);
+    const world = updaterWorld({ status: 200, body: FEED_NEWER, activity });
+    world.updater.start();
+    await world.updater.check();
+    world.handlers.downloaded?.('v0.3.0');
+    await flush();
+    await world.updater.handle('later');
+    activity.mockClear();
+    for (const timer of world.clock.running().filter((t) => t.ms === GUARD_INTERVAL_MS)) timer.run();
+    await flush();
+    expect(activity).not.toHaveBeenCalled();
   });
 
   it('logs and keeps waiting when the install call throws', async () => {

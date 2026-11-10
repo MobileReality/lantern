@@ -101,6 +101,7 @@ export function createUpdater(deps: UpdaterDeps) {
 
   async function settle() {
     if (downloaded === null || installing || settling) return;
+    if (postponed || !deps.enabled()) return publish();
     settling = true;
     try {
       const idle = canInstallNow(await readActivity());
@@ -223,7 +224,9 @@ export function createUpdater(deps: UpdaterDeps) {
       });
       native.onError((message) => {
         downloading = null;
-        warn('The update could not be downloaded', message);
+        warn(installing ? 'The update could not be installed' : 'The update could not be downloaded', message);
+        installing = false;
+        startGuard();
       });
     }
     stops.push(deps.timers.after(INITIAL_CHECK_DELAY_MS, () => void check()), deps.timers.every(CHECK_INTERVAL_MS, () => void check()));

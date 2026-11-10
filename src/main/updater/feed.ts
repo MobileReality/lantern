@@ -57,7 +57,9 @@ async function request(fetchUrl: HttpFetch, url: string, headers: Record<string,
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    return await fetchUrl(url, { headers, signal: controller.signal });
+    const response = await fetchUrl(url, { headers, signal: controller.signal });
+    const text = response.status === 200 ? await response.text() : '';
+    return { status: response.status, text: async () => text };
   } finally {
     clearTimeout(timer);
   }

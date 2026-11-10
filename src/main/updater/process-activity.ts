@@ -15,8 +15,6 @@ export interface ProcessActivityDeps {
   rootPid: number;
 }
 
-// Everything below Lantern that is not the app, the editor's own machinery or a short git call is work a
-// restart would end: terminals (their shells), agent runs, test runs, dev servers, any other command.
 export async function readProcessActivity({ platform, supportedPlatforms, run, rootPid }: ProcessActivityDeps): Promise<ProcessActivity | null> {
   if (!supportedPlatforms.includes(platform)) return null;
   const rows = await readProcessRows(run);
