@@ -122,7 +122,6 @@ interface CcmwsBridge {
   onAuthChanged(cb: (change: AuthChange) => void): void;
   reportRendererError(report: { kind: RendererReportKind; message: string; stack?: string }): Promise<{ ok: boolean }>;
   diagnosticsWatch(on: boolean): Promise<DiagnosticsListing>;
-  diagnosticsList(): Promise<DiagnosticsListing>;
   diagnosticsCopy(request: { entryId?: string }): Promise<CopyOutcome>;
   diagnosticsGithub(request: { entryId?: string; crash?: boolean }): Promise<GithubOutcome>;
   diagnosticsNotice(): Promise<CrashNotice | null>;

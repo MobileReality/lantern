@@ -2,7 +2,6 @@ import {
   DIAGNOSTICS_COPY_CHANNEL,
   DIAGNOSTICS_DISMISS_CHANNEL,
   DIAGNOSTICS_GITHUB_CHANNEL,
-  DIAGNOSTICS_LIST_CHANNEL,
   DIAGNOSTICS_NOTICE_CHANNEL,
   DIAGNOSTICS_REPORT_CHANNEL,
   DIAGNOSTICS_UPDATE_CHANNEL,
@@ -78,7 +77,6 @@ export function registerDiagnosticsIpc({ handle, fromWorkspace, service, writeCl
       return { ok: true };
     }),
   );
-  handle(DIAGNOSTICS_LIST_CHANNEL, fromWorkspace(() => service.listing()));
   handle(
     DIAGNOSTICS_WATCH_CHANNEL,
     fromWorkspace((e, on: unknown) => {

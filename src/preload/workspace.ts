@@ -19,7 +19,6 @@ import {
   DIAGNOSTICS_COPY_CHANNEL,
   DIAGNOSTICS_DISMISS_CHANNEL,
   DIAGNOSTICS_GITHUB_CHANNEL,
-  DIAGNOSTICS_LIST_CHANNEL,
   DIAGNOSTICS_NOTICE_CHANNEL,
   DIAGNOSTICS_REPORT_CHANNEL,
   DIAGNOSTICS_UPDATE_CHANNEL,
@@ -129,7 +128,6 @@ contextBridge.exposeInMainWorld('ccmws', {
 
   reportRendererError: (report: { kind: string; message: string; stack?: string }) => ipcRenderer.invoke(DIAGNOSTICS_REPORT_CHANNEL, report),
   diagnosticsWatch: (on: boolean) => ipcRenderer.invoke(DIAGNOSTICS_WATCH_CHANNEL, on),
-  diagnosticsList: () => ipcRenderer.invoke(DIAGNOSTICS_LIST_CHANNEL),
   diagnosticsCopy: (request: { entryId?: string }) => ipcRenderer.invoke(DIAGNOSTICS_COPY_CHANNEL, request),
   diagnosticsGithub: (request: { entryId?: string; crash?: boolean }) => ipcRenderer.invoke(DIAGNOSTICS_GITHUB_CHANNEL, request),
   diagnosticsNotice: () => ipcRenderer.invoke(DIAGNOSTICS_NOTICE_CHANNEL),

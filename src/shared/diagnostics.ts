@@ -1,5 +1,4 @@
 export const DIAGNOSTICS_REPORT_CHANNEL = 'diagnostics:report';
-export const DIAGNOSTICS_LIST_CHANNEL = 'diagnostics:list';
 export const DIAGNOSTICS_WATCH_CHANNEL = 'diagnostics:watch';
 export const DIAGNOSTICS_UPDATE_CHANNEL = 'diagnostics:update';
 export const DIAGNOSTICS_COPY_CHANNEL = 'diagnostics:copy';

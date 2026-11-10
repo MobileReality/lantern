@@ -25,6 +25,8 @@ export const PICK_ENTRY = 'Select an entry to see its details.';
 
 export const copiedMessage = (count: number) => `Copied a report of ${count} ${count === 1 ? 'entry' : 'entries'}. Home folders, project folders and tokens are removed.`;
 
+const plural = (count: number, one: string, many: string) => `${count} ${count === 1 ? one : many}`;
+
 function select(label: string, options: [string, string][], onChange: (value: string) => void) {
   const wrap = el('label', 'dg-field');
   wrap.append(el('span', 'dg-field-label', label));
@@ -138,7 +140,7 @@ export function createDiagnosticsView(root: HTMLElement, actions: DiagnosticsAct
   function render() {
     const visible = applyFilter(entries, filter);
     const totals = severityCounts(entries);
-    counts.textContent = `${totals.fatal} crashes · ${totals.error} errors · ${totals.warning} warnings`;
+    counts.textContent = [plural(totals.fatal, 'crash', 'crashes'), plural(totals.error, 'error', 'errors'), plural(totals.warning, 'warning', 'warnings')].join(' · ');
     const empty = entries.length ? NOTHING_MATCHES : EMPTY_LOG;
     list.replaceChildren(...(visible.length ? visible.map(row) : [el('li', 'dg-empty', empty)]));
     renderDetail(entries.find((entry) => entry.id === selectedId));

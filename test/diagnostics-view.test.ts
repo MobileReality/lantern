@@ -82,7 +82,7 @@ describe('the Diagnostics view', () => {
     expect(rows().map((r) => r.querySelector('.dg-message')!.textContent)).toEqual(['Error: boom', 'slow', 'The VS Code server exited with code 1', 'Lantern started']);
     expect(rows()[3].textContent).toContain('earlier run');
     expect(rows()[0].textContent).not.toContain('earlier run');
-    expect(document.querySelector('.dg-counts')!.textContent).toBe('1 crashes · 1 errors · 1 warnings');
+    expect(document.querySelector('.dg-counts')!.textContent).toBe('1 crash · 1 error · 1 warning');
   });
 
   it('shows new entries as they are pushed, without a reload', async () => {
