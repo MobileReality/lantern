@@ -46,7 +46,8 @@ Sessions are told apart by their working directory: one entry per VS Code projec
 
 Packages are attached to each release on the
 [releases page](https://github.com/MobileReality/lantern/releases): `Lantern-mac.zip` for
-Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
+Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. The Apple-silicon build is also published
+as `Lantern-mac-arm64.zip` for the updater, and the `Lantern-mac.zip` link stays the one to use. Until a release is published there,
 build Lantern from source ([installation](docs/installation.md#install-and-run-from-source)).
 
 The macOS app of a release built by the current workflow is signed with a Developer ID certificate
