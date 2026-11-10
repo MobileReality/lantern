@@ -5,7 +5,13 @@ import { makeVocabProject, removeVocabProjects, runScript } from './helpers/lant
 afterEach(removeVocabProjects);
 
 const evaluate = (root: string, ...flags: string[]) => runScript('macro-eval.mjs', [root, ...flags]);
-const statusOf = (out: string, name: string) => new RegExp(`^(PASS|WARN) ${name.replace(/[[\]]/g, '\\$&')}(?=\\s)`, 'm').exec(out)?.[1];
+const statusOf = (out: string, name: string) => {
+  for (const line of out.split('\n')) {
+    const [status, checked] = line.split(/\s+/);
+    if ((status === 'PASS' || status === 'WARN') && checked === name) return status;
+  }
+  return undefined;
+};
 
 describe('macro-eval.mjs', () => {
   it('passes every check on a tidy map', () => {

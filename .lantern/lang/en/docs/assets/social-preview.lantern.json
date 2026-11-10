@@ -1,0 +1,6 @@
+{
+ "text": {
+  "social-preview.html": "Self-contained 1280x640 card with the logo, name and tagline, rendered to the PNG uploaded as the repository's GitHub social preview",
+  "social-preview.html gotcha": "the PNG is rendered by hand from it, so an edit here changes nothing until it is re-rendered"
+ }
+}

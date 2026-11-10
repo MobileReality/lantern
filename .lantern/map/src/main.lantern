@@ -160,7 +160,7 @@ src/main/lantern-batch.ts . util 5086a2a4626a
 
 src/main/lantern-cache.ts . util 507ce092b779
 
-src/main/lantern-describe-parse.ts . pure 4895b6c08285
+src/main/lantern-describe-parse.ts . pure f46965e96cca
 #feature pull-requests
   < src/shared/control-characters.ts#hasControlCharacter
   < src/main/lantern-types.ts
@@ -779,7 +779,7 @@ src/main/session-notification.ts . service b7989b78e9a6
   < src/main/state.ts#NoticeKind
   < src/shared/settings-notifications.ts#NOTIFICATION_KINDS
 
-src/main/settings-model.ts . pure 48ec349c2cce
+src/main/settings-model.ts . pure ae198d35944f
   < src/shared/settings-registry.ts
   < src/shared/settings-schema.ts#SettingSchema
   < src/shared/commands/index.ts#isCommandId
