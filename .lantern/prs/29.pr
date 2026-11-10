@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/auto-update
 #base main
 #opened 2026-11-10
-#head 0ea2bf51be38722bc41e59c9418329fbc1dd2056
+#head 658e5ec287c4592f9ee1aef13116a2733531e29b
 #describe what An installed Lantern finds a newer release by itself. On a Mac it downloads the update and installs it only when no session, run, terminal or editor process would be ended; elsewhere it shows a notice with a link to the release page.
 #describe what Adds a Check for Updates item, a setting to switch the checks off, and a docs page on what each check sends. The Mac feed answers 404 until the release asset is renamed to include arm64, so for now that path is a quiet no-op.
 #describe before New releases were found and installed by hand.
