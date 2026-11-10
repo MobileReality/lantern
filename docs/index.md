@@ -13,6 +13,7 @@ app itself.
 - [Getting started](getting-started.md): a walk from the first launch to a reviewed change, and how to drive Lantern by prompting your AI chat (for example "delegate this with lantern-delegate").
 - [Architecture](architecture.md): how the app is put together and where each part lives.
 - [Troubleshooting](../TROUBLESHOOTING.md): known problems and their fixes.
+- [Diagnostics](diagnostics.md): where Lantern keeps its own errors and crashes, and how to report one without sending anything by itself.
 - [Contributing](../CONTRIBUTING.md): how to work on the app, test it and build it.
 
 Looking for an overview of the product? See [thelantern.dev](https://thelantern.dev).

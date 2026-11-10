@@ -88,6 +88,9 @@ import { codeHostOf } from './lantern-host-origin';
 import { hostStatus } from './lantern-host-status';
 import { readBranch, resolveRoot } from './projectroot';
 import { devInstance, hslToRgb, recordDebugHandle, recordInstance, seedUserData, shortName, tintBitmap } from './dev-instance';
+import { currentDiagnostics, reportDiagnostic, startDiagnostics } from './diagnostics';
+import { guardIpc } from './diagnostics/ipc-guard';
+import { registerDiagnosticsIpc } from './diagnostics/ipc';
 
 // Fuses disable run-as-node in the packaged app, but `npm start` (dev) still uses
 // the system electron, which this machine can boot as plain Node — guard for that.
@@ -96,7 +99,10 @@ if (!electron.app) {
   process.exit(1);
 }
 
-const { app, Tray, Menu, BrowserWindow, Notification, nativeImage, shell, ipcMain, session, dialog } = electron;
+const { app, Tray, Menu, BrowserWindow, Notification, nativeImage, shell, ipcMain, session, dialog, clipboard } = electron;
+
+// Installed before any handler is registered so every IPC handler's failure is recorded.
+guardIpc(ipcMain, reportDiagnostic);
 
 // Force English so the embedded editor (serve-web) uses VS Code's built-in NLS
 // bundle — non-English language packs render broken "{0}" placeholders in the
@@ -170,6 +176,7 @@ function migrateUserData() {
 
 async function init() {
   migrateUserData();
+  startDiagnosticsLog();
   initWindows({
     preload: path.join(__dirname, 'preload', 'workspace.js'),
     htmlDir: path.join(__dirname, 'renderer'),
@@ -270,6 +277,29 @@ async function init() {
   runScan();
   setInterval(runScan, SCAN_INTERVAL_MS);
   claudePoller.start();
+}
+
+function startDiagnosticsLog() {
+  const service = startDiagnostics({
+    file: path.join(app.getPath('userData'), 'diagnostics', 'events.jsonl'),
+    platform: process.platform,
+    arch: process.arch,
+    version: app.getVersion(),
+    electron: process.versions.electron,
+    node: process.versions.node,
+    packaged: app.isPackaged,
+    home: os.homedir(),
+    projects: projectPaths,
+    proc: process,
+    app,
+  });
+  registerDiagnosticsIpc({
+    handle: (channel, listener) => ipcMain.handle(channel, listener),
+    fromWorkspace,
+    service,
+    writeClipboard: (text) => clipboard.writeText(text),
+    openExternal: (url) => shell.openExternal(url),
+  });
 }
 
 function announceDevInstance(instance: NonNullable<typeof INSTANCE>, httpPort: number) {
@@ -946,6 +976,7 @@ let quitting = false;
 app.on('before-quit', (e) => {
   if (quitting) return;
   quitting = true;
+  currentDiagnostics()?.markQuit();
   if (server) server.close();
   settingsStore.unwatch();
   prExplain.cancelAll();

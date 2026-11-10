@@ -16,6 +16,8 @@ import { ensureEditorSettingsFile } from './serveweb-settings';
 import type { ServerLicenseConsent } from './serveweb-license';
 import { chooseServerCommand, type LaunchFs, type ServerDirs } from './serveweb-launch';
 import { DEV_PROFILE } from '../shared/config';
+import { reportDiagnostic } from './diagnostics';
+import { commandText, createServerOutputReporter, describeLaunchError, describeProbe, describeServerStop } from './diagnostics/editor-server';
 
 const CONNECTION_TOKEN = randomBytes(24).toString('hex');
 const PREFERRED_PORT = DEV_PROFILE ? 9889 : 9888;
@@ -105,6 +107,7 @@ let graceSeconds: number | null = null;
 let directLaunchFailed = false;
 let licenseConsent: ServerLicenseConsent | null = null;
 let askingLicense = false;
+let lastPage: ServerPage | null = null;
 
 function setProgress(text: string, ph?: string, pct?: number | null) {
   progress = text;
@@ -272,11 +275,12 @@ function markReady() {
 
 // A failure sticks until recycle(): the scan loop calls start() every few seconds,
 // and silently respawning is what used to leave users on an endless spinner.
-function fail(text: string) {
+function fail(text: string, alreadyReported = false) {
   stopProc();
   failed = true;
   starting = false;
   setProgress(text, 'error', null);
+  if (!alreadyReported) reportDiagnostic({ source: 'editor-server', severity: 'error', message: text, detail: `Health check: ${describeProbe(lastPage, port)}` });
 }
 
 function start(onReady?: () => void, onProgress?: () => void, options?: StartOptions) {
@@ -313,6 +317,7 @@ function askForLicense() {
 
 function begin() {
   starting = true;
+  lastPage = null;
   const gen = pollGen;
   setTimeout(() => {
     if (gen === pollGen && !ready) fail(`The VS Code server didn’t start within ${START_DEADLINE_MS / MS_PER_MINUTE} minutes.`);
@@ -375,6 +380,7 @@ function serverCommand(bin: string) {
 function abandonDirectLaunch(reason: string, bin: string) {
   directLaunchFailed = true;
   console.warn(`[serveweb] the directly launched server ${reason}; starting "code serve-web" instead`);
+  reportDiagnostic({ source: 'editor-server', severity: 'warning', message: `The directly launched VS Code server ${reason}; starting "code serve-web" instead` });
   startServerProcess(bin);
 }
 
@@ -395,20 +401,28 @@ function startServerProcess(bin: string) {
   graceSeconds = command.graceSeconds;
   if (command.kind === 'direct') console.log(`[serveweb] launching server build ${command.commit} directly with a ${command.graceSeconds}s reconnection grace time`);
   const tail = createOutputTail();
+  const stderrReport = createServerOutputReporter(reportDiagnostic);
+  const commandLine = commandText(command.bin, command.args);
   consume(child.stdout, tail.push);
-  consume(child.stderr, tail.push);
-  child.on('error', () => {
+  consume(child.stderr, (line) => {
+    tail.push(line);
+    stderrReport.push(line);
+  });
+  child.on('error', (error) => {
     if (proc !== child) return;
     proc = null;
     graceSeconds = null;
+    reportDiagnostic(describeLaunchError(error, commandLine, process.platform));
     if (direct) return abandonDirectLaunch('could not be started', bin);
-    fail('Couldn’t launch the VS Code server.');
+    fail('Couldn’t launch the VS Code server.', true);
   });
-  child.on('exit', () => {
+  child.on('exit', (code, signal) => {
     if (dying === child) dying = null;
     if (proc !== child) return;
     proc = null;
     graceSeconds = null;
+    const stop = describeServerStop({ code, signal, wasReady: ready, platform: process.platform, command: commandLine, tail: tail.lines() });
+    if (stop) reportDiagnostic(stop);
     if (direct && !ready) return abandonDirectLaunch('exited before it was ready', bin);
     if (ready) {
       ready = false;
@@ -416,7 +430,7 @@ function startServerProcess(bin: string) {
     }
     const exitGen = ++pollGen;
     afterOutputDrained(child, () => {
-      if (exitGen === pollGen) fail(describeEarlyExit(tail.lines(), port));
+      if (exitGen === pollGen) fail(describeEarlyExit(tail.lines(), port), true);
     });
   });
 }
@@ -442,6 +456,7 @@ function poll(gen: number) {
 // A server still answering here is ours, or one reclaimPort couldn't identify (e.g.
 // on Windows); reuse it rather than race it for the port.
 function onPage(page: ServerPage | null, gen: number) {
+  lastPage = page;
   if (page === 'workbench') return markReady();
   if (!page && !proc) return launch(gen);
   if (page === 'downloading' && phase !== 'download') setProgress('Downloading the VS Code server…', 'download', null);

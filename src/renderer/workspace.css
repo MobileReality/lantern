@@ -688,8 +688,23 @@ body:not(.project-window):not(.popout) .lt-statusbar { position: fixed; left: 0;
 .ls-retry:hover { background: var(--primary-600); border-color: var(--primary-600); }
 .ls-retry:disabled { opacity: 0.6; }
 
+.ls-diagnostics {
+  display: none;
+  margin-top: 10px;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  cursor: default;
+}
+.ls-diagnostics:hover { color: var(--text); }
+
 .ls.failed { background: var(--bg); }
 .ls.failed .ls-retry { display: inline-block; }
+.ls.failed .ls-diagnostics { display: block; margin-inline: auto; }
 .ls.failed .ls-flame { animation: none; }
 .ls.failed .ls-mark-wrap::before { display: none; }
 .ls.failed .ls-flame { fill: var(--muted); opacity: 0.35; }

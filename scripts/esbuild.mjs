@@ -31,7 +31,7 @@ await esbuild.build({ ...renderer, entryPoints: ['src/renderer/lib/syntax-worker
 await esbuild.build({ ...renderer, entryPoints: ['src/renderer/overlay.ts'], outfile: `${OUT}/renderer/overlay.js` });
 await esbuild.build({ ...renderer, entryPoints: ['src/renderer/tray-popover.ts'], outfile: `${OUT}/renderer/tray-popover.js` });
 
-for (const f of ['theme.css', 'workspace.html', 'workspace.css', 'lantern.css', 'lantern-sections.css', 'lantern-prs.css', 'lantern-plans.css', 'lantern-review.css', 'lantern-flow.css', 'lantern-select.css', 'lantern-relation.css', 'lantern-macroview.css', 'lantern-setup.css', 'settings.css', 'command-palette.css', 'memory.css', 'integrations.css', 'overlay.html', 'overlay.css', 'tray-popover.html', 'tray-popover.css', 'floating.css']) {
+for (const f of ['theme.css', 'workspace.html', 'workspace.css', 'lantern.css', 'lantern-sections.css', 'lantern-prs.css', 'lantern-plans.css', 'lantern-review.css', 'lantern-flow.css', 'lantern-select.css', 'lantern-relation.css', 'lantern-macroview.css', 'lantern-setup.css', 'settings.css', 'command-palette.css', 'memory.css', 'diagnostics.css', 'integrations.css', 'overlay.html', 'overlay.css', 'tray-popover.html', 'tray-popover.css', 'floating.css']) {
   cpSync(`src/renderer/${f}`, `${OUT}/renderer/${f}`);
 }
 cpSync('src/renderer/fonts', `${OUT}/renderer/fonts`, { recursive: true });

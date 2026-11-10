@@ -1,5 +1,6 @@
 import { LOAD_STEPS, formatElapsed, type LoadView } from '../lib/editorload';
 import { el } from '../lib/util';
+import { runCommand } from '../commands';
 
 const LANTERN_SVG = `<svg class="ls-mark" viewBox="0 0 26 30" fill="none" aria-hidden="true">
   <path class="ls-frame" d="M8 6 Q13 1.5 18 6" stroke-width="1.6" stroke-linecap="round" />
@@ -41,7 +42,11 @@ export function createLoadScreen(onRetry: () => void): LoadScreen {
   retry.type = 'button';
   retry.textContent = 'Retry';
   retry.addEventListener('click', onRetry);
-  card.append(mark, title, detail, steps, bar, hint, elapsed, retry);
+  const diagnostics = el('button', 'ls-diagnostics');
+  diagnostics.type = 'button';
+  diagnostics.textContent = 'Show diagnostics';
+  diagnostics.addEventListener('click', () => runCommand('diagnostics.open'));
+  card.append(mark, title, detail, steps, bar, hint, elapsed, retry, diagnostics);
   root.append(card);
 
   function render(view: LoadView, elapsedMs: number) {

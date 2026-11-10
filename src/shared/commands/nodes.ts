@@ -60,6 +60,12 @@ export const MEMORY_COMMANDS = {
   commands: { 'memory.open': { title: 'Memory' } },
 } satisfies CommandsNode;
 
+export const DIAGNOSTICS_COMMANDS = {
+  id: 'diagnostics',
+  title: 'Diagnostics',
+  commands: { 'diagnostics.open': { title: 'Diagnostics' } },
+} satisfies CommandsNode;
+
 export const INTEGRATIONS_COMMANDS = {
   id: 'integrations',
   title: 'Integrations',
