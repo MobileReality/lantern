@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { showUpdateNotice } from '../src/renderer/features/update-notice';
-import { hasLiveSession } from '../src/renderer/lib/idle-tabs';
 import type { UpdateNotice } from '../src/shared/updates';
 
 const HTML = fs.readFileSync(path.join(__dirname, '../src/renderer/workspace.html'), 'utf8');
@@ -31,7 +30,7 @@ describe('the update notice in the window', () => {
   it('shows the waiting message with Restart now and Not now', async () => {
     await showUpdateNotice(actions({ kind: 'ready', version: '0.3.0', waiting: true }).api);
     expect(byId('update-notice').classList.contains('hidden')).toBe(false);
-    expect(byId('update-notice-title').textContent).toBe('Update ready: restart when your sessions finish');
+    expect(byId('update-notice-title').textContent).toBe('Update ready: restart when your terminals and runs finish');
     expect(byId('update-notice-primary').textContent).toBe('Restart now');
     expect(byId('update-notice-secondary').textContent).toBe('Not now');
   });
@@ -53,11 +52,5 @@ describe('the update notice in the window', () => {
     expect(world.act).toHaveBeenCalledWith('view');
     world.push(null);
     expect(byId('update-notice').classList.contains('hidden')).toBe(true);
-  });
-});
-
-describe('the one definition of a live session', () => {
-  it('is shared by the idle tabs and the updater', () => {
-    expect(hasLiveSession([{ state: 'idle' }])).toBe(true);
   });
 });

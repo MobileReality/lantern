@@ -217,9 +217,9 @@ describe('the update IPC', () => {
 });
 
 describe('the notice text', () => {
-  it('says "Update ready: restart when your sessions finish" while it waits', () => {
+  it('says "Update ready: restart when your terminals and runs finish" while it waits', () => {
     expect(updateNoticeView({ kind: 'ready', version: '0.3.0', waiting: true })).toMatchObject({
-      title: 'Update ready: restart when your sessions finish',
+      title: 'Update ready: restart when your terminals and runs finish',
       primary: { action: 'restart', label: 'Restart now' },
       secondary: { action: 'later' },
     });

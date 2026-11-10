@@ -14,7 +14,7 @@ and waits. The update installs, and Lantern restarts, only when nothing would be
 
 Sessions in other terminals, such as iTerm, do not block an update: a restart does not end them.
 
-While something is alive you see **Update ready: restart when your sessions finish**, and the update
+While something is alive you see **Update ready: restart when your terminals and runs finish**, and the update
 installs by itself as soon as nothing is. **Not now** keeps it from installing on its own; the downloaded
 update then installs the next time you quit Lantern, or when you choose **Restart now**. **Restart now**
 while something is alive first lists what would be ended (for example "2 editor terminals and 1 running process")

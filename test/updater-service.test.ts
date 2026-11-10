@@ -177,7 +177,7 @@ describe('the session guard around the install', () => {
     expect(world.native.quitAndInstall).toHaveBeenCalledOnce();
   });
 
-  it('waits and shows "restart when your sessions finish" while something is alive', async () => {
+  it('waits and shows "restart when your terminals and runs finish" while something is alive', async () => {
     const world = await downloaded(BUSY);
     expect(world.native.quitAndInstall).not.toHaveBeenCalled();
     expect(world.published.at(-1)).toEqual({ kind: 'ready', version: '0.3.0', waiting: true });
