@@ -1,0 +1,157 @@
+lantern-pr 1
+# 29
+#title Update Lantern by itself on macOS, announce releases elsewhere
+#url https://github.com/MobileReality/lantern/pull/29
+#branch feat/auto-update
+#base main
+#opened 2026-11-10
+#head 0ea2bf51be38722bc41e59c9418329fbc1dd2056
+#describe what An installed Lantern finds a newer release by itself. On a Mac it downloads the update and installs it only when no session, run, terminal or editor process would be ended; elsewhere it shows a notice with a link to the release page.
+#describe what Adds a Check for Updates item, a setting to switch the checks off, and a docs page on what each check sends. The Mac feed answers 404 until the release asset is renamed to include arm64, so for now that path is a quiet no-op.
+#describe before New releases were found and installed by hand.
+#describe after A Mac shows Update ready: restart when your sessions finish, installs when nothing is alive, and asks for confirmation naming what a Restart now would end.
+#describe verified Typecheck, lint and the full test suite pass. The update flow itself was never run.
++ docs/updates.md
++ src/main/updater/controller.ts
++ src/main/updater/dialogs.ts
++ src/main/updater/feed.ts
++ src/main/updater/guard.ts
++ src/main/updater/native.ts
++ src/main/updater/process-activity.ts
++ src/main/updater/service.ts
++ src/main/updater/version.ts
++ src/renderer/features/update-notice.ts
++ src/renderer/lib/update-notice-view.ts
++ src/shared/session-liveness.ts
++ src/shared/settings-updates.ts
++ src/shared/updates.ts
++ test/helpers/updater-world.ts
++ test/update-notice.test.ts
++ test/updater-feed.test.ts
++ test/updater-guard.test.ts
++ test/updater-service.test.ts
++ test/updater-surface.test.ts
++ test/updater-version.test.ts
+~ docs/index.md
+~ src/main/app-menu.ts
+~ src/main/main.ts
+~ src/preload/workspace.ts
+~ src/renderer/global.d.ts
+~ src/renderer/lib/idle-tabs.ts
+~ src/renderer/workspace.css
+~ src/renderer/workspace.html
+~ src/renderer/workspace.ts
+~ src/shared/lang/en/messages.json
+~ src/shared/settings-registry.ts
+~ test/idle-tabs-workspace.test.ts
+~ test/project-window.test.ts
+~ test/settings-editor.test.ts
+~ test/sidebar.test.ts
+#order src/main/updater/guard.ts
+#order src/shared/session-liveness.ts
+#order src/main/updater/service.ts
+#order src/main/updater/feed.ts
+#order src/main/updater/version.ts
+#order src/main/updater/process-activity.ts
+#order src/main/updater/native.ts
+#order src/main/updater/dialogs.ts
+#order src/main/updater/controller.ts
+#order src/shared/updates.ts
+#order src/shared/settings-updates.ts
+#order src/shared/settings-registry.ts
+#order src/main/main.ts
+#order src/main/app-menu.ts
+#order src/preload/workspace.ts
+#order src/renderer/global.d.ts
+#order src/renderer/lib/update-notice-view.ts
+#order src/renderer/features/update-notice.ts
+#order src/renderer/workspace.ts
+#order src/renderer/workspace.html
+#order src/renderer/workspace.css
+#order src/renderer/lib/idle-tabs.ts
+#order src/shared/lang/en/messages.json
+#order test/helpers/updater-world.ts
+#order test/updater-guard.test.ts
+#order test/updater-service.test.ts
+#order test/updater-feed.test.ts
+#order test/updater-version.test.ts
+#order test/updater-surface.test.ts
+#order test/update-notice.test.ts
+#order test/idle-tabs-workspace.test.ts
+#order test/project-window.test.ts
+#order test/sidebar.test.ts
+#order test/settings-editor.test.ts
+#order docs/updates.md
+#order docs/index.md
+#reason docs/updates.md Says how updates work, when Lantern never restarts by itself and what each check sends, as the privacy note requires.
+#reason src/main/updater/controller.ts Runs the menu check with its result dialog and answers the window's notice and button requests, accepting only known actions.
+#reason src/main/updater/dialogs.ts Words every result of a manual check and the restart confirmation that names exactly what would be ended.
+#reason src/main/updater/feed.ts Reads the update service's 204, 200 and 404 and GitHub's latest release with no token, a timeout and a fixed release host.
+#reason src/main/updater/guard.ts Holds canInstallNow so one pure function decides whether a restart may happen, failing closed when activity is unknown.
+#reason src/main/updater/native.ts Keeps Electron's Squirrel updater behind a small interface so the service can be tested with a stub.
+#reason src/main/updater/process-activity.ts Finds the terminals and running commands below Lantern, the part of the guard that sessions alone cannot see.
+#reason src/main/updater/service.ts Schedules checks, downloads on a Mac and installs only when the guard allows, never on its own while it is false or after Not now.
+#reason src/main/updater/version.ts Compares versions without a dependency, pre-releases included, so a release is offered only when strictly newer.
+#reason src/renderer/features/update-notice.ts Draws the update card the main process pushes and sends the pressed button back.
+#reason src/renderer/lib/update-notice-view.ts Keeps the notice wording and button actions in one pure place that a test can read.
+#reason src/shared/session-liveness.ts Gives one definition of a live session, counting unknown as alive, for the idle tabs and the update guard.
+#reason src/shared/settings-updates.ts Declares Check for updates automatically, on by default, which stops every update request when off.
+#reason src/shared/updates.ts Defines the notice shape, channels and the four button actions shared by main, preload and window.
+#reason test/helpers/updater-world.ts Builds the updater with a stub network, native updater, timers and activity so each case reads in a few lines.
+#reason test/update-notice.test.ts Proves the card shows the waiting message, sends the pressed action and shares the live-session rule.
+#reason test/updater-feed.test.ts Proves 204 is up to date, 200 an update, 404 an unavailable feed, failures are failures and no token is sent.
+#reason test/updater-guard.test.ts Proves canInstallNow is false for each live case and true when idle, and how processes are counted.
+#reason test/updater-service.test.ts Proves a 200 schedules a download, the guard never restarts while false, the off switch makes no request and failures are logged only.
+#reason test/updater-surface.test.ts Proves the menu item, result texts, restart confirmation, update IPC and the setting default.
+#reason test/updater-version.test.ts Proves version ordering, including pre-releases and numeric comparison.
+#reason docs/index.md Links the new Updates page so people find what the checks send and how to turn them off.
+#reason src/main/app-menu.ts Adds Check for Updates… to the app menu on every platform, only when a handler is given so existing menus are unchanged.
+#reason src/main/main.ts Wires the updater with the setting, the real network, the session guard inputs and the dialogs, and starts and stops it with the app.
+#reason src/preload/workspace.ts Exposes the notice, its button actions and the notice push to the window without exposing ipcRenderer.
+#reason src/renderer/global.d.ts Types the three new bridge calls so the window code stays checked.
+#reason src/renderer/lib/idle-tabs.ts Takes the live-session rule from the shared module so tabs and the updater cannot disagree.
+#reason src/renderer/workspace.css Styles the bottom-left update card so it does not cover the crash notice.
+#reason src/renderer/workspace.html Adds the hidden update card with its two buttons, named so the page keeps its accessibility check.
+#reason src/renderer/workspace.ts Starts the update notice when the workspace opens.
+#reason src/shared/lang/en/messages.json Adds the update notice, confirmation and result texts to the one message catalogue.
+#reason src/shared/settings-registry.ts Registers the Updates category so the setting appears in Settings and the settings file.
+#reason test/idle-tabs-workspace.test.ts Stubs the new update bridge calls the workspace now makes on start.
+#reason test/project-window.test.ts Stubs the new update bridge calls the workspace now makes on start.
+#reason test/settings-editor.test.ts Counts the Updates setting among the settings now listed.
+#reason test/sidebar.test.ts Stubs the new update bridge calls the workspace now makes on start.
+#story A Mac user keeps working while Lantern updates
+#step actor Lantern
+#step action downloads a newer release and waits for
+#file src/main/updater/service.ts
+#step subject sessions and terminals to finish
+#file src/main/updater/guard.ts
+#file src/main/updater/process-activity.ts
+#below actor Mac user
+#below interaction sees Update ready and can press Restart now
+#file src/renderer/features/update-notice.ts
+#file test/update-notice.test.ts
+#below consequence updated by hand => updates once nothing is running
+#file test/updater-service.test.ts
+#story A user restarts early and is told what ends
+#step actor User
+#step action presses Restart now while work is running
+#file src/main/updater/controller.ts
+#step subject Lantern, which lists what would be lost
+#file src/main/updater/dialogs.ts
+#file test/updater-surface.test.ts
+#below actor User
+#below interaction can cancel, or confirm and restart
+#below consequence restart could end work silently => restart needs a confirmation naming it
+#story Everyone can turn the checks off or run one
+#step actor User
+#step action clears the update setting or picks Check for Updates
+#file src/shared/settings-updates.ts
+#file src/main/app-menu.ts
+#step subject the update checks
+#file docs/updates.md
+#below actor Windows user
+#below interaction sees Lantern X is available with a release link
+#file src/main/updater/feed.ts
+#file src/renderer/lib/update-notice-view.ts
+#below consequence checks could not be stopped => off means no update request at all
+#file test/updater-feed.test.ts
