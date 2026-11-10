@@ -184,6 +184,12 @@ describe('the notice after a crash', () => {
     expect(actions.dismiss).toHaveBeenCalledTimes(1);
   });
 
+  it('names a crash in a run that quit normally as a crash, not an unexpected close', async () => {
+    await boot({ ...notice, reason: 'fatal' });
+    expect(host().textContent).toContain('Lantern recorded a crash last time');
+    expect(host().textContent).not.toContain('closed unexpectedly');
+  });
+
   it('reports on GitHub only when asked, and then does not show again', async () => {
     const actions = await boot(notice);
     document.getElementById('crash-notice-report')!.click();

@@ -72,6 +72,11 @@ export interface CrashNotice {
   reason: 'fatal' | 'unclean-exit';
 }
 
+export const CRASH_NOTICE_TITLE: Record<CrashNotice['reason'], string> = {
+  'unclean-exit': 'Lantern closed unexpectedly last time',
+  fatal: 'Lantern recorded a crash last time',
+};
+
 export interface DiagnosticsListing {
   entries: DiagnosticEntry[];
   session: string;

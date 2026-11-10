@@ -39,6 +39,7 @@ const MAX_NOTICE_ENTRIES = 30;
 
 export function registerDiagnosticsIpc({ handle, fromWorkspace, service, writeClipboard, openExternal }: DiagnosticsIpcDeps) {
   const watching = new Map<Viewer, () => void>();
+  const wired = new WeakSet<Viewer>();
 
   function unwatch(viewer: Viewer) {
     watching.get(viewer)?.();
@@ -54,6 +55,8 @@ export function registerDiagnosticsIpc({ handle, fromWorkspace, service, writeCl
         else viewer.send(DIAGNOSTICS_UPDATE_CHANNEL, entry);
       }),
     );
+    if (wired.has(viewer)) return;
+    wired.add(viewer);
     viewer.once('destroyed', () => unwatch(viewer));
   }
 
@@ -101,7 +104,7 @@ export function registerDiagnosticsIpc({ handle, fromWorkspace, service, writeCl
       const request = parseReportRequest(payload);
       const entries = request && entriesFor(request);
       if (!request || !entries) return { ok: false, copied: false, truncated: false };
-      const { draft, environment } = composeIssue(entries, service.reportContext(), request.crash === true);
+      const { draft, environment } = composeIssue(entries, service.reportContext(), request.crash ? (service.pendingNotice()?.reason ?? null) : null);
       const plan = planIssue(draft, environment);
       if (!isIssueUrl(plan.url)) return { ok: false, copied: false, truncated: false };
       if (plan.clipboard) writeClipboard(plan.clipboard);

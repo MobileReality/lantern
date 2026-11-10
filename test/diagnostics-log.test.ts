@@ -140,9 +140,26 @@ describe('detecting that the previous run crashed', () => {
     expect(notice).toMatchObject({ session: 'prev', reason: 'unclean-exit' });
   });
 
-  it('finds a recorded crash even when the run quit normally afterwards', () => {
-    const previous = run('prev', [['Lantern started'], ['boom', { severity: 'fatal' }], [QUIT_NORMALLY.message]]);
+  it('calls a run that crashed and never quit an unclean exit', () => {
+    const previous = run('prev', [['Lantern started'], ['boom', { severity: 'fatal' }]]);
+    expect(crashNoticeFor(previous, 'now')).toMatchObject({ session: 'prev', reason: 'unclean-exit' });
+  });
+
+  it('still reports a crash recorded in a run that quit normally, but as a crash, not an unexpected close', () => {
+    const previous = run('prev', [['Lantern started'], ['A window process is gone: crashed', { severity: 'fatal' }], [QUIT_NORMALLY.message]]);
     expect(crashNoticeFor(previous, 'now')).toMatchObject({ session: 'prev', reason: 'fatal' });
+  });
+
+  it('words the two cases differently in the log, so a window crash is never called an unexpected close', () => {
+    const dir = makeLogDir();
+    const first = startService(dir);
+    first.record({ source: 'render-process', severity: 'fatal', message: 'A window process is gone: crashed' });
+    first.markQuit();
+    const second = startService(dir, makeClock(Date.parse('2026-11-11T08:00:00Z')));
+    expect(second.pendingNotice()).toMatchObject({ reason: 'fatal' });
+    const messages = second.listing().entries.map((e) => e.message);
+    expect(messages).toContain('Lantern recorded a crash last time');
+    expect(messages).not.toContain('Lantern closed unexpectedly last time');
   });
 
   it('looks only at the last earlier run and ignores the current one', () => {
@@ -155,7 +172,7 @@ describe('detecting that the previous run crashed', () => {
     const first = startService(dir);
     first.record({ source: 'main', severity: 'fatal', message: 'Error: boom' });
     const second = startService(dir, makeClock(Date.parse('2026-11-11T08:00:00Z')));
-    expect(second.pendingNotice()).toMatchObject({ session: first.session, reason: 'fatal' });
+    expect(second.pendingNotice()).toMatchObject({ session: first.session, reason: 'unclean-exit' });
     expect(second.listing().entries.map((e) => e.message)).toContain('Lantern closed unexpectedly last time');
     second.dismissNotice();
     expect(second.pendingNotice()).toBeNull();

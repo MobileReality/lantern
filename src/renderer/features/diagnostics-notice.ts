@@ -1,8 +1,6 @@
-import type { CrashNotice } from '../../shared/diagnostics';
+import { CRASH_NOTICE_TITLE, type CrashNotice } from '../../shared/diagnostics';
 import { GITHUB_CLIPBOARD, GITHUB_OPENED, REPORT_FAILED } from '../lib/diagnosticsview';
 import { byId } from '../lib/util';
-
-export const CRASH_NOTICE_TITLE = 'Lantern closed unexpectedly last time';
 
 interface NoticeActions {
   notice(): Promise<CrashNotice | null>;
@@ -17,7 +15,7 @@ export async function showCrashNotice(actions: NoticeActions) {
   const message = byId('crash-notice-text');
   const report = byId('crash-notice-report');
   const dismiss = byId('crash-notice-dismiss');
-  host.querySelector('.crash-notice-title')!.textContent = CRASH_NOTICE_TITLE;
+  host.querySelector('.crash-notice-title')!.textContent = CRASH_NOTICE_TITLE[notice.reason];
   message.textContent = 'Read the report first. Nothing is sent unless you submit it on GitHub.';
   host.classList.remove('hidden');
   const close = () => {

@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
-import { LIST_LIMIT, type CrashNotice, type DiagnosticEntry, type DiagnosticInput, type DiagnosticsListing } from '../../shared/diagnostics';
-import { CLOSED_UNEXPECTEDLY, QUIT_NORMALLY, STARTED, crashNoticeFor } from './lifecycle';
+import { CRASH_NOTICE_TITLE, LIST_LIMIT, type CrashNotice, type DiagnosticEntry, type DiagnosticInput, type DiagnosticsListing } from '../../shared/diagnostics';
+import { QUIT_NORMALLY, STARTED, crashNoticeFor } from './lifecycle';
 import { createEntry } from './record';
 import { createDiagnosticsStore, type DiagnosticsStore } from './store';
 import { createThrottle } from './throttle';
@@ -84,7 +84,7 @@ export function createDiagnosticsService(deps: ServiceDeps): DiagnosticsService 
     begin() {
       const previous = store.load();
       notice = crashNoticeFor(previous, session);
-      if (notice) record({ source: 'app', severity: 'warning', message: CLOSED_UNEXPECTEDLY, detail: `Run ${notice.session}: ${notice.reason === 'fatal' ? 'a crash was recorded' : 'no normal quit was recorded'}.` });
+      if (notice) record({ source: 'app', severity: 'warning', message: CRASH_NOTICE_TITLE[notice.reason], detail: `Run ${notice.session}: ${notice.reason === 'fatal' ? 'a crash was recorded' : 'no normal quit was recorded'}.` });
       record(STARTED);
     },
     record,

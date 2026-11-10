@@ -1,4 +1,4 @@
-import { clip, type DiagnosticEntry } from '../../shared/diagnostics';
+import { clip, type CrashNotice, type DiagnosticEntry } from '../../shared/diagnostics';
 import { redactText } from './redact';
 import { environmentLines, formatReport, summarizeEntries, type ReportContext } from './report';
 
@@ -75,13 +75,18 @@ export function planIssue(draft: IssueDraft, environment: string[]): IssuePlan {
   return { url, truncated: true, clipboard: draft.full };
 }
 
-function titleFor(entries: DiagnosticEntry[], crash: boolean, context: ReportContext): string {
-  if (crash) return `${TITLE_PREFIX}Lantern closed unexpectedly`;
+const CRASH_ISSUE_TITLE: Record<CrashNotice['reason'], string> = {
+  'unclean-exit': `${TITLE_PREFIX}Lantern closed unexpectedly`,
+  fatal: `${TITLE_PREFIX}Lantern recorded a crash`,
+};
+
+function titleFor(entries: DiagnosticEntry[], crash: CrashNotice['reason'] | null, context: ReportContext): string {
+  if (crash) return CRASH_ISSUE_TITLE[crash];
   const subject = entries.at(-1);
   return redactText(subject ? `${TITLE_PREFIX}${subject.message}`.replace(/\s+/g, ' ') : `${TITLE_PREFIX}Lantern diagnostics`, context);
 }
 
-export function composeIssue(entries: DiagnosticEntry[], context: ReportContext, crash = false): { draft: IssueDraft; environment: string[] } {
+export function composeIssue(entries: DiagnosticEntry[], context: ReportContext, crash: CrashNotice['reason'] | null = null): { draft: IssueDraft; environment: string[] } {
   return {
     draft: {
       title: titleFor(entries, crash, context),

@@ -215,7 +215,7 @@ describe('the diagnostics IPC handlers', () => {
     const handlers = new Map<string, (event: unknown, ...args: unknown[]) => unknown>();
     const openExternal = vi.fn();
     registerDiagnosticsIpc({ handle: (c, l) => void handlers.set(c, l), fromWorkspace: (fn) => fn, service: second, writeClipboard: vi.fn(), openExternal });
-    expect(await handlers.get('diagnostics:notice')!({})).toMatchObject({ session: first.session, reason: 'fatal' });
+    expect(await handlers.get('diagnostics:notice')!({})).toMatchObject({ session: first.session, reason: 'unclean-exit' });
     expect(openExternal).not.toHaveBeenCalled();
     await handlers.get('diagnostics:github')!({}, { crash: true });
     expect(decode(openExternal.mock.calls[0][0]).title).toBe('[Bug] Lantern closed unexpectedly');
