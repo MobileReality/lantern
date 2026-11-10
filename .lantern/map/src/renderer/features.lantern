@@ -176,7 +176,7 @@ src/renderer/features/skills-state.ts . pure e54c1f116173
   < src/shared/extension-slots.ts#mergeExtras
   < src/shared/extension-slots.ts#SKILL_LINKER_STATE
 
-src/renderer/features/skills.ts . component 38ce9e659bf4
+src/renderer/features/skills.ts . component 9af6c7fe2ba4
 #feature skill-installer
   = src/preload/workspace.ts
   = src/renderer/features/skills-extras-step.ts

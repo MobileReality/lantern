@@ -360,6 +360,29 @@ describe('Skills modal', () => {
     expect(body().querySelector('.sk-set-err')!.textContent).toBe('Failed: no access');
   });
 
+  it('shows the folder being set up as text, never as markup', async () => {
+    await openModal();
+    await openTab('linker');
+    let finish: (reply: { ok: boolean }) => void = () => undefined;
+    window.ccmws.skillsClone = vi.fn(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    ) as unknown as typeof window.ccmws.skillsClone;
+    const hostile = '/tmp/<img src=x onerror=alert(1)><b>bold</b>';
+    body().querySelector<HTMLInputElement>('.sk-settings .sk-set-field')!.value = hostile;
+    body().querySelector<HTMLButtonElement>('.sk-settings .sk-role-act')!.click();
+    await settled();
+    expect(body().querySelector('img')).toBeNull();
+    expect(body().querySelector('b')).toBeNull();
+    expect(body().querySelector('.sk-msg')!.textContent).toBe(`Setting up ${hostile}…`);
+    finish({ ok: true });
+    await settled();
+    await settled();
+    window.ccmws.skillsClone = vi.fn(async () => ({ ok: true })) as unknown as typeof window.ccmws.skillsClone;
+  });
+
   it('remembers the selected tab while the modal stays open', async () => {
     await openModal();
     await openTab('linker');

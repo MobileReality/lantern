@@ -1,0 +1,38 @@
+lantern-pr 1
+# 18
+#title chore: run e2e and publish coverage in CI (LAN-115)
+#url https://github.com/MobileReality/lantern/pull/18
+#branch chore/ci-e2e-coverage-lan-115
+#base main
+#opened 2026-11-09
+#head 9ec09215aa345fa6826fe150fb0b35f7e2e7d8a8
+#describe what CI gets an e2e job (four headless Playwright/Electron suites under xvfb) and a coverage job (job summary plus uploaded coverage artifact), with no external service or secret. README and CONTRIBUTING now say so.
+#describe before CI ran typecheck, lint and the unit tests, and built; e2e and coverage never ran there.
+#describe after Integrations, tray, pull request host and skills e2e run on the runner; the graph suite does not, because WebGL is unavailable under xvfb. A coverage table is written to the job summary; either failing turns CI red.
+#describe verified Typecheck, lint, the CI workflow test and a full coverage run are green, and the e2e job passed on the runner.
+~ .github/workflows/ci.yml
+~ CONTRIBUTING.md
+~ README.md
+~ test/ci-workflow.test.ts
+#order .github/workflows/ci.yml
+#order test/ci-workflow.test.ts
+#order README.md
+#order CONTRIBUTING.md
+#reason .github/workflows/ci.yml LAN-115: CI never ran the e2e suites or showed coverage, so regressions there went unseen until a local run.
+#reason CONTRIBUTING.md It described CI as three commands with no Electron, and named a guard test that no longer checks that.
+#reason README.md It said CI never runs Electron or the Playwright e2e, which stopped being true with the e2e and coverage jobs.
+#reason test/ci-workflow.test.ts The old guards forbade any upload or Electron step, so they had to say where the new ones are allowed without going soft.
+#story A pull request now shows e2e and coverage results
+#step actor A contributor
+#step action opens a pull request
+#step subject the repository's CI
+#file .github/workflows/ci.yml
+#below interaction Sees e2e results and a coverage table in the run
+#below consequence e2e and coverage only ran on a developer's machine => CI runs both and fails when either fails
+#story The workflow guard stays strict
+#step actor A maintainer
+#step action edits the CI workflow
+#step subject its text guard
+#file test/ci-workflow.test.ts
+#below interaction Is told when a step breaks the CI rules
+#below consequence any upload or Electron step was refused => only the e2e and coverage jobs may have them

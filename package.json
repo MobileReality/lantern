@@ -1,6 +1,6 @@
 {
   "name": "lantern",
-  "version": "1.0.0",
+  "version": "0.2.2",
   "private": true,
   "description": "Your project is the whole context for your AI. Lantern maps it, helps you plan changes, reviews pull requests with generated flows, and keeps your AI assistant sessions together.",
   "repository": {
@@ -68,28 +68,37 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.5",
     "@electron/fuses": "^2.1.2",
-    "@electron/osx-sign": "^2.4.0",
-    "@electron/packager": "^20.0.1",
+    "@electron/osx-sign": "^2.7.2",
+    "@electron/packager": "^20.3.0",
     "@playwright/test": "1.55.1",
     "@types/node": "^26.0.1",
-    "@vitest/coverage-v8": "^3.2.6",
+    "@vitest/coverage-v8": "^4.1.12",
     "electron": "^45.2.2",
     "esbuild": "^0.28.1",
     "jsdom": "^29.1.1",
     "material-icon-theme": "5.39.0",
     "typescript": "^6.0.3",
-    "vitest": "^3.2.6"
+    "vitest": "^4.1.12"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
       "esbuild"
-    ]
+    ],
+    "overrides": {
+      "@electron/asar>glob": "^14.0.2",
+      "@electron/asar>minimatch": "^11.0.1",
+      "plist>@xmldom/xmldom": "^0.9.12",
+      "postcss": "^8.5.23",
+      "source-map-js": "^1.2.2",
+      "undici": "^7.30.2",
+      "vite": "^7.3.7"
+    }
   },
   "dependencies": {
     "@lantern/lsp-runtime": "workspace:*",
     "dompurify": "^3.4.17",
-    "js-yaml": "^5.2.1",
+    "js-yaml": "^5.5.0",
     "jsonc-parser": "3.3.1",
     "marked": "^18.0.6",
     "pixi.js": "8.14.3",

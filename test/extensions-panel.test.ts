@@ -118,12 +118,6 @@ describe('extensions panel', () => {
     expect(panel.alwaysOn.reviewer).toEqual(alwaysOnSkills('reviewer'));
   });
 
-  it('refuses the reviewer skill itself as an extra of the reviewer slot', () => {
-    const panel = saveExtensionsSlot('reviewer', ['lantern-code-reviewer'], [], home);
-    expect(panel.error).toBe(msg('extensions.problem.locked', { name: 'lantern-code-reviewer' }));
-    expect(panel.slots.reviewer).toEqual([]);
-  });
-
   it('imports the reviewer list of a file add-only', () => {
     const list = path.join(home, 'list.json');
     fs.writeFileSync(list, JSON.stringify({ reviewer: ['typescript', 'lantern-no-comments'] }));

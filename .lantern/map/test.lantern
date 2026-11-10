@@ -26,7 +26,7 @@ test/agent.test.ts . test 2819cf830585
   = src/main/agent.ts
   < src/main/provider.ts#isSessionId
 
-test/app-identity.test.ts . test 2e2b938c00ed
+test/app-identity.test.ts . test 3a1768cab8a0
   < scripts/app-manifest.mjs#appManifest
   < src/shared/app-identity.ts#userDataDir
   < src/main/main.ts
@@ -50,8 +50,15 @@ test/bundled-skills-standalone.test.ts . test cb4f3ecf7da0
 #feature skill-installer
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
 
-test/ci-workflow.test.ts . test 617b2a498cf9
+test/ci-workflow.test.ts . test 32fa993b7344
   < .github/workflows/ci.yml
+  < package.json
+
+test/workflow-hygiene.test.ts . test 6d4a7d006d82
+  < .github/workflows/ci.yml
+  < .github/workflows/codeql.yml
+  < .github/workflows/deploy-docs.yml
+  < .github/workflows/release.yml
   < package.json
 
 test/claude-bin.test.ts . test 2faabe2ffd2b
@@ -104,7 +111,7 @@ test/command-keys.test.ts . test 59b273de14b9
   = src/main/commands/index.ts
   < src/shared/commands/keymap.ts
 
-test/command-palette-items.test.ts . test 777fd6360aa5
+test/command-palette-items.test.ts . test e2adafd87b0b
 #feature command-palette
   = src/renderer/command-palette/items.ts
   < src/shared/commands/keymap.ts#defaultBindings
@@ -267,8 +274,7 @@ test/lantern-delegate-skill.test.ts . test eb1c76c67eb9
   < skills/lantern-delegate/protocol.md
   < skills/lantern-sync/SKILL.md
 
-test/deploy-docs-workflow.test.ts . test 934bedf83c2d
-  < .github/workflows/ci.yml
+test/deploy-docs-workflow.test.ts . test 9aafbcf66d29
   < .github/workflows/deploy-docs.yml
   < package.json
   < website/package.json
@@ -397,7 +403,7 @@ test/idle-tabs.test.ts . test 7dece3b876fc
 #feature serve-web
   = src/renderer/lib/idle-tabs.ts
 
-test/install-skills.test.ts . test 59ee6442716f
+test/install-skills.test.ts . test 646437f73dc3
 #feature skill-installer
   = scripts/install-skills.mjs
   = scripts/lantern-bundle.mjs
@@ -771,7 +777,7 @@ test/lantern-macro-current.test.ts . test 8d6cc37edefc
   = test/helpers/lantern-map.ts#mapOf
   = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-macro-eval.test.ts . test d90549aced6e
+test/lantern-macro-eval.test.ts . test ed2a1fdc5bdd
 #feature map-vocabulary
   = skills/lantern-setup/scripts/macro-eval.mjs
   = test/helpers/lantern-vocab-fixtures.ts
@@ -1244,7 +1250,7 @@ test/lantern-pr-declined.test.ts . test b26ab7f12071
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-describe-card.test.ts . test 29aa8efe4383
+test/lantern-pr-describe-card.test.ts . test 26937c2e0ede
 #feature pull-requests
   < src/main/lantern.ts
   = src/main/lantern-pr-parse.ts
@@ -1317,7 +1323,7 @@ test/lantern-pr-panel.test.ts . test 46c92f79264f
   = test/helpers/lantern-map.ts
   = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-pr-parity.test.ts . test effafcc835ce
+test/lantern-pr-parity.test.ts . test ca48c079e6b3
 #feature pull-requests
   = skills/lantern-setup/scripts/prs.mjs
   = src/main/lantern-pr-parse.ts
@@ -1668,7 +1674,7 @@ test/lsp-snapshot.test.ts . test d4c083b645a5
   = src/main/lsp/snapshot-root.ts
   = test/helpers/git-repo.ts
 
-test/macro-legend-view.test.ts . test 3e0a8ec0e0b3
+test/macro-legend-view.test.ts . test 4574a62d4028
 #feature macro-view
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-macro-areas-payload.ts#areasPayload
@@ -1676,7 +1682,7 @@ test/macro-legend-view.test.ts . test 3e0a8ec0e0b3
   = test/helpers/macro-uses-world.ts#usesPayload
   = test/helpers/macroview-host.ts#pick
 
-test/macro-legend.test.ts . test b29311e5300f
+test/macro-legend.test.ts . test 2971d21903fd
 #feature macro-view
   = src/renderer/lib/lanternmacrolegend.ts#legendEntries
   = src/renderer/lib/lanternmacrolegendhtml.ts#legendHtml
@@ -1967,6 +1973,10 @@ test/reason-definition.test.ts . test 550e8f81a437
   = src/shared/reason.ts
   < skills/lantern-setup/scripts/prs.mjs#REASON_MAX_CHARS
 
+test/release-workflow.test.ts . test 4e110666c136
+  < .github/workflows/release.yml
+  < scripts/mac-sign-notarize.sh
+
 test/renderer-stylesheets.test.ts . test df6d913c3bdd
   < scripts/esbuild.mjs
   < src/renderer/overlay.html
@@ -2224,7 +2234,7 @@ test/skills-modal-scroll.test.ts . test da2454d822e7
   = src/renderer/features/skills.ts
   = src/renderer/features/skills-extras.ts
 
-test/skills-modal.test.ts . test 81952ce5a765
+test/skills-modal.test.ts . test 2bf900434720
 #feature skill-installer
   = src/renderer/features/skills.ts
 
@@ -2241,14 +2251,14 @@ test/skills-unconfigured.test.ts . test a11a60f25614
   = src/main/skills.ts
   = src/renderer/features/skills.ts
 
-test/extensions-panel.test.ts . test 07bc83382cc2
+test/extensions-panel.test.ts . test 9e35e042f6ab
 #feature skill-installer
   < skills/lantern-delegate/scripts/bundled-skills.mjs
   = src/main/extensions.ts
   = src/main/skills.ts#installedNames
   = src/renderer/features/skills-state.ts#pickerSkills
 
-test/extensions-project.test.ts . test 8927fd430333
+test/extensions-project.test.ts . test 072a15ff261f
 #feature skill-installer
   = skills/lantern-delegate/scripts/extension-skills.mjs#configuredExtras
   = skills/lantern-delegate/scripts/extensions.mjs
@@ -2257,7 +2267,7 @@ test/extensions-project.test.ts . test 8927fd430333
   < src/shared/extension-slots.ts#EXTENSION_SCOPES
   = test/support/bundle-fixtures.ts
 
-test/lantern-always-on-skills.test.ts . test 46c558615ac3
+test/lantern-always-on-skills.test.ts . test 56959f2b6526
 #feature skill-installer
   < skills/lantern-delegate/scripts/bundled-skills.mjs
   < skills/lantern-delegate/scripts/extension-skills.mjs#configuredExtras
@@ -2326,6 +2336,9 @@ test/util.test.ts . test fb4753b2bece
 test/safe-markdown.test.ts . test d35a984126ce
 #feature code-insight
   = src/renderer/lib/safe-markdown.ts#safeMarkdown
+
+test/website-tags.test.ts . test af26ec0d0ee5
+  = website/src/lib/tags.ts#withoutTags
 
 test/webview-hardening.test.ts . test 59dde6ea39bb
 #feature projects-hub
@@ -2553,7 +2566,7 @@ test/integration-skills-pr-commands.test.ts . test bb3316f69c3a
   = skills/lantern-bitbucket/scripts/commands.mjs
   = skills/lantern-github/scripts/commands.mjs
 
-test/integration-skills-standalone.test.ts . test 293d911a0507
+test/integration-skills-standalone.test.ts . test 46910f381bd8
 #feature integrations
   = scripts/lantern-bundle.mjs#installBundleGuarded
   = skills/lantern-bitbucket/scripts/bitbucket.mjs

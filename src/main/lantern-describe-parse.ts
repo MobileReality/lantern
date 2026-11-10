@@ -5,12 +5,40 @@ const DESCRIBE_SECTIONS: readonly LanternPrDescriptionSection[] = ['what', 'befo
 const DESCRIBE_TEXT_MAX = 400;
 const DESCRIBE_MAX_LINES = 8;
 const DESCRIBE_LINE = /^#describe(?:[ \t]+(.*?))?[ \t]*$/;
-const COMMENT = /<!--.*?(?:-->|$)/g;
+const COMMENT_OPEN = '<!--';
+const COMMENT_CLOSERS = [
+  { token: '-->', searchFrom: 2 },
+  { token: '--!>', searchFrom: 4 },
+];
+const STRAY_CLOSE = '-->';
 const COST_MARKER = /delegate:cost/i;
 const TABLE_ROW = /^\|/;
 
+function endOfComment(text: string, open: number) {
+  let end = text.length;
+  for (const { token, searchFrom } of COMMENT_CLOSERS) {
+    const at = text.indexOf(token, open + searchFrom);
+    if (at !== -1 && at + token.length < end) end = at + token.length;
+  }
+  return end;
+}
+
+function withoutComments(text: string) {
+  let result = text;
+  for (let open = result.indexOf(COMMENT_OPEN); open !== -1; open = result.indexOf(COMMENT_OPEN)) {
+    result = result.slice(0, open) + result.slice(endOfComment(result, open));
+  }
+  return result;
+}
+
+function withoutStrayClose(text: string) {
+  let result = text;
+  while (result.includes(STRAY_CLOSE)) result = result.split(STRAY_CLOSE).join('');
+  return result;
+}
+
 function describeClean(text: string) {
-  const stripped = text.replace(COMMENT, '').replace(/-->/g, '').trim();
+  const stripped = withoutStrayClose(withoutComments(text)).trim();
   return COST_MARKER.test(stripped) || TABLE_ROW.test(stripped) ? '' : stripped;
 }
 

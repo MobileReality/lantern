@@ -6,11 +6,29 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-10
+
+### Security
+
+- Updated js-yaml, the only vulnerable package shipped in the app, and brought the dev
+  dependencies flagged by `pnpm audit` to a clean audit.
+- Fixed code-scanning alerts in the renderer, the PR description parser, the settings model and
+  the website heading helpers.
+
+### Changed
+
+- The package version now matches the release tags.
+- CI builds on Linux, macOS and Windows, with e2e suites and coverage.
+- Added a social preview image.
+
+## [0.2.1] - 2026-11-09
+
 ### Added
 
 - A CodeQL workflow and private vulnerability reporting.
 - Issue template config and title defaults.
-- A release workflow that publishes `Lantern-mac.zip` (Apple silicon, ad-hoc signed only) and
+- A release workflow that publishes `Lantern-mac.zip` (Apple silicon, signed with a Developer ID
+  certificate and notarized by Apple, so it opens without the unidentified-developer warning) and
   `Lantern-win-x64.zip` (not code-signed) to GitHub Releases.
 - CODEOWNERS, release-notes categories, this changelog, README badges and Download sections.
 
@@ -42,5 +60,7 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/MobileReality/lantern/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/MobileReality/lantern/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/MobileReality/lantern/releases/tag/v0.2.0

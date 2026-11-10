@@ -114,10 +114,14 @@ pnpm run build:win      # Windows build
 ```
 
 **Before opening a PR:** `pnpm run typecheck`, `pnpm run lint` and `pnpm test` must all be clean.
-`.github/workflows/ci.yml` runs exactly these three on every push and pull request, on a plain Linux
-runner (Node 22, `pnpm install --frozen-lockfile`). It never launches Electron, runs the Playwright
-e2e or signs anything; `test/ci-workflow.test.ts` fails when the workflow drops any of the three
-commands or its pnpm version differs from `packageManager`.
+`.github/workflows/ci.yml` runs these three on every push and pull request on a plain Linux runner
+(Node 22, `pnpm install --frozen-lockfile`), builds on Linux, macOS and Windows, and has two more jobs:
+`e2e` runs the Playwright suites for integrations, the tray, pull request host state and skills under
+`xvfb-run` with the harness windows shown (`LANTERN_GRAPH_VISIBLE=1`, `LANTERN_HARNESS_VISIBLE=1`); the graph
+suite is not run in CI because WebGL is unavailable there. `coverage` runs `pnpm coverage`, writes the totals to
+the job summary and uploads `coverage/` as an artifact. CI publishes nothing and holds no secret: its
+macOS build is only the ad-hoc `dist:share` smoke test. `test/ci-workflow.test.ts` pins where Electron
+runs and artifacts may be uploaded, and `test/release-workflow.test.ts` pins the signing job.
 
 ## Build pipeline
 
@@ -125,7 +129,10 @@ commands or its pnpm version differs from `packageManager`.
 **@electron/fuses** (disables `RunAsNode`, CLI inspect, etc.) → **codesign** → `dist/`.
 esbuild does not type-check, so `typecheck` is a separate, required step.
 
-### Producing a release build (`dist:share`)
+### Producing a build to share (`dist:share`)
+
+This is the local, unnotarized build. The released macOS app is signed and notarized by the release
+workflow instead (see [Release signing setup](#release-signing-setup)).
 
 Versions: Node 22 (the version CI runs) and pnpm `10.28.0`, the `packageManager` pin in
 `package.json`; enable it with `corepack enable`. Run on an Apple-silicon Mac: the build targets
@@ -152,14 +159,72 @@ pnpm run dist:share
 The output is `dist/Lantern-mac.zip` (`dist/` is gitignored). `pnpm run dist` is the local variant:
 the same build and fuses, signed with the `Lantern Local` certificate from your own keychain, and no zip.
 
-The receiver has to get past Gatekeeper, because the app is neither notarized nor signed with a
-Developer ID and a downloaded zip is quarantined. After unzipping, either Control-click
+Whoever receives this zip has to get past Gatekeeper, because the app is neither notarized nor signed
+with a Developer ID and a downloaded zip is quarantined. After unzipping, either Control-click
 `Lantern.app` and choose Open (then Open again in the dialog), or allow it under System Settings →
 Privacy & Security → Open Anyway, or clear the quarantine flag once:
 
 ```bash
 xattr -dr com.apple.quarantine /path/to/Lantern.app
 ```
+
+### Release signing setup
+
+For maintainers. The release workflow (`.github/workflows/release.yml`, job `build-mac`) signs the app
+with the Developer ID Application certificate of the company account and notarizes it. It runs only from
+a `v*` tag, in the protected `release` environment; no other job and no other workflow can read these
+secrets. The signing identity, `Developer ID Application: Mobile Reality sp. z o.o. (D8226MY2E7)`, is
+public and sits in the workflow, not in a secret.
+
+1. **Create the environment.** Settings → Environments → New environment, named `release`. Turn on
+   Required reviewers and add the maintainers. Under Deployment branches and tags choose Selected
+   branches and tags, and add one rule of type Tag with the pattern `v*` (no branch rule).
+2. **Add five environment secrets** to it. Never paste real values into an issue, a PR or this file.
+
+   | Secret | What it is |
+   |---|---|
+   | `MACOS_CERTIFICATE_P12_BASE64` | The Developer ID Application certificate with its private key, exported from Keychain Access as a `.p12`, base64-encoded |
+   | `MACOS_CERTIFICATE_PASSWORD` | The password you set when exporting that `.p12` |
+   | `APPLE_API_KEY_P8_BASE64` | The App Store Connect API key (`AuthKey_<id>.p8`), base64-encoded |
+   | `APPLE_API_KEY_ID` | The key's ID, the `<id>` in the file name |
+   | `APPLE_API_ISSUER_ID` | The issuer ID shown above the key list in App Store Connect |
+
+3. **Encode the two files** and paste the clipboard into the secret:
+
+   ```bash
+   base64 -i certificate.p12 | pbcopy
+   base64 -i AuthKey_XXXXXXXXXX.p8 | pbcopy
+   ```
+
+4. **Protect the tags.** Settings → Rules → Rulesets → New tag ruleset, target `v*`, enforcement
+   Active, with Restrict creations, Restrict updates, Restrict deletions and Block force pushes, and
+   only maintainers on the bypass list. A `v*` tag is what starts a signed release.
+5. **Release.** Push a `v*` tag, approve the `release` deployment, and read the `build-mac` log. Each
+   run signs from scratch in a temporary keychain that is deleted at the end of the job. The first tag
+   after any change to the signing scripts or entitlements is the real test of them; this workflow has
+   no dry run.
+
+**Signing locally** needs the same certificate in your login keychain and a notarytool profile, stored
+once:
+
+```bash
+xcrun notarytool store-credentials lantern-notary --key AuthKey_XXXXXXXXXX.p8 --key-id XXXXXXXXXX --issuer <issuer-id>
+
+pnpm run build && pnpm run fuses
+export MACOS_SIGNING_IDENTITY="Developer ID Application: Mobile Reality sp. z o.o. (D8226MY2E7)"
+bash scripts/mac-sign-notarize.sh all --keychain-profile lantern-notary
+pnpm run pack
+```
+
+`all` is `sign`, `notarize` and `verify`; each can be run alone (`bash scripts/mac-sign-notarize.sh --help`).
+`--identity -` signs ad hoc to check that the signing walk covers every binary; that app will not launch,
+because library validation rejects ad-hoc frameworks, so use it only as a dry run of `sign`.
+
+**Entitlements** live in `build/entitlements.mac.plist` (the app) and `build/entitlements.mac.inherit.plist`
+(the helper apps and the bundled Node). Add nothing to them without a reason you can state: `allow-jit`
+is what lets V8 run under the hardened runtime; the app alone also holds `audio-input` and `camera` (voice
+input and the editor's webviews) and `automation.apple-events` (jumping to a terminal tab through
+`osascript`). Library validation stays on, since every binary in the bundle carries the same Team ID.
 
 ## Code conventions
 

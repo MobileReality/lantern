@@ -5,6 +5,7 @@
   "pages.ts": "Declares which repository Markdown files are pages of the docs site, with their routes, labels and the site title",
   "sheets.ts": "Numbers the docs pages and finds the previous and next page",
   "sources.ts": "Bundles the page Markdown and the logo images from the repository at build time",
+  "tags.ts": "Removes the HTML tags from a piece of heading markup by scanning for angle brackets, keeping a lone less-than sign and an empty pair of brackets",
   "useHash.ts": "Gives a component the current URL hash and re-renders it when the hash changes"
  }
 }

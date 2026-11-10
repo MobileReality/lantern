@@ -1,7 +1,7 @@
 lantern 1
 # scripts
 
-scripts/esbuild.mjs . script 5bc4ce6f17ef
+scripts/esbuild.mjs . script 1f3473294e16
   < scripts/app-manifest.mjs#appManifest
   < scripts/node-bundle.mjs#nodeBundle
   < src/main/main.ts
@@ -74,6 +74,10 @@ scripts/lsp-runtime.mjs . script b3acf6f8f38b
   < pnpm-workspace.yaml
   = ext:pnpm
 
+scripts/mac-ci-keychain.sh . script 634daf525661
+
+scripts/mac-sign-notarize.sh . script 8145417f6eb0
+
 scripts/make-icon.js . script dc8e7152c288
 
 scripts/material-file-icons.mjs . script ba05c878ebd7
@@ -99,7 +103,7 @@ scripts/pr-review-demo.mjs . script 1728a77e2872
   > scripts/material-file-icons.mjs
   > test/e2e/app/main.cjs
 
-scripts/app-manifest.mjs . script ffea1a93649b
+scripts/app-manifest.mjs . script c9f584e04125
 
 scripts/aliases.cjs . util dda184764e9f
   < tsconfig.json

@@ -1,4 +1,5 @@
 import GithubSlugger from 'github-slugger';
+import { withoutTags } from './tags';
 
 export type Heading = { level: number; text: string; id: string };
 
@@ -9,9 +10,7 @@ const FIRST_TOC_LEVEL = 2;
 const LAST_TOC_LEVEL = 3;
 
 function plainText(markup: string): string {
-  return markup
-    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/<[^>]+>/g, '')
+  return withoutTags(markup.replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1'))
     .replace(/[`*_]/g, '')
     .trim();
 }

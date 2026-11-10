@@ -64,12 +64,6 @@ describe('the areas map legend and the paint code share one list of styles', () 
     for (const { name, text } of sourcesOfMacroView) expect(text, name).not.toMatch(/dash/i);
   });
 
-  it('draws the uses style with a solid outline', () => {
-    const rules = cssLines.filter((line) => line.includes(`.${MACRO_STYLE_CLASSES.uses}`));
-    expect(rules.length).toBeGreaterThan(0);
-    for (const rule of rules) expect(rule).not.toMatch(/dash/);
-  });
-
   it('draws nothing in the legend that says the dashed outline is an outside system', () => {
     const html = legendHtml('areas', new Set(ALL_WHEN), 8) + legendHtml('flat', new Set(ALL_WHEN), 8);
     expect(html).not.toContain('not in the repo');

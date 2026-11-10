@@ -45,7 +45,8 @@ cpSync('src/notify-hooks', `${OUT}/notify-hooks`, { recursive: true });
 cpSync('src/cli', `${OUT}/cli`, { recursive: true });
 chmodSync(`${OUT}/cli/lantern`, 0o755);
 
-const pkg = appManifest(createRequire(import.meta.url)('electron/package.json').version);
+const require = createRequire(import.meta.url);
+const pkg = appManifest(require('electron/package.json').version, require('../package.json').version);
 writeFileSync(`${OUT}/package.json`, `${JSON.stringify(pkg, null, 2)}\n`);
 writeLicences({ out: `${OUT}/licenses` });
 

@@ -49,9 +49,11 @@ Packages are attached to each release on the
 Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
 build Lantern from source ([installation](docs/installation.md#install-and-run-from-source)).
 
-The macOS app is signed ad hoc only, so Gatekeeper quarantines a downloaded zip; the steps to open
-it are in [CONTRIBUTING.md](CONTRIBUTING.md#producing-a-release-build-distshare). The Windows build
-is not code-signed, so SmartScreen may warn on first launch.
+The macOS app of a release built by the current workflow is signed with a Developer ID certificate
+and notarized by Apple, so macOS only asks once to confirm opening it. Earlier releases are signed
+ad hoc and need the steps in
+[CONTRIBUTING.md](CONTRIBUTING.md#producing-a-build-to-share-distshare). The Windows build is not
+code-signed, so SmartScreen may warn on first launch.
 
 ## Documentation
 
@@ -74,7 +76,9 @@ pnpm run lint        # biome lint --diagnostic-level=error
 pnpm test
 ```
 
-CI never launches Electron, runs the Playwright e2e or signs anything. The stack, the project
+CI runs the unit tests, builds on Linux, macOS and Windows, runs the Playwright e2e for integrations,
+the tray, pull request host state and skills (the graph suite is not run in CI), and publishes a coverage
+report as a build artifact. It signs nothing. The stack, the project
 layout, the code and testing conventions and the build pipeline are in
 [CONTRIBUTING.md](CONTRIBUTING.md); a map of the source is in [docs/architecture.md](docs/architecture.md).
 
