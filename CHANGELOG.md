@@ -10,10 +10,11 @@ All notable changes to Lantern are listed here. The format follows
 
 ### Added
 
-- Automatic updates on macOS (Apple silicon): Lantern checks GitHub Releases at start and every
+- Automatic updates on macOS (Apple silicon): Lantern checks for a new release at start and every
   few hours, downloads in the background and installs only when no terminal or run started from
-  Lantern would be ended. An update card, a "Check for Updates…" menu item and a setting turn it
-  on or off. On Windows a notice links to the release page.
+  Lantern would be ended. An update card shows when one is ready, "Check for Updates…" in the
+  menu checks by hand, and a setting turns the checks off. On Windows a notice links to the
+  release page.
 
 ### Changed
 
