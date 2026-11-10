@@ -1,8 +1,8 @@
-export function appManifest(electronVersion) {
+export function appManifest(electronVersion, appVersion) {
   return {
     name: 'lantern',
     productName: 'Lantern',
-    version: '1.0.0',
+    version: appVersion,
     main: 'main.js',
     devDependencies: { electron: electronVersion },
   };
