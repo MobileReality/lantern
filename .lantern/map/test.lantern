@@ -2350,10 +2350,9 @@ test/tray-model.test.ts . test 27cb07f5afd3
 #feature session-monitoring
   = src/shared/tray-model.ts
 
-test/update-notice.test.ts . test 64ceb9f3ffb3
+test/update-notice.test.ts . test b13807b50d50
 #feature app-updates
   = src/renderer/features/update-notice.ts
-  = src/renderer/lib/idle-tabs.ts
   < src/renderer/workspace.html
 
 test/updater-feed.test.ts . test c9db44290e43
@@ -2365,12 +2364,12 @@ test/updater-guard.test.ts . test 034892cd9043
   = src/main/updater/guard.ts
   = src/main/updater/process-activity.ts
 
-test/updater-service.test.ts . test cdbf79c98b9b
+test/updater-service.test.ts . test 1d5fbcf971cd
 #feature app-updates
   = src/main/updater/service.ts
   < test/helpers/updater-world.ts#updaterWorld
 
-test/updater-surface.test.ts . test db01b0c9b0e6
+test/updater-surface.test.ts . test 82d5f8107907
 #feature app-updates
   = src/main/app-menu.ts
   = src/main/updater/controller.ts
