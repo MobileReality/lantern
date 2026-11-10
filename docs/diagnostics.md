@@ -28,4 +28,4 @@ or the last 30 entries: time, kind, message, exit code and stack. Home folders b
   until you press Submit on GitHub, and it never opens the page without your click.
 - A long report does not fit in a link. Lantern then puts a short summary in the issue and copies the full report
   to your clipboard: paste it into the issue before you submit.
-- After a crash, Lantern shows **Lantern closed unexpectedly last time** once, with **Report on GitHub** and **Dismiss**.
+- After a crash, Lantern shows a notice once, with **Report on GitHub** and **Dismiss**: **Lantern closed unexpectedly last time** when the last run never quit normally, or **Lantern recorded a crash last time** when a window or helper process crashed but Lantern itself quit normally. A Windows shutdown or restart does not give Lantern a chance to log a normal quit, so it can look like an unexpected close.
