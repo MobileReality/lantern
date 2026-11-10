@@ -1,0 +1,35 @@
+lantern-pr 1
+# 30
+#title Publish the Apple silicon build as Lantern-mac-arm64.zip for the updater
+#url https://github.com/MobileReality/lantern/pull/30
+#branch feat/mac-arm64-release-asset
+#base main
+#opened 2026-11-10
+#head 4ebb126a4a308f49801f78634048d69e7d7ffbf3
+#describe what Every release gets Lantern-mac-arm64.zip, a byte-identical copy of Lantern-mac.zip, so the updater can find the Apple silicon build.
+#describe before Releases had Lantern-mac.zip and Lantern-win-x64.zip; darwin-arm64 answered 404.
+#describe after Releases have three assets; Lantern-mac.zip stays the download link.
+#describe verified typecheck, lint and pnpm test are green; the release workflow was not run.
+~ .github/workflows/release.yml
+~ README.md
+~ docs/installation.md
+~ test/release-workflow.test.ts
+#order .github/workflows/release.yml
+#order test/release-workflow.test.ts
+#order README.md
+#order docs/installation.md
+#reason .github/workflows/release.yml The updater files a darwin zip as arm64 only when the name has -arm64, so Apple silicon got a 404.
+#reason README.md Tells readers the Apple silicon build is also published as Lantern-mac-arm64.zip for the updater.
+#reason docs/installation.md Keeps the release description true now that the publish job adds a third file.
+#reason test/release-workflow.test.ts Guards that the copy exists, runs before the upload, and fails when the source is missing.
+#story Apple silicon Macs find updates
+#step actor A maintainer pushes a v* tag
+#file .github/workflows/release.yml
+#step action The release also publishes the Mac zip as Lantern-mac-arm64.zip
+#file .github/workflows/release.yml
+#file test/release-workflow.test.ts
+#step subject The release page
+#file README.md
+#file docs/installation.md
+#below interaction Apple silicon users are offered the update
+#below consequence The update check answered not found => The update check finds the build
