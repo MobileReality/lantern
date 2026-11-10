@@ -12,6 +12,7 @@ app itself.
 - [Installation and command line](installation.md): install and run the app, and use Lantern from any terminal or harness.
 - [Getting started](getting-started.md): a walk from the first launch to a reviewed change, and how to drive Lantern by prompting your AI chat (for example "delegate this with lantern-delegate").
 - [Architecture](architecture.md): how the app is put together and where each part lives.
+- [Updates](updates.md): how Lantern finds and installs a new release, when it will never restart on its own, what the checks send and how to turn them off.
 - [Troubleshooting](../TROUBLESHOOTING.md): known problems and their fixes.
 - [Diagnostics](diagnostics.md): where Lantern keeps its own errors and crashes, and how to report one without sending anything by itself.
 - [Contributing](../CONTRIBUTING.md): how to work on the app, test it and build it.

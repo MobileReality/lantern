@@ -45,6 +45,8 @@ function mockBridge(settings: BootSettings) {
     info: resolved({ port: 9888, token: 'tkn', ready: true, available: true }),
     devInstance: resolved(null),
     diagnosticsNotice: resolved(null),
+    updateNotice: resolved(null),
+    onUpdateNotice: vi.fn(),
     reportRendererError: resolved({ ok: true }),
     projects: resolved(projects),
     addFolder: resolved({ groups: [{ name: 'alpha', path: '/p/alpha', sessions: [] }], selectedPath: null }),

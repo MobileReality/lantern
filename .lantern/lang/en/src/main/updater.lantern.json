@@ -1,0 +1,20 @@
+{
+  "text": {
+    "controller.ts": "Runs the Check for Updates item and shows its result, and answers the window's requests for the update notice and its buttons, accepting only the four known actions.",
+    "controller.ts gotcha": "Only a release page of the fixed repository is ever opened from a result dialog.",
+    "dialogs.ts": "Words the result of a manual update check and the confirmation that names what a restart would end.",
+    "feed.ts": "Reads the update service's answer for a Mac (204 up to date, 200 an update, 404 no download for this build) and GitHub's latest release for other platforms, with a timeout and no token.",
+    "feed.ts gotcha": "The release page link is built from the tag on the fixed repository, never taken from the answer.",
+    "feed.ts = ext:electron-update-service": "asks for the newest build for this platform and version",
+    "feed.ts = ext:github-api": "asks for the latest release without a token",
+    "guard.ts": "Decides whether an update may install now: false while a run started by Lantern, an editor terminal or an editor process is alive, or when that cannot be read; sessions in other terminals do not count.",
+    "native.ts": "Adapts Electron's Squirrel updater to a small interface: set the feed, check, install, and downloaded, none-available and error events.",
+    "native.ts = ext:electron-update-service": "has Squirrel read the JSON feed and download the build",
+    "process-activity.ts": "Counts the terminals and the running commands, agents, tests and servers below Lantern from the process list, so a restart's cost is known.",
+    "process-activity.ts gotcha": "Its own process listing shows up in the list and is skipped.",
+    "process-activity.ts = ext:macos-process-tools": "reads the process table with ps",
+    "service.ts": "Checks on start and every four hours, downloads on a Mac and installs only when the guard allows and the user has not postponed it, or on a confirmed Restart now, and otherwise publishes a release notice.",
+    "service.ts gotcha": "A failing check is logged as a warning and never shown; with the setting off nothing is requested at all.",
+    "version.ts": "Compares semantic versions, pre-releases included, and tells whether one is newer."
+  }
+}

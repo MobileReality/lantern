@@ -3,7 +3,7 @@ lantern 1
 
 src/renderer/svg.d.ts . schema 0f5231031c58
 
-src/renderer/global.d.ts . schema 81b2460876d4
+src/renderer/global.d.ts . schema 4544cc508980
   < src/main/cli.ts#CliStatus
   < src/main/dev-instance.ts#DevInstance
   < src/main/extensions.ts#ExtensionsPanel
@@ -108,11 +108,12 @@ src/renderer/tray-popover.ts . entry 1e4549e11faa
   = src/preload/tray-popover.ts
   > src/renderer/lib/tray-popover-view.ts#mountTrayPopover
   < src/renderer/lib/util.ts#byId
+  < src/shared/updates.ts#UpdateNotice
 
-src/renderer/workspace.css . style 5637e9e66be4
+src/renderer/workspace.css . style 5653fa566ef9
   < src/renderer/theme.css
 
-src/renderer/workspace.html . entry 76df6ea8d527
+src/renderer/workspace.html . entry 15901cfda4d6
   < src/renderer/command-palette.css
   < src/renderer/diagnostics.css
   < src/renderer/floating.css
@@ -132,9 +133,10 @@ src/renderer/workspace.html . entry 76df6ea8d527
   > src/renderer/workspace.ts
   < src/renderer/integrations.css
 
-src/renderer/workspace.ts . entry 9bc9710989fe
+src/renderer/workspace.ts . entry 2021f0286295
   = ext:vscode-serve-web
   > src/renderer/features/diagnostics-notice.ts
+  > src/renderer/features/update-notice.ts
   > src/renderer/features/diagnostics.ts
   = src/renderer/lib/diagnostics-capture.ts#installRendererCapture
   = src/preload/workspace.ts

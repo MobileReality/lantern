@@ -18,6 +18,7 @@
   "os-keychain": "the operating system's secure store that encrypts saved sign-ins",
   "jira-api": "Jira Cloud REST API: the account behind a token and its tickets",
   "tmux": "Terminal multiplexer whose panes are selected to show a session",
-  "kitty": "Terminal app whose windows are focused by remote control"
+  "kitty": "Terminal app whose windows are focused by remote control",
+  "electron-update-service": "public update service for open source Electron apps, update.electronjs.org"
  }
 }

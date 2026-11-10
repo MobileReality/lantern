@@ -7,7 +7,7 @@ src/preload/overlay.ts . gateway ca0ee7fc362a
 src/preload/tray-popover.ts . gateway 2fd4f639f5a6
 #feature session-monitoring
 
-src/preload/workspace.ts . gateway b145184f6652
+src/preload/workspace.ts . gateway 01a2e0bda2b6
   < src/main/provider.ts#Provider
   < src/shared/auth.ts#AUTH_STATUS_CHANNEL
   < src/shared/code-highlighting.ts
@@ -16,3 +16,4 @@ src/preload/workspace.ts . gateway b145184f6652
   < src/shared/memory.ts#MEMORY_WATCH_CHANNEL
   < src/shared/pr-explain.ts#PR_EXPLAIN_START
   < src/shared/settings-registry.ts#SettingKey
+  < src/shared/updates.ts#UPDATE_NOTICE_CHANNEL

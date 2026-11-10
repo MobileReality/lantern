@@ -1125,3 +1125,21 @@ button.sk-scope:hover { filter: brightness(1.25); }
 @media (prefers-reduced-motion: reduce) {
   .sk-chev { transition: none; }
 }
+
+.update-notice {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 12;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+.update-notice.hidden { display: none; }
+.update-notice-title { display: block; font-size: var(--fs-md); }
+.update-notice-text { margin: 6px 0 10px; color: var(--muted); font-size: var(--fs-base); line-height: 1.45; }
+.update-notice-actions { display: flex; gap: 8px; }

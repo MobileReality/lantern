@@ -91,6 +91,14 @@ import { devInstance, hslToRgb, recordDebugHandle, recordInstance, seedUserData,
 import { currentDiagnostics, reportDiagnostic, startDiagnostics } from './diagnostics';
 import { guardIpc } from './diagnostics/ipc-guard';
 import { registerDiagnosticsIpc } from './diagnostics/ipc';
+import { createUpdater } from './updater/service';
+import { createUpdateController, registerUpdateIpc } from './updater/controller';
+import { squirrelUpdater, type AutoUpdaterLike } from './updater/native';
+import { readProcessActivity } from './updater/process-activity';
+import { restartDialog } from './updater/dialogs';
+import { runCommand } from './memory-collect';
+import { MEMORY_SUPPORTED_PLATFORMS } from './memory-service';
+import { UPDATE_NOTICE_CHANNEL } from '../shared/updates';
 
 // Fuses disable run-as-node in the packaged app, but `npm start` (dev) still uses
 // the system electron, which this machine can boot as plain Node — guard for that.
@@ -227,6 +235,7 @@ async function init() {
   settings.load();
   settingsStore.load();
   settingsStore.watch();
+  updater.start();
   onMigrationProblem(({ projectPath, message }) => alertUser(`Lantern could not move ${path.basename(projectPath)}'s local data`, message));
   refreshMenu();
   setupWebviewPermissions();
@@ -441,7 +450,7 @@ function pushState() {
 }
 
 function refreshMenu() {
-  Menu.setApplicationMenu(Menu.buildFromTemplate(appMenuTemplate(process.platform, app.name, runCommandInWorkspace, commandKeys.keymap().byCommand)));
+  Menu.setApplicationMenu(Menu.buildFromTemplate(appMenuTemplate(process.platform, app.name, runCommandInWorkspace, commandKeys.keymap().byCommand, () => void checkForUpdates())));
 }
 
 function refreshTray() {
@@ -685,6 +694,54 @@ registerAuthIpc({
     for (const contents of trusted) if (!contents.isDestroyed()) contents.send(channel, payload);
   },
 });
+
+const updater = createUpdater({
+  packaged: app.isPackaged && !DEV_PROFILE,
+  platform: process.platform,
+  arch: process.arch,
+  version: app.getVersion(),
+  enabled: () => settingsStore.get('updates.checkAutomatically'),
+  fetch: (url, { headers, signal }) => electron.net.fetch(url, { headers, signal }),
+  native: process.platform === 'darwin' ? squirrelUpdater(electron.autoUpdater as unknown as AutoUpdaterLike) : null,
+  activity: async () => ({
+    agentRunning: agent.isRunning() || prExplain.running() > 0,
+    processes: await readProcessActivity({ platform: process.platform, supportedPlatforms: MEMORY_SUPPORTED_PLATFORMS, run: runCommand, rootPid: process.pid }),
+  }),
+  log: (severity, message, detail) => reportDiagnostic({ source: 'app', severity, message, detail }),
+  publish: (notice) => {
+    for (const contents of trusted) if (!contents.isDestroyed()) contents.send(UPDATE_NOTICE_CHANNEL, notice);
+  },
+  confirmRestart: async (live) => {
+    const confirm = restartDialog(live);
+    const options: Electron.MessageBoxOptions = { type: 'warning', message: confirm.message, detail: confirm.detail, buttons: [confirm.confirm, confirm.cancel], defaultId: 1, cancelId: 1 };
+    const focused = BrowserWindow.getFocusedWindow();
+    const { response } = await (focused ? dialog.showMessageBox(focused, options) : dialog.showMessageBox(options));
+    return response === 0;
+  },
+  openRelease: (url) => void shell.openExternal(url),
+  timers: {
+    after: (ms, run) => {
+      const timer = setTimeout(run, ms);
+      return () => clearTimeout(timer);
+    },
+    every: (ms, run) => {
+      const timer = setInterval(run, ms);
+      return () => clearInterval(timer);
+    },
+  },
+});
+const checkForUpdates = createUpdateController({
+  updater,
+  version: app.getVersion(),
+  showResult: async (result) => {
+    const options: Electron.MessageBoxOptions = { type: 'info', message: result.message, detail: result.detail, buttons: result.buttons.map((button) => button.label), defaultId: 0, cancelId: result.buttons.length - 1 };
+    const focused = BrowserWindow.getFocusedWindow();
+    const { response } = await (focused ? dialog.showMessageBox(focused, options) : dialog.showMessageBox(options));
+    return result.buttons[response]?.action ?? 'close';
+  },
+  openExternal: (url) => shell.openExternal(url),
+});
+registerUpdateIpc({ handle: (channel, listener) => ipcMain.handle(channel, listener), fromWorkspace, updater });
 
 let runOwner: Electron.WebContents | null = null;
 
@@ -965,6 +1022,7 @@ ipcMain.handle(
 settingsStore.onDidChange((snapshot, changed) => {
   for (const wc of trusted) if (!wc.isDestroyed()) wc.send('settings:changed', { snapshot, changed } satisfies SettingsChange);
   if (affectsSetting('notifications', changed)) refreshTray();
+  if (affectsSetting('updates', changed)) updater.settingsChanged();
   if (affectsSetting('keymap', changed)) {
     commandKeys.refresh();
     refreshMenu();
@@ -981,6 +1039,7 @@ app.on('before-quit', (e) => {
   currentDiagnostics()?.markQuit();
   if (server) server.close();
   settingsStore.unwatch();
+  updater.stop();
   prExplain.cancelAll();
   e.preventDefault();
   Promise.allSettled([serveweb.shutdown(), semanticService.dispose(), credentialServer.close()]).finally(() => app.quit());

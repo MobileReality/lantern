@@ -1,0 +1,48 @@
+lantern 1
+# src/main/updater
+
+src/main/updater/controller.ts . handler 5552f35936fd
+#feature app-updates
+  < src/main/updater/dialogs.ts#resultDialog
+  < src/main/updater/feed.ts#isReleasePageUrl
+  = src/main/updater/service.ts#Updater
+  < src/shared/updates.ts#parseUpdateAction
+
+src/main/updater/dialogs.ts . pure 0b8341cca2e5
+#feature app-updates
+  < src/main/updater/feed.ts#RELEASES_URL
+  < src/main/updater/guard.ts#LiveParts
+  < src/main/updater/service.ts#CheckOutcome
+  < src/shared/lang/messages.ts#msg
+
+src/main/updater/feed.ts . gateway c94a2fbe3c61
+#feature app-updates
+  < src/main/updater/version.ts#isNewerVersion
+  = ext:electron-update-service
+  = ext:github-api
+
+src/main/updater/guard.ts . pure 2110f685c5af
+#feature app-updates
+
+src/main/updater/native.ts . gateway 4c9b40c58772
+#feature app-updates
+  = ext:electron-update-service
+
+src/main/updater/process-activity.ts . service a7d95c85b333
+#feature app-updates
+  < src/main/memory-collect.ts#readProcessRows
+  < src/main/memory-collect.ts#walkTree
+  < src/main/updater/guard.ts#ProcessActivity
+  = ext:macos-process-tools
+
+src/main/updater/service.ts . service 81f08eeb646d
+#feature app-updates
+  < src/main/updater/feed.ts#readLatestRelease
+  < src/main/updater/feed.ts#readMacFeed
+  < src/main/updater/guard.ts#canInstallNow
+  < src/main/updater/native.ts#NativeUpdater
+  < src/main/updater/version.ts#displayVersion
+  < src/shared/updates.ts#UpdateNotice
+
+src/main/updater/version.ts . pure 3244fe4d1482
+#feature app-updates

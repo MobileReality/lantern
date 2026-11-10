@@ -33,10 +33,11 @@ src/main/agent.ts . ai 1d87dd0a869d
   = src/main/lantern-plan-fix.ts#planFixPrompt
   < src/shared/lantern-plan-messages.ts#say
 
-src/main/app-menu.ts . pure 01e3b2c293c6
+src/main/app-menu.ts . pure df6f529fc2a3
 #feature commands-keymap
   < src/shared/commands/index.ts#COMMANDS
   < src/shared/commands/keymap.ts#accelerator
+  < src/shared/lang/messages.ts#msg
 
 src/main/atomic-write.ts . util 37ce00d629df
 
@@ -459,7 +460,7 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry f061103b64c3
+src/main/main.ts . entry 02557d675b5c
   = src/main/diagnostics/index.ts#startDiagnostics
   = src/main/diagnostics/ipc-guard.ts#guardIpc
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
@@ -558,6 +559,13 @@ src/main/main.ts . entry f061103b64c3
   = src/main/commands/index.ts#createCommandKeys
   < src/shared/commands/index.ts#CommandId
   < src/shared/platform.ts#platformName
+  = src/main/updater/service.ts#createUpdater
+  = src/main/updater/controller.ts#createUpdateController
+  = src/main/updater/controller.ts#registerUpdateIpc
+  = src/main/updater/native.ts#squirrelUpdater
+  = src/main/updater/process-activity.ts#readProcessActivity
+  = src/main/updater/dialogs.ts#restartDialog
+  < src/shared/updates.ts#UPDATE_NOTICE_CHANNEL
 
 src/main/memory-attribute.ts . pure a21577f26876
 #feature process-memory

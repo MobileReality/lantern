@@ -33,3 +33,4 @@ project-workspace
 keep-lantern-healthy
   process-memory
   app-diagnostics
+  app-updates

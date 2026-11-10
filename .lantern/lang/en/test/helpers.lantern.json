@@ -1,6 +1,7 @@
 {
  "text": {
   "areas-hint-project.ts": "writes a throwaway project on disk with a chosen number of records and features, and optionally an areas file",
+  "updater-world.ts": "builds the updater with a stub network, a stub native updater, manual timers and a chosen activity, and records its requests, logs and published notices",
   "auth-ipc-world.ts": "registers the account channels on a fake IPC with one trusted window, so a test can call each channel and read every reply and push",
   "auth-window.ts": "installs a window.ccmws made of the real account handlers over a fake provider server, so renderer tests run against true replies and record the calls",
   "auth-world.ts": "builds an auth service on a temp folder with a fake clock, an AES fake cipher that can lock or fail, fake provider drivers that burn used refresh tokens, and the detected host, env-file names and environment a project sees",

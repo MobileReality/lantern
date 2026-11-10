@@ -5,6 +5,7 @@ claude-code-extension
 codex-cli
 codex-hooks-config
 codex-sessions
+electron-update-service
 git
 github-api
 jira-api

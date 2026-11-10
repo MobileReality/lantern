@@ -27,6 +27,8 @@ function mockBridge(info: { ready: boolean; available?: boolean }) {
     info: resolved({ port: 9888, token: 'tkn', ready: info.ready, available: info.available ?? true }),
     devInstance: resolved(null),
     diagnosticsNotice: resolved(null),
+    updateNotice: resolved(null),
+    onUpdateNotice: vi.fn(),
     reportRendererError: resolved({ ok: true }),
     projects: resolved([{ name: 'alpha', path: '/p/alpha', sessions: [] }]),
     settingsGet: resolved(full),
