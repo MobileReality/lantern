@@ -1,7 +1,7 @@
 lantern 1
 # scripts
 
-scripts/esbuild.mjs . script 1f3473294e16
+scripts/esbuild.mjs . script 913468a9e4b4
   < scripts/app-manifest.mjs#appManifest
   < scripts/node-bundle.mjs#nodeBundle
   < src/main/main.ts

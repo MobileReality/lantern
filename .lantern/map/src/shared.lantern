@@ -14,6 +14,9 @@ src/shared/config.ts . config 00a07233bbf7
 
 src/shared/control-characters.ts . pure a52a19db2fb3
 
+src/shared/diagnostics.ts . schema dd3ae2e61543
+#feature app-diagnostics
+
 src/shared/extension-problem.ts . pure 190f247188f9
 #feature skill-installer
   < src/shared/extension-slots.ts#extraProblem

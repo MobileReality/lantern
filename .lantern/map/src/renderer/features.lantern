@@ -19,6 +19,18 @@ src/renderer/features/cli-panel.ts . component 2a1ac195297b
   < src/renderer/lib/util.ts#el
   < src/shared/shell-quote.ts#shellQuote
 
+src/renderer/features/diagnostics-notice.ts . component 4ddff01216d8
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#CRASH_NOTICE_TITLE
+  < src/renderer/lib/diagnosticsview.ts#GITHUB_OPENED
+  < src/renderer/lib/util.ts#byId
+
+src/renderer/features/diagnostics.ts . component df4cf055e2bb
+#feature app-diagnostics
+  = src/preload/workspace.ts
+  = src/renderer/lib/diagnosticsview.ts#createDiagnosticsView
+  < src/renderer/lib/util.ts#byId
+
 src/renderer/features/editor-tab.ts . service 7356a388d6b0
 #feature serve-web
   < src/renderer/state.ts
@@ -73,8 +85,9 @@ src/renderer/features/lantern.ts . component 9afb04f01169
   > src/renderer/lantern-status/index.ts#renderStats
   < src/renderer/lib/opened-projects.ts#openedProjects
 
-src/renderer/features/load-screen.ts . component 9b1c0f18420e
+src/renderer/features/load-screen.ts . component ed4222a6ecb9
 #feature serve-web
+  > src/renderer/commands/index.ts#runCommand
   = src/renderer/lib/editorload.ts
   < src/renderer/lib/util.ts#el
 

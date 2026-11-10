@@ -11,6 +11,8 @@
   "code-preview.ts": "Shares file-preview line and byte limits across the application",
   "config.ts": "Defines the dev-profile flag, the profile's local port (any free one, while the installed app keeps a fixed port) and endpoint, the notification kill switch and the Claude settings path",
   "config.ts gotcha": "Env is read once at load; LANTERN_NOTIFICATIONS unset is silent only in dev, whose port 0 is any free port.",
+  "diagnostics.ts": "Defines the Diagnostics log entry (time, run, source, severity, message, stack, exit code, platform and version), the channel names, the labels and limits, and checks what a window may send before main accepts it",
+  "diagnostics.ts gotcha": "A window can only name a kind and give text: the source of its entries is fixed in main and its report is clipped.",
   "control-characters.ts": "Tells whether a text holds a control character (a code up to 31 or 127) and strips them, so one line checks need no regular expression.",
   "lantern-main-links.ts":"Holds the main-link rule, the fewest pairs carrying 80% of the relation lines up to twice the node count, that both the calm feature view and the areas view use.",
   "lantern-names.ts": "Turns feature, area, foundation, platform and outside system ids into the readable names the Macro view shows.",

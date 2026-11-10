@@ -28,6 +28,8 @@ project-workspace
   serve-web
   session-monitoring
   notifications
-  process-memory
   commands-keymap
   command-palette
+keep-lantern-healthy
+  process-memory
+  app-diagnostics

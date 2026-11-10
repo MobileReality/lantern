@@ -26,6 +26,10 @@ test/helpers/auth-world.ts . test df80416fa57e
   < src/main/auth/token-check.ts#CheckDeps
   < src/main/lantern-host-origin.ts#CodeHost
 
+test/helpers/diagnostics-world.ts . test 8d47fd445fbb
+#feature app-diagnostics
+  = src/main/diagnostics/service.ts#createDiagnosticsService
+
 test/helpers/diff-text.ts . test 96a23f96c97b
 #feature pull-requests
 

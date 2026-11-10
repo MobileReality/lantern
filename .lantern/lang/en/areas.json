@@ -4,6 +4,7 @@
   "build-the-map": "Creating the map, grouping its features into product areas, and keeping names and contents true as the project changes.",
   "review-changes": "Reading and judging code changes: pull requests, their files, flows and explanations, comments on lines, and code views.",
   "agent-work": "Handing work to Claude agents: runs, their cost, the accounts they use, and the skills they follow.",
-  "project-workspace": "Opening projects in the app and watching Claude sessions, notifications and memory use while working in them."
+  "project-workspace": "Opening projects in the app and watching Claude sessions and notifications while working in them.",
+  "keep-lantern-healthy": "Seeing how healthy Lantern itself is: its memory use, errors and crashes, and reporting a problem."
  }
 }
