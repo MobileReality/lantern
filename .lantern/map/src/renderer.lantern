@@ -3,7 +3,7 @@ lantern 1
 
 src/renderer/svg.d.ts . schema 0f5231031c58
 
-src/renderer/global.d.ts . schema 68af8f249324
+src/renderer/global.d.ts . schema 81b2460876d4
   < src/main/cli.ts#CliStatus
   < src/main/dev-instance.ts#DevInstance
   < src/main/extensions.ts#ExtensionsPanel
@@ -18,6 +18,7 @@ src/renderer/global.d.ts . schema 68af8f249324
   < src/main/setup-progress.ts
   < src/renderer/state.ts
   < src/shared/code-highlighting.ts
+  < src/shared/diagnostics.ts#DiagnosticEntry
   < src/shared/memory.ts#FreeMemoryResult
   < src/shared/memory.ts#MemorySnapshot
   < src/shared/pr-explain.ts#PrExplainDone
@@ -31,6 +32,9 @@ src/renderer/global.d.ts . schema 68af8f249324
 
 src/renderer/command-palette.css . style b1ca77622d39
 #feature command-palette
+
+src/renderer/diagnostics.css . style 73d6b7749286
+#feature app-diagnostics
 
 src/renderer/lantern-flow.css . style 934625fc4247
 #feature pr-flow
@@ -105,11 +109,12 @@ src/renderer/tray-popover.ts . entry 1e4549e11faa
   > src/renderer/lib/tray-popover-view.ts#mountTrayPopover
   < src/renderer/lib/util.ts#byId
 
-src/renderer/workspace.css . style 257df68b2223
+src/renderer/workspace.css . style 5637e9e66be4
   < src/renderer/theme.css
 
-src/renderer/workspace.html . entry bd9de8e0aee7
+src/renderer/workspace.html . entry 76df6ea8d527
   < src/renderer/command-palette.css
+  < src/renderer/diagnostics.css
   < src/renderer/floating.css
   < src/renderer/lantern-flow.css
   < src/renderer/lantern-macroview.css
@@ -127,8 +132,11 @@ src/renderer/workspace.html . entry bd9de8e0aee7
   > src/renderer/workspace.ts
   < src/renderer/integrations.css
 
-src/renderer/workspace.ts . entry a7d1aceb9704
+src/renderer/workspace.ts . entry 9bc9710989fe
   = ext:vscode-serve-web
+  > src/renderer/features/diagnostics-notice.ts
+  > src/renderer/features/diagnostics.ts
+  = src/renderer/lib/diagnostics-capture.ts#installRendererCapture
   = src/preload/workspace.ts
   = src/renderer/features/editor-tab.ts
   = src/renderer/features/provider-control.ts
