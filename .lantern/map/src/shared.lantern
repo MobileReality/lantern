@@ -75,12 +75,13 @@ src/shared/settings-reasons.ts . config 07fc17b8169e
 #feature pull-requests
   < src/shared/settings-schema.ts#SettingsNode
 
-src/shared/settings-registry.ts . pure 0c5277fbd7fc
+src/shared/settings-registry.ts . pure 73215c3425e4
   < src/shared/settings-graph.ts#GRAPH_SETTINGS
   < src/shared/settings-notifications.ts#NOTIFICATION_SETTINGS
   < src/shared/settings-reasons.ts#REASONS_SETTINGS
   < src/shared/settings-schema.ts
   < src/shared/settings-tabs.ts#TAB_SETTINGS
+  < src/shared/settings-updates.ts#UPDATE_SETTINGS
   < src/shared/settings-schema.ts#KeyBinding
   < src/shared/commands/keymap-settings.ts#KEYMAP_SETTINGS
   < src/shared/languages/index.ts#LANGUAGE_SETTINGS
@@ -91,7 +92,17 @@ src/shared/settings-tabs.ts . config d6aa623c338c
 #feature serve-web
   < src/shared/settings-schema.ts#SettingsNode
 
+src/shared/settings-updates.ts . config b80bc7100237
+#feature app-updates
+  < src/shared/settings-schema.ts#SettingsNode
+
 src/shared/shell-quote.ts . util ef8b28ec1ccf
+
+src/shared/session-liveness.ts . pure e6cdedc46bf1
+#feature app-updates
+
+src/shared/updates.ts . schema 1db7e9a390a0
+#feature app-updates
 
 src/shared/tray-action.ts . pure 3674de8a044c
 #feature session-monitoring

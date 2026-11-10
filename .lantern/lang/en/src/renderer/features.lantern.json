@@ -2,6 +2,7 @@
  "text": {
   "agent-run.ts": "Runs Claude or Codex agents and displays shared progress and cancellation, including the repair of one plan file, buffering Codex events until the run id is known",
   "cli-panel.ts": "Settings panel that shows whether the lantern command is installed, installs it, and explains replacing a command it did not create by hand",
+  "update-notice.ts": "Shows the update notice card the main process pushes, with its two buttons, and sends the pressed button's action back.",
   "editor-tab.ts": "Watches embedded editor readiness and manages retry loading covers",
   "explain.ts": "Displays change explainers with sanitised markdown, quizzes and highlighted code references previewed from the project, and registers the explain.popout command while it is open",
   "memory.ts": "Opens and closes the memory dialog (button, backdrop or Escape), starting main-process sampling while it is open and stopping it when it closes, and returning focus to where it was",

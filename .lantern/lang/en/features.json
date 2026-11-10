@@ -27,6 +27,7 @@
   "integrations": "accounts for GitHub, Bitbucket and Jira added with a pasted token, the account each project uses, and the credentials handed to agents and delegate scripts",
   "commands-keymap": "the command table shared by main and renderer, shortcuts matched in main on every window and user bindings in settings, and the app menu items built from the same table",
   "command-palette": "the command palette dialog that lists and runs the registered commands with their shortcuts and recent use, the sidebar Search commands field that opens it, and the explain.open and explain.popout commands it can run",
-  "app-diagnostics": "a local, redacted log of Lantern's own errors, crashes and editor-server problems, a live Diagnostics view, and a report the user can open on GitHub"
+  "app-diagnostics": "a local, redacted log of Lantern's own errors, crashes and editor-server problems, a live Diagnostics view, and a report the user can open on GitHub",
+  "app-updates": "finding a newer release by itself, installing it on a Mac only when no session, run or terminal would be ended, a release notice with a link elsewhere, and the Check for Updates item and its setting"
  }
 }

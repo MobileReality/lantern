@@ -431,7 +431,7 @@ test/hook-cleanup.test.ts . test e396e94ce32e
   = src/main/hooks.ts#uninstallFrom
   = src/main/notifier.ts#uninstallFrom
 
-test/idle-tabs-workspace.test.ts . test 5d89634606e0
+test/idle-tabs-workspace.test.ts . test 86b121d708e7
 #feature serve-web
   = src/renderer/lib/idle-tabs.ts
   = src/renderer/workspace.ts
@@ -1984,7 +1984,7 @@ test/project-release.test.ts . test fcaf35dd232c
 test/project-ident.test.ts . test c98778ad4b70
 #feature projects-hub
   = src/main/project-ident/index.ts#projectIdent
-test/project-window.test.ts . test c26769a938d5
+test/project-window.test.ts . test b6e790e93fff
 #feature projects-hub
   = src/renderer/commands/index.ts
   < src/renderer/state.ts#app
@@ -2136,7 +2136,7 @@ test/settings-dialog.test.ts . test 0970b15946c3
   = src/renderer/command-palette/index.ts
   < src/shared/settings-registry.ts#SETTING_DEFAULTS
 
-test/settings-editor.test.ts . test adbecf7d916c
+test/settings-editor.test.ts . test 3919d67246ca
   = src/renderer/lib/settings-editor.ts
   < src/renderer/settings.css
   < src/shared/settings-registry.ts#SETTING_DEFAULTS
@@ -2218,7 +2218,7 @@ test/setup-view.test.ts . test ffb4448ce2d1
   < src/main/setup-progress.ts
   = src/renderer/lib/setupprogress.ts
 
-test/sidebar.test.ts . test c165fe67ce67
+test/sidebar.test.ts . test bacaf1adcffa
 #feature projects-hub
   > src/renderer/features/agent-run.ts
   > src/renderer/features/provider-control.ts
@@ -2349,6 +2349,41 @@ test/tray-menu.test.ts . test c8a1b526aa40
 test/tray-model.test.ts . test 27cb07f5afd3
 #feature session-monitoring
   = src/shared/tray-model.ts
+
+test/update-notice.test.ts . test 5ccaca5b14c8
+#feature app-updates
+  = src/renderer/features/update-notice.ts
+  = src/renderer/lib/idle-tabs.ts
+  < src/renderer/workspace.html
+  = src/shared/session-liveness.ts
+
+test/updater-feed.test.ts . test c9db44290e43
+#feature app-updates
+  = src/main/updater/feed.ts
+
+test/updater-guard.test.ts . test 3331dbcf03e9
+#feature app-updates
+  = src/main/updater/guard.ts
+  = src/main/updater/process-activity.ts
+
+test/updater-service.test.ts . test 08453bfeb777
+#feature app-updates
+  = src/main/updater/service.ts
+  < test/helpers/updater-world.ts#updaterWorld
+
+test/updater-surface.test.ts . test becc10cea4f8
+#feature app-updates
+  = src/main/app-menu.ts
+  = src/main/updater/controller.ts
+  = src/main/updater/dialogs.ts
+  = src/main/updater/native.ts
+  = src/renderer/lib/update-notice-view.ts
+  < src/shared/settings-registry.ts#SETTINGS
+  < test/helpers/updater-world.ts#updaterWorld
+
+test/updater-version.test.ts . test dee7dd1b5923
+#feature app-updates
+  = src/main/updater/version.ts
   < test/fixtures/tray-groups.ts
 
 test/tray-placement.test.ts . test 2399869099bd

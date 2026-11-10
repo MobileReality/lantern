@@ -200,6 +200,12 @@ src/renderer/features/skills.ts . component 9af6c7fe2ba4
   = src/renderer/state.ts
   < src/shared/lang/messages.ts#msg
 
+src/renderer/features/update-notice.ts . component f2fb3c55a11f
+#feature app-updates
+  < src/renderer/lib/update-notice-view.ts#updateNoticeView
+  < src/renderer/lib/util.ts#byId
+  < src/shared/updates.ts#UpdateAction
+
 src/renderer/features/integrations.ts . component ff914f1c1d2c
 #feature integrations
   = src/renderer/lib/auth-client.ts#loadAuthStatus

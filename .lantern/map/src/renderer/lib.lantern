@@ -80,8 +80,9 @@ src/renderer/lib/file-label.ts . component 897771cba86e
 src/renderer/lib/graph-navigation.ts . component bca7702f3398
 #feature file-graph
 
-src/renderer/lib/idle-tabs.ts . pure 1a9fc9b22b45
+src/renderer/lib/idle-tabs.ts . pure c38696bd40e5
 #feature serve-web
+  < src/shared/session-liveness.ts#hasLiveSession
 
 src/renderer/lib/lanterncollapse.ts . pure cf5bebec596e
 #feature file-graph
@@ -701,6 +702,11 @@ src/renderer/lib/tray-popover-view.ts . component 1311309093ae
 
 src/renderer/lib/util.ts . util e6e3ecad8968
   < src/shared/platform.ts#PlatformName
+
+src/renderer/lib/update-notice-view.ts . pure 946d398b1644
+#feature app-updates
+  < src/shared/lang/messages.ts#msg
+  < src/shared/updates.ts#UpdateNotice
 
 src/renderer/lib/lanternpanewidths.ts . state 5af72c8d0e8d
 #feature review-screen
