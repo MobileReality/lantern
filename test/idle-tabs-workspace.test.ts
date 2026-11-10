@@ -44,6 +44,8 @@ async function boot(groups: Group[], overrides: Partial<SettingValues> = {}) {
     info: resolved({ port: 9888, token: 'tkn', ready: true, available: true, graceSeconds: 60 }),
     devInstance: resolved(null),
     diagnosticsNotice: resolved(null),
+    updateNotice: resolved(null),
+    onUpdateNotice: vi.fn(),
     reportRendererError: resolved({ ok: true }),
     projects: resolved(groups),
     settingsGet: resolved(full),

@@ -71,7 +71,7 @@ describe('settings editor', () => {
     expect(search().placeholder).toBe('Search settings (@modified)');
     expect($('.st-count').getAttribute('aria-live')).toBe('polite');
     expect($('nav.st-toc').getAttribute('aria-label')).toBe('Settings categories');
-    expect(count()).toBe('18 settings');
+    expect(count()).toBe('19 settings');
     expect(EMOJI.test(document.body.textContent!)).toBe(false);
   });
 
@@ -140,7 +140,7 @@ describe('settings editor', () => {
 
     search().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(search().value).toBe('');
-    expect(count()).toBe('18 settings');
+    expect(count()).toBe('19 settings');
     expect(outer).not.toHaveBeenCalled();
 
     search().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
@@ -401,7 +401,7 @@ describe('settings editor', () => {
       mount(snapshot(), [panel]);
       expect(isShown(section())).toBe(false);
       expect(isShown(row())).toBe(true);
-      expect(count()).toBe('18 settings');
+      expect(count()).toBe('19 settings');
     });
 
     it('matches the search against the title and keywords', () => {

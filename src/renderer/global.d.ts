@@ -23,6 +23,7 @@ import type { ProviderId } from '@shared/providers';
 import type { PrExplainDone, PrExplainSavedResult, PrExplainStartResult } from '../shared/pr-explain';
 import type { TrayModel } from '../shared/tray-model';
 import type { CopyOutcome, CrashNotice, DiagnosticEntry, DiagnosticsListing, GithubOutcome, RendererReportKind } from '../shared/diagnostics';
+import type { UpdateAction, UpdateNotice } from '../shared/updates';
 
 export {};
 
@@ -131,6 +132,9 @@ interface CcmwsBridge {
   memoryWatch(on: boolean): Promise<MemoryViewState>;
   freeProjectMemory(project: string): Promise<FreeMemoryResult>;
   onMemoryUpdate(cb: (snapshot: MemorySnapshot) => void): void;
+  updateNotice(): Promise<UpdateNotice | null>;
+  updateAction(action: UpdateAction): Promise<UpdateNotice | null>;
+  onUpdateNotice(cb: (notice: UpdateNotice | null) => void): void;
 }
 
 interface CodexHooksResult {

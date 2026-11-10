@@ -4,6 +4,7 @@ import { fixMicrophone, openSkills } from './features/skills';
 import { openMemory } from './features/memory';
 import { openDiagnostics } from './features/diagnostics';
 import { showCrashNotice } from './features/diagnostics-notice';
+import { showUpdateNotice } from './features/update-notice';
 import { installRendererCapture } from './lib/diagnostics-capture';
 import { openExplain } from './features/explain';
 import './features/agent-run';
@@ -509,6 +510,11 @@ if (popoutTool) {
     notice: () => window.ccmws.diagnosticsNotice(),
     github: (request) => window.ccmws.diagnosticsGithub(request),
     dismiss: () => window.ccmws.diagnosticsDismissNotice(),
+  });
+  void showUpdateNotice({
+    notice: () => window.ccmws.updateNotice(),
+    act: (action) => window.ccmws.updateAction(action),
+    onNotice: (listener) => window.ccmws.onUpdateNotice(listener),
   });
   registerCommand('skills.open', () => closeModals() && void openSkills());
   registerCommand('integrations.open', () => closeModals() && openIntegrations(document.activeElement, { projects: openedProjects }));

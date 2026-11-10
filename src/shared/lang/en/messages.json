@@ -446,5 +446,55 @@
       "button": "Import list",
       "hint": "Pick a JSON file with delegate, orchestrator, reviewer and skillLinker. It fills the Lantern skills slots and the skill linker path; skills already there and always-on ones are skipped."
     }
+  },
+  "updates": {
+    "menu": "Check for Updates…",
+    "notice": {
+      "available": "Lantern {version} is available",
+      "availableText": "A newer version of Lantern is on its release page.",
+      "view": "View release",
+      "dismiss": "Dismiss",
+      "readyWaiting": "Update ready: restart when your sessions finish",
+      "readyWaitingText": "Lantern {version} is downloaded and installs by itself once no session or terminal would be ended.",
+      "ready": "Update ready",
+      "readyText": "Lantern {version} is downloaded. Restart Lantern to install it.",
+      "restartNow": "Restart now",
+      "later": "Not now"
+    },
+    "restart": {
+      "message": "Restart Lantern now?",
+      "detail": "Restarting ends {lost}. Whatever is running in them stops.",
+      "confirm": "Restart and end them",
+      "cancel": "Cancel"
+    },
+    "lost": {
+      "sessions": { "one": "{count} AI assistant session", "other": "{count} AI assistant sessions" },
+      "terminals": { "one": "{count} editor terminal", "other": "{count} editor terminals" },
+      "running": { "one": "{count} running process", "other": "{count} running processes" },
+      "agentRun": "an AI assistant run started by Lantern",
+      "unknown": "anything running in the editor, which Lantern could not check"
+    },
+    "result": {
+      "upToDate": "Lantern is up to date",
+      "upToDateDetail": "You have version {version}.",
+      "disabled": "Automatic update checks are off",
+      "disabledDetail": "Turn on \"Check for updates automatically\" in Settings and Lantern will check again.",
+      "notPackaged": "Updates are checked in installed builds only",
+      "notPackagedDetail": "This build was started from source, so it never updates itself.",
+      "downloading": "Lantern {version} is downloading",
+      "downloadingDetail": "Lantern installs it when no session or terminal would be ended, and tells you when it is ready.",
+      "ready": "Lantern {version} is ready to install",
+      "readyDetail": "Restart Lantern to install it. If sessions or terminals are running, Lantern lists them first.",
+      "available": "Lantern {version} is available",
+      "availableDetail": "This build does not update itself. Download the new version from its release page.",
+      "unavailable": "Lantern cannot update itself yet",
+      "unavailableDetail": "The update service has no download for this build. New versions are on the release page.",
+      "failed": "Could not check for updates",
+      "failedDetail": "Lantern could not reach the update service. The details are in Diagnostics.",
+      "view": "View release",
+      "viewReleases": "View releases",
+      "restartNow": "Restart now",
+      "close": "Close"
+    }
   }
 }

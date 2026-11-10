@@ -1,8 +1,11 @@
+import { hasLiveSession } from '../../shared/session-liveness';
+
 export const IDLE_SWEEP_MS = 30_000;
 
 const MS_PER_MINUTE = 60_000;
 const BLANK_KEY_PREFIX = 'blank:';
-const FINISHED_SESSION_STATES: ReadonlySet<string> = new Set(['done', 'failed', 'stopped', 'ended']);
+
+export { hasLiveSession };
 
 export interface IdleTabCandidate {
   key: string;
@@ -15,12 +18,6 @@ export interface IdleTabRule {
   now: number;
   idleMinutes: number;
   sessionsOf(path: string): readonly { state: string }[] | undefined;
-}
-
-// Anything that is not clearly finished (running, waiting, needs approval, unknown, status
-// unavailable) counts as a live agent: closing its tab would end it.
-export function hasLiveSession(sessions: readonly { state: string }[]): boolean {
-  return sessions.some((session) => !FINISHED_SESSION_STATES.has(session.state));
 }
 
 export function isIdleTab(tab: IdleTabCandidate, rule: IdleTabRule): boolean {

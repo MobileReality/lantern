@@ -25,6 +25,7 @@ import {
   DIAGNOSTICS_WATCH_CHANNEL,
 } from '../shared/diagnostics';
 import { PR_EXPLAIN_CANCEL, PR_EXPLAIN_DONE, PR_EXPLAIN_SAVED, PR_EXPLAIN_START } from '../shared/pr-explain';
+import { UPDATE_ACTION_CHANNEL, UPDATE_GET_CHANNEL, UPDATE_NOTICE_CHANNEL } from '../shared/updates';
 
 type Cb = (...args: any[]) => void;
 
@@ -138,4 +139,8 @@ contextBridge.exposeInMainWorld('ccmws', {
   memoryWatch: (on: boolean) => ipcRenderer.invoke(MEMORY_WATCH_CHANNEL, on),
   freeProjectMemory: (project: string) => ipcRenderer.invoke(MEMORY_FREE_CHANNEL, project),
   onMemoryUpdate: (cb: Cb) => ipcRenderer.on(MEMORY_UPDATE_CHANNEL, (_e, snapshot) => cb(snapshot)),
+
+  updateNotice: () => ipcRenderer.invoke(UPDATE_GET_CHANNEL),
+  updateAction: (action: string) => ipcRenderer.invoke(UPDATE_ACTION_CHANNEL, action),
+  onUpdateNotice: (cb: Cb) => ipcRenderer.on(UPDATE_NOTICE_CHANNEL, (_e, notice) => cb(notice)),
 });

@@ -5,8 +5,9 @@ import { NOTIFICATION_SETTINGS } from './settings-notifications';
 import { REASONS_SETTINGS } from './settings-reasons';
 import type { KeyBinding, SettingSchema, SettingsNode } from './settings-schema';
 import { TAB_SETTINGS } from './settings-tabs';
+import { UPDATE_SETTINGS } from './settings-updates';
 
-const SETTINGS_NODES = [GRAPH_SETTINGS, LANGUAGE_SETTINGS, NOTIFICATION_SETTINGS, TAB_SETTINGS, REASONS_SETTINGS, KEYMAP_SETTINGS] as const;
+const SETTINGS_NODES = [GRAPH_SETTINGS, LANGUAGE_SETTINGS, NOTIFICATION_SETTINGS, TAB_SETTINGS, REASONS_SETTINGS, UPDATE_SETTINGS, KEYMAP_SETTINGS] as const;
 
 type UnionToIntersection<U> = (U extends unknown ? (arg: U) => void : never) extends (arg: infer I) => void ? I : never;
 type Properties = UnionToIntersection<(typeof SETTINGS_NODES)[number]['properties']>;
