@@ -26,7 +26,7 @@ test/agent.test.ts . test 2819cf830585
   = src/main/agent.ts
   < src/main/provider.ts#isSessionId
 
-test/app-identity.test.ts . test 2e2b938c00ed
+test/app-identity.test.ts . test 3a1768cab8a0
   < scripts/app-manifest.mjs#appManifest
   < src/shared/app-identity.ts#userDataDir
   < src/main/main.ts

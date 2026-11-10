@@ -18,7 +18,7 @@ describe('app identity', () => {
   });
 
   it('builds a manifest whose default user-data folder is the pinned one', () => {
-    const manifest = appManifest('45.0.0');
+    const manifest = appManifest('45.0.0', '0.0.0');
     expect(manifest.productName).toBe(APP_NAME);
     expect(electronDefaultUserData(APP_DATA, manifest)).toBe(userDataDir(APP_DATA));
   });
@@ -33,6 +33,12 @@ describe('app identity', () => {
   it('keeps the package name out of the data folder', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
     expect(pkg.name).toBe('lantern');
-    expect(appManifest('45.0.0').name).toBe(pkg.name);
+    expect(appManifest('45.0.0', pkg.version).name).toBe(pkg.name);
+  });
+
+  it('ships the version of package.json in the manifest', () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+    expect(appManifest('45.0.0', pkg.version).version).toBe(pkg.version);
+    expect(appManifest('45.0.0', '9.9.9').version).toBe('9.9.9');
   });
 });
