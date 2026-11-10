@@ -1,7 +1,7 @@
 lantern 1
 # scripts
 
-scripts/esbuild.mjs . script 5bc4ce6f17ef
+scripts/esbuild.mjs . script 1f3473294e16
   < scripts/app-manifest.mjs#appManifest
   < scripts/node-bundle.mjs#nodeBundle
   < src/main/main.ts
@@ -103,7 +103,7 @@ scripts/pr-review-demo.mjs . script 1728a77e2872
   > scripts/material-file-icons.mjs
   > test/e2e/app/main.cjs
 
-scripts/app-manifest.mjs . script ffea1a93649b
+scripts/app-manifest.mjs . script c9f584e04125
 
 scripts/aliases.cjs . util dda184764e9f
   < tsconfig.json

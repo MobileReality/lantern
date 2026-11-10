@@ -6,7 +6,7 @@
   "agent-language.test.ts": "Checks run language selection and unattended map prompts",
   "agent-start.test.ts": "Checks bundled skill startup, safe cancellation that never signals real pids, the Codex runner slot held until close and reaping a Codex child that lingers after its final event",
   "agent.test.ts": "Checks agent prompts, Claude and Codex skill roots and installation, session ids, streamed tool events and the rejection of unknown run kinds",
-  "app-identity.test.ts": "Checks the user-data folder stays Lantern: the pinned path, the manifest the packaged app is built from, the order of the pin in the main process and the package name staying out of it",
+  "app-identity.test.ts": "Checks the user-data folder stays Lantern: the pinned path, the manifest the packaged app is built from, its version following package.json, the order of the pin in the main process and the package name staying out of it",
   "old-package-name.test.ts": "Checks no tracked file names the package's former name, except the recorded pull requests and plans, and that the check sees the name in a file's contents",
   "app-menu.test.ts": "Checks the application menu puts Command palette and Settings per platform, takes their accelerators from the keymap, follows user overrides and removals and runs the command on click",
   "built-bundle.test.ts": "Builds the main and preload bundles and checks each evaluates its top level in Node with Electron stubbed, so a module-load crash like an unresolved module URL fails here",
