@@ -71,7 +71,7 @@ describe('pull request card: description', () => {
       '#describe verified Order tests pass. <!-- hidden',
     ]);
     const text = head.querySelector('.pr-describe')?.textContent ?? '';
-    expect(text).not.toMatch(/<!--|-->|delegate:cost|\|/);
+    for (const hidden of ['<!--', '-->', 'delegate:cost', '|']) expect(text).not.toContain(hidden);
     expect(text).toContain('Admins can refund orders.');
     expect(text).toContain('Order tests pass.');
   });

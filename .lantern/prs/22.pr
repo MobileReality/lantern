@@ -1,0 +1,65 @@
+lantern-pr 1
+# 22
+#title Fix the 11 CodeQL alerts without suppressions
+#url https://github.com/MobileReality/lantern/pull/22
+#branch fix/codeql-alerts
+#base main
+#opened 2026-11-09
+#head 70b07414701fc4e557fbe74150010a212df0f135
+#describe what Clears the 11 open CodeQL alerts by removing the flagged patterns, with no suppression comments and no workflow change.
+#describe what Comment and tag stripping scans instead of using regexes, and one innerHTML assignment now sets text.
+#describe before A marker rebuilt by removing a comment could stay visible, and a typed folder path was read as HTML in the Skills window.
+#describe after Comments are removed until none is left, and the folder path is shown as text.
+#describe verified typecheck, lint, the whole test suite and the lantern-setup skill test pass; CodeQL itself only runs on the pull request.
++ test/website-tags.test.ts
++ website/src/lib/tags.ts
+~ skills/lantern-setup/scripts/prdescribe.mjs
+~ src/main/lantern-describe-parse.ts
+~ src/main/settings-model.ts
+~ src/renderer/features/skills.ts
+~ test/integration-skills-standalone.test.ts
+~ test/lantern-macro-eval.test.ts
+~ test/lantern-pr-describe-card.test.ts
+~ test/lantern-pr-parity.test.ts
+~ test/skills-modal.test.ts
+~ website/src/lib/headings.ts
+#order skills/lantern-setup/scripts/prdescribe.mjs
+#order src/main/lantern-describe-parse.ts
+#order website/src/lib/tags.ts
+#order website/src/lib/headings.ts
+#order src/renderer/features/skills.ts
+#order src/main/settings-model.ts
+#order test/lantern-pr-parity.test.ts
+#order test/lantern-pr-describe-card.test.ts
+#order test/skills-modal.test.ts
+#order test/website-tags.test.ts
+#order test/integration-skills-standalone.test.ts
+#order test/lantern-macro-eval.test.ts
+#reason test/website-tags.test.ts Pins what the docs tag remover keeps and that nothing is left to strip on a second pass
+#reason website/src/lib/tags.ts Holds the dependency-free tag scanner so root tests can import it without the site's packages
+#reason skills/lantern-setup/scripts/prdescribe.mjs Strips comment markers by scanning so a marker rebuilt by removing a comment cannot slip through
+#reason src/main/lantern-describe-parse.ts Same comment stripping as the skill copy, so the app and the validator keep showing identical text
+#reason src/main/settings-model.ts Replaces every newline in the empty-settings text, not only the first
+#reason src/renderer/features/skills.ts A typed folder path was parsed as HTML in the setting-up message, so it is now set as text
+#reason test/integration-skills-standalone.test.ts Matches the Jira host by parsed origin instead of a string prefix
+#reason test/lantern-macro-eval.test.ts Finds a check's status by comparing tokens, so no regex escaping is needed
+#reason test/lantern-pr-describe-card.test.ts Checks the hidden strings one by one instead of with a tag-matching regex
+#reason test/lantern-pr-parity.test.ts Pins the comment cases that defeated the old regexes and decodes paths properly
+#reason test/skills-modal.test.ts Proves a hostile folder path shows as text and creates no element
+#reason website/src/lib/headings.ts Uses the tag scanner instead of a tag-stripping regex when building heading text
+#story Pull request descriptions hide host markers for good
+#step actor A maintainer
+#step action reads a pull request description in Lantern
+#step subject a text with hidden comment markers
+#file src/main/lantern-describe-parse.ts
+#file skills/lantern-setup/scripts/prdescribe.mjs
+#file test/lantern-pr-parity.test.ts
+#below interaction Sees only the plain words, even when a marker was nested
+#below consequence A marker rebuilt by removing a comment could stay visible => Every comment is removed until none is left
+#story A typed skills folder is shown as plain text
+#step actor A person
+#step action types a skills folder and presses Apply
+#step subject the Skills window
+#file src/renderer/features/skills.ts
+#file test/skills-modal.test.ts
+#below consequence The path was read as markup while setting up => The path is shown as text and builds nothing

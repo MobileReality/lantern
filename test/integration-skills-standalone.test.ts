@@ -122,8 +122,8 @@ describe('a bundle copied into an empty project, each skill alone, only the inje
     const comment = await script('lantern-jira', ['comment', 'PROJ-1', '--body', 'Ready for review.']);
     expect(comment).toMatchObject({ code: 0 });
     expect(comment.stdout).toContain('Commented on PROJ-1 (comment 10001).');
-    const posts = router.calls.filter((call) => call.method === 'POST' && call.url.startsWith(SITE));
-    expect(posts.map((call) => call.url.replace(SITE, ''))).toEqual(['/rest/api/3/issue/PROJ-1/transitions', '/rest/api/3/issue/PROJ-1/comment']);
+    const posts = router.calls.filter((call) => call.method === 'POST' && new URL(call.url).origin === new URL(SITE).origin);
+    expect(posts.map((call) => new URL(call.url).pathname)).toEqual(['/rest/api/3/issue/PROJ-1/transitions', '/rest/api/3/issue/PROJ-1/comment']);
     expect(posts[0].body).toEqual({ transition: { id: '11' } });
     expect(JSON.stringify(posts[1].body)).toContain('Ready for review.');
   });

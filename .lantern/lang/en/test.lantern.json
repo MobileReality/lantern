@@ -344,6 +344,7 @@
   "syntax-client.test.ts": "Checks worker reply correlation, pending-request limits, escaped failure fallback and recovery from constructor and stale-worker failures.",
   "util.test.ts": "Checks cross-platform basename and serve-web path conversion, suffix-aware path matching and the day formatter with and without a year, in UTC and local time.",
   "safe-markdown.test.ts": "Checks that rendered markdown loses script tags, event handler attributes and javascript links but keeps ordinary formatting.",
+  "website-tags.test.ts": "Checks the docs site's tag remover keeps the text of tags, nested brackets, a lone less-than sign and an empty pair, and that a second pass finds nothing left to strip.",
   "webview-hardening.test.ts": "Checks that attaching an editor webview drops the preload and node integration and refuses any source outside a loopback port, and that a workspace window may navigate only to its own app pages.",
   "windows.test.ts": "Checks project window lifecycle with a fake Electron: one window per real checkout, focusing the existing one, removal on close, bundle install for the project assistant, ownership by the sender, --project argv handling, pop-outs closing with their opener and the dock icon.",
   "windows.test.ts gotcha": "Re-imports the modules for every test because the window registry is module state.",

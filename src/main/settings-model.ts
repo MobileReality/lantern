@@ -159,7 +159,7 @@ function withoutCommas(text: string): { text: string; hasComment: boolean } {
 
 function emptiedSettingsText(brokenText: string, eol: string): string {
   const { text, hasComment } = withoutCommas(brokenText);
-  return hasComment ? text : EMPTY_SETTINGS_TEXT.replace('\n', eol);
+  return hasComment ? text : EMPTY_SETTINGS_TEXT.replaceAll('\n', eol);
 }
 
 export function editSettingsText(text: string | null, key: SettingKey, value: unknown): string {
