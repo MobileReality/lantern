@@ -6,6 +6,19 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-10
+
+### Added
+
+- Diagnostics: a local, bounded and redacted log of Lantern's own errors and crashes, shown live
+  in a Diagnostics view. It records uncaught errors, renderer and child process crashes, IPC
+  handler errors, VS Code server start, exit and health failures, and editor webview errors.
+  After an unexpected close the next start shows a one-time notice. Report on GitHub opens a
+  prefilled issue you can edit; Lantern sends nothing by itself.
+- A redesigned review pane: a header with the file name, folder and line counts, line counts on
+  each changed file row, a copy menu on right-click, arrow keys to step through files, and a new
+  comment composer with intents and quick texts for each intent.
+
 ## [0.2.2] - 2026-11-10
 
 ### Security
@@ -60,7 +73,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/MobileReality/lantern/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/MobileReality/lantern/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/MobileReality/lantern/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/MobileReality/lantern/releases/tag/v0.2.0

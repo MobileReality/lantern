@@ -1,0 +1,26 @@
+lantern-pr 1
+# 28
+#title chore: release 0.3.0
+#url https://github.com/MobileReality/lantern/pull/28
+#branch chore/release-0-3-0
+#base main
+#opened 2026-11-10
+#head dd9b43df607111f2357d19491de8e537e10d6837
+#describe what Sets the package version to 0.3.0 and adds the 0.3.0 changelog entry for Diagnostics and the review pane.
+#describe before The package and the app said 0.2.2.
+#describe after The package and the app say 0.3.0; the changelog compares v0.2.2...v0.3.0.
+#describe verified Typecheck, lint and the version and docs unit tests pass.
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md Records what shipped since 0.2.2 so the v0.3.0 release notes are true.
+#reason package.json The app reports the version from package.json, so the 0.3.0 release needs it bumped.
+#story A user installs the 0.3.0 release
+#step actor A user
+#file package.json
+#step action updates to the new release of
+#file CHANGELOG.md
+#step subject Lantern
+#below interaction can read what is new in the changelog
+#below consequence The app said 0.2.2 => The app says 0.3.0
