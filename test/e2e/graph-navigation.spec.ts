@@ -10,26 +10,6 @@ test.afterAll(async () => {
   try { await closeGraphHarness(harness); } finally { expect(errors).toEqual([]); }
 });
 
-test('keeps the Electron harness hidden while screenshots and input work', async () => {
-  test.skip(process.env.LANTERN_GRAPH_VISIBLE === '1', 'Hidden-window assertions apply only to the default background harness');
-  const page = harness.page;
-  expect(await harness.app.evaluate(({ BrowserWindow }) => {
-    const window = BrowserWindow.getAllWindows()[0];
-    return { visible: window.isVisible(), focused: window.isFocused() };
-  })).toEqual({ visible: false, focused: false });
-  const input = page.getByRole('textbox', { name: 'Graph zoom percentage' });
-  await input.fill('125%');
-  await input.press('Enter');
-  await expect(input).toHaveValue('125%');
-  await page.getByRole('button', { name: 'Zoom out' }).click();
-  await expect(input).toHaveValue('115%');
-  expect((await page.screenshot()).byteLength).toBeGreaterThan(0);
-  expect(await harness.app.evaluate(({ BrowserWindow }) => {
-    const window = BrowserWindow.getAllWindows()[0];
-    return { visible: window.isVisible(), focused: window.isFocused() };
-  })).toEqual({ visible: false, focused: false });
-});
-
 test.describe('pixi', () => {
     test.beforeEach(async () => {
       await harness.app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1100, 760));

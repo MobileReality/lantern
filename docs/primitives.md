@@ -46,6 +46,24 @@ layout, rendering or navigation in the renderer; `pnpm run test:graph:visual` ad
 snapshots (update them with `test:graph:visual:update` only when the change is meant to move pixels,
 and say so in the PR). Not part of `pnpm test`.
 
+### `pnpm run test:graph:macro:e2e`
+`test/e2e/graph-macro*.spec.ts` and `graph-macroview.spec.ts`, Playwright against the same harness. Use
+when a change touches the macro (areas, systems, platform uses, foundation, legend) view of the graph.
+Not part of `pnpm test`.
+
+### `pnpm run test:pr-review:e2e`
+`test/e2e/pr-review-*.spec.ts`, Playwright against the same harness. Use when a change touches the pull
+request review screen (comments, explain, layout, regions, the demo). Not part of `pnpm test`.
+
+### `pnpm run test:text-select:e2e`
+`test/e2e/text-select.spec.ts`. Use when a change touches text selection in the renderer. Skips without a
+Playwright Chromium. Not part of `pnpm test`.
+
+### `pnpm run test:lsp:e2e`
+Compiles, then runs `test/e2e/lsp-semantic.spec.ts` in Electron: semantic highlighting through the real
+preload and IPC. Use when the embedded editor's highlighting or its LSP bridge changes; `test:lsp` is the
+vitest side of the same area. Not part of `pnpm test`.
+
 ### `pnpm run test:lsp`
 Compiles, then runs the LSP and semantic-highlight integration tests. Use when the embedded editor,
 tsserver or highlighting changes.

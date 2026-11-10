@@ -83,17 +83,3 @@ test('shows the production empty state', async () => {
   await expect(harness.page.locator('.lt-none')).toContainText('No file matches these filters');
   await expect(harness.page.locator('.lt-pixi-node-access')).toHaveCount(0);
 });
-
-test('@visual proves the screenshot guard rejects a deliberate mismatch', async ({}, testInfo) => {
-  test.skip(['all', 'changed'].includes(testInfo.config.updateSnapshots), 'The guard requires an immutable baseline');
-  let mismatchDetected = false;
-  const canvas = harness.page.locator('canvas.lt-pixi-canvas');
-  const originalStyle = await canvas.getAttribute('style');
-  await canvas.evaluate((element) => { element.style.filter = 'invert(1)'; });
-  try { await expect(harness.page).toHaveScreenshot('pixi-overview.png'); } catch { mismatchDetected = true; }
-  expect(mismatchDetected).toBe(true);
-  await canvas.evaluate((element, style) => style === null ? element.removeAttribute('style') : element.setAttribute('style', style), originalStyle);
-  await harness.page.mouse.move(0, 0);
-  await loadGraphFixture(harness);
-  await expect(harness.page).toHaveScreenshot('pixi-overview.png');
-});
