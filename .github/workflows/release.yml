@@ -149,6 +149,14 @@ jobs:
             *) echo "Tag '$TAG' does not start with v"; exit 1 ;;
           esac
 
+      - name: Publish the Apple silicon build under the name the updater looks for
+        run: |
+          if [ ! -f release-assets/Lantern-mac.zip ]; then
+            echo "release-assets/Lantern-mac.zip is missing, nothing to copy to Lantern-mac-arm64.zip"
+            exit 1
+          fi
+          cp release-assets/Lantern-mac.zip release-assets/Lantern-mac-arm64.zip
+
       - name: Create the release when it is missing
         run: |
           if ! gh release view "$TAG" > /dev/null 2>&1; then

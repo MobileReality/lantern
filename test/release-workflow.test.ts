@@ -109,6 +109,36 @@ describe('release workflow, the signing job', () => {
   });
 });
 
+describe('release workflow, the publish job', () => {
+  const PUBLISH = WORKFLOW.jobs.publish.steps;
+  const copyIndex = PUBLISH.findIndex((step) => step.run?.includes('Lantern-mac-arm64.zip') && step.run.includes('cp '));
+  const uploadIndex = PUBLISH.findIndex((step) => step.run?.includes('gh release upload'));
+
+  it('copies Lantern-mac.zip to Lantern-mac-arm64.zip before the upload, and fails when the source is missing', () => {
+    expect(copyIndex).toBeGreaterThanOrEqual(0);
+    expect(copyIndex).toBeLessThan(uploadIndex);
+    const copy = PUBLISH[copyIndex].run ?? '';
+    expect(copy).toContain('cp release-assets/Lantern-mac.zip release-assets/Lantern-mac-arm64.zip');
+    expect(copy).toMatch(/\[ ! -f release-assets\/Lantern-mac\.zip \]/);
+    expect(copy).toContain('exit 1');
+  });
+
+  it('uploads everything in the assets folder with --clobber, so the stable names and the arm64 copy all go up', () => {
+    expect(uploadIndex).toBeGreaterThanOrEqual(0);
+    expect(PUBLISH[uploadIndex].run).toContain('release-assets/* --clobber');
+    const uploadedByBuilds = Object.values(WORKFLOW.jobs)
+      .flatMap((job) => job.steps)
+      .filter((step) => step.uses?.startsWith('actions/upload-artifact@'))
+      .map((step) => step.with?.path);
+    expect(uploadedByBuilds.sort()).toEqual(['dist/Lantern-mac.zip', 'dist/Lantern-win-x64.zip']);
+  });
+
+  it('builds and signs nothing in the publish job', () => {
+    expect(PUBLISH.map((step) => step.run ?? '').join('\n')).not.toMatch(/pnpm|mac-sign-notarize|codesign|notarytool/);
+    expect(PUBLISH.some(readsSecret)).toBe(false);
+  });
+});
+
 describe('mac entitlements', () => {
   const keysOf = (file: string) => [...read(file).matchAll(/<key>([^<]+)<\/key>/g)].map((match) => match[1]).sort();
 

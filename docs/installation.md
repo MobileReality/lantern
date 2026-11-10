@@ -14,7 +14,8 @@ the app itself, see [getting-started.md](getting-started.md).
 
 Packages are attached to each release on the
 [releases page](https://github.com/MobileReality/lantern/releases): `Lantern-mac.zip` for
-Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. Until a release is published there,
+Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. The Apple-silicon build is also published
+as `Lantern-mac-arm64.zip` for the updater, and the `Lantern-mac.zip` link stays the one to use. Until a release is published there,
 build Lantern from source as described below.
 
 The macOS app of a release built by the current workflow is signed with a Developer ID certificate
@@ -61,7 +62,8 @@ runs the same package scripts as a local build. On a macOS runner, `pnpm run bui
 `pnpm run fuses` build the app, `scripts/mac-sign-notarize.sh` signs and notarizes it, and
 `pnpm run pack` gives `Lantern-mac.zip` (Apple silicon). `pnpm run build:win` on a Windows runner
 gives `Lantern-win-x64.zip`. A last job creates the release for the tag when it is missing, with
-generated release notes, and uploads both files; running it again replaces them.
+generated release notes, copies `Lantern-mac.zip` to `Lantern-mac-arm64.zip` (the name the updater
+needs to find the Apple-silicon build) and uploads the three files; running it again replaces them.
 
 - **Release a new version**: push a tag that starts with `v`, for example
   `git tag v0.2.1 && git push origin v0.2.1`. The workflow starts on the push, and the macOS job
