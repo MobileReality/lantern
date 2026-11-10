@@ -99,7 +99,7 @@ test/e2e/pr-host-state.spec.ts . test 1efbf92f70f9
   = test/helpers/fake-github.ts
   = test/helpers/git-repo.ts
 
-test/e2e/pr-review-demo.spec.ts . test 92e083607dac
+test/e2e/pr-review-demo.spec.ts . test a2d34ef77bc0
 #feature review-screen
   = test/e2e/support/graph-harness.ts
 
@@ -115,7 +115,7 @@ test/e2e/pr-review-regions.spec.ts . test 508852413011
 #feature review-screen
   = test/e2e/support/graph-harness.ts
 
-test/e2e/text-select.spec.ts . test 8a3fd3281f11
+test/e2e/text-select.spec.ts . test b09fe6828137
 #feature review-screen
   < src/renderer/lantern-select.css
   = src/renderer/lib/lanternview.ts#mountLanternView

@@ -1,7 +1,7 @@
 lantern 1
 # src/renderer/command-palette
 
-src/renderer/command-palette/index.ts . component b4b77886adee
+src/renderer/command-palette/index.ts . component 39251e96d715
 #feature command-palette
   = src/renderer/commands/index.ts#registerCommand
   = src/renderer/commands/index.ts#runCommand
@@ -14,6 +14,7 @@ src/renderer/command-palette/index.ts . component b4b77886adee
   < src/shared/commands/index.ts#CommandId
   < src/shared/settings-registry.ts#affectsSetting
   < src/renderer/lib/modal-focus.ts#trapTab
+  = src/renderer/lib/keycaps.ts#keyCaps
 
 src/renderer/command-palette/items.ts . pure ad676f408e10
 #feature command-palette

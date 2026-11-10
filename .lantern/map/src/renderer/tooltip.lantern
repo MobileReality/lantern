@@ -1,4 +1,5 @@
 lantern 1
 # src/renderer/tooltip
 
-src/renderer/tooltip/index.ts . component f0728021d6ea
+src/renderer/tooltip/index.ts . component f18a1aa9abc5
+  = src/renderer/lib/keycaps.ts#keyCaps
