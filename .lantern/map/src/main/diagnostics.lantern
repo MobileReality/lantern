@@ -1,10 +1,16 @@
 lantern 1
 # src/main/diagnostics
 
-src/main/diagnostics/capture.ts . service 0f0fbd115f44
+src/main/diagnostics/capture.ts . service 2b879a741e1f
 #feature app-diagnostics
   < src/shared/diagnostics.ts#DiagnosticInput
+  = src/main/diagnostics/editor.ts#installEditorCapture
   = src/main/diagnostics/record.ts#describeFailure
+src/main/diagnostics/editor.ts . pure 981df63dfb1e
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DiagnosticInput
+  < src/shared/diagnostics.ts#clip
+  = src/main/diagnostics/throttle.ts#createThrottle
 src/main/diagnostics/editor-server.ts . pure ab7c5729fd59
 #feature app-diagnostics
   < src/main/serveweb-parse.ts#ServerPage
@@ -22,9 +28,10 @@ src/main/diagnostics/index.ts . service 20c9fce9c3ff
 src/main/diagnostics/ipc-guard.ts . middleware 398378099ca3
 #feature app-diagnostics
   = src/main/diagnostics/record.ts#describeFailure
-src/main/diagnostics/ipc.ts . handler 2243b4907c9b
+src/main/diagnostics/ipc.ts . handler 0bb974deeaaa
 #feature app-diagnostics
   < src/shared/diagnostics.ts#DIAGNOSTICS_REPORT_CHANNEL
+  < src/shared/diagnostics.ts#isQuietEditorEntry
   < src/shared/diagnostics.ts#parseRendererReport
   < src/shared/diagnostics.ts#parseReportRequest
   = src/main/diagnostics/github.ts#composeIssue

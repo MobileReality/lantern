@@ -2,7 +2,9 @@
   "text": {
     "capture.ts": "Listens for uncaught exceptions, unhandled rejections, windows and helper processes that crashed or stopped responding, and records each one in the Diagnostics log",
     "capture.ts gotcha": "Uncaught errors use the monitor event, so Electron's own error dialog still appears.",
-    "editor-server.ts": "Turns the VS Code server's stderr lines, exit code or signal, launch error and last health check into log entries, with the command that was run and a Windows hint",
+    "editor.ts": "Turns what the embedded editor page reports (console errors, a failed load, freezing) into editor log entries, dropping known harmless messages and repeats and removing the connection token from addresses",
+    "editor.ts gotcha": "Aborted loads and sub-frame failures are ignored; console errors stay warnings.",
+    "editor-server.ts":"Turns the VS Code server's stderr lines, exit code or signal, launch error and last health check into log entries, with the command that was run and a Windows hint",
     "editor-server.ts gotcha": "Stderr entries stop after a fixed number per start, so a noisy server cannot fill the log.",
     "github.ts": "Builds the GitHub issue link from a redacted report, moving a long report to the clipboard and keeping only a short summary in a link under the length limit",
     "github.ts gotcha": "The link host, repository and path are fixed; a link that does not match isIssueUrl is never opened.",

@@ -37,13 +37,15 @@ src/renderer/lib/diagnostics-capture.ts . service ec8242dd97df
 #feature app-diagnostics
   < src/shared/diagnostics.ts#RendererReportKind
 
-src/renderer/lib/diagnostics-model.ts . pure 07049b6b6853
+src/renderer/lib/diagnostics-model.ts . pure 3f3cdaa605d8
 #feature app-diagnostics
   < src/shared/diagnostics.ts#DIAGNOSTIC_SEVERITIES
+  < src/shared/diagnostics.ts#isQuietEditorEntry
 
-src/renderer/lib/diagnosticsview.ts . component 6de4f0af38b7
+src/renderer/lib/diagnosticsview.ts . component 2ab67d6bad70
 #feature app-diagnostics
   < src/renderer/lib/diagnostics-model.ts#applyFilter
+  < src/renderer/lib/diagnostics-model.ts#isShown
   < src/renderer/lib/util.ts#el
   < src/shared/diagnostics.ts#DIAGNOSTIC_SOURCES
 

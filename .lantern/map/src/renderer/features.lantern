@@ -25,7 +25,7 @@ src/renderer/features/diagnostics-notice.ts . component 4ddff01216d8
   < src/renderer/lib/diagnosticsview.ts#GITHUB_OPENED
   < src/renderer/lib/util.ts#byId
 
-src/renderer/features/diagnostics.ts . component df4cf055e2bb
+src/renderer/features/diagnostics.ts . component 233d5499154d
 #feature app-diagnostics
   = src/preload/workspace.ts
   = src/renderer/lib/diagnosticsview.ts#createDiagnosticsView
