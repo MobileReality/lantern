@@ -2011,7 +2011,7 @@ test/reason-definition.test.ts . test 550e8f81a437
   = src/shared/reason.ts
   < skills/lantern-setup/scripts/prs.mjs#REASON_MAX_CHARS
 
-test/release-workflow.test.ts . test 4e110666c136
+test/release-workflow.test.ts . test 3d985cb8cdbb
   < .github/workflows/release.yml
   < scripts/mac-sign-notarize.sh
 
