@@ -115,3 +115,4 @@
 .crash-notice-text { margin: 6px 0 10px; color: var(--muted); font-size: var(--fs-base); line-height: 1.45; }
 .crash-notice-actions { display: flex; gap: 8px; }
 .crash-notice-actions .hidden { display: none; }
+.dg-toggle { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: var(--fs-sm); padding-bottom: 6px; }

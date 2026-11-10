@@ -12,6 +12,7 @@ import {
   type CrashNotice,
   type DiagnosticEntry,
   type GithubOutcome,
+  isQuietEditorEntry,
   type ReportRequest,
 } from '../../shared/diagnostics';
 import { composeIssue, isIssueUrl, planIssue } from './github';
@@ -66,7 +67,7 @@ export function registerDiagnosticsIpc({ handle, fromWorkspace, service, writeCl
       return entry ? [entry] : null;
     }
     const notice: CrashNotice | null = request.crash ? service.pendingNotice() : null;
-    const all = service.listing().entries;
+    const all = service.listing().entries.filter((entry) => request.editor || !isQuietEditorEntry(entry));
     if (notice) return recentEntries(all.filter((entry) => entry.session === notice.session), MAX_NOTICE_ENTRIES);
     return recentEntries(all);
   }

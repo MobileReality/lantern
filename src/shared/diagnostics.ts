@@ -9,7 +9,7 @@ export const DIAGNOSTICS_DISMISS_CHANNEL = 'diagnostics:dismiss';
 export const DIAGNOSTIC_SEVERITIES = ['info', 'warning', 'error', 'fatal'] as const;
 export type DiagnosticSeverity = (typeof DIAGNOSTIC_SEVERITIES)[number];
 
-export const DIAGNOSTIC_SOURCES = ['app', 'main', 'renderer', 'render-process', 'child-process', 'ipc', 'editor-server'] as const;
+export const DIAGNOSTIC_SOURCES = ['app', 'main', 'renderer', 'render-process', 'child-process', 'ipc', 'editor-server', 'editor'] as const;
 export type DiagnosticSource = (typeof DIAGNOSTIC_SOURCES)[number];
 
 export const DIAGNOSTIC_SOURCE_LABEL: Record<DiagnosticSource, string> = {
@@ -20,6 +20,7 @@ export const DIAGNOSTIC_SOURCE_LABEL: Record<DiagnosticSource, string> = {
   'child-process': 'Helper process',
   ipc: 'Window request',
   'editor-server': 'Editor server',
+  editor: 'Editor',
 };
 
 export const DIAGNOSTIC_SEVERITY_LABEL: Record<DiagnosticSeverity, string> = {
@@ -64,6 +65,7 @@ export interface RendererReport {
 export interface ReportRequest {
   entryId?: string;
   crash?: boolean;
+  editor?: boolean;
 }
 
 export interface CrashNotice {
@@ -110,10 +112,11 @@ export function parseRendererReport(value: unknown): RendererReport | null {
 export function parseReportRequest(value: unknown): ReportRequest | null {
   if (value === undefined || value === null) return {};
   if (!isRecord(value)) return null;
-  const { entryId, crash } = value;
+  const { entryId, crash, editor } = value;
   if (entryId !== undefined && (typeof entryId !== 'string' || !entryId || entryId.length > MAX_ID_CHARS)) return null;
   if (crash !== undefined && typeof crash !== 'boolean') return null;
-  return { ...(entryId !== undefined ? { entryId } : {}), ...(crash ? { crash } : {}) };
+  if (editor !== undefined && typeof editor !== 'boolean') return null;
+  return { ...(entryId !== undefined ? { entryId } : {}), ...(crash ? { crash } : {}), ...(editor ? { editor } : {}) };
 }
 
 export function parseEntry(value: unknown): DiagnosticEntry | null {
@@ -140,3 +143,5 @@ export function parseEntry(value: unknown): DiagnosticEntry | null {
 }
 
 export const severityRank = (severity: DiagnosticSeverity) => DIAGNOSTIC_SEVERITIES.indexOf(severity);
+
+export const isQuietEditorEntry = (entry: Pick<DiagnosticInput, 'source' | 'severity'>) => entry.source === 'editor' && severityRank(entry.severity) < severityRank('error');

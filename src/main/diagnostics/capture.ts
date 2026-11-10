@@ -1,4 +1,5 @@
 import type { DiagnosticInput, DiagnosticSeverity } from '../../shared/diagnostics';
+import { installEditorCapture } from './editor';
 import { describeFailure } from './record';
 
 type Report = (input: DiagnosticInput) => void;
@@ -49,8 +50,18 @@ export function installMainCapture({ proc, app, report }: { proc: Emitter; app: 
     const input = goneInput(`${details.type ?? details.name ?? details.serviceName ?? 'helper'}`, details);
     if (input) report({ ...input, source: 'child-process' });
   });
+  const editorGuests = new WeakSet<object>();
   app.on('web-contents-created', (_event: unknown, contents: Emitter) => {
-    contents.on('unresponsive', () => report({ source: 'render-process', severity: 'warning', message: 'A window stopped responding' }));
-    contents.on('responsive', () => report({ source: 'render-process', severity: 'info', message: 'A window responds again' }));
+    contents.on('did-attach-webview', (_attached: unknown, guest: Emitter) => {
+      if (editorGuests.has(guest)) return;
+      editorGuests.add(guest);
+      installEditorCapture({ guest, report });
+    });
+    contents.on('unresponsive', () => {
+      if (!editorGuests.has(contents)) report({ source: 'render-process', severity: 'warning', message: 'A window stopped responding' });
+    });
+    contents.on('responsive', () => {
+      if (!editorGuests.has(contents)) report({ source: 'render-process', severity: 'info', message: 'A window responds again' });
+    });
   });
 }

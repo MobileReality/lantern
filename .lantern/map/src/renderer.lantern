@@ -3,7 +3,7 @@ lantern 1
 
 src/renderer/svg.d.ts . schema 0f5231031c58
 
-src/renderer/global.d.ts . schema 111247174e1f
+src/renderer/global.d.ts . schema 7254fab3d49a
   < src/main/cli.ts#CliStatus
   < src/main/dev-instance.ts#DevInstance
   < src/main/extensions.ts#ExtensionsPanel
@@ -33,7 +33,7 @@ src/renderer/global.d.ts . schema 111247174e1f
 src/renderer/command-palette.css . style dffe98a602f6
 #feature command-palette
 
-src/renderer/diagnostics.css . style 552c0c7ddc89
+src/renderer/diagnostics.css . style 73d6b7749286
 #feature app-diagnostics
 
 src/renderer/lantern-flow.css . style 934625fc4247

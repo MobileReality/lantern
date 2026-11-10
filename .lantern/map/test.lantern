@@ -299,7 +299,14 @@ test/diagnostics-capture.test.ts . test 66caeddabe35
   = src/main/diagnostics/ipc-guard.ts#guardIpc
   = test/helpers/diagnostics-world.ts
 
-test/diagnostics-github.test.ts . test fa47dd8819f8
+test/diagnostics-editor.test.ts . test d90ff43e5be3
+#feature app-diagnostics
+  = src/main/diagnostics/capture.ts#installMainCapture
+  = src/main/diagnostics/editor.ts#redactEditorUrl
+  = src/main/diagnostics/throttle.ts#createThrottle
+  = test/helpers/diagnostics-world.ts
+
+test/diagnostics-github.test.ts . test 8a9b68516782
 #feature app-diagnostics
   = src/main/diagnostics/github.ts#planIssue
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
@@ -315,7 +322,7 @@ test/diagnostics-log.test.ts . test 8eab88ed338f
   = src/main/diagnostics/throttle.ts#createThrottle
   = test/helpers/diagnostics-world.ts
 
-test/diagnostics-view.test.ts . test 59de14f228b5
+test/diagnostics-view.test.ts . test 339202e45ec2
 #feature app-diagnostics
   = src/renderer/features/diagnostics-notice.ts#showCrashNotice
   = src/renderer/lib/diagnostics-capture.ts#installRendererCapture
