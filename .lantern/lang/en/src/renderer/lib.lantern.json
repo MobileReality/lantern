@@ -1,6 +1,10 @@
 {
  "text": {
   "auth-client.ts": "Calls the account IPC (including setting the commit email) from the page, turning any failure into a plain result, and fans the main process's change push out to the screens that show accounts",
+  "diagnostics-capture.ts": "Sends a window's uncaught errors and unhandled rejections to main for the Diagnostics log, ignoring the harmless resize notice and never raising an error of its own",
+  "diagnostics-model.ts": "Filters the log entries by severity and source, newest first, adds a pushed entry once and counts entries by severity",
+  "diagnosticsview.ts": "Draws the Diagnostics dialog body: severity and source filters, the live list with an earlier-run mark, the details of one entry and the Copy report and Report on GitHub actions with what each did",
+  "diagnosticsview.ts gotcha": "Every log text goes in with textContent, never as markup, because entries hold text from crashes.",
   "integrations-account.ts": "Builds one account row: provider logo, nickname, login, added date, expiry chip with its warning, the commit email line of a GitHub account (or a plain note that none is set), rename, expiry and email editing in place, and a Remove button that needs a second click",
   "integrations-chip.ts": "Shows one small provider-logo button per integration (GitHub, Bitbucket, Jira) of a project for the Lantern status bar, muted when no account is chosen and then saying how to choose one, each naming its account in its tooltip and opening the Integrations dialog, redrawn when accounts change with keyboard focus kept",
   "integrations-form.ts": "Builds the add-account form for a provider, titled with its logo: its fields (GitHub also gets an optional commit email), the help on where to create the token, a check before sending, a busy state, and the refusal text with the pasted token kept for a retry",

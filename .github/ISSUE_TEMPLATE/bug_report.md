@@ -24,6 +24,11 @@ Security problem? Do not file it here, see SECURITY.md.
 - Installed build or run from source:
 - Project involved (has a `.lantern/` map, code host):
 
+## Diagnostics
+
+In Lantern, open the command palette, choose Diagnostics, then Report on GitHub: the report is filled in
+here for you to read before you submit. It holds no home folders, project folders or tokens.
+
 ## Logs or screenshots
 
 Remove tokens and other secrets first.

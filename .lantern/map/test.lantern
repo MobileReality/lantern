@@ -292,6 +292,44 @@ test/devserver.test.ts . test 159caa06feda
   = src/main/devserver-guard.ts#TOKEN_HEADER
   = src/main/devserver.ts#start
 
+test/diagnostics-capture.test.ts . test 66caeddabe35
+#feature app-diagnostics
+  = src/main/diagnostics/capture.ts#installMainCapture
+  = src/main/diagnostics/editor-server.ts#describeServerStop
+  = src/main/diagnostics/ipc-guard.ts#guardIpc
+  = test/helpers/diagnostics-world.ts
+
+test/diagnostics-editor.test.ts . test d90ff43e5be3
+#feature app-diagnostics
+  = src/main/diagnostics/capture.ts#installMainCapture
+  = src/main/diagnostics/editor.ts#redactEditorUrl
+  = src/main/diagnostics/throttle.ts#createThrottle
+  = test/helpers/diagnostics-world.ts
+
+test/diagnostics-github.test.ts . test 8a9b68516782
+#feature app-diagnostics
+  = src/main/diagnostics/github.ts#planIssue
+  = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
+  = src/main/diagnostics/report.ts#formatReport
+  = src/shared/diagnostics.ts#parseRendererReport
+  = test/helpers/diagnostics-world.ts
+
+test/diagnostics-log.test.ts . test 8eab88ed338f
+#feature app-diagnostics
+  = src/main/diagnostics/lifecycle.ts#crashNoticeFor
+  = src/main/diagnostics/redact.ts#redactText
+  = src/main/diagnostics/rotation.ts#rotateEntries
+  = src/main/diagnostics/throttle.ts#createThrottle
+  = test/helpers/diagnostics-world.ts
+
+test/diagnostics-view.test.ts . test 339202e45ec2
+#feature app-diagnostics
+  = src/renderer/features/diagnostics-notice.ts#showCrashNotice
+  = src/renderer/lib/diagnostics-capture.ts#installRendererCapture
+  = src/renderer/lib/diagnostics-model.ts#applyFilter
+  = src/renderer/workspace.html
+  = test/helpers/diagnostics-world.ts
+
 test/diff-collapse.test.ts . test 8170f196b244
 #feature code-insight
   = src/renderer/lib/codeview.ts
@@ -393,7 +431,7 @@ test/hook-cleanup.test.ts . test e396e94ce32e
   = src/main/hooks.ts#uninstallFrom
   = src/main/notifier.ts#uninstallFrom
 
-test/idle-tabs-workspace.test.ts . test 58a1fb7ae2bf
+test/idle-tabs-workspace.test.ts . test 5d89634606e0
 #feature serve-web
   = src/renderer/lib/idle-tabs.ts
   = src/renderer/workspace.ts
@@ -1946,7 +1984,7 @@ test/project-release.test.ts . test fcaf35dd232c
 test/project-ident.test.ts . test c98778ad4b70
 #feature projects-hub
   = src/main/project-ident/index.ts#projectIdent
-test/project-window.test.ts . test 1788728fd6ff
+test/project-window.test.ts . test c26769a938d5
 #feature projects-hub
   = src/renderer/commands/index.ts
   < src/renderer/state.ts#app
@@ -2180,7 +2218,7 @@ test/setup-view.test.ts . test ffb4448ce2d1
   < src/main/setup-progress.ts
   = src/renderer/lib/setupprogress.ts
 
-test/sidebar.test.ts . test 9dbe51457bbd
+test/sidebar.test.ts . test c165fe67ce67
 #feature projects-hub
   > src/renderer/features/agent-run.ts
   > src/renderer/features/provider-control.ts

@@ -43,6 +43,8 @@ async function boot(groups: Group[], overrides: Partial<SettingValues> = {}) {
   window.ccmws = {
     info: resolved({ port: 9888, token: 'tkn', ready: true, available: true, graceSeconds: 60 }),
     devInstance: resolved(null),
+    diagnosticsNotice: resolved(null),
+    reportRendererError: resolved({ ok: true }),
     projects: resolved(groups),
     settingsGet: resolved(full),
     settingsSnapshot: resolved({ values, modified: [], problems: [], writable: true }),

@@ -459,7 +459,10 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry 097cca4b6c0a
+src/main/main.ts . entry f061103b64c3
+  = src/main/diagnostics/index.ts#startDiagnostics
+  = src/main/diagnostics/ipc-guard.ts#guardIpc
+  = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
   = src/main/editor-demand.ts#createEditorDemand
   = src/main/serveweb-license.ts#createServerLicenseConsent
   = src/main/bundle.ts#setPermissionConsent
@@ -753,8 +756,10 @@ src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
 src/main/serveweb-settings.ts . service 95c6102e988e
 #feature serve-web
 
-src/main/serveweb.ts . service 537a2a51ceff
+src/main/serveweb.ts . service ea925d1a7891
 #feature serve-web
+  > src/main/diagnostics/editor-server.ts#describeServerStop
+  > src/main/diagnostics/index.ts#reportDiagnostic
   = src/main/serveweb-failure.ts
   = src/main/serveweb-launch.ts
   = src/main/serveweb-license.ts

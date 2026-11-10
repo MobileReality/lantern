@@ -15,6 +15,15 @@ import {
   AUTH_UNBIND_CHANNEL,
 } from '@shared/auth';
 import { MEMORY_FREE_CHANNEL, MEMORY_UPDATE_CHANNEL, MEMORY_WATCH_CHANNEL } from '../shared/memory';
+import {
+  DIAGNOSTICS_COPY_CHANNEL,
+  DIAGNOSTICS_DISMISS_CHANNEL,
+  DIAGNOSTICS_GITHUB_CHANNEL,
+  DIAGNOSTICS_NOTICE_CHANNEL,
+  DIAGNOSTICS_REPORT_CHANNEL,
+  DIAGNOSTICS_UPDATE_CHANNEL,
+  DIAGNOSTICS_WATCH_CHANNEL,
+} from '../shared/diagnostics';
 import { PR_EXPLAIN_CANCEL, PR_EXPLAIN_DONE, PR_EXPLAIN_SAVED, PR_EXPLAIN_START } from '../shared/pr-explain';
 
 type Cb = (...args: any[]) => void;
@@ -117,6 +126,14 @@ contextBridge.exposeInMainWorld('ccmws', {
   authUnbind: (provider: string, project: string) => ipcRenderer.invoke(AUTH_UNBIND_CHANNEL, { provider, project }),
   authRemoveProfile: (profileId: string, project?: string) => ipcRenderer.invoke(AUTH_REMOVE_PROFILE_CHANNEL, { profileId, project }),
   onAuthChanged: (cb: Cb) => ipcRenderer.on(AUTH_CHANGED_CHANNEL, (_e, change) => cb(change)),
+
+  reportRendererError: (report: { kind: string; message: string; stack?: string }) => ipcRenderer.invoke(DIAGNOSTICS_REPORT_CHANNEL, report),
+  diagnosticsWatch: (on: boolean) => ipcRenderer.invoke(DIAGNOSTICS_WATCH_CHANNEL, on),
+  diagnosticsCopy: (request: { entryId?: string; editor?: boolean }) => ipcRenderer.invoke(DIAGNOSTICS_COPY_CHANNEL, request),
+  diagnosticsGithub: (request: { entryId?: string; crash?: boolean; editor?: boolean }) => ipcRenderer.invoke(DIAGNOSTICS_GITHUB_CHANNEL, request),
+  diagnosticsNotice: () => ipcRenderer.invoke(DIAGNOSTICS_NOTICE_CHANNEL),
+  diagnosticsDismissNotice: () => ipcRenderer.invoke(DIAGNOSTICS_DISMISS_CHANNEL),
+  onDiagnosticsUpdate: (cb: Cb) => ipcRenderer.on(DIAGNOSTICS_UPDATE_CHANNEL, (_e, entry) => cb(entry)),
 
   memoryWatch: (on: boolean) => ipcRenderer.invoke(MEMORY_WATCH_CHANNEL, on),
   freeProjectMemory: (project: string) => ipcRenderer.invoke(MEMORY_FREE_CHANNEL, project),

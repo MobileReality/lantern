@@ -1,0 +1,71 @@
+lantern 1
+# src/main/diagnostics
+
+src/main/diagnostics/capture.ts . service 2b879a741e1f
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DiagnosticInput
+  = src/main/diagnostics/editor.ts#installEditorCapture
+  = src/main/diagnostics/record.ts#describeFailure
+src/main/diagnostics/editor.ts . pure 981df63dfb1e
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DiagnosticInput
+  < src/shared/diagnostics.ts#clip
+  = src/main/diagnostics/throttle.ts#createThrottle
+src/main/diagnostics/editor-server.ts . pure ab7c5729fd59
+#feature app-diagnostics
+  < src/main/serveweb-parse.ts#ServerPage
+  < src/shared/diagnostics.ts#DiagnosticInput
+src/main/diagnostics/github.ts . pure a73f7be5c250
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#clip
+  = src/main/diagnostics/redact.ts#redactText
+  = src/main/diagnostics/report.ts#formatReport
+  = src/main/diagnostics/report.ts#summarizeEntries
+src/main/diagnostics/index.ts . service 20c9fce9c3ff
+#feature app-diagnostics
+  = src/main/diagnostics/capture.ts#installMainCapture
+  = src/main/diagnostics/service.ts#createDiagnosticsService
+src/main/diagnostics/ipc-guard.ts . middleware 398378099ca3
+#feature app-diagnostics
+  = src/main/diagnostics/record.ts#describeFailure
+src/main/diagnostics/ipc.ts . handler 0bb974deeaaa
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DIAGNOSTICS_REPORT_CHANNEL
+  < src/shared/diagnostics.ts#isQuietEditorEntry
+  < src/shared/diagnostics.ts#parseRendererReport
+  < src/shared/diagnostics.ts#parseReportRequest
+  = src/main/diagnostics/github.ts#composeIssue
+  = src/main/diagnostics/github.ts#isIssueUrl
+  = src/main/diagnostics/github.ts#planIssue
+  = src/main/diagnostics/report.ts#formatReport
+  = src/main/diagnostics/service.ts
+src/main/diagnostics/lifecycle.ts . pure 6a7ac13d4bb9
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#CrashNotice
+src/main/diagnostics/record.ts . pure 2eed62ac052b
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#MAX_MESSAGE_CHARS
+  = src/main/diagnostics/redact.ts#redactText
+src/main/diagnostics/redact.ts . pure f6f2cefd3e11
+#feature app-diagnostics
+  = src/main/auth/redact.ts#redact
+src/main/diagnostics/report.ts . pure 2d2ce4fc3b4a
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DIAGNOSTIC_SEVERITY_LABEL
+  = src/main/diagnostics/redact.ts#redactText
+src/main/diagnostics/rotation.ts . pure 6a844dccc7f8
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#parseEntry
+src/main/diagnostics/service.ts . service 3898c9c47776
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#CRASH_NOTICE_TITLE
+  = src/main/diagnostics/lifecycle.ts#crashNoticeFor
+  = src/main/diagnostics/record.ts#createEntry
+  = src/main/diagnostics/store.ts#createDiagnosticsStore
+  = src/main/diagnostics/throttle.ts#createThrottle
+src/main/diagnostics/store.ts . repository 5f23c5ed33d9
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DiagnosticEntry
+  = src/main/atomic-write.ts#writeFileAtomically
+  = src/main/diagnostics/rotation.ts#rotateEntries
+src/main/diagnostics/throttle.ts . util 5998bbbd2f38

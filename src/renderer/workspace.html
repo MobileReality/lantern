@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="settings.css" />
     <link rel="stylesheet" href="command-palette.css" />
     <link rel="stylesheet" href="memory.css" />
+    <link rel="stylesheet" href="diagnostics.css" />
     <link rel="stylesheet" href="integrations.css" />
   </head>
   <body>
@@ -120,6 +121,26 @@
           <button id="memory-close" class="modal-close" data-tip="Close" aria-label="Close the memory view"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
         </div>
         <div id="memory-body" class="memory-body"></div>
+      </div>
+    </div>
+
+    <div id="diagnostics-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="diagnostics-title">
+      <div class="modal-card diagnostics-modal-card">
+        <div class="modal-head">
+          <span id="diagnostics-title" class="modal-title">Diagnostics</span>
+          <span class="modal-proj">Errors and crashes of Lantern, kept on this computer</span>
+          <button id="diagnostics-close" class="modal-close" data-tip="Close" aria-label="Close the diagnostics view"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+        </div>
+        <div id="diagnostics-body" class="diagnostics-body"></div>
+      </div>
+    </div>
+
+    <div id="crash-notice" class="crash-notice hidden" role="alert">
+      <strong class="crash-notice-title"></strong>
+      <p id="crash-notice-text" class="crash-notice-text"></p>
+      <div class="crash-notice-actions">
+        <button id="crash-notice-report" class="dg-button dg-primary" type="button">Report on GitHub</button>
+        <button id="crash-notice-dismiss" class="dg-button" type="button">Dismiss</button>
       </div>
     </div>
 

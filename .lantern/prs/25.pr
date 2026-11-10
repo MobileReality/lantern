@@ -1,0 +1,186 @@
+lantern-pr 1
+# 25
+#title feat: add local Diagnostics for Lantern's own errors and crashes
+#url https://github.com/MobileReality/lantern/pull/25
+#branch feat/app-diagnostics
+#base main
+#opened 2026-11-10
+#head 888f1ab8f5bf328707323140e23fdc3eb4438bcf
+#describe what Lantern keeps a local, bounded, redacted log of its own errors, crashes and editor-server problems, shows it live in a Diagnostics view and reads earlier runs after a restart.
+#describe what The user can copy a redacted report or open a prefilled GitHub issue; Lantern makes no network call and sends nothing itself.
+#describe before A misconfigured editor server on Windows ended in a blank editor and one line of text, and a crash left nothing behind.
+#describe after The failure is an entry with the exit code, command, last output and a Windows hint, readable and copyable, with home folders, project folders and tokens removed.
+#describe after After a crash the next start shows a one-time notice with Report on GitHub and Dismiss.
+#describe verified Typecheck and lint pass; the unit suite passes except one licences test that needs packages missing from this worktree's shared node_modules.
+#describe verified The view itself was not looked at, as the app cannot be opened from this run.
++ docs/diagnostics.md
++ src/main/diagnostics/capture.ts
++ src/main/diagnostics/editor-server.ts
++ src/main/diagnostics/editor.ts
++ src/main/diagnostics/github.ts
++ src/main/diagnostics/index.ts
++ src/main/diagnostics/ipc-guard.ts
++ src/main/diagnostics/ipc.ts
++ src/main/diagnostics/lifecycle.ts
++ src/main/diagnostics/record.ts
++ src/main/diagnostics/redact.ts
++ src/main/diagnostics/report.ts
++ src/main/diagnostics/rotation.ts
++ src/main/diagnostics/service.ts
++ src/main/diagnostics/store.ts
++ src/main/diagnostics/throttle.ts
++ src/renderer/diagnostics.css
++ src/renderer/features/diagnostics-notice.ts
++ src/renderer/features/diagnostics.ts
++ src/renderer/lib/diagnostics-capture.ts
++ src/renderer/lib/diagnostics-model.ts
++ src/renderer/lib/diagnosticsview.ts
++ src/shared/diagnostics.ts
++ test/diagnostics-capture.test.ts
++ test/diagnostics-editor.test.ts
++ test/diagnostics-github.test.ts
++ test/diagnostics-log.test.ts
++ test/diagnostics-view.test.ts
++ test/helpers/diagnostics-world.ts
+~ .github/ISSUE_TEMPLATE/bug_report.md
+~ docs/index.md
+~ scripts/esbuild.mjs
+~ src/main/main.ts
+~ src/main/serveweb.ts
+~ src/preload/workspace.ts
+~ src/renderer/features/load-screen.ts
+~ src/renderer/global.d.ts
+~ src/renderer/workspace.css
+~ src/renderer/workspace.html
+~ src/renderer/workspace.ts
+~ src/shared/commands/index.ts
+~ src/shared/commands/nodes.ts
+~ test/idle-tabs-workspace.test.ts
+~ test/project-window.test.ts
+~ test/sidebar.test.ts
+#order src/shared/diagnostics.ts
+#order src/main/diagnostics/redact.ts
+#order src/main/diagnostics/record.ts
+#order src/main/diagnostics/rotation.ts
+#order src/main/diagnostics/store.ts
+#order src/main/diagnostics/throttle.ts
+#order src/main/diagnostics/lifecycle.ts
+#order src/main/diagnostics/service.ts
+#order src/main/diagnostics/report.ts
+#order src/main/diagnostics/github.ts
+#order src/main/diagnostics/editor-server.ts
+#order src/main/diagnostics/editor.ts
+#order src/main/diagnostics/capture.ts
+#order src/main/diagnostics/ipc-guard.ts
+#order src/main/diagnostics/ipc.ts
+#order src/main/diagnostics/index.ts
+#order src/main/serveweb.ts
+#order src/main/main.ts
+#order src/preload/workspace.ts
+#order src/renderer/global.d.ts
+#order src/renderer/lib/diagnostics-model.ts
+#order src/renderer/lib/diagnostics-capture.ts
+#order src/renderer/lib/diagnosticsview.ts
+#order src/renderer/features/diagnostics.ts
+#order src/renderer/features/diagnostics-notice.ts
+#order src/renderer/features/load-screen.ts
+#order src/renderer/workspace.ts
+#order src/renderer/workspace.html
+#order src/renderer/diagnostics.css
+#order src/renderer/workspace.css
+#order src/shared/commands/nodes.ts
+#order src/shared/commands/index.ts
+#order scripts/esbuild.mjs
+#order test/helpers/diagnostics-world.ts
+#order test/diagnostics-log.test.ts
+#order test/diagnostics-capture.test.ts
+#order test/diagnostics-editor.test.ts
+#order test/diagnostics-github.test.ts
+#order test/diagnostics-view.test.ts
+#order test/idle-tabs-workspace.test.ts
+#order test/project-window.test.ts
+#order test/sidebar.test.ts
+#order .github/ISSUE_TEMPLATE/bug_report.md
+#order docs/diagnostics.md
+#order docs/index.md
+#reason docs/diagnostics.md Tells users what is recorded, what a report holds and that nothing is sent until they submit the issue.
+#reason src/main/diagnostics/capture.ts Records uncaught errors, crashed or unresponsive windows and helper processes without removing Electron's own error dialog.
+#reason src/main/diagnostics/editor-server.ts Turns the editor server's exit code, stderr, launch error and last probe into entries that explain a blank editor.
+#reason src/main/diagnostics/editor.ts Failures inside the editor page need their own mapping so harmless VS Code noise and the token never reach the log.
+#reason src/main/diagnostics/github.ts Builds the fixed-host issue link and moves a report too long for a link to the clipboard.
+#reason src/main/diagnostics/index.ts Lets any module record a problem through one running service, doing nothing before the app starts it.
+#reason src/main/diagnostics/ipc-guard.ts Records every failing IPC handler without changing what the handler returns or throws.
+#reason src/main/diagnostics/ipc.ts Validates what a window may send and builds the issue link in main, so the window never supplies a URL.
+#reason src/main/diagnostics/lifecycle.ts Decides from the log whether the previous run crashed or never quit, so the next start can say so.
+#reason src/main/diagnostics/record.ts Gives every entry its time, run, platform and version and redacts and limits its text before it is stored.
+#reason src/main/diagnostics/redact.ts Removes home folders, project folders and tokens before text reaches the log, the clipboard or a link.
+#reason src/main/diagnostics/report.ts Formats the redacted text report and the short summary used when a report is too long for a link.
+#reason src/main/diagnostics/rotation.ts Keeps the log bounded by count, size and age and reads it back even when its last line was torn by a crash.
+#reason src/main/diagnostics/service.ts Runs the log for one app run: throttled records, start and quit markers and the crash of the previous run.
+#reason src/main/diagnostics/store.ts Persists the log in the user-data folder with private permissions so earlier runs can be read after a restart.
+#reason src/main/diagnostics/throttle.ts Stops one repeating failure from flooding the log.
+#reason src/renderer/diagnostics.css Styles the Diagnostics dialog and the crash notice with the app's theme tokens.
+#reason src/renderer/features/diagnostics-notice.ts Shows the one-time card after a crash, offering a report or dismissal and never opening the browser itself.
+#reason src/renderer/features/diagnostics.ts Opens and closes the dialog and keeps the live watch on only while it is open.
+#reason src/renderer/lib/diagnostics-capture.ts Forwards window errors and unhandled rejections to main without ever raising an error of its own.
+#reason src/renderer/lib/diagnostics-model.ts Keeps the filtering and live merging of entries as pure functions the view can rely on.
+#reason src/renderer/lib/diagnosticsview.ts Draws the live list, filters, entry details and the copy and GitHub actions, using text only.
+#reason src/shared/diagnostics.ts Defines the entry shape, channel names and limits, and checks every payload a window sends.
+#reason test/diagnostics-capture.test.ts Proves an uncaught error and a server exit code are recorded with redacted paths and that a failing IPC handler is logged.
+#reason test/diagnostics-editor.test.ts Proves mapping, noise filter, token redaction, severity, throttle and freeze handling.
+#reason test/diagnostics-github.test.ts Proves the issue link keeps a fixed host and length, falls back to the clipboard, and that the body is redacted.
+#reason test/diagnostics-log.test.ts Proves rotation drops the oldest entries, a log is read back by the next run and a crash of the last run is found.
+#reason test/diagnostics-view.test.ts Proves the dialog updates live, filters, offers the report actions and shows the crash notice only when asked.
+#reason test/helpers/diagnostics-world.ts Gives the Diagnostics tests a service on a temporary folder with a fixed clock.
+#reason .github/ISSUE_TEMPLATE/bug_report.md Gives the bug template a Diagnostics section so a report from the app has a place to land.
+#reason docs/index.md Links the new Diagnostics page from the docs start page.
+#reason scripts/esbuild.mjs Copies the Diagnostics stylesheet into the build so the new dialog is styled.
+#reason src/main/main.ts Starts the log once the single-instance lock is held, wraps IPC handlers and marks a normal quit.
+#reason src/main/serveweb.ts Hands every editor-server failure to the log with the command run, instead of leaving a blank editor with one line of text.
+#reason src/preload/workspace.ts Exposes the narrow Diagnostics calls to the window as wrapped invokes and one listener, never the raw IPC.
+#reason src/renderer/features/load-screen.ts Adds a Show diagnostics link to a failed editor start so the reason is one click away.
+#reason src/renderer/global.d.ts Types the new Diagnostics calls on the window bridge.
+#reason src/renderer/workspace.css Styles the quiet Show diagnostics link on the failed editor screen.
+#reason src/renderer/workspace.html Adds the Diagnostics dialog and the crash notice card to the workspace page.
+#reason src/renderer/workspace.ts Registers the diagnostics.open command, forwards window errors and shows the crash notice at start.
+#reason src/shared/commands/index.ts Adds the diagnostics commands to the command table so the palette can run them.
+#reason src/shared/commands/nodes.ts Declares the Diagnostics command that opens the dialog from the palette.
+#reason test/idle-tabs-workspace.test.ts Stubs the new bridge calls the workspace makes at start.
+#reason test/project-window.test.ts Stubs the new bridge calls and lists the new command among the always-on ones.
+#reason test/sidebar.test.ts Stubs the new bridge calls the workspace makes at start.
+#story A user finds out why the editor did not start
+#step actor A Windows user
+#file src/renderer/features/load-screen.ts
+#step action opens Diagnostics from the failed start of
+#file src/renderer/features/diagnostics.ts
+#file src/shared/commands/nodes.ts
+#step subject the embedded editor
+#file src/main/serveweb.ts
+#file src/main/diagnostics/editor-server.ts
+#below interaction can read the exit code, command and last output
+#file src/renderer/lib/diagnosticsview.ts
+#below consequence saw a blank editor and one line => sees a copyable, redacted reason
+#story A user reports a problem to the Lantern team
+#step actor A user
+#file src/renderer/features/diagnostics-notice.ts
+#step action chooses Report on GitHub for
+#file src/main/diagnostics/ipc.ts
+#file src/main/diagnostics/github.ts
+#step subject a problem Lantern recorded
+#file src/main/diagnostics/redact.ts
+#file src/main/diagnostics/report.ts
+#below interaction can read and edit the issue before submitting it
+#file test/diagnostics-github.test.ts
+#below consequence had to copy logs by hand => opens a prefilled, redacted issue
+#story A user sees that the last run ended badly
+#step actor A user
+#file src/main/diagnostics/lifecycle.ts
+#step action starts Lantern again after a crash and sees
+#file src/renderer/workspace.ts
+#file test/diagnostics-view.test.ts
+#step subject a one-time notice about the last run
+#file src/main/diagnostics/service.ts
+#file src/main/diagnostics/store.ts
+#below interaction can report it or dismiss it
+#file src/renderer/features/diagnostics-notice.ts
+#below consequence a crash left nothing behind => the crash stays in the log

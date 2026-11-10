@@ -2,6 +2,9 @@ import { activeProjectPath, app } from './state';
 import { baseName, folderToPath, byId, currentPlatform, isMac } from './lib/util';
 import { fixMicrophone, openSkills } from './features/skills';
 import { openMemory } from './features/memory';
+import { openDiagnostics } from './features/diagnostics';
+import { showCrashNotice } from './features/diagnostics-notice';
+import { installRendererCapture } from './lib/diagnostics-capture';
 import { openExplain } from './features/explain';
 import './features/agent-run';
 import { closeModals } from './features/settings';
@@ -469,6 +472,7 @@ function openProjectRoot(root: string) {
 const popoutParams = new URLSearchParams(location.search);
 const popoutTool = popoutParams.get('popout');
 const projectRoot = popoutParams.get('project');
+installRendererCapture(window, (report) => window.ccmws.reportRendererError(report));
 if (popoutTool) {
   window.ccmws.settingsGet().then((s) => {
     initPopout(popoutTool, projectRoot || '');
@@ -500,6 +504,12 @@ if (popoutTool) {
   registerCommand('lantern.refresh', () => refreshMap());
   registerCommand('explain.open', () => closeModals() && void openExplain());
   registerCommand('memory.open', () => closeModals() && void openMemory());
+  registerCommand('diagnostics.open', () => closeModals() && void openDiagnostics());
+  void showCrashNotice({
+    notice: () => window.ccmws.diagnosticsNotice(),
+    github: (request) => window.ccmws.diagnosticsGithub(request),
+    dismiss: () => window.ccmws.diagnosticsDismissNotice(),
+  });
   registerCommand('skills.open', () => closeModals() && void openSkills());
   registerCommand('integrations.open', () => closeModals() && openIntegrations(document.activeElement, { projects: openedProjects }));
   registerCommand('skills.fixMicrophone', () => void fixMicrophone());

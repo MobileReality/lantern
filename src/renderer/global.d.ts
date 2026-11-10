@@ -22,6 +22,7 @@ import type { AddTokenResult, AuthChange, AuthReply, EditResult, ProjectReply } 
 import type { ProviderId } from '@shared/providers';
 import type { PrExplainDone, PrExplainSavedResult, PrExplainStartResult } from '../shared/pr-explain';
 import type { TrayModel } from '../shared/tray-model';
+import type { CopyOutcome, CrashNotice, DiagnosticEntry, DiagnosticsListing, GithubOutcome, RendererReportKind } from '../shared/diagnostics';
 
 export {};
 
@@ -120,6 +121,13 @@ interface CcmwsBridge {
   authUnbind(provider: ProviderId, project: string): Promise<AuthReply>;
   authRemoveProfile(profileId: string, project?: string): Promise<AuthReply>;
   onAuthChanged(cb: (change: AuthChange) => void): void;
+  reportRendererError(report: { kind: RendererReportKind; message: string; stack?: string }): Promise<{ ok: boolean }>;
+  diagnosticsWatch(on: boolean): Promise<DiagnosticsListing>;
+  diagnosticsCopy(request: { entryId?: string; editor?: boolean }): Promise<CopyOutcome>;
+  diagnosticsGithub(request: { entryId?: string; crash?: boolean; editor?: boolean }): Promise<GithubOutcome>;
+  diagnosticsNotice(): Promise<CrashNotice | null>;
+  diagnosticsDismissNotice(): Promise<boolean>;
+  onDiagnosticsUpdate(cb: (entry: DiagnosticEntry) => void): void;
   memoryWatch(on: boolean): Promise<MemoryViewState>;
   freeProjectMemory(project: string): Promise<FreeMemoryResult>;
   onMemoryUpdate(cb: (snapshot: MemorySnapshot) => void): void;

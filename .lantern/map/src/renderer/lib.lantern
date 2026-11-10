@@ -33,6 +33,22 @@ src/renderer/lib/comparemodal.ts . component 9d3dfd45fc38
   = src/renderer/lib/util.ts#plural
   < src/shared/local-review.ts#compareId
 
+src/renderer/lib/diagnostics-capture.ts . service ec8242dd97df
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#RendererReportKind
+
+src/renderer/lib/diagnostics-model.ts . pure 3f3cdaa605d8
+#feature app-diagnostics
+  < src/shared/diagnostics.ts#DIAGNOSTIC_SEVERITIES
+  < src/shared/diagnostics.ts#isQuietEditorEntry
+
+src/renderer/lib/diagnosticsview.ts . component 2ab67d6bad70
+#feature app-diagnostics
+  < src/renderer/lib/diagnostics-model.ts#applyFilter
+  < src/renderer/lib/diagnostics-model.ts#isShown
+  < src/renderer/lib/util.ts#el
+  < src/shared/diagnostics.ts#DIAGNOSTIC_SOURCES
+
 src/renderer/lib/diffcollapse.ts . pure 2938067b7e60
 #feature code-insight
   < src/renderer/lib/codeview.ts#DiffRow

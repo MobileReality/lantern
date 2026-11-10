@@ -1,0 +1,27 @@
+{
+  "text": {
+    "capture.ts": "Listens for uncaught exceptions, unhandled rejections, windows and helper processes that crashed or stopped responding, and records each one in the Diagnostics log",
+    "capture.ts gotcha": "Uncaught errors use the monitor event, so Electron's own error dialog still appears.",
+    "editor.ts": "Turns what the embedded editor page reports (console errors, a failed load, freezing) into editor log entries, dropping known harmless messages and repeats and removing the connection token from addresses",
+    "editor.ts gotcha": "Aborted loads and sub-frame failures are ignored; console errors stay warnings.",
+    "editor-server.ts":"Turns the VS Code server's stderr lines, exit code or signal, launch error and last health check into log entries, with the command that was run and a Windows hint",
+    "editor-server.ts gotcha": "Stderr entries stop after a fixed number per start, so a noisy server cannot fill the log.",
+    "github.ts": "Builds the GitHub issue link from a redacted report, moving a long report to the clipboard and keeping only a short summary in a link under the length limit",
+    "github.ts gotcha": "The link host, repository and path are fixed; a link that does not match isIssueUrl is never opened.",
+    "index.ts": "Holds the one running Diagnostics service so any module can record a problem, doing nothing until the app has started it",
+    "ipc-guard.ts": "Wraps every IPC handler registered after it so a thrown error or rejected promise is recorded and then thrown on unchanged",
+    "ipc-guard.ts gotcha": "Only handlers registered after it is installed are wrapped, so it must run before the first ipcMain.handle.",
+    "ipc.ts": "Answers the Diagnostics channels from trusted windows: a validated window error, live watching, copy report, open the issue page on GitHub and the crash notice, with every request checked",
+    "ipc.ts gotcha": "The window sends only an entry id; the link is always built here, never taken from the window.",
+    "lifecycle.ts": "Decides from the log whether the previous run crashed or ended without a normal quit, and names the start and quit markers",
+    "record.ts": "Builds one log entry with its time, run, platform and version, redacting and limiting its text, and describes a thrown value as a message and stack",
+    "redact.ts": "Removes home folders, project folders and tokens from text, on top of the credential patterns the account code already uses",
+    "redact.ts = src/main/auth/redact.ts#redact": "token and credential patterns",
+    "report.ts": "Formats the environment and entries as a redacted text report, and a short summary of the worst entries",
+    "rotation.ts": "Reads the log tolerating a torn line, and drops the oldest entries past the entry, size and age bounds",
+    "service.ts": "Runs the Diagnostics log for one app run: records entries through a throttle, marks start and quit, finds a crash of the previous run, and gives the report context",
+    "service.ts gotcha": "begin() must wait for the single-instance lock, or a second launch would log a start with no quit.",
+    "store.ts": "Appends entries to the JSON lines log in the user-data folder with private permissions, rewrites it within its bounds and tells subscribers about each new entry",
+    "throttle.ts": "Lets a key through only a few times per time window, so a repeating failure cannot flood the log"
+  }
+}

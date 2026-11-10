@@ -44,6 +44,8 @@ function mockBridge(settings: BootSettings) {
   window.ccmws = {
     info: resolved({ port: 9888, token: 'tkn', ready: true, available: true }),
     devInstance: resolved(null),
+    diagnosticsNotice: resolved(null),
+    reportRendererError: resolved({ ok: true }),
     projects: resolved(projects),
     addFolder: resolved({ groups: [{ name: 'alpha', path: '/p/alpha', sessions: [] }], selectedPath: null }),
     settingsGet: resolved(full),

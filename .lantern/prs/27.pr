@@ -1,0 +1,73 @@
+lantern-pr 1
+# 27
+#title Record editor webview failures in Diagnostics
+#url https://github.com/MobileReality/lantern/pull/27
+#branch feat/editor-diagnostics
+#base feat/app-diagnostics
+#opened 2026-11-10
+#head ca51f637d719d063bbde65d7cbf65e1576427578
+#describe what Console errors, failed loads and freezes of the embedded editor page are recorded in Diagnostics as Editor entries, with harmless noise dropped and the connection token removed.
+#describe before An error inside the editor left nothing in the log.
+#describe after It appears as Editor / Warning; load failures and freezes are errors. Warnings are hidden and left out of whole-log reports until you tick Editor console warnings.
+#describe verified typecheck, lint and the full unit suite are green. The behaviour was not seen running in the app.
++ src/main/diagnostics/editor.ts
++ test/diagnostics-editor.test.ts
+~ docs/diagnostics.md
+~ src/main/diagnostics/capture.ts
+~ src/main/diagnostics/ipc.ts
+~ src/preload/workspace.ts
+~ src/renderer/diagnostics.css
+~ src/renderer/features/diagnostics.ts
+~ src/renderer/global.d.ts
+~ src/renderer/lib/diagnostics-model.ts
+~ src/renderer/lib/diagnosticsview.ts
+~ src/shared/diagnostics.ts
+~ test/diagnostics-github.test.ts
+~ test/diagnostics-view.test.ts
+#order src/shared/diagnostics.ts
+#order src/main/diagnostics/editor.ts
+#order src/main/diagnostics/capture.ts
+#order src/main/diagnostics/ipc.ts
+#order src/preload/workspace.ts
+#order src/renderer/global.d.ts
+#order src/renderer/features/diagnostics.ts
+#order src/renderer/lib/diagnostics-model.ts
+#order src/renderer/lib/diagnosticsview.ts
+#order src/renderer/diagnostics.css
+#order test/diagnostics-editor.test.ts
+#order test/diagnostics-view.test.ts
+#order test/diagnostics-github.test.ts
+#order docs/diagnostics.md
+#reason src/main/diagnostics/editor.ts Failures inside the editor page need their own mapping so harmless VS Code noise and the token never reach the log.
+#reason test/diagnostics-editor.test.ts Proves mapping, noise filter, token redaction, severity, throttle and freeze handling.
+#reason docs/diagnostics.md Tells people editor entries exist and how to show them.
+#reason src/main/diagnostics/capture.ts The existing hook for new windows is where the editor webview is attached, so no second window-level hack is needed.
+#reason src/main/diagnostics/ipc.ts Whole-log reports must not be flooded by hidden editor warnings, yet a chosen entry stays reportable.
+#reason src/preload/workspace.ts The window passes the editor choice along with the report request.
+#reason src/renderer/diagnostics.css Styles the new checkbox in the toolbar.
+#reason src/renderer/features/diagnostics.ts Forwards the editor checkbox choice to copy and GitHub reports.
+#reason src/renderer/global.d.ts Types the extra report option for the window.
+#reason src/renderer/lib/diagnostics-model.ts Decides which entries the list shows, hiding quiet editor ones by default.
+#reason src/renderer/lib/diagnosticsview.ts Adds the checkbox that reveals editor console warnings and keeps counts and reports in step with it.
+#reason src/shared/diagnostics.ts The new source, its label and the rule for what is quiet are shared by the log, reports and the view.
+#reason test/diagnostics-github.test.ts Proves whole-log reports leave out quiet editor entries unless asked.
+#reason test/diagnostics-view.test.ts Proves editor warnings are hidden by default and the checkbox reaches the report.
+#story Errors inside the editor are logged
+#step actor The editor page
+#step action reports an error, fails to load or freezes
+#step subject the Diagnostics log
+#file src/main/diagnostics/editor.ts
+#file src/main/diagnostics/capture.ts
+#file test/diagnostics-editor.test.ts
+#below interaction Open Diagnostics to see what went wrong in the editor
+#file src/renderer/lib/diagnosticsview.ts
+#below consequence Editor errors left no trace => They appear as Editor entries, token removed
+#story Editor noise stays out of the way
+#step actor A person
+#step action opens Diagnostics or copies a report
+#step subject the list and the report
+#file src/renderer/lib/diagnostics-model.ts
+#file src/main/diagnostics/ipc.ts
+#file test/diagnostics-view.test.ts
+#below interaction Tick Editor console warnings to include them
+#below consequence Everything recorded filled the list => Editor warnings are hidden until asked for
