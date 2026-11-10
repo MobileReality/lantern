@@ -1,11 +1,13 @@
 const FINISHED_SESSION_STATES: ReadonlySet<string> = new Set(['done', 'failed', 'stopped', 'ended']);
 
-// Anything that is not clearly finished (running, waiting, needs approval, unknown, status
-// unavailable) counts as a live agent: ending its tab or its app would end it.
+function isLiveSession(session: { state: string }): boolean {
+  return !FINISHED_SESSION_STATES.has(session.state);
+}
+
 export function hasLiveSession(sessions: readonly { state: string }[]): boolean {
-  return sessions.some((session) => !FINISHED_SESSION_STATES.has(session.state));
+  return sessions.some(isLiveSession);
 }
 
 export function liveSessionCount(sessions: readonly { state: string }[]): number {
-  return sessions.filter((session) => !FINISHED_SESSION_STATES.has(session.state)).length;
+  return sessions.filter(isLiveSession).length;
 }
