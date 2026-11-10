@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/app-diagnostics
 #base main
 #opened 2026-11-10
-#head 05e829bf3180da24f1c1a9ff67432b0940d6191c
+#head 888f1ab8f5bf328707323140e23fdc3eb4438bcf
 #describe what Lantern keeps a local, bounded, redacted log of its own errors, crashes and editor-server problems, shows it live in a Diagnostics view and reads earlier runs after a restart.
 #describe what The user can copy a redacted report or open a prefilled GitHub issue; Lantern makes no network call and sends nothing itself.
 #describe before A misconfigured editor server on Windows ended in a blank editor and one line of text, and a crash left nothing behind.
@@ -16,6 +16,7 @@ lantern-pr 1
 + docs/diagnostics.md
 + src/main/diagnostics/capture.ts
 + src/main/diagnostics/editor-server.ts
++ src/main/diagnostics/editor.ts
 + src/main/diagnostics/github.ts
 + src/main/diagnostics/index.ts
 + src/main/diagnostics/ipc-guard.ts
@@ -36,6 +37,7 @@ lantern-pr 1
 + src/renderer/lib/diagnosticsview.ts
 + src/shared/diagnostics.ts
 + test/diagnostics-capture.test.ts
++ test/diagnostics-editor.test.ts
 + test/diagnostics-github.test.ts
 + test/diagnostics-log.test.ts
 + test/diagnostics-view.test.ts
@@ -67,6 +69,7 @@ lantern-pr 1
 #order src/main/diagnostics/report.ts
 #order src/main/diagnostics/github.ts
 #order src/main/diagnostics/editor-server.ts
+#order src/main/diagnostics/editor.ts
 #order src/main/diagnostics/capture.ts
 #order src/main/diagnostics/ipc-guard.ts
 #order src/main/diagnostics/ipc.ts
@@ -91,6 +94,7 @@ lantern-pr 1
 #order test/helpers/diagnostics-world.ts
 #order test/diagnostics-log.test.ts
 #order test/diagnostics-capture.test.ts
+#order test/diagnostics-editor.test.ts
 #order test/diagnostics-github.test.ts
 #order test/diagnostics-view.test.ts
 #order test/idle-tabs-workspace.test.ts
@@ -102,6 +106,7 @@ lantern-pr 1
 #reason docs/diagnostics.md Tells users what is recorded, what a report holds and that nothing is sent until they submit the issue.
 #reason src/main/diagnostics/capture.ts Records uncaught errors, crashed or unresponsive windows and helper processes without removing Electron's own error dialog.
 #reason src/main/diagnostics/editor-server.ts Turns the editor server's exit code, stderr, launch error and last probe into entries that explain a blank editor.
+#reason src/main/diagnostics/editor.ts Failures inside the editor page need their own mapping so harmless VS Code noise and the token never reach the log.
 #reason src/main/diagnostics/github.ts Builds the fixed-host issue link and moves a report too long for a link to the clipboard.
 #reason src/main/diagnostics/index.ts Lets any module record a problem through one running service, doing nothing before the app starts it.
 #reason src/main/diagnostics/ipc-guard.ts Records every failing IPC handler without changing what the handler returns or throws.
@@ -122,6 +127,7 @@ lantern-pr 1
 #reason src/renderer/lib/diagnosticsview.ts Draws the live list, filters, entry details and the copy and GitHub actions, using text only.
 #reason src/shared/diagnostics.ts Defines the entry shape, channel names and limits, and checks every payload a window sends.
 #reason test/diagnostics-capture.test.ts Proves an uncaught error and a server exit code are recorded with redacted paths and that a failing IPC handler is logged.
+#reason test/diagnostics-editor.test.ts Proves mapping, noise filter, token redaction, severity, throttle and freeze handling.
 #reason test/diagnostics-github.test.ts Proves the issue link keeps a fixed host and length, falls back to the clipboard, and that the body is redacted.
 #reason test/diagnostics-log.test.ts Proves rotation drops the oldest entries, a log is read back by the next run and a crash of the last run is found.
 #reason test/diagnostics-view.test.ts Proves the dialog updates live, filters, offers the report actions and shows the crash notice only when asked.
