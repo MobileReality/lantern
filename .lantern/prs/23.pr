@@ -1,0 +1,29 @@
+lantern-pr 1
+# 23
+#title Fix known dependency vulnerabilities
+#url https://github.com/MobileReality/lantern/pull/23
+#branch fix/dependency-vulnerabilities
+#base main
+#opened 2026-11-09
+#head cf8fbe8f14ab604243e485e82759801a349db695
+#describe what Patched versions replace every dependency with a known vulnerability, through version bumps and scoped overrides.
+#describe what Only js-yaml is a runtime dependency with findings; the rest is test and packaging tooling.
+#describe before pnpm audit reported 65 findings: 2 critical, 30 high, 29 moderate, 4 low.
+#describe after pnpm audit and pnpm audit --prod report no known vulnerabilities.
+#describe verified Typecheck, lint, the full unit suite, compile and the macOS build all pass; e2e and Windows packaging run only in CI.
+~ package.json
+~ pnpm-lock.yaml
+#order package.json
+#order pnpm-lock.yaml
+#reason package.json Moves js-yaml, vitest and the packaging tools to patched releases and pins patched transitives so audit is clean
+#reason pnpm-lock.yaml Resolves the bumped versions and overrides with pnpm 10.28.0 so installs stay reproducible
+#story Dependencies free of known vulnerabilities
+#step actor A maintainer
+#file package.json
+#step action installs and audits the dependencies
+#file pnpm-lock.yaml
+#step subject the app and its build tooling
+#file package.json
+#below interaction Run the audit and get a clean result
+#below consequence 65 known vulnerabilities reported => none reported, shipped bundle unchanged
+#file pnpm-lock.yaml
