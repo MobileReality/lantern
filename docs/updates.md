@@ -1,7 +1,7 @@
 # Updates
 
 An installed Lantern looks for a newer release by itself. On a Mac it downloads the update in the
-background and installs it only when no session would be ended. On Windows it only tells you that a new
+background and installs it only when no terminal or running work would be ended. On Windows it only tells you that a new
 version exists and links to it. A copy started from source (`pnpm start`) or a dev profile never checks.
 
 ## On a Mac
@@ -9,15 +9,15 @@ version exists and links to it. A copy started from source (`pnpm start`) or a d
 Lantern checks when it starts and then every four hours. When there is a newer release it downloads it
 and waits. The update installs, and Lantern restarts, only when nothing would be ended:
 
-- no AI assistant session Lantern watches is working, waiting for you, waiting for approval or in an
-  unknown state (a session that has finished does not count),
 - no run started by Lantern itself is going,
 - no editor terminal is open and no process started through the editor is running.
+
+Sessions in other terminals, such as iTerm, do not block an update: a restart does not end them.
 
 While something is alive you see **Update ready: restart when your sessions finish**, and the update
 installs by itself as soon as nothing is. **Not now** keeps it from installing on its own; the downloaded
 update then installs the next time you quit Lantern, or when you choose **Restart now**. **Restart now**
-while something is alive first lists what would be ended (for example "2 AI assistant sessions and 1 editor terminal")
+while something is alive first lists what would be ended (for example "2 editor terminals and 1 running process")
 and restarts only after you confirm. Lantern never restarts by itself while the check says something is alive,
 and it waits when it cannot tell.
 

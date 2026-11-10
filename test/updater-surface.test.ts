@@ -120,9 +120,8 @@ describe('the result of a manual check', () => {
 
 describe('the restart confirmation', () => {
   it('names every kind of thing that would be lost', () => {
-    const items = lostItems({ sessions: 2, agentRunning: true, terminals: 1, running: 3, unknown: true });
+    const items = lostItems({ agentRunning: true, terminals: 1, running: 3, unknown: true });
     expect(items).toEqual([
-      '2 AI assistant sessions',
       'an AI assistant run started by Lantern',
       '1 editor terminal',
       '3 running processes',
@@ -131,8 +130,8 @@ describe('the restart confirmation', () => {
   });
 
   it('puts the list in the detail and defaults to cancelling', () => {
-    const dialog = restartDialog({ sessions: 1, agentRunning: false, terminals: 2, running: 0, unknown: false });
-    expect(dialog.detail).toBe('Restarting ends 1 AI assistant session and 2 editor terminals. Whatever is running in them stops.');
+    const dialog = restartDialog({ agentRunning: false, terminals: 2, running: 0, unknown: false });
+    expect(dialog.detail).toBe('Restarting ends 2 editor terminals. Whatever is running in them stops.');
     expect(dialog.cancel).toBe('Cancel');
   });
 });

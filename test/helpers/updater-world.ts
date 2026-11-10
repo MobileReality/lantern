@@ -5,8 +5,8 @@ import type { NativeUpdater } from '../../src/main/updater/native';
 import { type UpdaterDeps, createUpdater } from '../../src/main/updater/service';
 import type { UpdateNotice } from '../../src/shared/updates';
 
-export const IDLE: ActivityState = { sessions: [], agentRunning: false, processes: { terminals: 0, running: 0 } };
-export const BUSY: ActivityState = { sessions: [{ state: 'running' }], agentRunning: false, processes: { terminals: 1, running: 0 } };
+export const IDLE: ActivityState = { agentRunning: false, processes: { terminals: 0, running: 0 } };
+export const BUSY: ActivityState = { agentRunning: false, processes: { terminals: 1, running: 0 } };
 
 export const FEED_NEWER = JSON.stringify({ name: 'v0.3.0', url: 'https://github.com/MobileReality/lantern/releases/download/v0.3.0/Lantern-mac.zip' });
 export const LATEST_NEWER = JSON.stringify({ tag_name: 'v0.4.0' });

@@ -4,7 +4,6 @@ import path from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { showUpdateNotice } from '../src/renderer/features/update-notice';
 import { hasLiveSession } from '../src/renderer/lib/idle-tabs';
-import { liveSessionCount } from '../src/shared/session-liveness';
 import type { UpdateNotice } from '../src/shared/updates';
 
 const HTML = fs.readFileSync(path.join(__dirname, '../src/renderer/workspace.html'), 'utf8');
@@ -60,6 +59,5 @@ describe('the update notice in the window', () => {
 describe('the one definition of a live session', () => {
   it('is shared by the idle tabs and the updater', () => {
     expect(hasLiveSession([{ state: 'idle' }])).toBe(true);
-    expect(liveSessionCount([{ state: 'idle' }, { state: 'done' }, { state: 'shell' }])).toBe(2);
   });
 });

@@ -704,7 +704,6 @@ const updater = createUpdater({
   fetch: (url, { headers, signal }) => electron.net.fetch(url, { headers, signal }),
   native: process.platform === 'darwin' ? squirrelUpdater(electron.autoUpdater as unknown as AutoUpdaterLike) : null,
   activity: async () => ({
-    sessions: state.all(),
     agentRunning: agent.isRunning() || prExplain.running() > 0,
     processes: await readProcessActivity({ platform: process.platform, supportedPlatforms: MEMORY_SUPPORTED_PLATFORMS, run: runCommand, rootPid: process.pid }),
   }),

@@ -468,7 +468,6 @@
       "cancel": "Cancel"
     },
     "lost": {
-      "sessions": { "one": "{count} AI assistant session", "other": "{count} AI assistant sessions" },
       "terminals": { "one": "{count} editor terminal", "other": "{count} editor terminals" },
       "running": { "one": "{count} running process", "other": "{count} running processes" },
       "agentRun": "an AI assistant run started by Lantern",

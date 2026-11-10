@@ -23,7 +23,6 @@ const CLOSE = { label: msg('updates.result.close'), action: 'close' } as const;
 
 export function lostItems(live: LiveParts): string[] {
   const items: string[] = [];
-  if (live.sessions > 0) items.push(msgCount('updates.lost.sessions', live.sessions));
   if (live.agentRunning) items.push(msg('updates.lost.agentRun'));
   if (live.terminals > 0) items.push(msgCount('updates.lost.terminals', live.terminals));
   if (live.running > 0) items.push(msgCount('updates.lost.running', live.running));

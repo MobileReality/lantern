@@ -3,7 +3,7 @@ import { type ActivityState, canInstallNow, liveParts } from '../src/main/update
 import { readProcessActivity } from '../src/main/updater/process-activity';
 import type { CommandRunner } from '../src/main/memory-collect';
 
-const IDLE: ActivityState = { sessions: [], agentRunning: false, processes: { terminals: 0, running: 0 } };
+const IDLE: ActivityState = { agentRunning: false, processes: { terminals: 0, running: 0 } };
 
 const idleWith = (change: Partial<ActivityState>): ActivityState => ({ ...IDLE, ...change });
 
@@ -12,18 +12,13 @@ describe('canInstallNow', () => {
     expect(canInstallNow(IDLE)).toBe(true);
   });
 
-  it('is true when every watched session has finished', () => {
-    const sessions = [{ state: 'done' }, { state: 'failed' }, { state: 'stopped' }, { state: 'ended' }];
-    expect(canInstallNow(idleWith({ sessions }))).toBe(true);
-  });
-
-  it.each(['running', 'shell', 'permission', 'idle'])('is false while a session is %s', (state) => {
-    expect(canInstallNow(idleWith({ sessions: [{ state: 'done' }, { state }] }))).toBe(false);
-  });
-
-  it.each(['unknown', 'unavailable'])('is false while a session is %s, since it may still be alive', (state) => {
-    expect(canInstallNow(idleWith({ sessions: [{ state }] }))).toBe(false);
-  });
+  it.each(['running', 'shell', 'permission', 'idle', 'unknown'])(
+    'is true while a watched session in another terminal is %s, since a restart does not end it',
+    (state) => {
+      const watched = { ...IDLE, sessions: [{ state }] };
+      expect(canInstallNow(watched)).toBe(true);
+    },
+  );
 
   it('is false while a run started by Lantern is going', () => {
     expect(canInstallNow(idleWith({ agentRunning: true }))).toBe(false);
@@ -45,11 +40,10 @@ describe('canInstallNow', () => {
 describe('liveParts', () => {
   it('counts what a restart would end', () => {
     const state: ActivityState = {
-      sessions: [{ state: 'running' }, { state: 'done' }, { state: 'idle' }],
       agentRunning: true,
       processes: { terminals: 2, running: 3 },
     };
-    expect(liveParts(state)).toEqual({ sessions: 2, agentRunning: true, terminals: 2, running: 3, unknown: false });
+    expect(liveParts(state)).toEqual({ agentRunning: true, terminals: 2, running: 3, unknown: false });
   });
 
   it('flags unreadable processes as unknown', () => {

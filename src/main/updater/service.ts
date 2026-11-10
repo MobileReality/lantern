@@ -39,7 +39,7 @@ export interface UpdaterDeps {
   timers: UpdateTimers;
 }
 
-const UNKNOWN_ACTIVITY: ActivityState = { sessions: [], agentRunning: false, processes: null };
+const UNKNOWN_ACTIVITY: ActivityState = { agentRunning: false, processes: null };
 
 export function createUpdater(deps: UpdaterDeps) {
   const native = deps.platform === 'darwin' ? deps.native : null;

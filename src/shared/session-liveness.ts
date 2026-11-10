@@ -7,7 +7,3 @@ function isLiveSession(session: { state: string }): boolean {
 export function hasLiveSession(sessions: readonly { state: string }[]): boolean {
   return sessions.some(isLiveSession);
 }
-
-export function liveSessionCount(sessions: readonly { state: string }[]): number {
-  return sessions.filter(isLiveSession).length;
-}

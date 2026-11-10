@@ -220,7 +220,7 @@ describe('the session guard around the install', () => {
   });
 
   it('waits when the processes cannot be read', async () => {
-    const world = await downloaded({ sessions: [], agentRunning: false, processes: null });
+    const world = await downloaded({ agentRunning: false, processes: null });
     expect(world.native.quitAndInstall).not.toHaveBeenCalled();
   });
 
@@ -256,7 +256,7 @@ describe('Restart now', () => {
   it('asks for confirmation naming what would be lost, and installs only after a yes', async () => {
     const world = await waiting();
     expect(await world.updater.restartNow()).toBe(true);
-    expect(world.confirmRestart).toHaveBeenCalledExactlyOnceWith({ sessions: 1, agentRunning: false, terminals: 1, running: 0, unknown: false });
+    expect(world.confirmRestart).toHaveBeenCalledExactlyOnceWith({ agentRunning: false, terminals: 1, running: 0, unknown: false });
     expect(world.native.quitAndInstall).toHaveBeenCalledOnce();
   });
 
