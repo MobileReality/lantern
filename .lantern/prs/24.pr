@@ -1,0 +1,27 @@
+lantern-pr 1
+# 24
+#title Set version 0.2.2 and add 0.2.1 and 0.2.2 changelog entries
+#url https://github.com/MobileReality/lantern/pull/24
+#branch chore/release-0-2-2
+#base main
+#opened 2026-11-10
+#head 7c3981f4daf13723b51794d66ceaababeec2d2bb
+#describe what Package version is now 0.2.2 and the changelog lists 0.2.1 and 0.2.2.
+#describe before Version 1.0.0; 0.2.1 notes under Unreleased.
+#describe after Version 0.2.2; Unreleased empty.
+#describe verified typecheck and related unit tests green.
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md The 0.2.1 notes and the 0.2.2 fixes need dated entries so v0.2.2 can be cut.
+#reason package.json The version had drifted at 1.0.0 from before the tags, so it must match v0.2.x.
+#story The maintainer cuts the next release
+#step actor The maintainer
+#step action tags the release from
+#step subject the main branch
+#file package.json
+#file CHANGELOG.md
+#below actor Release users
+#below interaction can read dated notes for 0.2.1 and 0.2.2
+#below consequence Version said 1.0.0, notes sat under Unreleased => Version says 0.2.2, notes are dated
