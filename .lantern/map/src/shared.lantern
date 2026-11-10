@@ -98,7 +98,7 @@ src/shared/settings-updates.ts . config b80bc7100237
 
 src/shared/shell-quote.ts . util ef8b28ec1ccf
 
-src/shared/session-liveness.ts . pure e6cdedc46bf1
+src/shared/session-liveness.ts . pure d83726c53a94
 #feature app-updates
 
 src/shared/updates.ts . schema 1db7e9a390a0
