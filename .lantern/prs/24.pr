@@ -5,23 +5,35 @@ lantern-pr 1
 #branch chore/release-0-2-2
 #base main
 #opened 2026-11-10
-#head 7c3981f4daf13723b51794d66ceaababeec2d2bb
-#describe what Package version is now 0.2.2 and the changelog lists 0.2.1 and 0.2.2.
-#describe before Version 1.0.0; 0.2.1 notes under Unreleased.
-#describe after Version 0.2.2; Unreleased empty.
-#describe verified typecheck and related unit tests green.
+#head 806a9ede6bb4e83a5eb739d5fafed1ad90656707
+#describe what Package version is now 0.2.2, the changelog lists 0.2.1 and 0.2.2, and the packaged app takes its version from package.json.
+#describe before Version 1.0.0 in package.json and hardcoded in the app manifest.
+#describe after Version 0.2.2 everywhere; a test fails if the manifest drifts from package.json.
+#describe verified typecheck and app-identity tests green.
 ~ CHANGELOG.md
 ~ package.json
+~ scripts/app-manifest.mjs
+~ scripts/esbuild.mjs
+~ test/app-identity.test.ts
+#order scripts/app-manifest.mjs
+#order scripts/esbuild.mjs
+#order test/app-identity.test.ts
 #order package.json
 #order CHANGELOG.md
 #reason CHANGELOG.md The 0.2.1 notes and the 0.2.2 fixes need dated entries so v0.2.2 can be cut.
 #reason package.json The version had drifted at 1.0.0 from before the tags, so it must match v0.2.x.
-#story The maintainer cuts the next release
+#reason scripts/app-manifest.mjs The packaged app took a hardcoded 1.0.0, so it must take the version it is given.
+#reason scripts/esbuild.mjs It must feed the package.json version into the manifest so the released app matches the tags.
+#reason test/app-identity.test.ts Fails when the manifest version stops following package.json, as the hardcoded 1.0.0 did.
+#story The released app reports the tagged version
 #step actor The maintainer
-#step action tags the release from
-#step subject the main branch
+#step action tags and ships a release of
+#step subject the desktop app
 #file package.json
 #file CHANGELOG.md
-#below actor Release users
-#below interaction can read dated notes for 0.2.1 and 0.2.2
-#below consequence Version said 1.0.0, notes sat under Unreleased => Version says 0.2.2, notes are dated
+#file scripts/app-manifest.mjs
+#file scripts/esbuild.mjs
+#file test/app-identity.test.ts
+#below actor App users
+#below interaction see the real release version and dated notes
+#below consequence The app reported 1.0.0 whatever the tag => The app reports the version of package.json
