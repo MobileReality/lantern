@@ -1,7 +1,7 @@
 lantern 1
 # src/shared/commands
 
-src/shared/commands/index.ts . pure 27fd745913f3
+src/shared/commands/index.ts . pure f55107b23692
 #feature commands-keymap
   < src/shared/commands/key-syntax.ts#isDispatchableKey
   < src/shared/commands/nodes.ts
@@ -13,7 +13,7 @@ src/shared/commands/keymap-settings.ts . config 35601cea9359
 #feature commands-keymap
   < src/shared/settings-schema.ts#SettingsNode
 
-src/shared/commands/keymap.ts . pure 5f34b32d7f89
+src/shared/commands/keymap.ts . pure c552a080fbc5
 #feature commands-keymap
   < src/shared/commands/index.ts#COMMANDS
   < src/shared/commands/index.ts#isCommandId
@@ -21,6 +21,6 @@ src/shared/commands/keymap.ts . pure 5f34b32d7f89
   < src/shared/platform.ts#PlatformName
   < src/shared/settings-schema.ts#KeyBinding
 
-src/shared/commands/nodes.ts . config 29dbe4d983db
+src/shared/commands/nodes.ts . config 1755d570da90
 #feature commands-keymap
   < src/shared/commands/index.ts#CommandsNode

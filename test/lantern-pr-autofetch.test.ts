@@ -21,7 +21,7 @@ type Mock = ReturnType<typeof vi.fn>;
 
 async function mount(load: Mock, fetchPrs: Mock) {
   document.body.innerHTML = '<div id="main"></div><div id="lantern-tab" class="hidden"></div>';
-  window.ccmws = { lanternLoad: load, lanternFetchPrs: fetchPrs } as unknown as Window['ccmws'];
+  window.ccmws = { lanternLoad: load, lanternFetchPrs: fetchPrs, lanternPrFileStats: vi.fn().mockResolvedValue({}) } as unknown as Window['ccmws'];
   vi.resetModules();
   return import('../src/renderer/features/lantern');
 }

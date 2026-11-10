@@ -8,6 +8,7 @@ import { mountLanternView } from '../src/renderer/lib/lanternview';
 import type { ViewOptions } from '../src/renderer/lib/lanternview';
 import { macroFixtureBlocks, macroFixtureRecords, macroFixtureView, repoFeatureTexts, repoPrRecord } from './helpers/lantern-macro-fixture';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const NODES = [
   node('src/page.tsx', 'page'),
@@ -173,7 +174,7 @@ describe('every way of choosing a file lands it in the middle pane', () => {
     const { root, readPrDiff } = mount(mapOf({ nodes: NODES, prs: [withGone] }));
     chip(root, '7').click();
 
-    (root.querySelector('[data-pr-diff="src/gone.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/gone.ts', 'diff');
     await flush();
 
     expect(paneTitle(root)).toBe('src/gone.ts');
@@ -193,9 +194,9 @@ describe('with the selection locked', () => {
     await flush();
     expect(paneTitle(root)).toBe('src/repo.ts');
 
-    (root.querySelector('[data-pr-diff="src/repo.ts"]') as HTMLElement).click();
-    (root.querySelector('[data-pr-code="src/repo.ts"]') as HTMLElement | null)?.click();
-    (root.querySelector('[data-pr-diff="src/repo.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/repo.ts', 'diff');
+    openPrFile(root, 'src/repo.ts', 'file');
+    openPrFile(root, 'src/repo.ts', 'diff');
     await flush();
 
     expect(paneTitle(root)).toBe('src/repo.ts');
@@ -231,7 +232,7 @@ describe('the middle pane switches between the file and its diff', () => {
   it('keeps the chosen view while another file is picked', async () => {
     const { root } = mount();
     chip(root, '7').click();
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
 
     node_(root, 'repo.ts').click();
@@ -291,7 +292,7 @@ describe('the Macro view shares the same selection', () => {
     const first = root.querySelector('.lt-side-list [data-pr-go]') as HTMLElement;
     const path = first.getAttribute('data-pr-go') as string;
 
-    (root.querySelector(`.lt-side-list [data-pr-diff="${path}"]`) as HTMLElement).click();
+    openPrFile(root, path, 'diff');
     await flush();
 
     expect(root.querySelector('.lt-viewbar [data-view="macro"]')?.getAttribute('aria-pressed')).toBe('true');

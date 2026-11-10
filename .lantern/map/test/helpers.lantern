@@ -212,3 +212,6 @@ test/helpers/macroview-world.ts . test 6e9461335721
 test/helpers/comment-body.ts . test 1c468a4987d3
 #feature review-comments
   = src/renderer/lib/codeview.ts#codeRow
+
+test/helpers/pr-rows.ts . test ef812afdf693
+#feature pull-requests

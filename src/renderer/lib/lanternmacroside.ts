@@ -57,7 +57,7 @@ function chipGroup(title: string, blocks: GraphBlock[], selected: string | null,
 
 function changedFilesHtml(pr: MacroSidePr, blockId: string, mark: BlockMark) {
   const sequence = reviewSequence(pr.view.pr);
-  const rowsOf = (files: readonly LanternPrFile[]) => `<ul class="pr-files pr-ordered">${files.map((file) => fileRow(pr.rows, file, sequence.findIndex((candidate) => candidate.path === file.path) + 1)).join('')}</ul>`;
+  const rowsOf = (files: readonly LanternPrFile[]) => `<ul class="pr-files pr-ordered">${files.map((file) => fileRow(pr.rows, file)).join('')}</ul>`;
   const heading = `<h2 class="pr-review lt-pr-changed"><span>Changed in this pull request</span><em>${markCaption(mark)}</em></h2>`;
   const features = pr.view.members.get(blockId);
   if (!features) return heading + rowsOf(pr.view.impact.blocks.get(blockId) ?? []);

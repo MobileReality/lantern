@@ -1,0 +1,263 @@
+lantern-pr 1
+# 26
+#title feat: review pane header, file rows with counts, and the new comment composer
+#url https://github.com/MobileReality/lantern/pull/26
+#branch feat/review-pane-comments
+#base origin/main
+#opened 2026-11-10
+#head 9a00d1598cca73dbd501f41032ba978566ec44a5
+#describe what Review pane header with file name, folder, line counts and reason
+#describe what Line counts on each changed file row, and a copy menu on right-click
+#describe what Arrow keys step through the files
+#describe what A new comment composer under the line, with intents and quick texts per intent
+#describe verified Typecheck, lint and the unit tests pass, except two licence tests and one explain test that failed before
++ src/renderer/assets/icons/chevron-down.svg
++ src/renderer/assets/icons/comment.svg
++ src/renderer/assets/icons/copy.svg
++ src/renderer/assets/icons/unfold.svg
++ src/renderer/lib/copymenu.ts
++ src/renderer/lib/keycaps.ts
++ test/helpers/pr-rows.ts
++ test/lantern-pr-file-stats.test.ts
++ test/lantern-pr-rows.test.ts
+~ src/main/lantern-host-drivers.ts
+~ src/main/lantern-prdiff.ts
+~ src/main/main.ts
+~ src/preload/workspace.ts
+~ src/renderer/command-palette.css
+~ src/renderer/command-palette/index.ts
+~ src/renderer/features/lantern.ts
+~ src/renderer/floating.css
+~ src/renderer/global.d.ts
+~ src/renderer/lantern-prs.css
+~ src/renderer/lantern-review.css
+~ src/renderer/lantern-select.css
+~ src/renderer/lantern.css
+~ src/renderer/lib/comments/box.ts
+~ src/renderer/lib/comments/tools.ts
+~ src/renderer/lib/lanternmacroside.ts
+~ src/renderer/lib/lanternprpanel.ts
+~ src/renderer/lib/lanternreview.ts
+~ src/renderer/lib/lanternview.ts
+~ src/renderer/lib/modalsteps.ts
+~ src/renderer/lib/prdiffmodal.ts
+~ src/renderer/tooltip/index.ts
+~ src/renderer/workspace.ts
+~ src/shared/commands/keymap.ts
+~ src/shared/commands/nodes.ts
+~ src/shared/lang/de/fix-requests.json
+~ src/shared/lang/en/fix-requests.json
+~ src/shared/lang/es/fix-requests.json
+~ src/shared/lang/fix-requests.ts
+~ src/shared/lang/fr/fix-requests.json
+~ src/shared/lang/it/fix-requests.json
+~ src/shared/lang/pl/fix-requests.json
+~ src/shared/lang/pt/fix-requests.json
+~ src/shared/lang/uk/fix-requests.json
+~ src/shared/providers.ts
+~ test/command-palette.test.ts
+~ test/comments-box.test.ts
+~ test/comments-tools.test.ts
+~ test/e2e/app/renderer.ts
+~ test/e2e/pr-review-demo.spec.ts
+~ test/e2e/text-select.spec.ts
+~ test/fix-requests-texts.test.ts
+~ test/lantern-diff-view.test.ts
+~ test/lantern-macro-areas-pr-view.test.ts
+~ test/lantern-macro-current.test.ts
+~ test/lantern-macro-pr-view.test.ts
+~ test/lantern-modal-reason.test.ts
+~ test/lantern-pr-autofetch.test.ts
+~ test/lantern-pr-code-modal.test.ts
+~ test/lantern-pr-diff-modal.test.ts
+~ test/lantern-pr-enter-refresh.test.ts
+~ test/lantern-pr-overlay-view.test.ts
+~ test/lantern-pr-panel.test.ts
+~ test/lantern-pr-refresh.test.ts
+~ test/lantern-pr-steps.test.ts
+~ test/lantern-review-comments.test.ts
+~ test/lantern-review-layout.test.ts
+~ test/lantern-review-version.test.ts
+~ test/pr-diff-cache.test.ts
+~ test/pr-explain-sections-view.test.ts
+~ test/pr-explain-view.test.ts
+~ test/project-window.test.ts
+#order src/shared/commands/keymap.ts
+#order src/renderer/lib/keycaps.ts
+#order src/shared/lang/fix-requests.ts
+#order src/main/lantern-prdiff.ts
+#order src/main/main.ts
+#order src/preload/workspace.ts
+#order src/renderer/global.d.ts
+#order src/renderer/features/lantern.ts
+#order src/renderer/workspace.ts
+#order src/renderer/lib/lanternview.ts
+#order src/renderer/lib/lanternreview.ts
+#order src/renderer/lib/lanternprpanel.ts
+#order src/renderer/lib/copymenu.ts
+#order src/renderer/lib/comments/box.ts
+#order src/main/lantern-host-drivers.ts
+#order src/renderer/command-palette/index.ts
+#order src/renderer/lib/comments/tools.ts
+#order src/renderer/lib/lanternmacroside.ts
+#order src/renderer/lib/modalsteps.ts
+#order src/renderer/lib/prdiffmodal.ts
+#order src/renderer/tooltip/index.ts
+#order src/shared/commands/nodes.ts
+#order src/shared/providers.ts
+#order src/renderer/assets/icons/chevron-down.svg
+#order src/renderer/assets/icons/comment.svg
+#order src/renderer/assets/icons/copy.svg
+#order src/renderer/assets/icons/unfold.svg
+#order src/renderer/command-palette.css
+#order src/renderer/floating.css
+#order src/renderer/lantern-prs.css
+#order src/renderer/lantern-review.css
+#order src/renderer/lantern-select.css
+#order src/renderer/lantern.css
+#order src/shared/lang/de/fix-requests.json
+#order src/shared/lang/en/fix-requests.json
+#order src/shared/lang/es/fix-requests.json
+#order src/shared/lang/fr/fix-requests.json
+#order src/shared/lang/it/fix-requests.json
+#order src/shared/lang/pl/fix-requests.json
+#order src/shared/lang/pt/fix-requests.json
+#order src/shared/lang/uk/fix-requests.json
+#order test/command-palette.test.ts
+#order test/comments-box.test.ts
+#order test/comments-tools.test.ts
+#order test/e2e/app/renderer.ts
+#order test/e2e/pr-review-demo.spec.ts
+#order test/e2e/text-select.spec.ts
+#order test/fix-requests-texts.test.ts
+#order test/helpers/pr-rows.ts
+#order test/lantern-diff-view.test.ts
+#order test/lantern-macro-areas-pr-view.test.ts
+#order test/lantern-macro-current.test.ts
+#order test/lantern-macro-pr-view.test.ts
+#order test/lantern-modal-reason.test.ts
+#order test/lantern-pr-autofetch.test.ts
+#order test/lantern-pr-code-modal.test.ts
+#order test/lantern-pr-diff-modal.test.ts
+#order test/lantern-pr-enter-refresh.test.ts
+#order test/lantern-pr-file-stats.test.ts
+#order test/lantern-pr-overlay-view.test.ts
+#order test/lantern-pr-panel.test.ts
+#order test/lantern-pr-refresh.test.ts
+#order test/lantern-pr-rows.test.ts
+#order test/lantern-pr-steps.test.ts
+#order test/lantern-review-comments.test.ts
+#order test/lantern-review-layout.test.ts
+#order test/lantern-review-version.test.ts
+#order test/pr-diff-cache.test.ts
+#order test/pr-explain-sections-view.test.ts
+#order test/pr-explain-view.test.ts
+#order test/project-window.test.ts
+#reason src/renderer/assets/icons/chevron-down.svg Icon for the dropdown halves of the review header's split pills
+#reason src/renderer/assets/icons/comment.svg Icon for the Comment pill in the review header
+#reason src/renderer/assets/icons/copy.svg Icon for the Copy all pill in the review header
+#reason src/renderer/assets/icons/unfold.svg Icon for the button that shows or collapses unchanged lines
+#reason src/renderer/lib/copymenu.ts Gives file rows a standard popover menu that opens where the user right-clicked
+#reason src/renderer/lib/keycaps.ts Gives tooltips, the command palette and the comment box one shared way to draw keyboard keys
+#reason test/helpers/pr-rows.ts Opens a changed file the way users now do, row then File or Diff, so tests stop clicking removed buttons
+#reason test/lantern-pr-file-stats.test.ts Checks the per-file line counts against a real git repository and rejects bad input
+#reason test/lantern-pr-rows.test.ts Checks the new row markup, the remembered File or Diff choice and the copy menu
+#reason src/main/lantern-host-drivers.ts Takes the record URL to provider lookup from shared code so the renderer can use it too
+#reason src/main/lantern-prdiff.ts Computes per-file added and removed line counts with one git numstat, so the sidebar and header show them before any diff is read
+#reason src/main/main.ts Answers the renderer's request for a pull request's per-file line counts
+#reason src/preload/workspace.ts Exposes the per-file line count request to the renderer
+#reason src/renderer/command-palette.css Drops the palette's own key chip style in favour of the shared one
+#reason src/renderer/command-palette/index.ts Draws command keys with the shared key chips
+#reason src/renderer/features/lantern.ts Reads a pull request's line counts through the preload, and sends Previous and Next file to the project on screen
+#reason src/renderer/floating.css Styles the shared key chips once for every place that shows keys
+#reason src/renderer/global.d.ts Types the per-file line count call the preload now exposes
+#reason src/renderer/lantern-prs.css Styles changed file rows like the PR list selection, with counts and pills right-aligned
+#reason src/renderer/lantern-review.css Lays out the new review header, split pills and the comment box as a popover over the code
+#reason src/renderer/lantern-select.css Stops file rows from selecting text, since right-click now opens a copy menu
+#reason src/renderer/lantern.css Gives the reason a teal block with its label above, and styles the fold icon and the copy menu
+#reason src/renderer/lib/comments/box.ts Makes the comment field the main part of the box, offers quick texts for the chosen intent, and shows the save keys as chips
+#reason src/renderer/lib/comments/tools.ts Turns Comment and Copy all into split pills with icons, matching the redesigned review header
+#reason src/renderer/lib/lanternmacroside.ts Follows the file row helper losing its step number
+#reason src/renderer/lib/lanternprpanel.ts Makes each changed file one click target with its reason and counts, and labels the PR link View PR with the host logo
+#reason src/renderer/lib/lanternreview.ts Shows name, folder and counts in the header, keeps an open reason when counts arrive, and steps files with Left and Right
+#reason src/renderer/lib/lanternview.ts Loads line counts once per PR, adds a copy menu on right-click, and steps files with arrows on the rows without stealing scrolling
+#reason src/renderer/lib/modalsteps.ts Lets the review pane step one file back or forward without wrapping at the ends
+#reason src/renderer/lib/prdiffmodal.ts Replaces the fold text button with an icon and drops the PR number the new header no longer shows
+#reason src/renderer/tooltip/index.ts Draws command keys with the shared key chips
+#reason src/renderer/workspace.ts Registers Previous and Next file once, so with two projects open they never step the hidden one
+#reason src/shared/commands/keymap.ts Names the Enter key so a shortcut that uses it reads as a key chip on every platform
+#reason src/shared/commands/nodes.ts Registers previous and next file so the arrow keys and other callers step files through one command
+#reason src/shared/lang/de/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/lang/en/fix-requests.json Adds quick texts for the Explain and Question intents
+#reason src/shared/lang/es/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/lang/fix-requests.ts Ties every quick text to one intent so the comment box offers only the texts of the chosen intent
+#reason src/shared/lang/fr/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/lang/it/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/lang/pl/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/lang/pt/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/lang/uk/fix-requests.json Translates the new Explain and Question quick texts
+#reason src/shared/providers.ts Holds the record URL to provider lookup so the View PR link can show the host's logo
+#reason test/command-palette.test.ts Follows palette keys being drawn by the shared key chips
+#reason test/comments-box.test.ts Checks the box offers only the chosen intent's texts, swaps them on change and shows the save keys
+#reason test/comments-tools.test.ts Follows the copy choice moving into the split pill with its own tip
+#reason test/e2e/app/renderer.ts Opens the demo diff through the row and the Diff choice now that rows have no buttons
+#reason test/e2e/pr-review-demo.spec.ts Follows the review demo opening files through rows and the new header
+#reason test/e2e/text-select.spec.ts Loads SVG imports so the spec builds now that the renderer imports icon files
+#reason test/fix-requests-texts.test.ts Checks every quick text belongs to exactly one intent
+#reason test/lantern-diff-view.test.ts Follows the review header's new title, counts and fold icon
+#reason test/lantern-macro-areas-pr-view.test.ts Checks area file rows are one click target without step numbers
+#reason test/lantern-macro-current.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/lantern-macro-pr-view.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/lantern-modal-reason.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/lantern-pr-autofetch.test.ts Gives the fake preload the line count call the view now makes
+#reason test/lantern-pr-code-modal.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/lantern-pr-diff-modal.test.ts Follows the fold icon and the header without a PR number
+#reason test/lantern-pr-enter-refresh.test.ts Gives the fake preload the line count call the view now makes
+#reason test/lantern-pr-overlay-view.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/lantern-pr-panel.test.ts Follows rows becoming one click target with no step number and the Changed files heading
+#reason test/lantern-pr-refresh.test.ts Gives the fake preload the line count call and finds the not-in-map tag in the new row
+#reason test/lantern-pr-steps.test.ts Checks Left and Right in the pane, Up and Down on the file rows, and that a key another handler took is left alone
+#reason test/lantern-review-comments.test.ts Checks quick texts follow the chosen intent and save with it
+#reason test/lantern-review-layout.test.ts Checks the review layout with the new header and file stepping
+#reason test/lantern-review-version.test.ts Checks the header names the pull request in its label now that the visible number is gone
+#reason test/pr-diff-cache.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/pr-explain-sections-view.test.ts Opens files through the row and the File choice now that rows have no buttons
+#reason test/pr-explain-view.test.ts Opens files through the row and the File or Diff choice now that rows have no buttons
+#reason test/project-window.test.ts Expects Previous and Next file among the commands that are always available
+#story A reviewer sees where a file lives and how much changed
+#step actor A reviewer
+#step action opens a changed file of a pull request
+#file src/renderer/lib/lanternview.ts
+#file src/renderer/lib/lanternprpanel.ts
+#step subject the review pane header and the changed files list
+#file src/renderer/lib/lanternreview.ts
+#file src/main/lantern-prdiff.ts
+#file src/main/main.ts
+#file src/preload/workspace.ts
+#below interaction read the folder, +/− counts and reason without leaving the file
+#file src/renderer/lantern-review.css
+#file test/lantern-pr-file-stats.test.ts
+#below consequence Only the file path, with no line counts => Name, folder, +/− counts on the header and on every row
+#story A reviewer steps through files with the keyboard
+#step actor A reviewer
+#step action presses an arrow key
+#file src/renderer/lib/lanternreview.ts
+#file src/renderer/lib/lanternview.ts
+#step subject the open pull request's files
+#file src/renderer/workspace.ts
+#file src/renderer/features/lantern.ts
+#below interaction Left and Right in the pane, Up and Down on a file row
+#file test/lantern-pr-steps.test.ts
+#below consequence Changing file took the mouse => Arrows open the previous or next file; Up and Down still scroll
+#story A reviewer leaves a comment on a line
+#step actor A reviewer
+#step action clicks the plus beside a line
+#file src/renderer/lib/comments/box.ts
+#step subject the comment composer
+#file src/renderer/lantern-review.css
+#file src/renderer/lib/keycaps.ts
+#below interaction pick an intent and a quick text that fits it
+#file src/shared/lang/fix-requests.ts
+#file src/shared/lang/en/fix-requests.json
+#file test/comments-box.test.ts
+#below consequence A cramped box with quick texts for every intent => A wide popover with a large field, intent texts and key chips

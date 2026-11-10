@@ -18,11 +18,13 @@ import type { LanternPr, LanternPrOverlay } from '../../main/lantern';
 import { openCodeModal } from './codemodal';
 import type { ReadFile } from './codemodal';
 import type { ReadDiff } from './prdiffmodal';
+import type { PrFileStats } from '../../main/lantern-prdiff';
+import { openCopyMenu } from './copymenu';
 import { prFileReader } from './prfilereader';
 import type { ReadPrFile } from './prfilereader';
 import { createExplainHub } from './prexplain';
 import type { PrExplainClient } from './prexplain';
-import { createReviewPane } from './lanternreview';
+import { createReviewPane, runFileStep } from './lanternreview';
 import { createDiffCache } from './prdiffcache';
 import type { ReviewMode, ReviewTarget } from './lanternreview';
 import type { LocalReasonsResult } from '../../main/local-reasons';
@@ -83,6 +85,7 @@ interface LanternView {
   update(data: LanternMap): void;
   selectPr(id: string): void;
   setFoldFiles(on: boolean): void;
+  stepFile(delta: number): void;
   dispose(): void;
 }
 
@@ -95,6 +98,7 @@ interface ViewOptions {
   readFile?: ReadFile;
   readSemantic?: (path: string, source: CodeSource) => Promise<SemanticHighlightResult>;
   readPrDiff?: ReadDiff;
+  readPrStats?: (pr: string) => Promise<PrFileStats>;
   readPrFile?: ReadPrFile;
   readPrOverlay?: ReadPrOverlay;
   readMacro?: ReadMacro;
@@ -271,6 +275,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     },
   });
   const explainHub = opts.explain ? createExplainHub(opts.explain, { enabled: opts.explainEnabled, collapsed: opts.explainCollapsed, onCollapsed: opts.onExplainCollapsed }) : undefined;
+  const prStats = new Map<string, PrFileStats | null>();
   const diffCache = opts.readPrDiff ? createDiffCache(opts.readPrDiff, (id) => {
     const pick = data.prs.find((p) => p.id === id);
     return pick ? [pick.revision ?? pick.head ?? '', pick.base, pick.hostBase ?? ''].join('\0') : '';
@@ -343,7 +348,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const pr = currentPr();
     const path = reviewPath();
     if (!pr || !path) return null;
-    return { pr: pr.id, path, title: pr.title, branch: pr.branch, order: reviewSequence(pr).map((f) => f.path), reason: reasonOf(path), head: pr.head, version: pr.revision ?? pr.head, nav: stepsFor(path) };
+    return { pr: pr.id, path, title: pr.title, branch: pr.branch, order: reviewSequence(pr).map((f) => f.path), reason: reasonOf(path), head: pr.head, version: pr.revision ?? pr.head, nav: stepsFor(path), stat: statsFor(pr)?.[path] };
   }
 
   function applyFoundationHidden() {
@@ -388,9 +393,28 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   function stepTo(path: string) {
     const held = document.activeElement as HTMLElement | null;
+    const fromSide = !!held && side.contains(held);
     reveal(path, review.mode(), false);
-    if (held && review.el.contains(held)) held.focus({ preventScroll: true });
+    if (fromSide) focusSelectedRow();
+    else if (held && review.el.contains(held)) held.focus({ preventScroll: true });
     else review.focus();
+  }
+
+  function focusSelectedRow() {
+    const row = side.querySelector<HTMLElement>('.pr-file.sel .pr-path');
+    row?.focus({ preventScroll: true });
+    row?.scrollIntoView({ block: 'nearest' });
+  }
+
+  function stepFile(delta: number) {
+    const pr = currentPr();
+    if (!pr) return;
+    if (review.canStep()) return void review.step(delta);
+    const first = reviewSequence(pr)[0];
+    if (!first) return;
+    const fromSide = side.contains(document.activeElement);
+    reveal(first.path, review.mode(), !fromSide);
+    if (fromSide) focusSelectedRow();
   }
 
   function openFileCode(path: string) {
@@ -1042,8 +1066,21 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   let reasons: { id: string; busy: boolean; note: string } | null = null;
 
+  function statsFor(pr: LanternPr) {
+    if (!opts.readPrStats) return undefined;
+    const key = [pr.id, pr.revision ?? pr.head ?? '', pr.base, pr.hostBase ?? '', pr.files.length].join('\0');
+    if (!prStats.has(key)) {
+      prStats.set(key, null);
+      void opts.readPrStats(pr.id).then((stats) => {
+        prStats.set(key, stats);
+        if (prId === pr.id) redrawSide();
+      }, () => prStats.delete(key));
+    }
+    return prStats.get(key) ?? undefined;
+  }
+
   function prRowsContext(pr: LanternPr, activeFilters: number): PrPanelContext {
-    return { pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
+    return { stats: statsFor(pr), pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
   }
 
   let refreshing: { id: string; busy: boolean; note: string } | null = null;
@@ -1371,6 +1408,22 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   document.addEventListener('keydown', onKey, true);
 
+  function onSideMenu(ev: MouseEvent) {
+    const row = (ev.target as Element).closest<HTMLElement>('.pr-file[data-path]');
+    const trigger = row?.querySelector<HTMLElement>('.pr-path');
+    if (!row || !trigger) return;
+    ev.preventDefault();
+    const path = row.dataset.path ?? '';
+    const reason = reasonOf(path);
+    openCopyMenu(trigger, root, [
+      { label: 'Copy path', text: path, done: 'Path copied.' },
+      { label: 'Copy file name', text: path.slice(path.lastIndexOf('/') + 1), done: 'File name copied.' },
+      ...(reason ? [{ label: 'Copy reason', text: reason, done: 'Reason copied.' }] : []),
+    ], (entry) => {
+      void writeClipboard(entry.text).then(() => { live.textContent = entry.done; }, () => { live.textContent = 'Could not copy.'; });
+    }, ev.clientX || ev.clientY ? { x: ev.clientX, y: ev.clientY } : undefined);
+  }
+
   function onSideClick(ev: MouseEvent) {
     const t = (ev.target as Element).closest('button');
     if (!t || isSelectingWithin(t)) return;
@@ -1414,7 +1467,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     else if (t.hasAttribute('data-pr-code')) return reveal(t.getAttribute('data-pr-code') ?? '', 'file');
     else if (t.hasAttribute('data-pr-go')) {
       const path = t.getAttribute('data-pr-go') ?? '';
-      if (!byPath.has(path) || (graphless() && currentPr())) return reveal(path, review.mode(), false);
+      if (!byPath.has(path) || (graphless() && currentPr()) || (locked && inspected === path)) return reveal(path, review.mode(), false);
       setView('files');
       return goTo(path, true);
     }
@@ -1435,6 +1488,10 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   side.addEventListener('click', onSideClick);
+  side.addEventListener('contextmenu', onSideMenu);
+  side.addEventListener('keydown', (ev) => {
+    if (currentPr()) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file'));
+  });
   planPane.addEventListener('click', onSideClick);
   drawer.el.addEventListener('click', onSideClick);
 
@@ -1519,6 +1576,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     selectPr(id) {
       setPr(id);
     },
+    stepFile,
     setFoldFiles(on) {
       if (on === foldFiles) return;
       foldFiles = on;

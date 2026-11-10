@@ -121,7 +121,7 @@ test/command-palette-usage.test.ts . test 610c98071ffc
 #feature command-palette
   = src/renderer/command-palette/usage.ts
 
-test/command-palette.test.ts . test 6f5e064af32f
+test/command-palette.test.ts . test 903b64f455f1
 #feature command-palette
   = src/renderer/command-palette/index.ts
   = src/renderer/features/settings.ts
@@ -137,7 +137,7 @@ test/commands.test.ts . test 149525cbdf4b
 #feature commands-keymap
   = src/renderer/commands/index.ts
 
-test/comments-box.test.ts . test c068d6321ec1
+test/comments-box.test.ts . test d40d544c8bff
 #feature review-comments
   = src/renderer/lib/comments/box.ts
   = src/shared/lang/fix-requests.ts#fixPresets
@@ -177,7 +177,7 @@ test/comments-rows.test.ts . test b5a9d86c3165
   = src/renderer/lib/comments/rows.ts
   = test/helpers/comment-body.ts
 
-test/comments-tools.test.ts . test bf7898c60f52
+test/comments-tools.test.ts . test e52e7fc6b79d
 #feature review-comments
   = src/renderer/lib/comments/tools.ts
   < src/renderer/lib/fixrequests/intent.ts#CopyChoice
@@ -292,44 +292,6 @@ test/devserver.test.ts . test 159caa06feda
   = src/main/devserver-guard.ts#TOKEN_HEADER
   = src/main/devserver.ts#start
 
-test/diagnostics-capture.test.ts . test 66caeddabe35
-#feature app-diagnostics
-  = src/main/diagnostics/capture.ts#installMainCapture
-  = src/main/diagnostics/editor-server.ts#describeServerStop
-  = src/main/diagnostics/ipc-guard.ts#guardIpc
-  = test/helpers/diagnostics-world.ts
-
-test/diagnostics-editor.test.ts . test d90ff43e5be3
-#feature app-diagnostics
-  = src/main/diagnostics/capture.ts#installMainCapture
-  = src/main/diagnostics/editor.ts#redactEditorUrl
-  = src/main/diagnostics/throttle.ts#createThrottle
-  = test/helpers/diagnostics-world.ts
-
-test/diagnostics-github.test.ts . test 8a9b68516782
-#feature app-diagnostics
-  = src/main/diagnostics/github.ts#planIssue
-  = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
-  = src/main/diagnostics/report.ts#formatReport
-  = src/shared/diagnostics.ts#parseRendererReport
-  = test/helpers/diagnostics-world.ts
-
-test/diagnostics-log.test.ts . test 8eab88ed338f
-#feature app-diagnostics
-  = src/main/diagnostics/lifecycle.ts#crashNoticeFor
-  = src/main/diagnostics/redact.ts#redactText
-  = src/main/diagnostics/rotation.ts#rotateEntries
-  = src/main/diagnostics/throttle.ts#createThrottle
-  = test/helpers/diagnostics-world.ts
-
-test/diagnostics-view.test.ts . test 339202e45ec2
-#feature app-diagnostics
-  = src/renderer/features/diagnostics-notice.ts#showCrashNotice
-  = src/renderer/lib/diagnostics-capture.ts#installRendererCapture
-  = src/renderer/lib/diagnostics-model.ts#applyFilter
-  = src/renderer/workspace.html
-  = test/helpers/diagnostics-world.ts
-
 test/diff-collapse.test.ts . test 8170f196b244
 #feature code-insight
   = src/renderer/lib/codeview.ts
@@ -410,7 +372,7 @@ test/fix-requests-store.test.ts . test 4ffad7bb28ae
   = src/renderer/lib/fixrequests/model.ts#parseItems
   = src/renderer/lib/fixrequests/store.ts#createFixStore
 
-test/fix-requests-texts.test.ts . test a3c210308a5a
+test/fix-requests-texts.test.ts . test 5e0265df2c42
 #feature review-comments
   = src/shared/lang/fix-requests.ts#copyTexts
   < src/shared/languages/index.ts#LANGUAGES
@@ -431,7 +393,7 @@ test/hook-cleanup.test.ts . test e396e94ce32e
   = src/main/hooks.ts#uninstallFrom
   = src/main/notifier.ts#uninstallFrom
 
-test/idle-tabs-workspace.test.ts . test 5d89634606e0
+test/idle-tabs-workspace.test.ts . test 58a1fb7ae2bf
 #feature serve-web
   = src/renderer/lib/idle-tabs.ts
   = src/renderer/workspace.ts
@@ -602,7 +564,7 @@ test/lantern-detail.test.ts . test 51c19631e489
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-diff-view.test.ts . test 6ffc872670bb
+test/lantern-diff-view.test.ts . test 47a6e0ad2797
 #feature code-insight
   < src/main/lantern-prdiff.ts
   = src/renderer/lib/codeview.ts
@@ -613,6 +575,7 @@ test/lantern-diff-view.test.ts . test 6ffc872670bb
   < src/shared/code-preview.ts
   = test/helpers/diff-text.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-edge-geometry.test.ts . test 5faf6c3b233f
 #feature file-graph
@@ -758,7 +721,7 @@ test/lantern-macro-areas-graph.test.ts . test bc9c57276ab0
   = test/helpers/lantern-macro-areas-payload.ts#areasPayload
   = test/helpers/lantern-macro-fixture.ts#macroFixtureRecords
 
-test/lantern-macro-areas-pr-view.test.ts . test ba2b7222f7c3
+test/lantern-macro-areas-pr-view.test.ts . test b8eba239a4dc
 #feature product-areas
   = src/renderer/lib/lanternmacroareas.ts#areaOfFeature
   = src/renderer/lib/lanternview.ts#mountLanternView
@@ -766,6 +729,7 @@ test/lantern-macro-areas-pr-view.test.ts . test ba2b7222f7c3
   = test/helpers/lantern-macro-fixture.ts#repoPrRecord
   = test/helpers/lantern-map.ts#mapOf
   = test/helpers/macroview-host.ts#pick
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-macro-areas-pr.test.ts . test fd3cb2d7ae22
 #feature product-areas
@@ -805,12 +769,13 @@ test/lantern-macro-calm.test.ts . test 06f8bd5edaa8
   = test/helpers/lantern-macro-fixture.ts#repoPrRecord
   = test/helpers/lantern-map.ts#mapOf
 
-test/lantern-macro-current.test.ts . test b7185be8b29f
+test/lantern-macro-current.test.ts . test 8d6cc37edefc
 #feature macro-view
   = src/renderer/lib/lanternmacro.ts#macroGraph
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-macro-fixture.ts#repoPrRecord
   = test/helpers/lantern-map.ts#mapOf
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-macro-eval.test.ts . test ed2a1fdc5bdd
 #feature map-vocabulary
@@ -907,12 +872,13 @@ test/lantern-macro-overview-drawer.test.ts . test 65f90feb2262
   = test/helpers/lantern-map.ts#mapOf
   = test/helpers/macroview-host.ts#sizeTheMacroViewPane
 
-test/lantern-macro-pr-view.test.ts . test 8e00db293955
+test/lantern-macro-pr-view.test.ts . test 7fe8c4d2a63e
 #feature macro-view
   = src/renderer/lib/lanternmacro.ts#macroGraph
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-macro-fixture.ts#repoPrRecord
   = test/helpers/lantern-map.ts#mapOf
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-macro-pr.test.ts . test a6b5f65647a9
 #feature macro-view
@@ -979,11 +945,12 @@ test/lantern-migrate-model.test.ts . test 96e165a80c5e
 #feature map-setup
   = skills/lantern-setup/scripts/migrate-model.mjs
 
-test/lantern-modal-reason.test.ts . test ed731a523a22
+test/lantern-modal-reason.test.ts . test c716fb824bff
 #feature review-screen
   > src/renderer/lib/codemodal.ts
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-model.test.ts . test 00f299186f0f
 #feature map-setup
@@ -1253,7 +1220,7 @@ test/lantern-platforms.test.ts . test 7ea7eb49b756
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-autofetch.test.ts . test 4d9a68664396
+test/lantern-pr-autofetch.test.ts . test adc752b60bc2
 #feature pull-requests
   < src/main/lantern.ts
   > src/renderer/features/lantern.ts
@@ -1267,12 +1234,13 @@ test/lantern-pr-cache.test.ts . test 5ed39f7694e5
   = src/main/lantern-prs.ts
   = test/helpers/git-repo.ts
 
-test/lantern-pr-code-modal.test.ts . test db2eb13c6e79
+test/lantern-pr-code-modal.test.ts . test 2df734840365
 #feature review-screen
   < src/main/lantern-prfile.ts
   = src/renderer/lib/lanternview.ts
   < src/shared/code-highlighting.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-pr-declined.test.ts . test b26ab7f12071
 #feature pull-requests
@@ -1289,14 +1257,15 @@ test/lantern-pr-describe-card.test.ts . test 26937c2e0ede
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-diff-modal.test.ts . test 5134cde9a1cc
+test/lantern-pr-diff-modal.test.ts . test fed1cced1366
 #feature review-screen
   < src/main/lantern-prdiff.ts
   = src/renderer/lib/lanternview.ts
   < src/shared/code-highlighting.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-pr-enter-refresh.test.ts . test 762c98fc447a
+test/lantern-pr-enter-refresh.test.ts . test fd7c5009ceb9
 #feature pull-requests
   > src/renderer/features/lantern.ts
   = test/helpers/lantern-map.ts
@@ -1331,12 +1300,13 @@ test/lantern-pr-only.test.ts . test 67a2d7c679e9
   = test/helpers/lantern-map.ts
   = test/helpers/lantern-sections.ts
 
-test/lantern-pr-overlay-view.test.ts . test 24feb81eef58
+test/lantern-pr-overlay-view.test.ts . test 93c19119701b
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/lanternoverlay.ts
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-pr-overlay.test.ts . test 884efd8c4d68
 #feature pull-requests
@@ -1344,13 +1314,14 @@ test/lantern-pr-overlay.test.ts . test 884efd8c4d68
   = src/main/lantern.ts
   = test/helpers/git-repo.ts
 
-test/lantern-pr-panel.test.ts . test 1853abf01ead
+test/lantern-pr-panel.test.ts . test 46c92f79264f
 #feature pull-requests
   = src/main/lantern-pr-parse.ts
   < src/main/lantern.ts
   = src/renderer/lib/lanternview.ts
   < src/renderer/lib/util.ts#formatDay
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-pr-parity.test.ts . test ca48c079e6b3
 #feature pull-requests
@@ -1367,13 +1338,13 @@ test/lantern-pr-refresh-button.test.ts . test 9b7612f311b2
   = src/renderer/lib/lanternview.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-refresh.test.ts . test 77f8fb8ddf36
+test/lantern-pr-refresh.test.ts . test d5e4fe7a8668
 #feature pull-requests
   < src/main/lantern.ts
   > src/renderer/features/lantern.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-pr-steps.test.ts . test 404cb7923c9d
+test/lantern-pr-steps.test.ts . test dce589d0cb40
 #feature review-screen
   < src/main/lantern-prdiff.ts
   < src/main/lantern-prfile.ts
@@ -1381,6 +1352,7 @@ test/lantern-pr-steps.test.ts . test 404cb7923c9d
   = src/renderer/lib/lanternview.ts
   < src/shared/code-highlighting.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-pr-visibility.test.ts . test c0fa92be7615
 #feature pull-requests
@@ -1463,14 +1435,14 @@ test/lantern-retag.test.ts . test f17ca0c976ea
   = test/helpers/lantern-vocab-fixtures.ts
   = test/helpers/lantern-vocab-project.ts
 
-test/lantern-review-comments.test.ts . test 2582275dfa82
+test/lantern-review-comments.test.ts . test 6bca39013a23
 #feature review-comments
   < src/main/lantern-prdiff.ts
   = src/renderer/lib/fixrequests/store.ts#storageKey
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-map.ts
 
-test/lantern-review-layout.test.ts . test ff8ecafda00b
+test/lantern-review-layout.test.ts . test 8a3978b7aafe
 #feature review-screen
   < src/main/lantern-macro-load.ts
   < src/main/lantern-prdiff.ts
@@ -1479,6 +1451,7 @@ test/lantern-review-layout.test.ts . test ff8ecafda00b
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-macro-fixture.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/lantern-review-panes.test.ts . test 3f308539788c
 #feature review-screen
@@ -1496,7 +1469,7 @@ test/lantern-review-regions.test.ts . test 208f573df6e4
   = test/helpers/lantern-macro-fixture.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-review-version.test.ts . test 72c6c4375e9e
+test/lantern-review-version.test.ts . test 7a9f71e8da65
 #feature review-screen
   = src/renderer/lib/lanternreview.ts#createReviewPane
 
@@ -1871,13 +1844,14 @@ test/platform.test.ts . test 514d19db4432
   = src/shared/platform.ts
   = src/renderer/lib/util.ts#currentPlatform
 
-test/pr-diff-cache.test.ts . test 7829df8f222c
+test/pr-diff-cache.test.ts . test 13b39fdda4db
 #feature review-screen
   < src/main/lantern-prdiff.ts
   = src/renderer/lib/lanternview.ts#mountLanternView
   = src/renderer/lib/prdiffcache.ts
   = test/helpers/git-repo.ts
   = test/helpers/lantern-map.ts
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/popover.test.ts . test c0cd6cb7215a
   = src/renderer/popover/index.ts#mountPopover
@@ -1887,12 +1861,13 @@ test/pr-explain-prompt.test.ts . test 442070483ea6
 #feature pr-explain
   = src/main/pr-explain-prompt.ts
 
-test/pr-explain-sections-view.test.ts . test 6e9bc38e5027
+test/pr-explain-sections-view.test.ts . test 4cedc85e2dac
 #feature pr-explain
   = src/renderer/lib/lanternview.ts#mountLanternView
   = src/renderer/lib/prexplain.ts#createExplainHub
   < src/shared/pr-explain.ts
   = test/helpers/lantern-map.ts#mapOf
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/pr-explain-sections.test.ts . test 47bf93d81ba1
 #feature pr-explain
@@ -1918,13 +1893,14 @@ test/pr-explain-store.test.ts . test b2d7af460a24
   = src/main/pr-explain-store.ts
   = test/helpers/git-repo.ts#makeTmp
 
-test/pr-explain-view.test.ts . test 015e9a897d43
+test/pr-explain-view.test.ts . test 49adec883961
 #feature pr-explain
   = src/renderer/lib/lanternview.ts#mountLanternView
   = src/renderer/lib/prexplain-client.ts#projectExplainClient
   = src/renderer/lib/prexplain.ts#createExplainHub
   < src/shared/pr-explain.ts
   = test/helpers/lantern-map.ts#mapOf
+  = test/helpers/pr-rows.ts#openPrFile
 
 test/pr-info.test.ts . test 4a9c1305d4f5
 #feature pull-requests
@@ -1970,7 +1946,7 @@ test/project-release.test.ts . test fcaf35dd232c
 test/project-ident.test.ts . test c98778ad4b70
 #feature projects-hub
   = src/main/project-ident/index.ts#projectIdent
-test/project-window.test.ts . test fa60dc19311a
+test/project-window.test.ts . test 1788728fd6ff
 #feature projects-hub
   = src/renderer/commands/index.ts
   < src/renderer/state.ts#app
@@ -2204,7 +2180,7 @@ test/setup-view.test.ts . test ffb4448ce2d1
   < src/main/setup-progress.ts
   = src/renderer/lib/setupprogress.ts
 
-test/sidebar.test.ts . test c165fe67ce67
+test/sidebar.test.ts . test 9dbe51457bbd
 #feature projects-hub
   > src/renderer/features/agent-run.ts
   > src/renderer/features/provider-control.ts
@@ -2640,3 +2616,15 @@ test/providers-table.test.ts . test 903bbab8c445
 
 test/tooltip.test.ts . test d319a7cde68e
   = src/renderer/tooltip/index.ts#installTooltips
+
+test/lantern-pr-file-stats.test.ts . test 8654159c83b0
+#feature pull-requests
+  = src/main/lantern-prdiff.ts
+  = test/helpers/git-repo.ts
+
+test/lantern-pr-rows.test.ts . test 50906dace457
+#feature pull-requests
+  < src/main/lantern.ts
+  = src/renderer/lib/copymenu.ts#openCopyMenu
+  = src/renderer/lib/lanternprpanel.ts#fileRow
+  = src/renderer/lib/lanternreview.ts#createReviewPane

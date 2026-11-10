@@ -4,6 +4,7 @@ import type { PrFileDiff } from '../src/main/lantern-prdiff';
 import type { CodeSource } from '../src/shared/code-highlighting';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 
 const NODES = [node('src/svc.ts', 'service'), node('src/page.tsx', 'page')];
 
@@ -46,19 +47,29 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe('diff button in the pull request panel', () => {
-  it('sits on every file row, mapped or not, of every kind', () => {
-    const root = open(async () => good(DIFF));
+describe('opening a diff from the pull request panel', () => {
+  it('makes every file row, mapped or not, of every kind the target that opens its diff', async () => {
+    const read = vi.fn(async () => good(DIFF));
+    const root = open(read);
     const rows = [...root.querySelectorAll('.pr-file')];
     expect(rows).toHaveLength(4);
-    for (const row of rows) expect(row.querySelectorAll('button.diff-open')).toHaveLength(1);
-    expect([...root.querySelectorAll('.diff-open')].map((b) => b.getAttribute('data-pr-diff'))).toEqual(['test/new-a.ts', 'src/svc.ts', 'src/gone.ts', 'src/page.tsx']);
-    expect(rows.find((r) => r.classList.contains('off'))?.querySelector('.diff-open')).not.toBeNull();
-    expect((root.querySelector('.diff-open') as HTMLElement).getAttribute('aria-label')).toBe('Show diff of test/new-a.ts');
+    for (const row of rows) expect(row.querySelectorAll('button')).toHaveLength(1);
+    expect(rows.map((r) => r.querySelector('button.pr-path')?.getAttribute('data-pr-go'))).toEqual(['test/new-a.ts', 'src/svc.ts', 'src/gone.ts', 'src/page.tsx']);
+    expect(root.querySelector('.diff-open, [data-pr-diff]')).toBeNull();
+    const off = rows.find((r) => r.classList.contains('off')) as HTMLElement;
+    expect(off.querySelector('button[data-pr-go="test/new-a.ts"]')).not.toBeNull();
+    openPrFile(root, 'test/new-a.ts', 'diff');
+    await flush();
+    expect(read).toHaveBeenCalledWith('24', 'test/new-a.ts');
+    expect(root.querySelector('.lt-review .file-name')?.textContent).toBe('new-a.ts');
+    expect(root.querySelector('.lt-review .cl')).not.toBeNull();
   });
 
-  it('is absent when no diff reader is wired', () => {
-    expect(open().querySelector('.diff-open')).toBeNull();
+  it('leaves a file that is not in the map without a click target when no diff reader is wired', () => {
+    const root = open();
+    expect(root.querySelector('.pr-file.off button')).toBeNull();
+    expect(root.querySelector('.pr-file.off span.pr-path')).not.toBeNull();
+    expect(root.querySelector('.diff-open, [data-pr-diff]')).toBeNull();
   });
 });
 
@@ -66,8 +77,10 @@ describe('diff in the review pane', () => {
   it('opens with the PR id and path, and reads that file of that PR', async () => {
     const read = vi.fn(async () => good(DIFF));
     const root = open(read);
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
-    expect(root.querySelector('.lt-review .lt-code-path')?.textContent).toBe('svc.ts src/ #24');
+    openPrFile(root, 'src/svc.ts', 'diff');
+    expect(root.querySelector('.lt-review .file-name')?.textContent).toBe('svc.ts');
+    expect(root.querySelector('.lt-review .file-directory')?.textContent).toBe('src/');
+    expect(root.querySelector('.lt-review .lt-code-path')?.textContent).not.toContain('#24');
     expect(root.querySelector('.modal')).toBeNull();
     await flush();
     expect(read).toHaveBeenCalledWith('24', 'src/svc.ts');
@@ -75,7 +88,7 @@ describe('diff in the review pane', () => {
 
   it('renders numbered green and red rows and a hunk header', async () => {
     const root = open(async () => good(DIFF));
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     const rows = [...root.querySelectorAll('.lt-review .cl')];
     expect(rows.map((r) => r.className)).toEqual(['cl hunk', 'cl ctx', 'cl del', 'cl add', 'cl ctx']);
@@ -89,7 +102,7 @@ describe('diff in the review pane', () => {
 
   it('keeps HTML in the file content inert', async () => {
     const root = open(async () => good(DIFF));
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     const modal = root.querySelector('.lt-review') as HTMLElement;
     expect(modal.querySelector('img:not(.file-label-icon)')).toBeNull();
@@ -101,7 +114,7 @@ describe('diff in the review pane', () => {
     const root = document.createElement('div');
     document.body.appendChild(root);
     mounted.push(mountLanternView(root, mapOf({ nodes: NODES, prs: [hostile] }), { pr: '25', readPrDiff: async () => good(DIFF) }));
-    (root.querySelector('.diff-open') as HTMLElement).click();
+    openPrFile(root, 'src/<img src=x onerror=alert(2)>.ts', 'diff');
     await flush();
     expect(root.querySelector('img:not(.file-label-icon)')).toBeNull();
     expect(root.querySelector('.lt-review .lt-code-path')?.textContent).toContain('<img src=x onerror=alert(2)>');
@@ -109,7 +122,7 @@ describe('diff in the review pane', () => {
 
   it('stays put on Esc: the pane is not a dialog and the pull request stays selected', async () => {
     const root = open(async () => good(DIFF));
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(root.querySelector('.lt-review .cl')).not.toBeNull();
@@ -123,14 +136,14 @@ describe('diff in the review pane', () => {
     ['unavailable', { ok: false, diff: '', truncated: false, binary: false, reason: 'this pull request was declined' } as PrFileDiff, 'Diff not available: this pull request was declined'],
   ])('shows a message for a %s diff', async (_name, res, text) => {
     const root = open(async () => res);
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     expect(root.querySelector('.lt-review .rv-code')?.textContent).toContain(text);
   });
 
   it('says which base the diff is against when a fallback base was used', async () => {
     const root = open(async () => good(DIFF, { against: { name: 'main', source: 'default' }, recordedBase: 'feat/parent' }));
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     const body = root.querySelector('.lt-review .rv-code') as HTMLElement;
     expect(body.textContent).toContain('Compared against main (the default line)');
@@ -140,7 +153,7 @@ describe('diff in the review pane', () => {
 
   it('stays quiet about the base when the recorded one was used', async () => {
     const root = open(async () => good(DIFF));
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     expect(root.querySelector('.lt-review .rv-code')?.textContent).not.toContain('Compared against');
   });
@@ -156,7 +169,7 @@ describe('diff in the review pane', () => {
       candidates: { bases: ['main', 'feat/other'], branches: ['feat/child', 'feat/other'] },
     };
     const pick = async (root: HTMLElement) => {
-      (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+      openPrFile(root, 'src/svc.ts', 'diff');
       await flush();
     };
 
@@ -183,7 +196,7 @@ describe('diff in the review pane', () => {
       expect(body.textContent).toContain('Compared against feat/other (the base you chose)');
       expect(body.querySelector('.cl.add')).not.toBeNull();
 
-      (root.querySelector('[data-pr-diff="src/gone.ts"]') as HTMLElement).click();
+      openPrFile(root, 'src/gone.ts', 'diff');
       await flush();
       expect(read).toHaveBeenLastCalledWith('24', 'src/gone.ts', { base: 'feat/other', branch: 'feat/child' });
 
@@ -199,7 +212,7 @@ describe('diff in the review pane', () => {
     const root = open(async () => {
       throw new Error('boom');
     });
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
     expect(root.querySelector('.lt-review .rv-code')?.textContent).toContain('Diff not available');
   });
@@ -215,7 +228,7 @@ describe('diff in the review pane', () => {
     }));
     const root = open(async () => good(DIFF, { oldSource, newSource }), semantic);
 
-    (root.querySelector('[data-pr-diff="src/svc.ts"]') as HTMLElement).click();
+    openPrFile(root, 'src/svc.ts', 'diff');
     await flush();
 
     expect(root.querySelectorAll('.semantic-limit-notice')).toHaveLength(1);

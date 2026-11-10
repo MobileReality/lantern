@@ -384,6 +384,8 @@ describe('always-on commands', () => {
         'editor.devtools',
         'lantern.open',
         'lantern.problems',
+        'lantern.previousFile',
+        'lantern.nextFile',
         'lantern.refresh',
         'explain.open',
         'memory.open',

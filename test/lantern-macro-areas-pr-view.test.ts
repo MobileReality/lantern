@@ -9,6 +9,7 @@ import { macroFixtureRecords, repoPrRecord } from './helpers/lantern-macro-fixtu
 import { areasPayload } from './helpers/lantern-macro-areas-payload';
 import { mapOf, node, pr } from './helpers/lantern-map';
 import { WIDE_PANE, dive, flagged, label, pick, sizeTheMacroViewPane } from './helpers/macroview-host';
+import { openPrFile } from './helpers/pr-rows';
 
 const PR_ID = '108';
 const payload = areasPayload();
@@ -115,7 +116,7 @@ describe('pull request marks on the area shapes', () => {
     expect(summary).not.toContain('Open an area to see');
   });
 
-  it('lists the changed files of a marked area grouped by feature, with their review numbers', async () => {
+  it('lists the changed files of a marked area grouped by feature, each row one click target without a step number', async () => {
     const root = await openMacro();
 
     pick(root, 'block:workspace-setup');
@@ -124,7 +125,10 @@ describe('pull request marks on the area shapes', () => {
     expect(side.querySelector('.lt-pr-changed')?.textContent).toContain('4 of');
     expect([...side.querySelectorAll('.lt-pr-feature')].map((heading) => heading.textContent)).toEqual(['Projects hub 4']);
     expect([...side.querySelectorAll('.pr-files [data-pr-go]')].map((row) => row.getAttribute('data-pr-go')).sort()).toEqual(changedFiles.filter((f) => payload.blockByPath[f.path] === 'projects-hub').map((f) => f.path).sort());
-    expect(side.querySelectorAll('.pr-num').length).toBe(4);
+    expect(side.querySelector('.pr-num')).toBeNull();
+    const rows = [...side.querySelectorAll('.pr-files .pr-file')];
+    expect(rows).toHaveLength(4);
+    for (const row of rows) expect(row.querySelectorAll('button')).toHaveLength(1);
   });
 
   it('lists no changed files for an area the pull request leaves alone', async () => {
@@ -207,7 +211,7 @@ describe('the reading marker on the area shapes', () => {
 
     listRow(root, IN_PROJECT_MAP).click();
     await flush();
-    (root.querySelector(`.lt-side-list [data-pr-diff="${NOT_IN_MAP}"]`) as HTMLElement).click();
+    openPrFile(root, NOT_IN_MAP, 'diff');
     await flush();
     expect(reading(root)).toEqual([]);
     expect(note(root)).toContain('is not in any block');

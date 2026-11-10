@@ -211,7 +211,7 @@ describe('command palette rows', () => {
     expect(rows()[1].querySelector('.pl-group')!.textContent).toBe('other commands');
     expect(rows()[1].classList.contains('pl-row-sep')).toBe(true);
     const review = rows().find((r) => r.querySelector('.pl-label')!.textContent === commandTitle('lantern.open'))!;
-    expect([...review.querySelectorAll('.pl-key')].map((k) => k.textContent)).toEqual(['Ctrl', 'Shift', 'L']);
+    expect([...review.querySelectorAll('.lt-key')].map((k) => k.textContent)).toEqual(['Ctrl', 'Shift', 'L']);
     input().value = 'arch';
     input().dispatchEvent(new Event('input'));
     expect(labels()).toEqual([commandTitle('lantern.open')]);

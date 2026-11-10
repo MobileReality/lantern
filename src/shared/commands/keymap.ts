@@ -26,24 +26,25 @@ interface ModifierLabels {
   readonly mod: string;
   readonly alt: string;
   readonly shift: string;
+  readonly enter: string;
   readonly separator: string;
 }
 
-const UI_WINDOWS: ModifierLabels = { mod: 'Ctrl', alt: 'Alt', shift: 'Shift', separator: '+' };
+const UI_WINDOWS: ModifierLabels = { mod: 'Ctrl', alt: 'Alt', shift: 'Shift', enter: 'Enter', separator: '+' };
 const UI_LABELS: Record<PlatformName, ModifierLabels> = {
-  mac: { mod: '⌘', alt: '⌥', shift: '⇧', separator: '' },
+  mac: { mod: '⌘', alt: '⌥', shift: '⇧', enter: '↩', separator: '' },
   windows: UI_WINDOWS,
   linux: UI_WINDOWS,
 };
 
-const ARIA_WINDOWS: ModifierLabels = { mod: 'Control', alt: 'Alt', shift: 'Shift', separator: '+' };
+const ARIA_WINDOWS: ModifierLabels = { mod: 'Control', alt: 'Alt', shift: 'Shift', enter: 'Enter', separator: '+' };
 const ARIA_LABELS: Record<PlatformName, ModifierLabels> = {
-  mac: { mod: 'Meta', alt: 'Alt', shift: 'Shift', separator: '+' },
+  mac: { mod: 'Meta', alt: 'Alt', shift: 'Shift', enter: 'Enter', separator: '+' },
   windows: ARIA_WINDOWS,
   linux: ARIA_WINDOWS,
 };
 
-const ACCELERATOR_LABELS: ModifierLabels = { mod: 'CmdOrCtrl', alt: 'Alt', shift: 'Shift', separator: '+' };
+const ACCELERATOR_LABELS: ModifierLabels = { mod: 'CmdOrCtrl', alt: 'Alt', shift: 'Shift', enter: 'Enter', separator: '+' };
 
 export function defaultBindings(): KeyBinding[] {
   return COMMANDS.flatMap((c) => (c.schema.keys ? [{ key: c.schema.keys, command: c.id }] : []));
@@ -95,7 +96,7 @@ export function commandForInput(input: KeyInput, byKey: Keymap['byKey'], platfor
 }
 
 function named(keys: string, labels: ModifierLabels): string[] {
-  return keys.split('+').map((part) => (part === 'mod' || part === 'alt' || part === 'shift' ? labels[part] : part.toUpperCase()));
+  return keys.split('+').map((part) => (part === 'mod' || part === 'alt' || part === 'shift' || part === 'enter' ? labels[part] : part.toUpperCase()));
 }
 
 export function keyLabel(keys: string, platform: PlatformName): string {

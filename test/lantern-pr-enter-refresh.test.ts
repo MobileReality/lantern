@@ -29,6 +29,7 @@ async function openSettled(overrides: Partial<Bridge> = {}) {
   };
   window.ccmws = {
     ...bridge,
+    lanternPrFileStats: vi.fn().mockResolvedValue({}),
     lanternFetchPrs: vi.fn().mockResolvedValue({ ok: true }),
     settingsLanguage: vi.fn().mockResolvedValue('English'),
     settingsRequestedLanguage: vi.fn().mockResolvedValue(undefined),

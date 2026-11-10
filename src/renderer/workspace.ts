@@ -9,7 +9,7 @@ import { openExplain } from './features/explain';
 import './features/agent-run';
 import { closeModals } from './features/settings';
 import { dismissPalette, mountPalette } from './command-palette/index';
-import { disposeLantern, hideLantern, refreshMap, openLantern, showCompare, syncLantern, syncSessions, toggleProblems } from './features/lantern';
+import { disposeLantern, hideLantern, refreshMap, openLantern, showCompare, stepLanternFile, syncLantern, syncSessions, toggleProblems } from './features/lantern';
 import { mountServerLoad } from './features/server-load';
 import { mountProjectIdent } from './project-ident';
 import { watchEditorTab } from './features/editor-tab';
@@ -498,6 +498,8 @@ if (popoutTool) {
   });
   registerCommand('lantern.open', openLantern);
   registerCommand('lantern.problems', toggleProblems);
+  registerCommand('lantern.previousFile', () => stepLanternFile(-1));
+  registerCommand('lantern.nextFile', () => stepLanternFile(1));
   registerCommand('editor.show', showEditor);
   registerCommand('lantern.refresh', () => refreshMap());
   registerCommand('explain.open', () => closeModals() && void openExplain());

@@ -1,7 +1,7 @@
 lantern 1
 # src/shared/lang
 
-src/shared/lang/fix-requests.ts . pure 0a6f226a3230
+src/shared/lang/fix-requests.ts . pure 02c68dead71f
 #feature review-comments
   < src/shared/lang/de/fix-requests.json
   < src/shared/lang/en/fix-requests.json

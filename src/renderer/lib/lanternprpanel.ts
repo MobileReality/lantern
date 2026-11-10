@@ -1,5 +1,8 @@
 import type { LanternNode, LanternPr, LanternPrFile, LanternPrFileKind } from '../../main/lantern';
-import { codeButton, esc } from './lanternctx';
+import type { PrFileStats } from '../../main/lantern-prdiff';
+import { providerOfRecordUrl } from '@shared/providers';
+import { esc } from './lanternctx';
+import { providerLogo } from './provider-logo';
 import PEN_ICON from '@renderer/assets/icons/pen.svg';
 import UNMAPPED_ICON from '@renderer/assets/icons/stat-unmapped.svg';
 import { diffHtml, prInfoHtml, stateClass } from '@renderer/pr-info';
@@ -34,6 +37,7 @@ interface PrPanelContext {
   canRefresh?: boolean;
   refreshBusy?: boolean;
   refreshNote?: string;
+  stats?: PrFileStats;
 }
 
 function prMarks(pr: LanternPr, only?: ReadonlySet<string> | null) {
@@ -50,53 +54,37 @@ function isHttpsUrl(url: string) {
   return /^https:\/\//i.test(url);
 }
 
-function diffButton(ctx: PrPanelContext, path: string) {
-  if (!ctx.canOpenDiff) return '';
-  return `<button class="diff-open" data-pr-diff="${esc(path)}" data-tip="Show diff" aria-label="Show diff of ${esc(path)}">diff</button>`;
-}
-
-function prCodeButton(ctx: PrPanelContext, f: LanternPrFile) {
-  if (!ctx.canOpenPrCode) return '';
-  const local = ctx.pr.source === 'local';
-  const title = f.kind === 'removed' ? (local ? 'Open the version before this change' : `Open version before PR #${ctx.pr.id}`) : local ? 'Open the changed version' : `Open PR #${ctx.pr.id} branch version`;
-  return `<button class="code-open" data-pr-code="${esc(f.path)}" data-tip="${esc(title)}" aria-label="${esc(`${title}: ${f.path}`)}">&lt;/&gt;</button>`;
-}
-
 function reasonPill(f: LanternPrFile) {
   return f.reason ? '' : '<span class="pr-noreason" data-tip="The record gives no reason for this change">no reason</span>';
 }
 
 function reasonText(f: LanternPrFile) {
-  return f.reason ? `<div class="pr-reason">${esc(f.reason)}</div>` : '';
+  return f.reason ? `<span class="pr-reason">${esc(f.reason)}</span>` : '';
+}
+
+function statHtml(ctx: PrPanelContext, path: string) {
+  const stat = ctx.stats?.[path];
+  if (!stat || (!stat.added && !stat.removed)) return '';
+  return `<span class="pr-stat">${stat.added ? `<span class="df-stat-add">+${stat.added}</span>` : ''}${stat.removed ? `<span class="df-stat-del">\u2212${stat.removed}</span>` : ''}</span>`;
 }
 
 function newTag(f: LanternPrFile) {
   return f.kind === 'added' ? '<span class="pr-tag" data-tip="Its map record comes from the pull request branch">new</span>' : '';
 }
 
-const KIND_TITLE: Record<LanternPrFileKind, string> = { added: 'Added', modified: 'Modified', removed: 'Removed' };
-
 function reviewSequence(pr: LanternPr): LanternPrFile[] {
   return pr.ordered ? pr.files : GROUPS.flatMap((g) => pr.files.filter((f) => f.kind === g.kind));
 }
 
-function stepHtml(f: LanternPrFile, step: number, total: number) {
-  return `<span class="pr-num" data-tip="Review step ${step} of ${total}">${step}</span><span class="pr-kind pr-kind-${f.kind}" data-tip="${KIND_TITLE[f.kind]}">${MARK[f.kind]}</span>`;
-}
-
-function fileRow(ctx: PrPanelContext, f: LanternPrFile, step = 0) {
-  const lead = step ? stepHtml(f, step, ctx.pr.files.length) : '';
+function fileRow(ctx: PrPanelContext, f: LanternPrFile) {
   const node = ctx.byPath.get(f.path);
-  const fromBranch = !!node?.prNew;
   const live = !!node;
-  const cls = `pr-file${f.path === ctx.selected ? ' sel' : ''}${f.reason ? ' has-reason' : ''}${ctx.flowStep?.files.has(f.path) ? ' flow-hit' : ''}`;
-  if (!live) {
-    const name = ctx.canOpenDiff || ctx.canOpenPrCode ? `<button class="pr-path" data-pr-go="${esc(f.path)}" data-tip="${esc(`${f.path} (not in the map: opens the file without connections)`)}">${fileLabelHtml(f.path)}</button>` : `<span class="pr-path">${fileLabelHtml(f.path)}</span>`;
-    return `<li class="${cls} off" data-tip="${esc(f.path)}">${lead}${name}<span class="pr-tag">not in map</span>${reasonPill(f)}${prCodeButton(ctx, f)}${diffButton(ctx, f.path)}${reasonText(f)}</li>`;
-  }
-  const code = fromBranch ? prCodeButton(ctx, f) : ctx.canOpenCode ? codeButton(f.path) : '';
-  const tag = fromBranch ? newTag(f) : '';
-  return `<li class="${cls}">${lead}<button class="pr-path" data-pr-go="${esc(f.path)}" data-tip="${esc(f.path)}">${fileLabelHtml(f.path)}</button>${tag}${reasonPill(f)}${code}${diffButton(ctx, f.path)}${reasonText(f)}</li>`;
+  const tag = !live ? '<span class="pr-tag">not in map</span>' : node.prNew ? newTag(f) : '';
+  const cls = `pr-file${f.path === ctx.selected ? ' sel' : ''}${f.reason ? ' has-reason' : ''}${ctx.flowStep?.files.has(f.path) ? ' flow-hit' : ''}${live ? '' : ' off'}`;
+  const inner = `<span class="pr-row-top">${fileLabelHtml(f.path)}${tag}${reasonPill(f)}${statHtml(ctx, f.path)}</span>${reasonText(f)}`;
+  const tip = live ? f.path : `${f.path} (not in the map: opens the file without connections)`;
+  const row = live || ctx.canOpenDiff || ctx.canOpenPrCode ? `<button class="pr-path" data-pr-go="${esc(f.path)}" data-tip="${esc(tip)}">${inner}</button>` : `<span class="pr-path">${inner}</span>`;
+  return `<li class="${cls}" data-path="${esc(f.path)}">${row}</li>`;
 }
 
 function groupHtml(ctx: PrPanelContext, kind: LanternPrFileKind, title: string) {
@@ -107,7 +95,7 @@ function groupHtml(ctx: PrPanelContext, kind: LanternPrFileKind, title: string) 
 
 function orderedHtml(ctx: PrPanelContext) {
   const files = ctx.pr.files;
-  return `<h2 class="pr-review"><span>Review order</span><em>${files.length}</em></h2><ul class="pr-files pr-ordered">${files.map((f, i) => fileRow(ctx, f, i + 1)).join('')}</ul>`;
+  return `<h2 class="pr-review"><span>Changed files</span><em>${files.length}</em></h2><ul class="pr-files pr-ordered">${files.map((f) => fileRow(ctx, f)).join('')}</ul>`;
 }
 
 function contextRow(icon: string, count: number, text: string, button: string) {
@@ -140,7 +128,8 @@ function mapMissingHtml(ctx: PrPanelContext) {
 
 function actionsHtml(ctx: PrPanelContext, description: string) {
   const pr = ctx.pr;
-  const link = isHttpsUrl(pr.url) ? `<a class="lt-btn lt-primary pr-open-link" href="${esc(pr.url)}" target="_blank" rel="noopener noreferrer">Open PR</a>` : '';
+  const host = providerOfRecordUrl(pr.url);
+  const link = isHttpsUrl(pr.url) ? `<a class="lt-btn lt-primary pr-open-link" href="${esc(pr.url)}" target="_blank" rel="noopener noreferrer">${host ? providerLogo(host).outerHTML : ''}View PR</a>` : '';
   const refresh = ctx.canRefresh ? `<button class="lt-btn pr-secondary pr-refresh" data-pr-refresh data-tip="Fetch from the remote and read this pull request again"${ctx.refreshBusy ? ' disabled aria-busy="true"' : ''}>${ctx.refreshBusy ? 'Refreshing…' : 'Refresh'}</button>` : '';
   const note = ctx.refreshNote ? `<span class="pr-reasons-note" role="status">${esc(ctx.refreshNote)}</span>` : '';
   if (!link && !refresh && !description) return '';

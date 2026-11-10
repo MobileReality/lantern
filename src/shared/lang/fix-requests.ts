@@ -7,7 +7,7 @@ import pl from './pl/fix-requests.json';
 import pt from './pt/fix-requests.json';
 import uk from './uk/fix-requests.json';
 
-const PRESET_IDS = ['fix', 'test', 'rename', 'simplify', 'explain', 'remove'] as const;
+const PRESET_IDS = ['fix', 'test', 'rename', 'simplify', 'remove', 'explain', 'what', 'why', 'covered'] as const;
 const INTENT_IDS = ['fix', 'explain', 'question'] as const;
 const DEFAULT_CODE = 'en';
 
@@ -15,7 +15,7 @@ type PresetId = (typeof PRESET_IDS)[number];
 type IntentId = (typeof INTENT_IDS)[number];
 
 const DEFAULT_INTENT: IntentId = 'fix';
-const PRESET_INTENT: Partial<Record<PresetId, IntentId>> = { explain: 'explain' };
+const PRESET_INTENT: Record<PresetId, IntentId> = { fix: 'fix', test: 'fix', rename: 'fix', simplify: 'fix', remove: 'fix', explain: 'explain', what: 'explain', why: 'question', covered: 'question' };
 
 interface FixPreset {
   id: PresetId;
@@ -74,8 +74,8 @@ function presetText(id: string | undefined, presets: readonly FixPreset[]) {
   return presets.find((preset) => preset.id === id)?.text ?? '';
 }
 
-function suggestedIntent(preset: string | undefined): IntentId | undefined {
-  return preset !== undefined && Object.hasOwn(PRESET_INTENT, preset) ? PRESET_INTENT[preset as PresetId] : undefined;
+function presetsOf(intent: IntentId, presets: readonly FixPreset[]) {
+  return presets.filter((preset) => PRESET_INTENT[preset.id] === intent);
 }
 
 function copyTexts(code?: string, tables: PresetTables = BUNDLED): CopyTexts {
@@ -92,5 +92,5 @@ function copyTexts(code?: string, tables: PresetTables = BUNDLED): CopyTexts {
   };
 }
 
-export { DEFAULT_INTENT, INTENT_IDS, PRESET_IDS, copyTexts, fixPresets, isIntentId, presetText, suggestedIntent };
+export { DEFAULT_INTENT, INTENT_IDS, PRESET_IDS, copyTexts, fixPresets, isIntentId, presetText, presetsOf };
 export type { CopyTexts, FixPreset, IntentId, IntentTexts, PresetId, PresetTables };

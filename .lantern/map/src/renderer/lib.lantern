@@ -285,7 +285,7 @@ src/renderer/lib/lanternmacrorest.ts . pure a6156103adfd
   < src/renderer/lib/lanternmacrolayout.ts#MacroLayout
   = src/shared/lantern-main-links.ts#selectMainLinks
 
-src/renderer/lib/lanternmacroside.ts . component 21d5993e10e4
+src/renderer/lib/lanternmacroside.ts . component db2cc7a9816e
 #feature macro-view
   < src/main/lantern.ts#LanternMap
   = src/renderer/lib/lanternctx.ts#esc
@@ -421,7 +421,7 @@ src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
   < src/renderer/lib/lanternplanfocus.ts#planFilePaths
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lanternprpanel.ts . component f602e679baec
+src/renderer/lib/lanternprpanel.ts . component b65da7a7b17a
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml
@@ -429,6 +429,9 @@ src/renderer/lib/lanternprpanel.ts . component f602e679baec
   < src/renderer/lib/lanternflow.ts#PickedStep
   = src/renderer/lib/lanternprdescribe.ts#descriptionHostHtml
   = src/renderer/pr-info/index.ts#prInfoHtml
+  < src/main/lantern-prdiff.ts#PrFileStats
+  < src/shared/providers.ts#providerOfRecordUrl
+  = src/renderer/lib/provider-logo.ts#providerLogo
 
 src/renderer/lib/lanternprs.ts . component 80e6b3d662a5
 #feature pull-requests
@@ -443,16 +446,17 @@ src/renderer/lib/lanternrelview.ts . pure 9cc7d752f475
   < src/main/lantern.ts
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternreview.ts . component 4586df8704f3
+src/renderer/lib/lanternreview.ts . component 9b06fde4d90b
 #feature review-screen
   = src/renderer/lib/codemodal.ts#createCodeView
-  = src/renderer/lib/file-label.ts#fileLabelHtml
   = src/renderer/lib/modalsteps.ts#createStepper
   = src/renderer/lib/modalreason.ts#reasonBlock
   = src/renderer/lib/prdiffmodal.ts#createDiffView
   < src/renderer/lib/prexplain.ts#ExplainHub
   = src/renderer/lib/comments/controller.ts#createReviewComments
   < src/shared/local-review.ts#isLocalId
+  = src/renderer/lib/file-icons.ts#fileIconHtml
+  = src/renderer/lib/lanternctx.ts#esc
 
 src/renderer/lib/lanternscope.ts . pure 991cbeab8ef3
 #feature file-graph
@@ -478,7 +482,7 @@ src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
 #feature file-graph
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternview.ts . component 1a59029e7842
+src/renderer/lib/lanternview.ts . component 4b79cb1ba5fc
 #feature file-graph
   < src/main/lantern.ts
   < src/main/local-reasons.ts#LocalReasonsResult
@@ -512,6 +516,9 @@ src/renderer/lib/lanternview.ts . component 1a59029e7842
   = src/renderer/lib/lanternprs.ts
   = src/renderer/lib/lanternrelview.ts
   = src/renderer/lib/lanternreview.ts#createReviewPane
+  = src/renderer/lib/lanternreview.ts#runFileStep
+  = src/renderer/lib/copymenu.ts#openCopyMenu
+  < src/main/lantern-prdiff.ts#PrFileStats
   = src/renderer/lib/lanternscope.ts
   = src/renderer/lib/lanternsections/controller.ts#mountSections
   = src/renderer/lib/lanternside.ts
@@ -539,6 +546,10 @@ src/renderer/lib/lanternview.ts . component 1a59029e7842
   = src/renderer/lib/lanternplanselection.ts#saveSelection
   = src/renderer/lib/lanternplantext.ts#planText
   = src/renderer/lib/lanternplanwindow.ts#holdPlanWindow
+  < src/main/lantern-prdiff.ts#PrFileStats
+  = src/renderer/lib/copymenu.ts#openCopyMenu
+  = src/renderer/lib/lanternreview.ts#runFileStep
+  = src/renderer/commands/index.ts#registerCommand
 
 src/renderer/lib/memoryformat.ts . pure 6ff40c035773
 #feature process-memory
@@ -553,7 +564,7 @@ src/renderer/lib/modalreason.ts . component edc943dea09a
 #feature review-screen
   = src/renderer/lib/textselection.ts#isSelectingWithin
 
-src/renderer/lib/modalsteps.ts . component c3b123adca7f
+src/renderer/lib/modalsteps.ts . component 5ea5ae7b99f5
 #feature review-screen
 
 src/renderer/lib/notification-sound.ts . service e0af0765e7c3
@@ -571,7 +582,7 @@ src/renderer/lib/prdiffcache.ts . state c18a833daf7c
   < src/main/lantern-pr-revisions.ts#PrSides
   < src/main/lantern-prdiff.ts#PrFileDiff
 
-src/renderer/lib/prdiffmodal.ts . component c4085ba3fec5
+src/renderer/lib/prdiffmodal.ts . component af0d34c38eb3
 #feature review-screen
   < src/main/lantern-prdiff.ts#PrFileDiff
   = src/renderer/lib/codeview.ts
@@ -845,3 +856,11 @@ src/renderer/lib/lanternplanquestion.ts . component 17c131cac565
 
 src/renderer/lib/lanternplanwindow.ts . state 2b7ac32a18d0
 #feature planning
+
+src/renderer/lib/copymenu.ts . component 89aa92ef4a02
+#feature pull-requests
+  = src/renderer/popover/index.ts#mountPopover
+  = src/renderer/popover/index.ts#rovingFocus
+
+src/renderer/lib/keycaps.ts . component f187788287d2
+  < src/renderer/lib/util.ts#el

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import type { PrFileDiff } from '../src/main/lantern-prdiff';
+import type { PrFileDiff, PrFileStats } from '../src/main/lantern-prdiff';
 import { parseDiffRows } from '../src/renderer/lib/codeview';
 import { planDiff } from '../src/renderer/lib/diffcollapse';
 import { diffLexicalLines, renderDiff } from '../src/renderer/lib/diffview';
@@ -8,6 +8,7 @@ import { CODE_HL_MAX_BYTES } from '../src/shared/code-preview';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import { fullContextDiff, numbered, pureAddDiff, pureRemoveDiff } from './helpers/diff-text';
 import { mapOf, node, pr } from './helpers/lantern-map';
+import { openPrFile } from './helpers/pr-rows';
 import { highlightLines } from '../src/renderer/lib/syntax-highlighting';
 
 beforeAll(() => vi.stubGlobal('Worker', class {
@@ -237,34 +238,41 @@ describe('diff chrome in the review pane', async () => {
     ],
   });
 
-  function open(diffs: Record<string, string>) {
+  function open(diffs: Record<string, string>, stats?: PrFileStats) {
     const root = document.createElement('div');
     document.body.appendChild(root);
-    mounted.push(mountLanternView(root, mapOf({ nodes: NODES, prs: [PR] }), { pr: '24', readPrDiff: async (_pr, path) => good(diffs[path]) }));
+    mounted.push(mountLanternView(root, mapOf({ nodes: NODES, prs: [PR] }), { pr: '24', readPrDiff: async (_pr, path) => good(diffs[path]), ...(stats ? { readPrStats: async () => stats } : {}) }));
     return root;
   }
-  const toggle = (root: HTMLElement) => root.querySelector('.lt-diff-toggle') as HTMLButtonElement;
+  const toggle = (root: HTMLElement) => root.querySelector('.lt-diff-fold') as HTMLButtonElement;
   const openFile = async (root: HTMLElement, path: string) => {
-    (root.querySelector(`[data-pr-diff="${path}"]`) as HTMLElement).click();
+    openPrFile(root, path, 'diff');
     await flush();
   };
 
-  it('summarises added and removed lines in the header', async () => {
+  it('summarises added and removed lines in the header from the pull request stats', async () => {
+    const root = open({ 'src/svc.ts': MIXED }, { 'src/svc.ts': { added: 1, removed: 1 } });
+    await openFile(root, 'src/svc.ts');
+    await vi.waitFor(() => expect(root.querySelector('.lt-review-path .lt-diff-stat')?.textContent).toBe('+1 −1'));
+    expect(root.querySelectorAll('.lt-review .lt-diff-stat')).toHaveLength(1);
+  });
+
+  it('shows no line counts in the header without pull request stats', async () => {
     const root = open({ 'src/svc.ts': MIXED });
     await openFile(root, 'src/svc.ts');
-    expect(root.querySelector('.lt-diff-stat')?.textContent).toBe('+1 −1');
+    expect(root.querySelector('.lt-review .lt-diff-stat')).toBeNull();
   });
 
   it('opens collapsed and the toggle shows every line, then collapses again', async () => {
     const root = open({ 'src/svc.ts': MIXED });
     await openFile(root, 'src/svc.ts');
     expect(toggle(root).hidden).toBe(false);
-    expect(toggle(root).textContent).toBe('Show all lines');
+    expect(toggle(root).getAttribute('aria-label')).toBe('Show all lines');
     expect(root.querySelectorAll('.lt-review .df-fold')).toHaveLength(2);
     toggle(root).click();
     expect(root.querySelectorAll('.lt-review .df-fold')).toHaveLength(0);
     expect(root.querySelectorAll('.lt-review .cl.ctx').length).toBe(parseDiffRows(MIXED).filter((r) => r.type === 'ctx').length);
-    expect(toggle(root).textContent).toBe('Collapse unchanged');
+    expect(toggle(root).getAttribute('aria-label')).toBe('Collapse unchanged lines');
     expect(toggle(root).getAttribute('aria-pressed')).toBe('true');
     toggle(root).click();
     expect(root.querySelectorAll('.lt-review .df-fold')).toHaveLength(2);
@@ -276,7 +284,7 @@ describe('diff chrome in the review pane', async () => {
     toggle(root).click();
     await openFile(root, 'src/new.ts');
     expect(root.querySelectorAll('.lt-review .df-fold')).toHaveLength(0);
-    expect(toggle(root).textContent).toBe('Collapse unchanged');
+    expect(toggle(root).getAttribute('aria-label')).toBe('Collapse unchanged lines');
     toggle(root).click();
     await openFile(root, 'src/svc.ts');
     expect(root.querySelectorAll('.lt-review .df-fold')).toHaveLength(2);
@@ -286,6 +294,6 @@ describe('diff chrome in the review pane', async () => {
     const root = open({ 'src/new.ts': pureAddDiff(numbered(50)) });
     await openFile(root, 'src/new.ts');
     expect(toggle(root).hidden).toBe(true);
-    expect(root.querySelector('.lt-diff-stat')?.textContent).toBe('+50 −0');
+    expect(root.querySelectorAll('.lt-review .cl.add')).toHaveLength(50);
   });
 });

@@ -13,9 +13,8 @@
   "skill-runner.ts": "runs an integration skill's CLI in-process with injected environment, fetch and folder, never contacting a real Lantern, and returns its exit code and output, and builds a git repo with a bare origin for its pull request commands",
   "fake-providers.ts": "local HTTP server that plays GitHub, Bitbucket and Jira for the token check: accepted accounts per header, scripted failures, hangs and redirects, and a record of each request",
   "fake-tokens.ts": "fake GitHub and Atlassian tokens assembled at run time in the real token shapes, so no secret-shaped literal sits in the test sources",
-  "fake-providers.ts gotcha":"It never follows a redirect and never sees the real hosts: tests point the endpoints table at it.",
-  "diagnostics-world.ts": "a Diagnostics service on a temporary folder with a controllable clock, report context and entry builder for the Diagnostics tests",
-  "diff-text.ts":"builders for whole-file, new-file and removed-file diff text",
+  "fake-providers.ts gotcha": "It never follows a redirect and never sees the real hosts: tests point the endpoints table at it.",
+  "diff-text.ts": "builders for whole-file, new-file and removed-file diff text",
   "fake-bitbucket.ts": "local HTTP server that answers pull request lookups with scripted states, delays and redirects and records each request",
   "fake-claude.ts": "installs a stand-in claude executable that records its arguments, folder and stdin and answers with text, an error, an empty or unreadable reply, a reply the test supplies, a hang, a stream-json run that succeeds or fails with permission denials, or a scripted Lantern map run, as the test chooses",
   "fake-lantern-agent.mjs": "Plays the model of a Lantern map run for the stand-in claude: maps a fixture project, does or skips the areas step, can show a refused worker call, and answers the blind lookup's one-shot calls",
@@ -44,6 +43,7 @@
   "macroview-host.ts": "Sizes the areas map's pane in jsdom and gives host tests the calls they need: find a shape by key, click it, double-click it, list the shapes with a flag and read its label.",
   "setup-project.ts": "builds a 63-file throwaway project and maps chosen files in the .lantern format",
   "setup-project.ts < skills/lantern-setup/scripts/lib.mjs#hashContent": "record hash",
-  "comment-body.ts": "builds file and diff code bodies and a text selection over their lines for the comment tests"
+  "comment-body.ts": "builds file and diff code bodies and a text selection over their lines for the comment tests",
+  "pr-rows.ts": "Opens a changed file from the pull request list and switches the review pane between file and diff for tests"
  }
 }

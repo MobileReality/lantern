@@ -25,7 +25,7 @@ const READABLE: Record<string, string[]> = {
 };
 
 const CHROME: Record<string, string[]> = {
-  files: ['.lt-viewbar button', '.lt-review-mode', '.lt-split', '.lt-prs .pr-chip', '.lt-side .pr-back', '.lt-review .cl .ln', '.lt-side .pr-file .pr-num', '.lt-side .chip', '.lt-main canvas'],
+  files: ['.lt-viewbar button', '.lt-review-mode', '.lt-split', '.lt-prs .pr-chip', '.lt-side .pr-back', '.lt-review .cl .ln', '.lt-side .chip', '.lt-main canvas'],
   flow: ['.lt-flow-kind', '.lt-flow-tag', '.lt-viewbar [data-view="flow"]'],
   macro: ['.lt-side .chip', '.lt-viewbar [data-view="macro"]', '.lt-main canvas'],
 };
@@ -54,7 +54,8 @@ mountLanternView(document.getElementById('host'), map, {
   readPrOverlay: readDemoPrOverlay,
   readMacro: async () => ({ ok: true, view: macroView, texts: featureTexts.text, blockByPath: {}, minStrongEdge }),
 });
-document.querySelector('[data-pr-diff="src/checkout/order-summary.tsx"]').click();`,
+document.querySelector('[data-pr-go="src/checkout/order-summary.tsx"]').click();
+document.querySelector('.lt-review [data-review-mode="diff"]').click();`,
       resolveDir: root,
       sourcefile: 'select-entry.ts',
       loader: 'ts',
@@ -64,7 +65,7 @@ document.querySelector('[data-pr-diff="src/checkout/order-summary.tsx"]').click(
     platform: 'browser',
     format: 'iife',
     target: 'chrome130',
-    loader: { '.json': 'json' },
+    loader: { '.json': 'json', '.svg': 'text' },
   });
   const links = STYLES.map((name) => `<link rel="stylesheet" href="file://${path.join(root, 'src/renderer', name)}">`).join('');
   const page = `<!doctype html><html><head>${links}</head><body style="margin:0"><main class="lt-panel" id="host"></main><script>${bundle.outputFiles[0].text}</script></body></html>`;

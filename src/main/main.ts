@@ -19,7 +19,7 @@ import * as skills from './skills';
 import { registerExtensionsIpc } from './extensions-ipc';
 import { readProjectFile } from './filecontent';
 import { projectIdent } from './project-ident';
-import { readRegisteredPrFileDiff } from './lantern-prdiff';
+import { readRegisteredPrFileDiff, readRegisteredPrFileStats } from './lantern-prdiff';
 import { readRegisteredPrFile } from './lantern-prfile';
 import { loadRegisteredPrOverlay } from './lantern-proverlay';
 import { enterPr, refreshPrData, warmPrs } from './lantern-pr-warm';
@@ -833,6 +833,8 @@ ipcMain.handle('lantern:macro', fromWorkspace((_e, project, lang) =>
   readRegisteredMacro(isRegisteredDir, lantern.loadMacro, project, lang)));
 ipcMain.handle('lantern:pr-file-diff', fromWorkspace((_e, { project, pr, file, sides } = {}) =>
   readRegisteredPrFileDiff(isRegisteredDir, project, pr, file, sides)));
+ipcMain.handle('lantern:pr-file-stats', fromWorkspace((_e, { project, pr } = {}) =>
+  readRegisteredPrFileStats(isRegisteredDir, project, pr)));
 ipcMain.handle('lantern:pr-overlay', fromWorkspace((_e, { project, pr, lang } = {}) =>
   loadRegisteredPrOverlay(isRegisteredDir, project, pr, typeof lang === 'string' ? lang : undefined)));
 ipcMain.handle('lantern:pr-file', fromWorkspace((_e, { project, pr, file } = {}) =>

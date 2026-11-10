@@ -364,7 +364,7 @@ src/main/lantern-pr-warm.ts . service e401dc39af3b
   = src/main/lantern-pr-revisions.ts#resolvePrRevisions
   = src/main/lantern-prs.ts
 
-src/main/lantern-prdiff.ts . service d586bd1258f6
+src/main/lantern-prdiff.ts . service d4c5a3acfa69
 #feature pull-requests
   = src/main/filecontent.ts
   = src/main/lantern-git.ts
@@ -459,10 +459,7 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry 38a648257dc4
-  = src/main/diagnostics/index.ts#startDiagnostics
-  = src/main/diagnostics/ipc-guard.ts#guardIpc
-  = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
+src/main/main.ts . entry 097cca4b6c0a
   = src/main/editor-demand.ts#createEditorDemand
   = src/main/serveweb-license.ts#createServerLicenseConsent
   = src/main/bundle.ts#setPermissionConsent
@@ -756,10 +753,8 @@ src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
 src/main/serveweb-settings.ts . service 95c6102e988e
 #feature serve-web
 
-src/main/serveweb.ts . service ea925d1a7891
+src/main/serveweb.ts . service 537a2a51ceff
 #feature serve-web
-  > src/main/diagnostics/editor-server.ts#describeServerStop
-  > src/main/diagnostics/index.ts#reportDiagnostic
   = src/main/serveweb-failure.ts
   = src/main/serveweb-launch.ts
   = src/main/serveweb-license.ts
@@ -907,7 +902,7 @@ src/main/lantern-host-account.ts . service 452eeac04aae
   < src/main/auth/env-names.ts#CREDENTIAL_VARS
   < src/shared/providers.ts#PROVIDER
 
-src/main/lantern-host-drivers.ts . service 380ff5f434e3
+src/main/lantern-host-drivers.ts . service 9391b117a89d
 #feature pull-requests
   < src/main/lantern-host-account.ts#AccountCredentials
   = src/main/lantern-host-credentials.ts#readHostCredentials
@@ -915,7 +910,7 @@ src/main/lantern-host-drivers.ts . service 380ff5f434e3
   < src/main/lantern-host-origin.ts#CodeHost
   = src/main/lantern-host-request.ts#fetchHostState
   < src/main/lantern-types.ts#LanternPrState
-  < src/shared/providers.ts#CODE_HOST_IDS
+  < src/shared/providers.ts#providerOfRecordUrl
 
 src/main/lantern-host-github.ts . gateway b232d281b77a
 #feature pull-requests

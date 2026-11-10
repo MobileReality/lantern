@@ -67,6 +67,7 @@ contextBridge.exposeInMainWorld('ccmws', {
   lanternPrFile: (project: string, pr: string, file: string) => ipcRenderer.invoke('lantern:pr-file', { project, pr, file }),
   lanternPrOverlay: (project: string, pr: string, lang?: string) => ipcRenderer.invoke('lantern:pr-overlay', { project, pr, lang }),
   lanternPrFileDiff: (project: string, pr: string, file: string, sides?: PrSides) => ipcRenderer.invoke('lantern:pr-file-diff', { project, pr, file, sides }),
+  lanternPrFileStats: (project: string, pr: string) => ipcRenderer.invoke('lantern:pr-file-stats', { project, pr }),
 
   explainsList: (project: string) => ipcRenderer.invoke('explains:list', project),
   explainsRemove: (project: string, name: string) => ipcRenderer.invoke('explains:remove', { project, name }),

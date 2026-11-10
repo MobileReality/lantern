@@ -1,6 +1,6 @@
 {
  "text": {
-  "fix-requests.ts": "Offers the predefined fix texts (fix, test, rename, simplify, explain, remove) and the wording of the copied review comments (header, pull request scope, one instruction per intent: fix, explain, question) in the map's language, taking a missing or blank one from English; also the one list of intents and the intent a text suggests",
+  "fix-requests.ts": "Offers the predefined fix texts (fix, test, rename, simplify, remove, explain, what, why, covered) and the wording of the copied review comments (header, pull request scope, one instruction per intent: fix, explain, question) in the map's language, taking a missing or blank one from English; also the one list of intents and which texts belong to each intent",
   "messages.ts": "Looks up the app's texts by typed key in the messages catalogue, filling named placeholders, picking the singular or plural form and falling back to English, then to the key itself"
  }
 }

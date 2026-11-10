@@ -124,5 +124,5 @@ src/shared/auth-view.ts . schema a75528dafdd4
 src/shared/auth.ts . config b6493039b1b7
 #feature integrations
 
-src/shared/providers.ts . config 2aca7417b998
+src/shared/providers.ts . config 0b4d7e03523c
 #feature integrations

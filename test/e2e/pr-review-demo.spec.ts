@@ -26,11 +26,13 @@ test('walks the synthetic review through production graph, diff, and code views'
   await expect(page.locator('.lt-review .cl.add')).toContainText(['return new Intl.NumberFormat']);
   await expect(page.locator('.lt-review .cl.del').first()).toContainText('toFixed(2)');
   await page.screenshot({ path: testInfo.outputPath('order-summary-diff.png') });
-  await expect(page.locator('.pr-review')).toContainText('Review order');
-  await expect(page.locator('.pr-num')).toHaveText(['1', '2', '3', '4', '5']);
+  await expect(page.locator('.pr-review')).toContainText('Changed files');
+  await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(5);
+  await expect(page.locator('.pr-num, .pr-file .diff-open, .pr-file .code-open')).toHaveCount(0);
   await expect(page.locator('.lt-pixi-node-access.pr-new')).toContainText('calculate-order-total.ts');
 
-  await page.locator('[data-pr-diff="src/checkout/use-checkout.ts"]').click();
+  await page.locator('[data-pr-go="src/checkout/use-checkout.ts"]').click();
+  await page.locator('.lt-review [data-review-mode="diff"]').click();
   await expect(page.locator('.lt-review .lt-step-count')).toHaveText('1 / 5');
   await expect(page.locator('.lt-review')).toContainText('calculateOrderTotal');
   await page.keyboard.press('ArrowRight');
@@ -40,7 +42,8 @@ test('walks the synthetic review through production graph, diff, and code views'
   await expect(page.locator('.lt-review')).toContainText('legacyTotal');
   await expect(page.locator('.pr-file.sel')).toContainText('legacy-total.ts');
 
-  await page.locator('[data-pr-code="src/pricing/legacy-total.ts"]').click();
+  await page.locator('[data-pr-go="src/pricing/legacy-total.ts"]').click();
+  await page.locator('.lt-review [data-review-mode="file"]').click();
   await expect(page.locator('.lt-review .lt-code-note')).toHaveText('version before PR #317');
   await page.keyboard.press('ArrowLeft');
   await expect(page.locator('.lt-review .lt-code-path')).toContainText('calculate-order-total.ts');

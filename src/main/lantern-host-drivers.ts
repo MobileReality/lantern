@@ -1,4 +1,4 @@
-import { CODE_HOST_IDS, PROVIDER, PROVIDERS } from '@shared/providers';
+import { PROVIDER, providerOfRecordUrl } from '@shared/providers';
 import type { CodeHostId } from '@shared/providers';
 import type { AccountCredentials, AccountLookup } from './lantern-host-account';
 import { fetchGithubState } from './lantern-host-github';
@@ -36,16 +36,6 @@ const DRIVERS: Record<CodeHostId, HostDriver> = {
     fetch: (host, id, { token }, options) => fetchGithubState(host, id, token, options),
   },
 };
-
-const PROVIDER_OF_HOSTNAME = new Map(CODE_HOST_IDS.flatMap((id) => [...PROVIDERS[id].hosts, ...PROVIDERS[id].remoteAliases].map((hostname) => [hostname, id] as const)));
-
-function providerOfRecordUrl(url: string): CodeHostId | null {
-  try {
-    return PROVIDER_OF_HOSTNAME.get(new URL(url).hostname.toLowerCase().replace(/^www\./, '')) ?? null;
-  } catch {
-    return null;
-  }
-}
 
 function recordBelongsTo(provider: CodeHostId, url: string) {
   const named = providerOfRecordUrl(url);

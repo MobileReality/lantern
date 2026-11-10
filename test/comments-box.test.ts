@@ -19,12 +19,12 @@ const key = (target: HTMLElement, init: KeyboardEventInit) => target.dispatchEve
 const chip = (box: HTMLElement, id: string) => box.querySelector(`.lt-cm-chip[data-preset="${id}"]`) as HTMLButtonElement;
 
 describe('the inline comment box', () => {
-  it('opens under a heading with one chip per predefined text and a comment field', () => {
+  it('opens under a heading with a chip per predefined text of the shown intent and a comment field', () => {
     const { box } = opened();
 
     expect(box.el.hidden).toBe(false);
     expect(box.el.querySelector('.lt-cm-box-title')?.textContent).toBe('Comment on lines 2-3');
-    expect([...box.el.querySelectorAll('.lt-cm-chip')].map((each) => each.textContent)).toEqual(fixPresets('en').map((each) => each.text));
+    expect([...box.el.querySelectorAll('.lt-cm-chip')].map((each) => each.textContent)).toEqual(['Fix this.', 'Add a test for this.', 'Rename this.', 'Simplify this.', 'Remove this.']);
     expect(box.el.querySelector('select')).toBeNull();
   });
 
@@ -53,7 +53,7 @@ describe('the inline comment box', () => {
 
     box.el.requestSubmit();
 
-    expect(onSave).toHaveBeenCalledWith({ comment: 'Rename it to total.', preset: 'rename' });
+    expect(onSave).toHaveBeenCalledWith({ comment: 'Rename it to total.', preset: 'rename', intent: 'fix' });
   });
 
   it('saves with Ctrl+Enter or Cmd+Enter from the comment field', () => {
@@ -168,15 +168,31 @@ describe('the intent choice in the comment box', () => {
     expect(onSave).toHaveBeenLastCalledWith({ comment: 'why?', preset: '', intent: 'fix' });
   });
 
-  it('opens with the intent of the comment being edited, and a chip does not change it', () => {
+  it('opens with the intent of the comment being edited and offers only its texts', () => {
     const { text, box, onSave } = opened({ comment: 'why?', intent: 'question' });
     expect(radios(box.el).map((each) => each.checked)).toEqual([false, false, true]);
+    expect([...box.el.querySelectorAll<HTMLElement>('.lt-cm-chip')].map((each) => each.dataset.preset)).toEqual(['why', 'covered']);
 
-    chip(box.el, 'explain').click();
+    chip(box.el, 'covered').click();
     text.value = 'why?';
     box.el.requestSubmit();
 
-    expect(onSave).toHaveBeenCalledWith({ comment: 'why?', preset: 'explain', intent: 'question' });
+    expect(onSave).toHaveBeenCalledWith({ comment: 'why?', preset: 'covered', intent: 'question' });
+  });
+
+  it('swaps the texts when another intent is chosen', () => {
+    const { box } = opened();
+
+    radios(box.el)[1].click();
+
+    expect([...box.el.querySelectorAll<HTMLElement>('.lt-cm-chip')].map((each) => each.dataset.preset)).toEqual(['explain', 'what']);
+  });
+
+  it('shows the save shortcut as key chips', () => {
+    const { box } = opened();
+
+    expect(box.el.querySelectorAll('.lt-cm-hint .lt-key').length).toBe(2);
+    expect(box.el.querySelector('.lt-cm-hint')?.textContent).toMatch(/to save$/);
   });
 
   it('shows the intent the copy will follow for a comment without one, and still saves it unset', () => {
