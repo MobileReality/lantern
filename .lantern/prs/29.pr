@@ -5,12 +5,12 @@ lantern-pr 1
 #branch feat/auto-update
 #base main
 #opened 2026-11-10
-#head 6ea43c929cc35a3d0f52972a9dd812fc68affc6a
+#head 254354c97fd09d6149447d83fc92647146fd74dd
 #describe what An installed Lantern finds a newer release by itself. On a Mac it downloads the update and installs it only when no editor terminal, running process or run started by Lantern would be ended; elsewhere it shows a notice with a link to the release page.
 #describe what Sessions that run outside Lantern, such as in iTerm, do not hold the update back, because a restart does not end them.
 #describe what Adds a Check for Updates item, a setting to switch the checks off, and a docs page on what each check sends. The Mac feed answers 404 until the release asset is renamed to include arm64, so for now that path is a quiet no-op.
 #describe before New releases were found and installed by hand.
-#describe after A Mac shows Update ready: restart when your sessions finish, installs when no terminal or run it would end is alive, and asks for confirmation naming what a Restart now would end.
+#describe after A Mac shows Update ready: restart when your terminals and runs finish, installs when no terminal or run it would end is alive, and asks for confirmation naming what a Restart now would end.
 #describe verified Typecheck, lint and the full test suite pass. The update flow itself was never run.
 + docs/updates.md
 + src/main/updater/controller.ts
