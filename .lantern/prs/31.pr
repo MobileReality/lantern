@@ -1,0 +1,27 @@
+lantern-pr 1
+# 31
+#title chore: release 0.3.1
+#url https://github.com/MobileReality/lantern/pull/31
+#branch chore/release-0-3-1
+#base main
+#opened 2026-11-10
+#head 1c43279a5a820d90813fc5de4132e53c07d89c49
+#describe what Sets the package version to 0.3.1 and adds the 0.3.1 changelog entry for automatic updates and the Lantern-mac-arm64.zip release asset.
+#describe before The package and the app said 0.3.0.
+#describe after The package and the app say 0.3.1; the changelog compares v0.3.0...v0.3.1.
+#describe verified Typecheck, lint and the version-related tests are green.
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md Records what shipped since 0.3.0 so the v0.3.1 release notes are true.
+#reason package.json The app reports its version from package.json, so the 0.3.1 release needs it bumped.
+#story A user installs the 0.3.1 release
+#step actor A user
+#file package.json
+#step action installs the 0.3.1 release
+#file CHANGELOG.md
+#step subject Lantern
+#below actor User
+#below interaction sees 0.3.1 and reads what changed
+#below consequence The app said 0.3.0 => The app says 0.3.1
