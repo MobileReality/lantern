@@ -5,7 +5,7 @@ lantern-pr 1
 #branch chore/robust-brittle-tests
 #base main
 #opened 2026-11-11
-#head 8edbd6c41d2df08638ade7770a5fa63afe4188c3
+#head 22c4fa26190ce84c9da064b6396d25c6ca494032
 #describe what Six brittle tests now derive expectations from the command registry, the skill bundle, model-floor.json and the real handlers.
 #describe before Hard-coded 20-command and 16-skill lists, counted regex matches in main.ts.
 #describe after Lists come from the source of truth; wiring is checked by where a call sits.
