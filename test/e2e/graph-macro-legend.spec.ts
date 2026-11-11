@@ -4,13 +4,14 @@ import { macroGraph } from '../../src/renderer/lib/lanternmacro';
 import type { MacroView } from '../../src/main/lantern-macro';
 import ownView from '../fixtures/lantern-macro-own-view.json';
 import { closeGraphHarness, launchGraphHarness, loadGraphFixture } from './support/graph-harness';
+import { closeOverview, openOverview, overview } from './support/overview';
 
 const SETTLE_MS = 500;
 const LAPTOP = '1280x800';
 const PAINTED = ['stroke', 'stroke-width', 'stroke-dasharray', 'fill', 'opacity'];
 
 const map = (page: Page) => page.locator('.lt-macroview');
-const legend = (page: Page) => page.locator('.lt-side .legend');
+const legend = (page: Page) => overview(page).locator('.legend');
 const rows = (page: Page) => legend(page).locator('[data-legend]');
 const ids = (page: Page) => rows(page).evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-legend')));
 const shapeOf = (page: Page, key: string) => map(page).locator(`[data-key="${key}"]`).first().locator('> .mv-shape');
@@ -44,11 +45,14 @@ test('the areas map legend is short, fits the side panel, and its swatches are p
   try {
     const { page } = harness;
 
+    await openOverview(page);
     expect(await ids(page)).toEqual(['main', 'lit', 'pending', 'system']);
     await legend(page).scrollIntoViewIfNeeded();
     await legend(page).screenshot({ path: testInfo.outputPath('legend-rest.png') });
 
+    await closeOverview(page);
     await clickShape(page, 'block:ordering');
+    await openOverview(page);
     expect(await ids(page)).toEqual(['main', 'selected', 'related', 'hot', 'dim', 'lit', 'pending', 'system']);
     await expect(shapeOf(page, 'block:ordering')).toBeVisible();
     for (const [id, key] of [['selected', 'block:ordering'], ['related', 'block:payments'], ['lit', 'block:ordering']] as const) {
@@ -65,7 +69,7 @@ test('the areas map legend is short, fits the side panel, and its swatches are p
     await legend(page).screenshot({ path: testInfo.outputPath('legend-selected.png') });
     await page.screenshot({ path: testInfo.outputPath('legend-page-selected.png') });
 
-    const side = (await page.locator('.lt-side').boundingBox())!;
+    const side = (await overview(page).boundingBox())!;
     for (const row of await rows(page).all()) {
       const box = (await row.boundingBox())!;
       expect(box.x + box.width).toBeLessThanOrEqual(side.x + side.width);
@@ -81,7 +85,8 @@ test('with a platform selected the uses style is in the legend, drawn like the p
   const harness = await open();
   try {
     const { page } = harness;
-    await page.locator('.lt-side .chip', { hasText: 'Help bot' }).first().click();
+    await openOverview(page);
+    await overview(page).locator('.chip', { hasText: 'Help bot' }).first().click();
     await page.waitForTimeout(SETTLE_MS);
 
     expect(await ids(page)).toContain('uses');
@@ -111,6 +116,7 @@ test('the legend of the flat Macro view shows the links it draws and two lines o
     await page.getByRole('button', { name: /^Macro/ }).click();
     await expect(page.locator('.lt-pixi-node-access')).toHaveCount(graph.blocks.length);
 
+    await openOverview(page);
     expect(await ids(page)).toEqual(['strong', 'weak']);
     await expect(legend(page)).toContainText(/Strong link, \d+\+ relations/);
     await expect(legend(page).locator(':scope > p')).toHaveCount(2);

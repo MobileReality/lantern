@@ -23,11 +23,11 @@ test.afterAll(async () => {
 });
 
 async function geometry(page: import('@playwright/test').Page) {
-  return page.evaluate(() => {
+  return page.evaluate((body) => {
     const rect = (selector: string) => document.querySelector(selector)?.getBoundingClientRect();
     const review = rect('.lt-review');
-    const card = rect('.lt-review-body .lt-cm-card');
-    const row = [...document.querySelectorAll('.lt-review-body .cl.add')].find((each) => each.nextElementSibling?.classList.contains('lt-cm-card'))?.getBoundingClientRect();
+    const card = rect(`${body} .lt-cm-card`);
+    const row = [...document.querySelectorAll(`${body} .cl.add`)].find((each) => each.nextElementSibling?.classList.contains('lt-cm-card'))?.getBoundingClientRect();
     return {
       pageWidth: document.documentElement.scrollWidth,
       windowWidth: document.documentElement.clientWidth,
@@ -38,7 +38,7 @@ async function geometry(page: import('@playwright/test').Page) {
       cardTop: card?.top ?? 0,
       rowBottom: row?.bottom ?? 0,
     };
-  });
+  }, VISIBLE_BODY);
 }
 
 test('comments on diff lines and on the whole file, shows them in the code, copies them and keeps them over a reload', async ({}, testInfo) => {
@@ -65,7 +65,7 @@ test('comments on diff lines and on the whole file, shows them in the code, copi
   const card = page.locator(`${VISIBLE_BODY} .lt-cm-card`);
   await expect(card).toHaveCount(1);
   await expect(card.locator('.lt-cm-card-text')).toHaveText('Add a test for this. Cover the tax rounding.');
-  const under = await page.evaluate(() => (document.querySelector('.lt-review-body .lt-cm-card')?.previousElementSibling?.querySelectorAll('.ln')[1]?.textContent ?? ''));
+  const under = await page.evaluate((body) => (document.querySelector(`${body} .lt-cm-card`)?.previousElementSibling?.querySelectorAll('.ln')[1]?.textContent ?? ''), VISIBLE_BODY);
   expect(under).toBe(lines[1]);
   const size = await geometry(page);
   expect(size.cardTop).toBeGreaterThanOrEqual(size.rowBottom - 1);
@@ -105,7 +105,7 @@ test('comments on diff lines and on the whole file, shows them in the code, copi
   await expect(page.locator('.lt-cm-count')).toHaveText('2');
   await expect(page.locator('.lt-cm-file .lt-cm-card .lt-cm-card-text')).toHaveText('Rename the module.');
   await expect(page.locator(`${VISIBLE_BODY} .lt-cm-card .lt-cm-card-text`)).toHaveText('Add a test for this. Cover the tax rounding.');
-  const after = await page.evaluate(() => document.querySelector('.lt-review-body .lt-cm-card')?.previousElementSibling?.querySelectorAll('.ln')[1]?.textContent ?? '');
+  const after = await page.evaluate((body) => document.querySelector(`${body} .lt-cm-card`)?.previousElementSibling?.querySelectorAll('.ln')[1]?.textContent ?? '', VISIBLE_BODY);
   expect(after).toBe(lines[1]);
   await page.screenshot({ path: testInfo.outputPath('6-after-reload.png') });
 });

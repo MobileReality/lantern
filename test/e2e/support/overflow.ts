@@ -8,7 +8,7 @@ interface Clipped {
   overBy: number;
 }
 
-const PANES = ['.lt-side', '.lt-review', '.lt-main'];
+const PANES = ['.lt-side', '.lt-overview', '.lt-review', '.lt-main'];
 const SLACK_PX = 1.5;
 const SQUEEZED_PX = 64;
 const COLLAPSIBLE = '.file-directory';

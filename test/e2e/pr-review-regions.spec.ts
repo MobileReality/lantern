@@ -120,18 +120,18 @@ test('remembers the layout per project and forgets it on reset', async () => {
   const page = harness.page;
   await open('/e2e/gamma');
   await page.keyboard.press('Alt+1');
-  await expect(page.locator('.lt-side')).toBeHidden();
+  await expect(page.locator('.lt-side:not(.lt-overview)')).toBeHidden();
 
   await open('/e2e/gamma');
-  await expect(page.locator('.lt-side')).toBeHidden();
+  await expect(page.locator('.lt-side:not(.lt-overview)')).toBeHidden();
   await expectFitsAndFills(page);
 
   await open('/e2e/delta');
-  await expect(page.locator('.lt-side')).toBeVisible();
+  await expect(page.locator('.lt-side:not(.lt-overview)')).toBeVisible();
 
   await open('/e2e/gamma');
   await page.getByRole('button', { name: 'Reset layout' }).click();
-  await expect(page.locator('.lt-side')).toBeVisible();
+  await expect(page.locator('.lt-side:not(.lt-overview)')).toBeVisible();
   await open('/e2e/gamma');
-  await expect(page.locator('.lt-side')).toBeVisible();
+  await expect(page.locator('.lt-side:not(.lt-overview)')).toBeVisible();
 });

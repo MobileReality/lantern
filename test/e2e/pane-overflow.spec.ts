@@ -4,6 +4,7 @@ import type { GraphHarness } from './support/graph-harness';
 import { closeGraphHarness, launchGraphHarness, loadGraphFixture } from './support/graph-harness';
 import { VISIBLE_BODY, commentOnSelection, selectAddedLines } from './support/comments';
 import { findClippedText } from './support/overflow';
+import { closeOverview, openOverview } from './support/overview';
 
 const VIEWPORTS = ['1280x800', '1600x1000'];
 const SETTLE_MS = 400;
@@ -20,6 +21,7 @@ interface Scenario {
   name: string;
   open: (harness: GraphHarness) => Promise<void>;
   fit?: string;
+  overview?: boolean;
 }
 
 const ZOOM_FIT = '[data-zoom="fit"]';
@@ -52,17 +54,21 @@ const SCENARIOS: Scenario[] = [
       await h.page.keyboard.press('Control+Enter');
       await selectAddedLines(h.page, 3);
       await h.page.locator('.lt-cm-float').click();
+      await h.page.locator('.lt-cm-box').getByRole('radio', { name: 'Explain' }).check();
       await h.page.locator('.lt-cm-box').getByRole('button', { name: 'Explain why this is needed.' }).click();
       await expect(h.page.locator('.lt-cm-box textarea')).toBeFocused();
     },
   },
   {
-    name: 'areas macro with a system picked from the outside systems list and the side panel open',
+    name: 'areas macro with a system picked from the outside systems list and the overview open',
     fit: ZOOM_FIT,
+    overview: true,
     open: async (h) => {
       await openAreasMacro(h);
       await h.page.locator('.mv-dock .mv-system').first().click();
-      await h.page.locator('.lt-side .lt-detail .lt-sys-uses').first().waitFor();
+      await openOverview(h.page);
+      await h.page.locator('.lt-overview .lt-detail .lt-sys-uses').first().waitFor();
+      await closeOverview(h.page);
       await h.page.waitForTimeout(SETTLE_MS);
     },
   },
@@ -127,8 +133,10 @@ for (const viewport of VIEWPORTS) {
         await page.waitForTimeout(SETTLE_MS);
         for (const extreme of EXTREMES) {
           await moveDividers(page, extreme.left, extreme.middle);
+          if (scenario.overview) await openOverview(page);
           await page.screenshot({ path: testInfo.outputPath(`${extreme.name.replaceAll(' ', '-')}.png`) });
           expect(await findClippedText(page), extreme.name).toEqual([]);
+          if (scenario.overview) await closeOverview(page);
           await page.locator(scenario.fit ?? '[data-zoom-fit]').click();
           expect(await graphOverflow(page), `${extreme.name}: Fit leaves content past the pane`).toBeLessThanOrEqual(FIT_SLACK_PX);
           await moveDividers(page, extreme.middle, extreme.left);
