@@ -878,7 +878,7 @@ test/lantern-macro-layout.test.ts . test 3fea77a5c0a1
   = test/fixtures/lantern-macro-own-view.json
   = test/helpers/lantern-macro-fixture.ts#macroFixtureView
 
-test/lantern-macro-load.test.ts . test 8909cb92a510
+test/lantern-macro-load.test.ts . test 0deea99dce39
 #feature macro-view
   = src/main/lantern-macro-load.ts#readRegisteredMacro
   = src/main/lantern-macro-systems.ts#macroSystemsByPath
@@ -1026,7 +1026,7 @@ test/lantern-panel.test.ts . test 2e3ec75e2ee0
   > src/renderer/lib/providers.ts
   = test/helpers/lantern-map.ts
 
-test/lantern-permissions-triggers.test.ts . test 98f18d350a91
+test/lantern-permissions-triggers.test.ts . test 74de70063f74
 #feature skill-installer
   = src/main/bundle.ts
   = src/main/extensions.ts#saveSkillLinker
@@ -1611,7 +1611,7 @@ test/lantern-sync-record-mirror.test.ts . test 6ade1aeb2746
   = test/helpers/git-repo.ts
   = test/helpers/lantern-plan-world.ts
 
-test/lantern-sync-selftest.test.ts . test 7debfe67ebf5
+test/lantern-sync-selftest.test.ts . test 6f4ec74e1322
 #feature map-sync
   = skills/lantern-setup/references/model-floor.json
   = skills/lantern-setup/scripts/model.mjs
@@ -1988,7 +1988,7 @@ test/project-release.test.ts . test fcaf35dd232c
 test/project-ident.test.ts . test c98778ad4b70
 #feature projects-hub
   = src/main/project-ident/index.ts#projectIdent
-test/project-window.test.ts . test d030bbd7379a
+test/project-window.test.ts . test 85f60c1b2ebb
 #feature projects-hub
   = src/renderer/commands/index.ts
   < src/shared/commands/index.ts#COMMANDS
