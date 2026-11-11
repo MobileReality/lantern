@@ -5,7 +5,7 @@ lantern-pr 1
 #branch chore/prune-and-wire-e2e
 #base main
 #opened 2026-11-10
-#head 05b5942413282e0e81f2a0e23d58a68f5b7285ea
+#head d296953325cb14ab5726ace142374b2b7306dad8
 #describe what Removes four e2e tests that proved nothing about the app and gives every remaining Playwright spec a package.json script.
 #describe before Twelve specs were run by no script.
 #describe after Every test/e2e spec is named by a script, and the four new ones are listed in docs/primitives.md.
