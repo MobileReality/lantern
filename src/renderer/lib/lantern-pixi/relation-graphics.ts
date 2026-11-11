@@ -5,6 +5,7 @@ import type { RelationLayout, Refs, Side, Zone } from '../lanternrelview';
 import type { PixiPalette } from './palette';
 import { drawEdge } from './edge-graphics';
 import type { Profile } from '../lanternprofile';
+import { isPrimaryTap } from './open-actions';
 
 const ZONE_NAMES: Record<Side, Record<Refs, string>> = {
   in: { none: 'Takes data from', mixed: 'Takes data from, referred to by', all: 'Referred to by' },
@@ -72,6 +73,7 @@ function relationGraphics(options: RelationGraphicsOptions) {
       count.position.set(area.x + area.w - count.width - 9, area.y + 7);
       areaContainer.addChild(name, count);
       areaContainer.on('pointertap', (event: FederatedPointerEvent) => {
+        if (!isPrimaryTap(event)) return;
         event.stopPropagation();
         options.onArea(area.key);
       });
