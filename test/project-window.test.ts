@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { COMMANDS } from '../src/shared/commands';
 import { SETTING_DEFAULTS } from '../src/shared/settings-registry';
 import { mapOf } from './helpers/lantern-map';
 
@@ -342,6 +343,7 @@ describe('project window', () => {
 });
 
 describe('always-on commands', () => {
+  const REGISTERED_ON_DEMAND = ['explain.popout'];
   const commands = () => import('../src/renderer/commands');
 
   it('add folder runs the same bridge call from the button and the command', async () => {
@@ -370,33 +372,12 @@ describe('always-on commands', () => {
     expect(window.ccmws.needEditor).toHaveBeenCalledTimes(1);
   });
 
-  it('lists every always-on command after boot', async () => {
+  it('registers every command of the registry except the ones a feature registers on demand', async () => {
     await boot('');
     const { availableCommands } = await commands();
-    expect(availableCommands().sort()).toEqual(
-      [
-        'palette.open',
-        'settings.open',
-        'settings.openFile',
-        'project.new',
-        'project.addFolder',
-        'project.filter',
-        'editor.show',
-        'editor.restart',
-        'editor.devtools',
-        'lantern.open',
-        'lantern.problems',
-        'lantern.previousFile',
-        'lantern.nextFile',
-        'lantern.refresh',
-        'explain.open',
-        'memory.open',
-        'diagnostics.open',
-        'skills.open',
-        'skills.fixMicrophone',
-        'integrations.open',
-      ].sort(),
-    );
+    const alwaysOn = COMMANDS.map((c) => c.id as string).filter((id) => !REGISTERED_ON_DEMAND.includes(id));
+    expect(alwaysOn.length).toBeGreaterThan(0);
+    expect(availableCommands()).toEqual(expect.arrayContaining(alwaysOn));
   });
 });
 

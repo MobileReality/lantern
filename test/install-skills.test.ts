@@ -9,6 +9,7 @@ import { AGENT_NAMES, git, makeBundle, makeHome, makeLinker, makeRepo, snapshot 
 
 const run = promisify(execFile);
 const SCRIPT = path.join(__dirname, '..', 'scripts', 'install-skills.mjs');
+const SKILLS_SOURCE = path.join(__dirname, '..', 'skills');
 const SKILL_NAMES = BUNDLE_SKILLS.map((s) => s.name);
 
 let tmp: string;
@@ -60,10 +61,13 @@ describe('install-skills', () => {
     expect(fs.existsSync(path.join(skills, 'lantern-sync', SKILL_MARKER))).toBe(true);
   });
 
-  it('installs all sixteen bundled skills into a fresh project, lantern-local-loop with its nested files and executable loop.sh', async () => {
+  it('installs every bundled skill into a fresh project, lantern-local-loop with its nested files and executable loop.sh', async () => {
     const { stdout } = await install(project);
-    const all = ['lantern-setup', 'lantern-sync', 'lantern-delegate', 'lantern-delegate-complex', 'lantern-plan', 'lantern-plan-impact', 'lantern-plan-stages', 'lantern-plan-review', 'lantern-plan-handoff', 'lantern-commit', 'lantern-local-loop', 'lantern-no-comments', 'lantern-code-reviewer', 'lantern-jira', 'lantern-bitbucket', 'lantern-github'];
-    expect(SKILL_NAMES).toEqual(all);
+    const shipped = fs.readdirSync(SKILLS_SOURCE).filter((entry) => fs.existsSync(path.join(SKILLS_SOURCE, entry, 'SKILL.md'))).sort();
+    const all = SKILL_NAMES;
+    expect(all.length).toBeGreaterThan(0);
+    expect(new Set(all).size).toBe(all.length);
+    expect([...all].sort()).toEqual(shipped);
     for (const name of all) {
       expect(stdout, name).toMatch(new RegExp(`installed +${name}\\b`));
       expect(fs.existsSync(path.join(skills, name, 'SKILL.md')), name).toBe(true);

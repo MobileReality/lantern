@@ -2,16 +2,17 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { registerExtensionsIpc } from '../src/main/extensions-ipc';
 import { extensionsPath, importExtensionsList, saveSkillLinker } from '../src/main/extensions';
 import { forgetAttempts, installLanternBundle, installOnOpen, settled, settledFor, syncPermissionsOf } from '../src/main/bundle';
 import { missingPermissions, requiredAllow } from '../skills/lantern-delegate/scripts/permissions.mjs';
+import { callArguments } from './helpers/source-blocks';
 import { makeHome, makeLinker, makeRepo } from './support/bundle-fixtures';
 
 vi.setConfig({ testTimeout: 30_000, hookTimeout: 30_000 });
 
 const REAL_ROOT = path.join(__dirname, '..', 'skills');
 const MAIN = fs.readFileSync(path.join(__dirname, '..', 'src', 'main', 'main.ts'), 'utf8');
-const EXTENSIONS_IPC = fs.readFileSync(path.join(__dirname, '..', 'src', 'main', 'extensions-ipc.ts'), 'utf8');
 
 let tmp: string;
 let project: string;
@@ -105,11 +106,60 @@ describe('changing the skill linker syncs the delegate rules', () => {
     expect(allow()).toContain(linkRule(linker));
   });
 
-  it('is wired into the Skills window handlers that save the linker', () => {
-    expect(EXTENSIONS_IPC).toMatch(/'extensions:skillLinker',\n\s*fromWorkspace\(async[^\n]*\n\s*const panel = saveSkillLinker\([^\n]*\n\s*await syncPermissionsFor\(req\?\.project\);\n\s*return panel;/);
-    expect(EXTENSIONS_IPC).toMatch(/const panel = importExtensionsList\([^\n]*\n\s*await syncPermissionsFor\(req\?\.project\);\n\s*return panel;/);
-    expect(MAIN).toMatch(/registerExtensionsIpc\(\{[^]*syncPermissionsFor,/);
-    expect(MAIN).toMatch(/const syncPermissionsFor = [^\n]*syncPermissionsOf\(project, \{ provider: settings\.provider\(project\) \}\)/);
+  describe('through the Skills window handlers', () => {
+    const SENDER = { id: 'workspace' };
+
+    function ipcHandlers(homeDir: string, pickList: () => Promise<string | null>, onSync: (project: unknown) => void) {
+      const handlers = new Map<string, (event: unknown, ...args: unknown[]) => Promise<unknown>>();
+      registerExtensionsIpc({
+        handle: (channel, handler) => handlers.set(channel, handler as never),
+        fromWorkspace: (fn) => fn,
+        installedFor: () => [],
+        reinstallFor: () => null,
+        syncPermissionsFor: async (target) => onSync(target),
+        pickList,
+        home: homeDir,
+      });
+      return (channel: string, ...args: unknown[]) => handlers.get(channel)!({ sender: SENDER }, ...args);
+    }
+
+    it('syncs the rules of the open project after the linker is saved', async () => {
+      const homeDir = makeHome(path.join(tmp, 'home'));
+      const linker = makeLinker(path.join(tmp, 'linker-w'));
+      const savedWhenSynced: boolean[] = [];
+      const synced: unknown[] = [];
+      const invoke = ipcHandlers(homeDir, async () => null, (target) => {
+        synced.push(target);
+        savedWhenSynced.push(fs.existsSync(extensionsPath(homeDir)));
+      });
+      await invoke('extensions:skillLinker', { project, value: linker });
+      expect(synced).toEqual([project]);
+      expect(savedWhenSynced).toEqual([true]);
+    });
+
+    it('syncs the rules of the open project after a list is imported, and not when the picker is cancelled', async () => {
+      const homeDir = makeHome(path.join(tmp, 'home'));
+      const list = path.join(tmp, 'list.json');
+      fs.writeFileSync(list, JSON.stringify({ skillLinker: makeLinker(path.join(tmp, 'linker-v')) }));
+      const synced: unknown[] = [];
+      const importedWhenSynced: boolean[] = [];
+      let picked: string | null = null;
+      const invoke = ipcHandlers(homeDir, async () => picked, (target) => {
+        synced.push(target);
+        importedWhenSynced.push(fs.existsSync(extensionsPath(homeDir)));
+      });
+      await invoke('extensions:import', { project });
+      expect(synced).toEqual([]);
+      picked = list;
+      await invoke('extensions:import', { project });
+      expect(synced).toEqual([project]);
+      expect(importedWhenSynced).toEqual([true]);
+    });
+
+    it('is the sync main.ts hands to those handlers, bound to the provider of the project', () => {
+      expect(callArguments(MAIN, 'registerExtensionsIpc').text).toMatch(/[{,]\s*syncPermissionsFor\s*[,}]/);
+      expect(MAIN).toMatch(/const syncPermissionsFor\s*=[^;]*syncPermissionsOf\(\s*project,[^;]*settings\.provider\(project\)/);
+    });
   });
 });
 
