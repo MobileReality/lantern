@@ -456,7 +456,7 @@ test('matches all four relation edge styles and highlights the canvas node under
       y: 0.125 * fromPoint.y + 0.375 * control1.y + 0.375 * control2.y + 0.125 * toPoint.y,
     };
     await page.mouse.move(canvasBox.x + midpoint.x - scroll.left, canvasBox.y + midpoint.y - scroll.top);
-    await expect(canvas).toHaveAttribute('title', /src\/selected-service\.ts > src\/page\.tsx#loadPage/);
+    await expect(canvas).toHaveAttribute('data-tip', /src\/selected-service\.ts > src\/page\.tsx#loadPage/);
     expect(harness.errors).toEqual([]);
   } finally {
     await closeGraphHarness(harness);
