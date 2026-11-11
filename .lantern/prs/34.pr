@@ -1,0 +1,88 @@
+lantern-pr 1
+# 34
+#title fix: make the macro, PR review and graph e2e scripts pass
+#url https://github.com/MobileReality/lantern/pull/34
+#branch fix/e2e-specs-green
+#base main
+#opened 2026-11-11
+#head ef39bc9b1e4b28ec0f9d691a357b24c7818be37f
+#describe what The macro, PR review and graph e2e scripts now exit zero: 25 failing specs follow the current UI, 1 was a real app bug, 2 were stale pixel baselines.
+#describe what Only the primary mouse button now selects or pins in the Pixi graph, so a right-click or right-drag no longer selects a card and scrolls the view.
+#describe before Baseline: macro 13 failed, PR review 5, graph 9; a right-click on a node selected it.
+#describe after Macro 41, PR review 10 and graph 42 tests pass, twice in a row; a right-click leaves the selection alone.
+#describe verified typecheck, lint, pnpm test, and the three e2e scripts twice each.
++ test/e2e/support/overview.ts
+~ src/renderer/lib/lantern-pixi/index.ts
+~ src/renderer/lib/lantern-pixi/node-graphics.ts
+~ src/renderer/lib/lantern-pixi/open-actions.ts
+~ src/renderer/lib/lantern-pixi/relation-graphics.ts
+~ test/e2e/graph-macro-areas.spec.ts
+~ test/e2e/graph-macro-foundation.spec.ts
+~ test/e2e/graph-macro-legend.spec.ts
+~ test/e2e/graph-macro-platform-uses.spec.ts
+~ test/e2e/graph-macro-systems.spec.ts
+~ test/e2e/graph-navigation.spec.ts
+~ test/e2e/graph-pixi.spec.ts
+~ test/e2e/pane-overflow.spec.ts
+~ test/e2e/pr-review-comments.spec.ts
+~ test/e2e/pr-review-regions.spec.ts
+~ test/e2e/snapshots/darwin/pixi-overview.png
+~ test/e2e/snapshots/darwin/pixi-selected.png
+~ test/e2e/support/overflow.ts
+#order src/renderer/lib/lantern-pixi/open-actions.ts
+#order src/renderer/lib/lantern-pixi/node-graphics.ts
+#order src/renderer/lib/lantern-pixi/relation-graphics.ts
+#order src/renderer/lib/lantern-pixi/index.ts
+#order test/e2e/support/overview.ts
+#order test/e2e/support/overflow.ts
+#order test/e2e/graph-macro-areas.spec.ts
+#order test/e2e/graph-macro-foundation.spec.ts
+#order test/e2e/graph-macro-legend.spec.ts
+#order test/e2e/graph-macro-platform-uses.spec.ts
+#order test/e2e/graph-macro-systems.spec.ts
+#order test/e2e/pane-overflow.spec.ts
+#order test/e2e/pr-review-comments.spec.ts
+#order test/e2e/pr-review-regions.spec.ts
+#order test/e2e/graph-navigation.spec.ts
+#order test/e2e/graph-pixi.spec.ts
+#order test/e2e/snapshots/darwin/pixi-overview.png
+#order test/e2e/snapshots/darwin/pixi-selected.png
+#reason test/e2e/support/overview.ts One place that opens and closes the Overview drawer for the macro specs.
+#reason src/renderer/lib/lantern-pixi/index.ts Stops a right or middle click on the canvas background from clearing the selection and scrolling.
+#reason src/renderer/lib/lantern-pixi/node-graphics.ts A right-click on a node, tile or block used to select it and start a scroll animation that fought the right-drag pan.
+#reason src/renderer/lib/lantern-pixi/open-actions.ts Names the primary-button check once so every Pixi tap handler can share it.
+#reason src/renderer/lib/lantern-pixi/relation-graphics.ts A right-click on a relation area no longer pins it.
+#reason test/e2e/graph-macro-areas.spec.ts The panel it reads is now the Overview drawer, which is hidden until opened.
+#reason test/e2e/graph-macro-foundation.spec.ts The chips and details it clicks now live in the Overview drawer.
+#reason test/e2e/graph-macro-legend.spec.ts The legend is in the Overview drawer, and the map must be clicked with the drawer shut.
+#reason test/e2e/graph-macro-platform-uses.spec.ts The chips and the legend it reads are in the Overview drawer.
+#reason test/e2e/graph-macro-systems.spec.ts The system details are in the Overview drawer, so the spec opens it to read them and closes it to click the list.
+#reason test/e2e/graph-navigation.spec.ts The hidden Overview aside also matches the side-panel selector, which broke strict mode.
+#reason test/e2e/graph-pixi.spec.ts The canvas tooltip is carried by data-tip now, not title.
+#reason test/e2e/pane-overflow.spec.ts Opens the Overview drawer for the picked system and picks the Explain intent before the Explain chip of the new composer.
+#reason test/e2e/pr-review-comments.spec.ts The first card in the review body is the hidden one, so geometry is scoped to the visible body.
+#reason test/e2e/pr-review-regions.spec.ts The hidden Overview aside also matches the side-panel selector, which broke strict mode.
+#reason test/e2e/snapshots/darwin/pixi-overview.png Baseline predated the redesigned PR strip, so it is regenerated.
+#reason test/e2e/snapshots/darwin/pixi-selected.png Baseline predated the redesigned PR strip, so it is regenerated.
+#reason test/e2e/support/overflow.ts Checks the Overview drawer for clipped text when it is open.
+#story Right-clicking the graph no longer selects
+#step actor A reviewer
+#step action right-clicks or right-drags on the graph
+#file src/renderer/lib/lantern-pixi/node-graphics.ts
+#file src/renderer/lib/lantern-pixi/index.ts
+#step subject a file card, tile, block or area
+#file src/renderer/lib/lantern-pixi/relation-graphics.ts
+#file src/renderer/lib/lantern-pixi/open-actions.ts
+#below interaction Pan with the right button without the view jumping
+#below consequence A right-click selected the card and scrolled => Only the primary button selects
+#story The e2e scripts can be trusted again
+#step actor A maintainer
+#step action runs the macro, review and graph e2e scripts
+#file test/e2e/support/overview.ts
+#file test/e2e/graph-macro-systems.spec.ts
+#file test/e2e/pr-review-comments.spec.ts
+#step subject the specs that follow the current UI
+#file test/e2e/graph-pixi.spec.ts
+#file test/e2e/snapshots/darwin/pixi-overview.png
+#below interaction Get a pass or a failure that means something
+#below consequence 27 specs failed on a stale UI => All three scripts exit zero
