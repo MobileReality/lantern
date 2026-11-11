@@ -108,20 +108,33 @@ describe('changing the skill linker syncs the delegate rules', () => {
 
   describe('through the Skills window handlers', () => {
     const SENDER = { id: 'workspace' };
+    const trustedOnly = new WeakSet<object>();
 
     function ipcHandlers(homeDir: string, pickList: () => Promise<string | null>, onSync: (project: unknown) => void) {
       const handlers = new Map<string, (event: unknown, ...args: unknown[]) => Promise<unknown>>();
       registerExtensionsIpc({
         handle: (channel, handler) => handlers.set(channel, handler as never),
-        fromWorkspace: (fn) => fn,
+        fromWorkspace: (fn) => {
+          const wrapped = (...args: Parameters<typeof fn>) => fn(...args);
+          trustedOnly.add(wrapped);
+          return wrapped;
+        },
         installedFor: () => [],
         reinstallFor: () => null,
         syncPermissionsFor: async (target) => onSync(target),
         pickList,
         home: homeDir,
       });
-      return (channel: string, ...args: unknown[]) => handlers.get(channel)!({ sender: SENDER }, ...args);
+      return Object.assign((channel: string, ...args: unknown[]) => handlers.get(channel)!({ sender: SENDER }, ...args), {
+        isTrustedOnly: (channel: string) => trustedOnly.has(handlers.get(channel) as never),
+      });
     }
+
+    it('registers the linker and import handlers behind the trusted-sender wrapper', () => {
+      const invoke = ipcHandlers(makeHome(path.join(tmp, 'home')), async () => null, () => {});
+      expect(invoke.isTrustedOnly('extensions:skillLinker')).toBe(true);
+      expect(invoke.isTrustedOnly('extensions:import')).toBe(true);
+    });
 
     it('syncs the rules of the open project after the linker is saved', async () => {
       const homeDir = makeHome(path.join(tmp, 'home'));
