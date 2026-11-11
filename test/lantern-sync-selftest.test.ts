@@ -43,9 +43,13 @@ describe('Lantern mapping model policy', () => {
         const id = versionId(family, version);
         expect((await check(id)).stdout.trim(), id).toBe(`OK ${id}`);
       }
-      const older = versionId(family, '1.0');
-      const { stdout } = await check(older);
-      expect(stdout.trim(), older).toMatch(new RegExp(`^OK ${older} \\(below the recommended ${family}`));
+      const [, recommendedMinor = '0'] = recommended!.split('.');
+      const olderVersions = ['1.0', ...(Number(recommendedMinor) > 0 ? [bump(recommended!, -1)] : [])];
+      for (const version of olderVersions) {
+        const older = versionId(family, version);
+        const { stdout } = await check(older);
+        expect(stdout.trim(), older).toMatch(new RegExp(`^OK ${older} \\(below the recommended ${family}`));
+      }
     }
   });
 
@@ -53,7 +57,9 @@ describe('Lantern mapping model policy', () => {
     const known = new Set([...floor.claude.map(({ family }) => family), ...(floor.allowedIds ?? [])]);
     const outside = ['haiku', 'unlisted-family'].filter((family) => !known.has(family));
     const codexOnly = (floor.codex ?? []).map(({ family }) => `gpt-6-${family}`).filter((id) => !floor.allowedIds?.includes(id));
-    const ids = [...codexOnly, ...outside.map((family) => versionId(family, '5.5')), ...floor.claude.map(({ family }) => family), `${floor.allowedIds?.[0] ?? 'exact-id'}-preview`];
+    const codexVersioned = (floor.codex ?? []).map(({ family }) => `gpt-6.1-${family}`).filter((id) => !floor.allowedIds?.includes(id));
+    const codexBare = (floor.codex ?? []).map(({ family }) => family);
+    const ids = [...codexOnly, ...codexVersioned, ...codexBare, ...outside.map((family) => versionId(family, '5.5')), ...floor.claude.map(({ family }) => family), `${floor.allowedIds?.[0] ?? 'exact-id'}-preview`];
     for (const id of ids) await expect(check(id), id).rejects.toMatchObject({ code: 1 });
   });
 });
