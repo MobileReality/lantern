@@ -6,6 +6,21 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-10
+
+### Added
+
+- Automatic updates on macOS (Apple silicon): Lantern checks for a new release at start and every
+  few hours, downloads in the background and installs only when no terminal or run started from
+  Lantern would be ended. An update card shows when one is ready, "Check for Updates…" in the
+  menu checks by hand, and a setting turns the checks off. On Windows a notice links to the
+  release page.
+
+### Changed
+
+- Each release now also publishes the macOS build as `Lantern-mac-arm64.zip`, a copy of
+  `Lantern-mac.zip`, for the updater. The `Lantern-mac.zip` link is unchanged.
+
 ## [0.3.0] - 2026-11-10
 
 ### Added
@@ -73,7 +88,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/MobileReality/lantern/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/MobileReality/lantern/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/MobileReality/lantern/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/MobileReality/lantern/compare/v0.2.0...v0.2.1

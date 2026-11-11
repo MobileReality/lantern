@@ -3,7 +3,7 @@ lantern 1
 
 CLAUDE.md . skill f21d73adfc12
 biome.json . config 216278473939
-package.json . config 4778f8912f67
+package.json . config 8cc76988675c
   > scripts/e2e-delegate/run.mjs
   > scripts/esbuild.mjs
   > scripts/fuses.js

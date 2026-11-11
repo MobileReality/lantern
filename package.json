@@ -1,6 +1,6 @@
 {
   "name": "lantern",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Your project is the whole context for your AI. Lantern maps it, helps you plan changes, reviews pull requests with generated flows, and keeps your AI assistant sessions together.",
   "repository": {
