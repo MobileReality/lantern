@@ -32,5 +32,8 @@ test/e2e/support/tray-popover-harness.ts . test ea7204fb7ef6
   > test/e2e/app/tray-popover-main.cjs
   > test/e2e/app/tray-popover-renderer.ts
 
-test/e2e/support/overflow.ts . test 72fc9d9b1d56
+test/e2e/support/overflow.ts . test 671fe415a7ee
 #feature review-screen
+
+test/e2e/support/overview.ts . test 93bb4257d74c
+#feature macro-view
