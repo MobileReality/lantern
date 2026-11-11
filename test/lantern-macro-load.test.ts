@@ -170,7 +170,7 @@ describe('lantern:macro wiring', () => {
 
   it('passes the viewer language from the preload and the renderer on to the reader', () => {
     expect(preloadSource).toMatch(/lanternMacro:\s*\(project: string, lang\?: string\)\s*=>\s*ipcRenderer\.invoke\('lantern:macro', project, lang\)/);
-    expect(handler()).toMatch(/readRegisteredMacro\([^]*\bproject,\s*lang\s*\)/);
+    expect(handler()).toMatch(/readRegisteredMacro\([^]*lantern\.loadMacro,\s*project,\s*lang\s*\)/);
     expect(rendererSource).toMatch(/lanternMacro\(project,\s*app\.lanternLang\.get\(project\)\)/);
   });
 });

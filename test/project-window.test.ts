@@ -377,7 +377,7 @@ describe('always-on commands', () => {
     const { availableCommands } = await commands();
     const alwaysOn = COMMANDS.map((c) => c.id as string).filter((id) => !REGISTERED_ON_DEMAND.includes(id));
     expect(alwaysOn.length).toBeGreaterThan(0);
-    expect(availableCommands()).toEqual(expect.arrayContaining(alwaysOn));
+    expect([...availableCommands()].sort()).toEqual([...alwaysOn].sort());
   });
 });
 

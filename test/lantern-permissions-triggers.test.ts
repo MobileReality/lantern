@@ -132,7 +132,8 @@ describe('changing the skill linker syncs the delegate rules', () => {
         synced.push(target);
         savedWhenSynced.push(fs.existsSync(extensionsPath(homeDir)));
       });
-      await invoke('extensions:skillLinker', { project, value: linker });
+      const panel = await invoke('extensions:skillLinker', { project, value: linker });
+      expect(panel).toBeTruthy();
       expect(synced).toEqual([project]);
       expect(savedWhenSynced).toEqual([true]);
     });
@@ -151,7 +152,8 @@ describe('changing the skill linker syncs the delegate rules', () => {
       await invoke('extensions:import', { project });
       expect(synced).toEqual([]);
       picked = list;
-      await invoke('extensions:import', { project });
+      const panel = await invoke('extensions:import', { project });
+      expect(panel).toBeTruthy();
       expect(synced).toEqual([project]);
       expect(importedWhenSynced).toEqual([true]);
     });

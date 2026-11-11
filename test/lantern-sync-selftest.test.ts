@@ -39,13 +39,13 @@ describe('Lantern mapping model policy', () => {
 
   it('accepts the recommended version and newer without advice, and an older one with advice', async () => {
     for (const { family, recommended } of floor.claude.filter((entry) => entry.recommended)) {
-      for (const version of [recommended!, bump(recommended!, 1)]) {
+      for (const version of [recommended!, bump(recommended!, 1), String(Number(recommended!.split('.')[0]) + 1)]) {
         const id = versionId(family, version);
         expect((await check(id)).stdout.trim(), id).toBe(`OK ${id}`);
       }
       const older = versionId(family, '1.0');
       const { stdout } = await check(older);
-      expect(stdout.trim(), older).toMatch(new RegExp(`^OK ${older} \\(.*${family}`));
+      expect(stdout.trim(), older).toMatch(new RegExp(`^OK ${older} \\(below the recommended ${family}`));
     }
   });
 
