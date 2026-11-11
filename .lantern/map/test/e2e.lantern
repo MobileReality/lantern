@@ -38,11 +38,7 @@ test/e2e/graph-macro.spec.ts . test 0f4c5055ed0f
   = test/e2e/support/graph-harness.ts
   = test/fixtures/lantern-macro-own-view.json
 
-test/e2e/graph-navigation.spec.ts . test 7ed46145f408
-#feature file-graph
-  = test/e2e/support/graph-harness.ts
-
-test/e2e/graph-performance.spec.ts . test ae8c54d65587
+test/e2e/graph-navigation.spec.ts . test ba58988b46e7
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
@@ -50,7 +46,7 @@ test/e2e/graph-pixi.spec.ts . test 0140b656f39e
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
-test/e2e/graph-regression.spec.ts . test bb415efaaf2b
+test/e2e/graph-regression.spec.ts . test 6581982470cc
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
@@ -68,7 +64,7 @@ test/e2e/skills-extras.spec.ts . test 55b79a7cb294
 #feature skill-installer
   = test/e2e/support/skills-extras-harness.ts#launchSkillsHarness
 
-test/e2e/tray-popover.spec.ts . test f949568c0813
+test/e2e/tray-popover.spec.ts . test 07d60516c636
 #feature session-monitoring
   = test/e2e/support/tray-popover-harness.ts#launchTrayHarness
   < test/fixtures/tray-groups.ts#manyGroups

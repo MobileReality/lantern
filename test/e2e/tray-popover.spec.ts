@@ -11,33 +11,6 @@ async function shot(page: Page, testInfo: TestInfo, name: string) {
   await page.screenshot({ path: process.env.LANTERN_TRAY_SHOTS ? path.join(process.env.LANTERN_TRAY_SHOTS, file) : testInfo.outputPath(file) });
 }
 
-for (const scale of [1, 2]) {
-  test(`the header logo is the app icon at ${scale}x, on its navy tile and unaffected by the state`, async ({}, testInfo) => {
-    const h = await launchTrayHarness('460x820', scale);
-    try {
-      await h.show(model(manyGroups()));
-      const logo = h.frame.locator('.head .logo');
-      const colours = await logo.evaluate((node) => [...node.querySelectorAll('rect,circle,path,g')].flatMap((part) => [part.getAttribute('fill'), part.getAttribute('stroke')]).filter(Boolean));
-      expect(colours).toEqual(expect.arrayContaining(['#040d23', '#f53103', '#ff9646', '#ffd896']));
-      expect(await h.page.evaluate(() => devicePixelRatio)).toBe(scale);
-      await h.page.mouse.move(2, 810);
-      const file = (name: string) => (process.env.LANTERN_TRAY_SHOTS ? path.join(process.env.LANTERN_TRAY_SHOTS, name) : testInfo.outputPath(name));
-      await h.page.screenshot({ path: file(`logo-popover@${scale}x.png`) });
-      await logo.evaluate((node) => {
-        const box = node as HTMLElement;
-        box.style.width = '256px';
-        box.style.height = '256px';
-        box.style.borderRadius = '56px';
-      });
-      await logo.screenshot({ path: file(`logo-enlarged@${scale}x.png`) });
-      expect(await h.frame.locator('.head .pill').textContent()).toBe('4 need you');
-      expect(h.errors).toEqual([]);
-    } finally {
-      await h.close();
-    }
-  });
-}
-
 test.describe.serial('tray popover', () => {
   let h: TrayHarness;
 

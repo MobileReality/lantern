@@ -1,0 +1,51 @@
+lantern-pr 1
+# 32
+#title chore: prune pointless e2e tests and wire every spec into a script
+#url https://github.com/MobileReality/lantern/pull/32
+#branch chore/prune-and-wire-e2e
+#base main
+#opened 2026-11-10
+#head d296953325cb14ab5726ace142374b2b7306dad8
+#describe what Removes four e2e tests that proved nothing about the app and gives every remaining Playwright spec a package.json script.
+#describe before Twelve specs were run by no script.
+#describe after Every test/e2e spec is named by a script, and the four new ones are listed in docs/primitives.md.
+#describe verified typecheck, lint and pnpm test green; the newly wired scripts were each run once and several fail on their own, reported in the PR.
+~ docs/primitives.md
+~ package.json
+~ test/e2e/graph-navigation.spec.ts
+~ test/e2e/graph-regression.spec.ts
+~ test/e2e/tray-popover.spec.ts
+- test/e2e/graph-performance.md
+- test/e2e/graph-performance.spec.ts
+#order package.json
+#order test/e2e/graph-performance.spec.ts
+#order test/e2e/graph-performance.md
+#order test/e2e/graph-regression.spec.ts
+#order test/e2e/graph-navigation.spec.ts
+#order test/e2e/tray-popover.spec.ts
+#order docs/primitives.md
+#reason docs/primitives.md Agents find regression checks here, so the new scripts are listed with when to run them.
+#reason package.json Specs no script ran stayed unrun and rotted, so each now has a named script.
+#reason test/e2e/graph-navigation.spec.ts The removed test asserted harness window state and duplicated the zoom checks in graph-pixi.
+#reason test/e2e/graph-regression.spec.ts The removed test checked Playwright's own screenshot comparison, not the app.
+#reason test/e2e/tray-popover.spec.ts The removed logo tests compared SVG fill strings and saved screenshots nobody compared.
+#reason test/e2e/graph-performance.md It documented the removed performance baseline, which no longer exists.
+#reason test/e2e/graph-performance.spec.ts It had no latency budget and could not fail on a slowdown, so it gave false assurance.
+#story Every browser check has a command
+#step actor A developer
+#step action runs a named check script
+#file package.json
+#file docs/primitives.md
+#step subject the macro, review, selection or highlight specs
+#below interaction Can run any e2e spec from a script found in the docs
+#below consequence Twelve specs were run by nothing => Every spec belongs to a script
+#story Tests that proved nothing are gone
+#step actor A developer
+#step action runs the graph and tray checks
+#file test/e2e/graph-regression.spec.ts
+#file test/e2e/graph-navigation.spec.ts
+#file test/e2e/tray-popover.spec.ts
+#file test/e2e/graph-performance.spec.ts
+#step subject the remaining specs
+#below interaction Reads only checks that can fail on a real regression
+#below consequence Four checks passed whatever the app did => They are removed
