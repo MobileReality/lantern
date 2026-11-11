@@ -6,6 +6,7 @@ import { loadMacro } from '../src/main/lantern';
 import { MIN_STRONG_EDGE } from '../src/main/lantern-macro';
 import { NO_MAP, readRegisteredMacro } from '../src/main/lantern-macro-load';
 import { macroSystemsByPath } from '../src/main/lantern-macro-systems';
+import { ipcHandler } from './helpers/source-blocks';
 import { macroFixtureBlocks, macroFixtureRecords, macroFixtureView } from './helpers/lantern-macro-fixture';
 
 const FIXTURE_ROOT = path.join(__dirname, 'fixtures', 'lantern-macro');
@@ -17,14 +18,14 @@ afterEach(() => {
 });
 
 describe('lantern:macro handler', () => {
-  it('returns deriveMacroView of the registered project: 14 blocks, 58 edges', async () => {
+  it('returns deriveMacroView of the registered project', async () => {
     const result = await readRegisteredMacro(registeredOnly(FIXTURE_ROOT), loadMacro, FIXTURE_ROOT);
 
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.view).toEqual(macroFixtureView());
-    expect(result.view.blocks).toHaveLength(14);
-    expect(result.view.edges).toHaveLength(58);
+    expect(result.view.blocks.length).toBeGreaterThan(0);
+    expect(result.view.edges.length).toBeGreaterThan(0);
     expect(result.minStrongEdge).toBe(MIN_STRONG_EDGE);
     expect(result.texts).toEqual({});
   });
@@ -156,23 +157,20 @@ describe('lantern:macro texts', () => {
 describe('lantern:macro wiring', () => {
   const mainSource = fs.readFileSync(path.join(__dirname, '..', 'src', 'main', 'main.ts'), 'utf8');
   const preloadSource = fs.readFileSync(path.join(__dirname, '..', 'src', 'preload', 'workspace.ts'), 'utf8');
+  const rendererSource = fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'features', 'lantern.ts'), 'utf8');
+  const handler = () => ipcHandler(mainSource, 'lantern:macro').text;
 
   it('registers the channel behind the trusted-sender wrapper', () => {
-    expect(mainSource).toMatch(/ipcMain\.handle\('lantern:macro', fromWorkspace\(/);
+    expect(handler()).toMatch(/^\(\s*'lantern:macro',\s*fromWorkspace\(/);
   });
 
   it('checks the project against the registered projects before reading', () => {
-    const handler = mainSource.slice(mainSource.indexOf("ipcMain.handle('lantern:macro'"));
-    expect(handler.slice(0, handler.indexOf('));'))).toContain('isRegisteredDir');
+    expect(handler()).toMatch(/readRegisteredMacro\(\s*isRegisteredDir\b/);
   });
 
-  it('exposes one wrapped invoke in the preload, not ipcRenderer itself', () => {
-    expect(preloadSource).toContain("lanternMacro: (project: string, lang?: string) => ipcRenderer.invoke('lantern:macro', project, lang)");
-  });
-
-  it('passes the viewer language from the renderer to the main process', () => {
-    const rendererSource = fs.readFileSync(path.join(__dirname, '..', 'src', 'renderer', 'features', 'lantern.ts'), 'utf8');
-    expect(mainSource).toMatch(/readRegisteredMacro\([^]*lantern\.loadMacro, project, lang\)/);
-    expect(rendererSource).toContain('window.ccmws.lanternMacro(project, app.lanternLang.get(project))');
+  it('passes the viewer language from the preload and the renderer on to the reader', () => {
+    expect(preloadSource).toMatch(/lanternMacro:\s*\(project: string, lang\?: string\)\s*=>\s*ipcRenderer\.invoke\('lantern:macro', project, lang\)/);
+    expect(handler()).toMatch(/readRegisteredMacro\([^]*lantern\.loadMacro,\s*project,\s*lang\s*\)/);
+    expect(rendererSource).toMatch(/lanternMacro\(project,\s*app\.lanternLang\.get\(project\)\)/);
   });
 });

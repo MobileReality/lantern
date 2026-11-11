@@ -217,5 +217,8 @@ test/helpers/updater-world.ts . test 577549414f03
 #feature app-updates
   = src/main/updater/service.ts#createUpdater
 
+test/helpers/source-blocks.ts . test 45cdb0e2dee8
+#feature serve-web
+
 test/helpers/pr-rows.ts . test ef812afdf693
 #feature pull-requests

@@ -1,40 +1,38 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { functionBody, ipcHandler, occurrences, within } from './helpers/source-blocks';
 
 const MAIN = fs.readFileSync(path.join(__dirname, '..', 'src', 'main', 'main.ts'), 'utf8');
 const WINDOWS = fs.readFileSync(path.join(__dirname, '..', 'src', 'main', 'windows.ts'), 'utf8');
 
-function bodyOf(source: string, header: string) {
-  const start = source.indexOf(header);
-  expect(start, `${header} exists`).toBeGreaterThan(-1);
-  const end = source.indexOf('\n}\n', start);
-  return source.slice(start, end);
-}
-
-function handlerOf(channel: string) {
-  const start = MAIN.indexOf(`ipcMain.handle('${channel}'`);
-  expect(start, `${channel} handler exists`).toBeGreaterThan(-1);
-  return MAIN.slice(start, MAIN.indexOf('}));', start));
-}
+const REQUEST = 'editorDemand.request(';
+const KEEP_WARM = 'editorDemand.keepWarm(';
+const ON_DEMAND_CHANNELS = ['ws:need-editor', 'ws:restart-editor'];
 
 describe('main.ts starts the editor server only on demand', () => {
   it('does not start or ask in init(), openWorkspace() or a project window', () => {
-    for (const body of [bodyOf(MAIN, 'async function init() {'), bodyOf(MAIN, 'function openWorkspace() {'), bodyOf(WINDOWS, 'function openProjectWindow(')]) {
-      expect(body).not.toMatch(/editorDemand\.|launchEditor\(|startEditor|warmEditor|serveweb\.start/);
-    }
+    const bodies = [functionBody(MAIN, 'init'), functionBody(MAIN, 'openWorkspace'), functionBody(WINDOWS, 'openProjectWindow')];
+    for (const body of bodies) expect(body.text).not.toMatch(/editorDemand\.|launchEditor\(|startEditor|warmEditor|serveweb\.start/);
   });
 
-  it('reaches the server start from the need-editor and restart channels alone', () => {
-    expect(handlerOf('ws:need-editor')).toContain('editorDemand.request()');
-    expect(handlerOf('ws:restart-editor')).toContain('editorDemand.request()');
-    expect([...MAIN.matchAll(/editorDemand\.request\(\)/g)]).toHaveLength(2);
-    expect([...MAIN.matchAll(/launchEditor\(/g)]).toHaveLength(1);
-    expect(MAIN).toContain('createEditorDemand(launchEditor)');
+  it('asks for the server only inside the need-editor and restart handlers, and each of them asks', () => {
+    const handlers = ON_DEMAND_CHANNELS.map((channel) => ipcHandler(MAIN, channel));
+    for (const handler of handlers) expect(handler.text, 'handler asks').toContain(REQUEST);
+    const stray = occurrences(MAIN, REQUEST).filter((index) => !handlers.some((handler) => within(index, handler)));
+    expect(stray, 'request() outside the on-demand handlers').toEqual([]);
+  });
+
+  it('hands launchEditor to the demand gate and calls it nowhere else', () => {
+    expect(MAIN).toMatch(/createEditorDemand\(\s*launchEditor\s*\)/);
+    const withoutGate = MAIN.replace(/function launchEditor\(/, '').replace(/createEditorDemand\(\s*launchEditor\s*\)/, '');
+    expect(withoutGate).not.toContain('launchEditor');
   });
 
   it('only keeps the server warm from the scan, which waits for a first request', () => {
-    expect([...MAIN.matchAll(/editorDemand\.keepWarm\(\)/g)]).toHaveLength(1);
-    expect(bodyOf(MAIN, 'function runScan() {')).toContain('editorDemand.keepWarm()');
+    const scan = functionBody(MAIN, 'runScan');
+    const warm = occurrences(MAIN, KEEP_WARM);
+    expect(warm.length).toBeGreaterThan(0);
+    expect(warm.filter((index) => !within(index, scan))).toEqual([]);
   });
 });

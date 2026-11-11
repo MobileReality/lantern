@@ -1,0 +1,46 @@
+lantern-pr 1
+# 33
+#title Make six brittle tests derive their expectations from the source
+#url https://github.com/MobileReality/lantern/pull/33
+#branch chore/robust-brittle-tests
+#base main
+#opened 2026-11-11
+#head 22c4fa26190ce84c9da064b6396d25c6ca494032
+#describe what Six brittle tests now derive expectations from the command registry, the skill bundle, model-floor.json and the real handlers.
+#describe before Hard-coded 20-command and 16-skill lists, counted regex matches in main.ts.
+#describe after Lists come from the source of truth; wiring is checked by where a call sits.
+#describe verified typecheck, lint and the full test run are green; each contract was broken in source and its test failed.
++ test/helpers/source-blocks.ts
+~ test/editor-demand-wiring.test.ts
+~ test/install-skills.test.ts
+~ test/lantern-macro-load.test.ts
+~ test/lantern-permissions-triggers.test.ts
+~ test/lantern-sync-selftest.test.ts
+~ test/project-window.test.ts
+#order test/helpers/source-blocks.ts
+#order test/editor-demand-wiring.test.ts
+#order test/lantern-permissions-triggers.test.ts
+#order test/lantern-macro-load.test.ts
+#order test/project-window.test.ts
+#order test/install-skills.test.ts
+#order test/lantern-sync-selftest.test.ts
+#reason test/helpers/source-blocks.ts Shared bracket matcher so wiring tests locate handlers and function bodies without brittle regexes.
+#reason test/editor-demand-wiring.test.ts Asserts where editor-server calls sit instead of counting regex matches, so renames and reorders do not break it.
+#reason test/install-skills.test.ts Takes the skill list from the bundle and the skills folder instead of a hand-kept list of sixteen.
+#reason test/lantern-macro-load.test.ts Drops the literal block and edge counts and checks the handler wiring by location, not exact text.
+#reason test/lantern-permissions-triggers.test.ts Checks that saving the linker or importing a list syncs rules by calling the real handlers.
+#reason test/lantern-sync-selftest.test.ts Drives the model policy check from model-floor.json instead of a pinned list of ids and a sentence.
+#reason test/project-window.test.ts Expects the registry's commands to be registered instead of a hand-kept list of command names.
+#story Tests stop breaking on unrelated edits
+#step actor A developer renames or reorders code
+#file test/helpers/source-blocks.ts
+#step action runs the test suite
+#step subject the six rewritten tests
+#file test/editor-demand-wiring.test.ts
+#file test/project-window.test.ts
+#file test/install-skills.test.ts
+#below interaction Sees a failure only when a real contract breaks
+#file test/lantern-permissions-triggers.test.ts
+#file test/lantern-macro-load.test.ts
+#file test/lantern-sync-selftest.test.ts
+#below consequence A new command or skill needed a list edit => The list comes from the registry or bundle
