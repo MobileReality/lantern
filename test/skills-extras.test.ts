@@ -46,6 +46,8 @@ function fakeIpc(world: World = {}) {
     skillLinkerProblem: null,
     skillLinkerPath: null,
     skillLinkerFromRepo: false,
+    skillLinkerSkills: 0,
+    skillLinkerRoles: 0,
     error,
   });
   const write = (slot: string, names: string[], scope: string) => {
@@ -384,6 +386,108 @@ describe('Add list', () => {
     expect(pick('mine').textContent).toContain(msg('skillsExtras.attach.attachedPlain'));
     expect(pick('mine').textContent).not.toContain('Global');
     expect(pick('alpha').getAttribute('aria-label')).toBe(msg('skillsExtras.attach.labelPlain', { name: 'alpha', role: 'Delegate' }));
+  });
+});
+
+describe('Skills of the linker catalogue that are not installed in the project', () => {
+  const REPO = ['alpha', 'web-research', 'web-search'];
+  let linked: ReturnType<typeof vi.fn>;
+
+  async function mountLinked(world: World = {}, linkResult: string = 'linked') {
+    const state: World = { linker: '/opt/repo/linker', ...world };
+    fakeIpc(state);
+    linked = vi.fn();
+    window.ccmws.skillsLink = vi.fn(async (_project: string, names: string[]) => {
+      if (linkResult === 'linked') state.installed = [...(state.installed ?? INSTALLED), ...names];
+      return { linkResults: Object.fromEntries(names.map((name) => [name, linkResult])) };
+    }) as unknown as typeof window.ccmws.skillsLink;
+    await mountExtras(host, state.projectRoot === null ? null : '/p', addSkill, REPO, { linked });
+  }
+
+  it('marks the repo skills that are not installed and says that attaching also links them', async () => {
+    await mountLinked();
+    expect(pickNames()).toEqual(['alpha', 'beta', 'mine', 'other', 'typescript', 'web-research', 'web-search']);
+    expect(pick('web-research').textContent).toContain(msg('skillsExtras.attached.notInstalled'));
+    expect(pick('web-research').textContent).toContain(msg('skillsExtras.attach.actionLink'));
+    expect(pick('web-research').getAttribute('aria-label')).toBe(msg('skillsExtras.attach.labelLink', { name: 'web-research', role: 'Delegate', scope: 'This project' }));
+    expect(pick('alpha').textContent).not.toContain(msg('skillsExtras.attached.notInstalled'));
+    expect(pick('alpha').textContent).toContain(msg('skillsExtras.attach.action'));
+  });
+
+  it('links the skill into the project first and then attaches it', async () => {
+    await mountLinked();
+    pick('web-research').click();
+    await settled();
+    await settled();
+    expect(window.ccmws.skillsLink).toHaveBeenCalledWith('/p', ['web-research']);
+    expect(window.ccmws.extensionsSave).toHaveBeenCalledWith('/p', 'delegate', ['web-research'], undefined, 'project');
+    expect(vi.mocked(window.ccmws.skillsLink).mock.invocationCallOrder[0]).toBeLessThan(vi.mocked(window.ccmws.extensionsSave).mock.invocationCallOrder[0]);
+    expect(linked).toHaveBeenCalledTimes(1);
+    expect(extra('web-research').textContent).not.toContain(msg('skillsExtras.attached.notInstalled'));
+    expect(q('.sk-live').textContent).toBe(msg('skillsExtras.announce.attachedLinked', { name: 'web-research', role: 'Delegate', scope: 'This project' }));
+  });
+
+  it('attaches the first match of the search with Enter and links it too', async () => {
+    await mountLinked();
+    type('web');
+    press(search(), 'Enter');
+    await settled();
+    await settled();
+    expect(window.ccmws.skillsLink).toHaveBeenCalledWith('/p', ['web-research']);
+    expect(attachedNames()).toEqual(['web-research']);
+  });
+
+  it('attaches nothing and says why when the skill cannot be linked', async () => {
+    await mountLinked({}, 'missing-source');
+    pick('web-research').click();
+    await settled();
+    await settled();
+    expect(window.ccmws.extensionsSave).not.toHaveBeenCalled();
+    expect(attachedNames()).toEqual([]);
+    expect(q('[role="alert"]').textContent).toBe(msg('skillsExtras.linkFailed', { name: 'web-research', reason: 'web-research was not found in the skills repo.' }));
+  });
+
+  it('does not link an installed skill when it is attached', async () => {
+    await mountLinked();
+    pick('alpha').click();
+    await settled();
+    expect(window.ccmws.skillsLink).not.toHaveBeenCalled();
+    expect(attachedNames()).toEqual(['alpha']);
+  });
+
+  it('offers Link to project on an attached skill that is not installed and links it without changing the attachment', async () => {
+    await mountLinked({ global: { delegate: ['web-research', 'retired'] }, installed: INSTALLED });
+    expect(extra('web-research').textContent).toContain(msg('skillsExtras.attached.notInstalled'));
+    expect(extra('web-research').querySelector('[data-link]')!.textContent).toBe(msg('skillsExtras.attached.link'));
+    expect(extra('retired').querySelector('[data-link]')).toBeNull();
+    extra('web-research').querySelector<HTMLButtonElement>('[data-link]')!.click();
+    await settled();
+    await settled();
+    expect(window.ccmws.skillsLink).toHaveBeenCalledWith('/p', ['web-research']);
+    expect(window.ccmws.extensionsSave).not.toHaveBeenCalled();
+    expect(extra('web-research').textContent).not.toContain(msg('skillsExtras.attached.notInstalled'));
+    expect(extra('web-research').querySelector('[data-link]')).toBeNull();
+    expect(extra('retired').textContent).toContain(msg('skillsExtras.attached.notInstalled'));
+    expect(q('.sk-live').textContent).toBe(msg('skillsExtras.announce.linked', { name: 'web-research' }));
+  });
+
+  it('keeps the row and shows the reason when the link fails', async () => {
+    await mountLinked({ global: { delegate: ['web-research'] } }, 'skipped-local');
+    extra('web-research').querySelector<HTMLButtonElement>('[data-link]')!.click();
+    await settled();
+    await settled();
+    expect(q('[role="alert"]').textContent).toContain('is a local folder');
+    expect(extra('web-research').textContent).toContain(msg('skillsExtras.attached.notInstalled'));
+  });
+
+  it('only attaches, and offers no link, when no project is open', async () => {
+    await mountLinked({ global: { delegate: ['web-research'] }, projectRoot: null });
+    expect(extra('web-research').querySelector('[data-link]')).toBeNull();
+    expect(pick('web-search').getAttribute('aria-label')).toBe(msg('skillsExtras.attach.labelPlain', { name: 'web-search', role: 'Delegate' }));
+    pick('web-search').click();
+    await settled();
+    expect(window.ccmws.skillsLink).not.toHaveBeenCalled();
+    expect(window.ccmws.extensionsSave).toHaveBeenCalled();
   });
 });
 
@@ -736,9 +840,9 @@ describe('Skill linker view', () => {
     window.ccmws.extensionsLoad = vi.fn(async () => ({ ...(await original('/p')), skillLinkerProblem: 'The folder /opt/my-repo holds no executable file, so it has no skill linker.' })) as typeof original;
     await mountLinker(host, '/p');
     expect(q('[data-linker-state="invalid"]').textContent).toContain('holds no executable file');
-    window.ccmws.extensionsLoad = vi.fn(async () => ({ ...(await original('/p')), skillLinker: null, skillLinkerState: 'initialized', skillLinkerPath: '/opt/skills/my-linker', skillLinkerFromRepo: true })) as typeof original;
+    window.ccmws.extensionsLoad = vi.fn(async () => ({ ...(await original('/p')), skillLinker: null, skillLinkerState: 'initialized', skillLinkerPath: '/opt/skills/my-linker', skillLinkerFromRepo: true, skillLinkerSkills: 1, skillLinkerRoles: 1 })) as typeof original;
     await mountLinker(host, '/p');
-    expect(q('[data-linker-state="initialized"]').textContent).toBe('Using /opt/skills/my-linker (from Skills repo)');
+    expect(q('[data-linker-state="initialized"]').textContent).toBe('Skill linker ready: /opt/skills/my-linker, taken from the Skills repo (1 skill in 1 role)');
     expect(q<HTMLInputElement>('[data-skill-linker="path"]').value).toBe('');
   });
 
@@ -752,17 +856,20 @@ describe('Skill linker view', () => {
   });
 
   it.each([
-    ['initialized', '/opt/skills/skillLinker'],
-    ['unset', null],
-    ['invalid', '/no/such/linker'],
-  ] as const)('shows the %s linker state', async (state, path) => {
+    ['initialized', '/opt/skills/skillLinker', null, 'Skill linker ready: /opt/skills/skillLinker (12 skills in 3 roles)'],
+    ['initialized', '/opt/skills/skillLinker', { skillLinkerSkills: 0, skillLinkerRoles: 0 }, 'Skill linker ready: /opt/skills/skillLinker, but its repo holds no skills yet.'],
+    ['unset', null, null, 'No skill linker set. Enter its path above and save it to list, link and find skills.'],
+    ['invalid', '/no/such/linker', null, 'Skill linker problem: the path was not found, is not executable, or has no skills repo beside it.'],
+    ['invalid', '/no/such/linker', { skillLinkerProblem: '/no/such/linker does not exist, so it is not an executable file.' }, 'Skill linker problem: /no/such/linker does not exist, so it is not an executable file.'],
+  ] as const)('says in plain words what the %s linker state means (%#)', async (state, path, extra, sentence) => {
     fakeIpc({ linker: path });
     const load = window.ccmws.extensionsLoad as ReturnType<typeof vi.fn>;
-    load.mockResolvedValue({ ...(await load('/p')), skillLinker: path, skillLinkerState: state, skillLinkerProblem: null });
+    load.mockResolvedValue({ ...(await load('/p')), skillLinker: path, skillLinkerState: state, skillLinkerProblem: null, skillLinkerSkills: 12, skillLinkerRoles: 3, ...extra });
     await mountLinker(host, '/p');
     const shown = q('[data-linker-state]');
     expect(shown.getAttribute('data-linker-state')).toBe(state);
-    expect(shown.textContent).toBe(msg(`skillsExtras.skillLinker.state.${state}`));
+    expect(shown.textContent).toBe(sentence);
+    expect(shown.textContent).not.toMatch(/^(Initialized|Not set)$/);
   });
 });
 

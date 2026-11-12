@@ -35,7 +35,7 @@ function skill(base: string, name: string) {
 
 describe('extensions panel', () => {
   it('loads empty slots and the installed names without an error', () => {
-    expect(loadExtensionsPanel(['a'], home)).toEqual({ slots: { delegate: [], orchestrator: [], reviewer: [] }, projectSlots: { delegate: [], orchestrator: [], reviewer: [] }, projectRoot: null, projectError: null, alwaysOn: { delegate: alwaysOnSkills('delegate'), orchestrator: alwaysOnSkills('orchestrator'), reviewer: alwaysOnSkills('reviewer') }, switchable: { delegate: [...switchableSkills('delegate')], orchestrator: [], reviewer: [...switchableSkills('reviewer')] }, off: { delegate: [], orchestrator: [], reviewer: [] }, locked: BUNDLED_SKILLS, installed: ['a'], skillLinker: null, skillLinkerState: 'unset', skillLinkerProblem: null, skillLinkerPath: null, skillLinkerFromRepo: false, error: null });
+    expect(loadExtensionsPanel(['a'], home)).toEqual({ slots: { delegate: [], orchestrator: [], reviewer: [] }, projectSlots: { delegate: [], orchestrator: [], reviewer: [] }, projectRoot: null, projectError: null, alwaysOn: { delegate: alwaysOnSkills('delegate'), orchestrator: alwaysOnSkills('orchestrator'), reviewer: alwaysOnSkills('reviewer') }, switchable: { delegate: [...switchableSkills('delegate')], orchestrator: [], reviewer: [...switchableSkills('reviewer')] }, off: { delegate: [], orchestrator: [], reviewer: [] }, locked: BUNDLED_SKILLS, installed: ['a'], skillLinker: null, skillLinkerState: 'unset', skillLinkerProblem: null, skillLinkerPath: null, skillLinkerFromRepo: false, skillLinkerSkills: 0, skillLinkerRoles: 0, error: null });
   });
 
   it('names the locked skills it dropped from a file written by hand and keeps the rest', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { attachedRows, candidateRows, defaultScope, effectiveExtras, hasProjectScope, isLinkable, linkProblems, nextIndex, otherScope, pickerSkills, roleAfter, roleSummary, skillRowKind, slotRows } from '../src/renderer/features/skills-state';
+import { attachedRows, candidateRows, canLinkIntoProject, defaultScope, effectiveExtras, hasProjectScope, isLinkable, linkProblems, nextIndex, otherScope, pickerSkills, roleAfter, roleSummary, skillRowKind, slotRows } from '../src/renderer/features/skills-state';
 
 describe('pickerSkills', () => {
   const none = { locked: ['lantern-commit', 'lantern-sync'] };
@@ -87,25 +87,25 @@ describe('candidateRows', () => {
   it('lists the attachable skills with the scope each is attached in, and never a locked one until a search names it', () => {
     const state = board(['a'], ['b'], '/p', ['a', 'b', 'c', 'lantern-commit', 'lantern-plan-x']);
     expect(candidateRows('delegate', state, [], '')).toEqual([
-      { name: 'a', attached: 'global', locked: false },
-      { name: 'b', attached: 'project', locked: false },
-      { name: 'c', attached: null, locked: false },
+      { name: 'a', attached: 'global', locked: false, installed: true },
+      { name: 'b', attached: 'project', locked: false, installed: true },
+      { name: 'c', attached: null, locked: false, installed: true },
     ]);
     expect(candidateRows('reviewer', state, [], '')).toEqual([
-      { name: 'a', attached: null, locked: false },
-      { name: 'b', attached: null, locked: false },
-      { name: 'c', attached: null, locked: false },
+      { name: 'a', attached: null, locked: false, installed: true },
+      { name: 'b', attached: null, locked: false, installed: true },
+      { name: 'c', attached: null, locked: false, installed: true },
     ]);
   });
 
   it('filters by the search text, ignoring case, and then explains the built-in names that match', () => {
     const state = board([], [], '/p', ['lantern-extra', 'typescript', 'lantern-plan-x']);
-    expect(candidateRows('delegate', state, [], 'SCRIPT')).toEqual([{ name: 'typescript', attached: null, locked: false }]);
+    expect(candidateRows('delegate', state, [], 'SCRIPT')).toEqual([{ name: 'typescript', attached: null, locked: false, installed: true }]);
     expect(candidateRows('delegate', state, [], 'lantern')).toEqual([
-      { name: 'lantern-extra', attached: null, locked: false },
-      { name: 'lantern-commit', attached: null, locked: true },
-      { name: 'lantern-plan-x', attached: null, locked: true },
-      { name: 'lantern-sync', attached: null, locked: true },
+      { name: 'lantern-extra', attached: null, locked: false, installed: true },
+      { name: 'lantern-commit', attached: null, locked: true, installed: true },
+      { name: 'lantern-plan-x', attached: null, locked: true, installed: true },
+      { name: 'lantern-sync', attached: null, locked: true, installed: true },
     ]);
     expect(candidateRows('delegate', state, [], 'nothing')).toEqual([]);
   });
@@ -114,6 +114,21 @@ describe('candidateRows', () => {
     const state = board([], [], '/p', ['a']);
     expect(candidateRows('delegate', state, ['z'], '').map((row) => row.name)).toEqual(['a']);
     expect(candidateRows('delegate', { ...state, skillLinkerState: 'initialized' }, ['z'], '').map((row) => row.name)).toEqual(['a', 'z']);
+  });
+
+  it('marks a repo skill that is not installed in the project', () => {
+    const state = { ...board([], [], '/p', ['a']), skillLinkerState: 'initialized' as const };
+    expect(candidateRows('delegate', state, ['a', 'web-research'], 'web')).toEqual([{ name: 'web-research', attached: null, locked: false, installed: false }]);
+    expect(candidateRows('delegate', state, ['a', 'web-research'], 'a').find((row) => row.name === 'a')).toMatchObject({ installed: true });
+  });
+});
+
+describe('canLinkIntoProject', () => {
+  it('needs an open project, a repo skill and a name that is not installed yet', () => {
+    expect(canLinkIntoProject('web-research', { projectRoot: '/p', installed: ['a'] }, ['web-research'])).toBe(true);
+    expect(canLinkIntoProject('web-research', { projectRoot: '/p', installed: ['web-research'] }, ['web-research'])).toBe(false);
+    expect(canLinkIntoProject('web-research', { projectRoot: '/p', installed: [] }, [])).toBe(false);
+    expect(canLinkIntoProject('web-research', { projectRoot: null, installed: [] }, ['web-research'])).toBe(false);
   });
 });
 

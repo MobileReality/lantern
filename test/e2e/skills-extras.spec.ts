@@ -158,3 +158,134 @@ test.describe('Lantern skills tab in the main window', () => {
     }
   });
 });
+
+const linkedSkill = (h: SkillsHarness, name: string) => path.join(h.project, '.claude', 'skills', name);
+
+async function openSkillsWindow(h: SkillsHarness) {
+  await h.page.evaluate(() => (window as unknown as { openHarnessSkills: () => void }).openHarnessSkills());
+}
+
+test.describe.serial('the skill linker is the skills catalogue', () => {
+  let h: SkillsHarness;
+
+  test.beforeAll(async () => {
+    h = await launchSkillsHarness({
+      project: true,
+      homeSkills: [],
+      projectSkills: ['northwind-billing'],
+      skillRepo: true,
+      saveLinker: true,
+      globalExtras: { delegate: ['electron-ipc', 'electron-security'] },
+    });
+    expect(fs.existsSync(path.join(h.userData, 'ccm-skills.json'))).toBe(false);
+  });
+
+  test.afterAll(async () => {
+    const errors = h.errors;
+    await h.close();
+    expect(errors).toEqual([]);
+  });
+
+  test('the first tab lists the linker roles with their skills and links one on a click', async ({}, testInfo) => {
+    await openSkillsWindow(h);
+    const { page } = h;
+    await expect(page.locator('.sk-role .sk-role-name')).toHaveText(['core', 'desktop', 'research']);
+    await expect(page.locator('.sk-name', { hasText: 'web-research' })).toBeVisible();
+    await expect(page.getByText(/Linking skills needs your skill linker/)).toHaveCount(0);
+    await shot(page, testInfo, '13-project-roles-from-linker');
+    await page.locator('.sk-row', { hasText: 'web-research' }).click();
+    await expect(page.locator('.sk-row.on', { hasText: 'web-research' })).toBeVisible();
+    expect(fs.lstatSync(linkedSkill(h, 'web-research')).isSymbolicLink()).toBe(true);
+    await page.locator('.sk-row.on', { hasText: 'web-research' }).click();
+    await expect(page.locator('.sk-row.on', { hasText: 'web-research' })).toHaveCount(0);
+    expect(fs.existsSync(linkedSkill(h, 'web-research'))).toBe(false);
+  });
+
+  test('searching "web" on the Lantern tab finds web-research and marks it as not installed', async ({}, testInfo) => {
+    const { page } = h;
+    await page.getByRole('tab', { name: 'Lantern skills' }).click();
+    await expect(page.locator('[data-board]')).toBeVisible();
+    await page.locator('.sk-search').fill('web');
+    const pick = page.locator('[data-pick="web-research"]');
+    await expect(pick).toBeVisible();
+    await expect(pick).toContainText('Not installed');
+    await expect(pick).toContainText('Attach and link');
+    await shot(page, testInfo, '14-search-web-not-installed');
+  });
+
+  test('attaching a skill that is not installed links it into the project at the same time', async () => {
+    const { page } = h;
+    await page.locator('[data-pick="web-research"]').click();
+    const attached = page.locator('[data-extra="web-research"]');
+    await expect(attached).toBeVisible();
+    await expect(attached).not.toContainText('Not installed');
+    expect(fs.lstatSync(linkedSkill(h, 'web-research')).isSymbolicLink()).toBe(true);
+    expect(readJson(projectFile(h)).delegate).toEqual(['web-research']);
+    await page.locator('.sk-search').fill('');
+  });
+
+  test('an attached skill that is not installed can be linked to the project', async ({}, testInfo) => {
+    const { page } = h;
+    const row = page.locator('[data-extra="electron-ipc"]');
+    await expect(row).toContainText('Not installed');
+    await shot(page, testInfo, '15-attached-not-installed');
+    await row.locator('[data-link]').click();
+    await expect(row).not.toContainText('Not installed');
+    await expect(row.locator('[data-link]')).toHaveCount(0);
+    expect(fs.lstatSync(linkedSkill(h, 'electron-ipc')).isSymbolicLink()).toBe(true);
+    await expect(page.locator('[data-extra="electron-security"]')).toContainText('Not installed');
+  });
+
+  test('the Project skills tab shows the skills linked from the Lantern tab', async () => {
+    const { page } = h;
+    await page.getByRole('tab', { name: 'Project skills' }).click();
+    await expect(page.locator('.sk-row.on', { hasText: 'web-research' })).toBeVisible();
+    await expect(page.locator('.sk-row.on', { hasText: 'electron-ipc' })).toBeVisible();
+  });
+
+  test('the Skill linker tab says in plain words that the linker is ready and what it holds', async () => {
+    const { page } = h;
+    await page.getByRole('tab', { name: 'Skill linker' }).click();
+    await expect(page.locator('[data-linker-state]')).toHaveText(`Skill linker ready: ${h.linker} (5 skills in 3 roles)`);
+  });
+});
+
+test.describe('setting the skill linker on the first tab', () => {
+  test('with no linker and no repo the tab asks for the linker path and fills in place after Save', async ({}, testInfo) => {
+    const h = await launchSkillsHarness({ project: true, homeSkills: [], projectSkills: [], skillRepo: true });
+    try {
+      await openSkillsWindow(h);
+      const { page } = h;
+      await expect(page.getByText(/Linking skills needs your skill linker/)).toBeVisible();
+      await expect(page.locator('.sk-role .sk-role-name')).toHaveCount(0);
+      await shot(page, testInfo, '16-project-needs-linker');
+      await page.locator('[data-skill-linker="path"]').fill(h.linker);
+      await page.getByRole('button', { name: 'Save path' }).click();
+      await expect(page.locator('.sk-role .sk-role-name')).toHaveText(['core', 'desktop', 'research']);
+      await expect(page.locator('.sk-name', { hasText: 'web-research' })).toBeVisible();
+      await expect(page.getByText(/Linking skills needs your skill linker/)).toHaveCount(0);
+      expect(readJson(globalFile(h)).skillLinker).toBe(h.linker);
+      expect(fs.existsSync(path.join(h.userData, 'ccm-skills.json'))).toBe(false);
+      await page.getByRole('tab', { name: 'Lantern skills' }).click();
+      await page.locator('.sk-search').fill('web');
+      await expect(page.locator('[data-pick="web-research"]')).toBeVisible();
+      expect(h.errors).toEqual([]);
+    } finally {
+      await h.close();
+    }
+  });
+
+  test('saving a path that is no linker keeps the notice and names the problem', async () => {
+    const h = await launchSkillsHarness({ project: true, homeSkills: [], projectSkills: [], skillRepo: true });
+    try {
+      await openSkillsWindow(h);
+      const { page } = h;
+      await page.locator('[data-skill-linker="path"]').fill(path.join(h.home, 'no-such-linker'));
+      await page.getByRole('button', { name: 'Save path' }).click();
+      await expect(page.locator('[data-linker-state="invalid"]')).toContainText('no-such-linker');
+      await expect(page.locator('.sk-role .sk-role-name')).toHaveCount(0);
+    } finally {
+      await h.close();
+    }
+  });
+});

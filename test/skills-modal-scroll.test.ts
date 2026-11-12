@@ -35,6 +35,8 @@ const PANEL: ExtensionsPanel = {
   skillLinkerProblem: null,
   skillLinkerPath: null,
   skillLinkerFromRepo: false,
+  skillLinkerSkills: 0,
+  skillLinkerRoles: 0,
   error: null,
 };
 

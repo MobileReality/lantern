@@ -4,7 +4,7 @@ import { el } from '../lib/util';
 import { attachedItem, candidateItem, focusKey, lockedRow, scopeLabel, slotLabel, switchRow, withFocusKey } from './skills-rows';
 import { segmentedControl } from './skills-segmented';
 import { searchShortcuts } from './skills-shortcuts';
-import { attachedRows, candidateRows, defaultScope, effectiveExtras, type ExtrasState, hasProjectScope, KEY, nextIndex, otherScope, slotRows } from './skills-state';
+import { attachedRows, candidateRows, canLinkIntoProject, defaultScope, effectiveExtras, type ExtrasState, hasProjectScope, KEY, nextIndex, otherScope, slotRows } from './skills-state';
 
 export interface AddSkillRequest {
   slot: ExtensionSlot;
@@ -24,6 +24,7 @@ export interface BoardActions {
   setOff: (slot: ExtensionSlot, off: string[]) => void;
   addSkill: (request: AddSkillRequest) => void;
   importList: () => void;
+  link: (name: string) => void;
 }
 
 interface BoardUi {
@@ -112,7 +113,7 @@ function builtInBlock(slot: ExtensionSlot, state: BoardState, actions: BoardActi
   return block;
 }
 
-function attachedColumn(slot: ExtensionSlot, state: BoardState, actions: BoardActions) {
+function attachedColumn(slot: ExtensionSlot, state: BoardState, repoSkills: readonly string[], actions: BoardActions) {
   const rows = attachedRows(slot, state);
   const scoped = hasProjectScope(state);
   const { section } = column(msg('skillsExtras.attached.title', { role: slotLabel(slot) }), rows.length);
@@ -134,6 +135,7 @@ function attachedColumn(slot: ExtensionSlot, state: BoardState, actions: BoardAc
         ui.focus = SEARCH_KEY;
         actions.detach(slot, row.name, row.scope);
       },
+      onLink: row.missing && canLinkIntoProject(row.name, state, repoSkills) ? () => actions.link(row.name) : null,
     }),
   );
   list.append(...items);
@@ -198,7 +200,7 @@ function candidateColumn(slot: ExtensionSlot, state: BoardState, repoSkills: rea
   };
   const refresh = () => {
     const rows = candidateRows(slot, state, repoSkills, ui.query);
-    const items = rows.map((row) => candidateItem(row, { slot, scope, scoped, onAttach: () => attach(row.name) }));
+    const items = rows.map((row) => candidateItem(row, { slot, scope, scoped, links: canLinkIntoProject(row.name, state, repoSkills), onAttach: () => attach(row.name) }));
     const none = ui.query.trim() ? msg('skillsExtras.attach.noMatch', { query: ui.query.trim() }) : msg('skillsExtras.attach.none');
     list.replaceChildren(...(items.length ? items : [el('p', 'sk-empty', none)]));
     if (items.length) rove(list, items);
@@ -287,7 +289,7 @@ export function roleBoard(state: BoardState, repoSkills: readonly string[], acti
   const columns = el('div', 'sk-cols');
   columns.dataset.slot = slot;
   const candidates = candidateColumn(slot, state, repoSkills, actions, scope);
-  columns.append(attachedColumn(slot, state, actions), candidates.section);
+  columns.append(attachedColumn(slot, state, repoSkills, actions), candidates.section);
   board.append(roles, el('p', 'sk-board-note', msg(`skillsExtras.roles.hint.${slot}`)), columns, footer(slot, state, scope, actions));
   searchShortcuts(board, candidates.focusSearch);
   return board;

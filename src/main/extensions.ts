@@ -7,6 +7,7 @@ import { msg } from '@shared/lang/messages';
 import { alwaysOnSkills, BUNDLED_SKILLS, switchableSkills } from '@skills/lantern-delegate/scripts/bundled-skills.mjs';
 import { projectRootOf } from '@skills/lantern-delegate/scripts/extensions.mjs';
 import { resolveLinkerPath, resolveSkillLinker, SKILL_LINKER_SOURCE, SKILLS_REPO_ENV } from '@skills/lantern-delegate/scripts/skill-linker.mjs';
+import { catalogueSummary } from './skills-catalogue';
 
 export type ExtensionSlots = Record<ExtensionSlot, string[]>;
 
@@ -25,6 +26,8 @@ export interface ExtensionsPanel {
   skillLinkerProblem: string | null;
   skillLinkerPath: string | null;
   skillLinkerFromRepo: boolean;
+  skillLinkerSkills: number;
+  skillLinkerRoles: number;
   error: string | null;
 }
 
@@ -207,11 +210,22 @@ const LINKER_PROBLEM: Record<string, (params: Params) => string> = {
 
 const linkerProblemText = (kind: string, params: Params): string | null => LINKER_PROBLEM[kind]?.(params) ?? null;
 
-function linkerState(skillLinker: string | null, home: string): { state: SkillLinkerState; problem: string | null; path: string | null; fromRepo: boolean } {
+interface LinkerState {
+  state: SkillLinkerState;
+  problem: string | null;
+  path: string | null;
+  fromRepo: boolean;
+  skills: number;
+  roles: number;
+}
+
+const NO_LINKER: Omit<LinkerState, 'state' | 'problem'> = { path: null, fromRepo: false, skills: 0, roles: 0 };
+
+function linkerState(skillLinker: string | null, home: string): LinkerState {
   const resolved = resolveSkillLinker({ env: { [SKILLS_REPO_ENV]: process.env[SKILLS_REPO_ENV] }, home });
-  if (resolved.path) return { state: SKILL_LINKER_STATE.initialized, problem: null, path: resolved.path, fromRepo: resolved.source === SKILL_LINKER_SOURCE.repo };
-  if (skillLinker === null) return { state: SKILL_LINKER_STATE.unset, problem: null, path: null, fromRepo: false };
-  return { state: SKILL_LINKER_STATE.invalid, path: null, fromRepo: false, problem: (resolved.problemKind ? linkerProblemText(resolved.problemKind, resolved.problemParams ?? {}) : null) ?? resolved.problem ?? null };
+  if (resolved.path) return { state: SKILL_LINKER_STATE.initialized, problem: null, path: resolved.path, fromRepo: resolved.source === SKILL_LINKER_SOURCE.repo, ...catalogueSummary(resolved.repo ?? '') };
+  if (skillLinker === null) return { ...NO_LINKER, state: SKILL_LINKER_STATE.unset, problem: null };
+  return { ...NO_LINKER, state: SKILL_LINKER_STATE.invalid, problem: (resolved.problemKind ? linkerProblemText(resolved.problemKind, resolved.problemParams ?? {}) : null) ?? resolved.problem ?? null };
 }
 
 interface ProjectPart {
@@ -238,9 +252,9 @@ function panelAfter(installed: string[], home: string, failure: unknown, project
     const { slots, dropped, off, droppedOff } = readChecked(home);
     const droppedTexts = [...(dropped.length ? [msg('extensions.droppedLocked', { names: dropped.join(', ') })] : []), ...(droppedOff.length ? [msg('extensions.droppedOff', { names: droppedOff.join(', ') })] : [])];
     const error = failed ?? (droppedTexts.length ? droppedTexts.join(' ') : null);
-    return { slots, ...project, alwaysOn: alwaysOnSlots(), switchable: switchableSlots(), off, locked: lockedSkills(), installed, skillLinker, skillLinkerState: linker.state, skillLinkerProblem: linker.problem, skillLinkerPath: linker.path, skillLinkerFromRepo: linker.fromRepo, error };
+    return { slots, ...project, alwaysOn: alwaysOnSlots(), switchable: switchableSlots(), off, locked: lockedSkills(), installed, skillLinker, skillLinkerState: linker.state, skillLinkerProblem: linker.problem, skillLinkerPath: linker.path, skillLinkerFromRepo: linker.fromRepo, skillLinkerSkills: linker.skills, skillLinkerRoles: linker.roles, error };
   } catch (err) {
-    return { slots: emptySlots(), ...project, alwaysOn: alwaysOnSlots(), switchable: switchableSlots(), off: emptySlots(), locked: lockedSkills(), installed, skillLinker: null, skillLinkerState: SKILL_LINKER_STATE.unset, skillLinkerProblem: null, skillLinkerPath: null, skillLinkerFromRepo: false, error: failed ?? (err as Error).message };
+    return { slots: emptySlots(), ...project, alwaysOn: alwaysOnSlots(), switchable: switchableSlots(), off: emptySlots(), locked: lockedSkills(), installed, skillLinker: null, skillLinkerState: SKILL_LINKER_STATE.unset, skillLinkerProblem: null, skillLinkerPath: null, skillLinkerFromRepo: false, skillLinkerSkills: 0, skillLinkerRoles: 0, error: failed ?? (err as Error).message };
   }
 }
 

@@ -26,6 +26,20 @@ app.whenReady().then(async () => {
   const installedFor = (target: unknown) => skills.installedNames(typeof target === 'string' && target ? target : null, 'claude', home);
 
   ipcMain.handle('skills:list', fromWorkspace((_event, target) => skills.listFor(target)));
+  ipcMain.handle(
+    'skills:link',
+    fromWorkspace((_event, request) => {
+      const linkResults = skills.link(request.project, request.names);
+      return { ...skills.listFor(request.project), linkResults };
+    }),
+  );
+  ipcMain.handle(
+    'skills:unlink',
+    fromWorkspace((_event, request) => {
+      skills.unlink(request.project, request.names);
+      return skills.listFor(request.project);
+    }),
+  );
   registerExtensionsIpc({
     handle: (channel, handler) => ipcMain.handle(channel, handler),
     fromWorkspace,

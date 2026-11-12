@@ -63,6 +63,11 @@ export interface CandidateRow {
   name: string;
   attached: ExtensionScope | null;
   locked: boolean;
+  installed: boolean;
+}
+
+export function canLinkIntoProject(name: string, state: Pick<ExtrasState, 'projectRoot' | 'installed'>, repoSkills: readonly string[]): boolean {
+  return hasProjectScope(state) && !state.installed.includes(name) && repoSkills.includes(name);
 }
 
 export function lockedNames(state: Pick<ExtrasState, 'locked' | 'installed'>): string[] {
@@ -73,8 +78,8 @@ const matches = (name: string, query: string) => name.toLowerCase().includes(que
 
 export function candidateRows(slot: ExtensionSlot, state: ExtrasState & { skillLinkerState: SkillLinkerState }, repoSkills: readonly string[], query: string): CandidateRow[] {
   const attached = new Map(attachedRows(slot, state).map((row) => [row.name, row.scope] as const));
-  const free = pickerSkills(state, repoSkills).filter((name) => matches(name, query)).map((name): CandidateRow => ({ name, attached: attached.get(name) ?? null, locked: false }));
-  const builtIn = query.trim() ? lockedNames(state).filter((name) => matches(name, query)).map((name): CandidateRow => ({ name, attached: null, locked: true })) : [];
+  const free = pickerSkills(state, repoSkills).filter((name) => matches(name, query)).map((name): CandidateRow => ({ name, attached: attached.get(name) ?? null, locked: false, installed: state.installed.includes(name) }));
+  const builtIn = query.trim() ? lockedNames(state).filter((name) => matches(name, query)).map((name): CandidateRow => ({ name, attached: null, locked: true, installed: true })) : [];
   return [...free, ...builtIn];
 }
 

@@ -7,12 +7,35 @@ import { SKILL_MARKER } from '../../scripts/lantern-bundle.mjs';
 import { SKILLS_REPO_ENV } from '@skills/lantern-delegate/scripts/skill-linker.mjs';
 import { providerSkillsDir } from './provider';
 import type { Provider } from './provider';
+import { catalogueOf, linkerRepo } from './skills-catalogue';
 
 type LinkResult = 'linked' | 'skipped-bundled' | 'skipped-local' | 'missing-source' | 'failed';
 
 let repo = '';
-let cachedVersion: string | null | undefined; // undefined = not yet computed, null = unavailable
-let cachedRemote: string | undefined;
+let cache: { root: string; version: string | null | undefined; remote: string | undefined } = { root: '', version: undefined, remote: undefined };
+
+function forgetCache() {
+  cache = { root: '', version: undefined, remote: undefined };
+}
+
+function cacheFor(root: string) {
+  if (cache.root !== root) cache = { root, version: undefined, remote: undefined };
+  return cache;
+}
+
+function forgetVersion() {
+  cacheFor(currentRepo()).version = undefined;
+}
+
+// An explicitly saved repo wins. Without one the catalogue is the repo of the configured
+// skill linker, found again on every call so a changed linker needs no restart and nothing is written.
+function repoState(): { root: string; fromLinker: boolean } {
+  if (repo) return { root: repo, fromLinker: false };
+  const root = linkerRepo(os.homedir());
+  return { root, fromLinker: root !== '' };
+}
+
+const currentRepo = () => repoState().root;
 
 function configFile() {
   return path.join(app.getPath('userData'), 'ccm-skills.json');
@@ -22,37 +45,39 @@ function loadConfig() {
     const c = JSON.parse(fs.readFileSync(configFile(), 'utf8'));
     if (c && c.repo) repo = c.repo;
   } catch {}
-  cachedVersion = undefined;
-  cachedRemote = undefined;
+  forgetCache();
   publishRepo();
 }
 
+// Only a saved repo is published: the linker's own path already reaches every session through lantern-extensions.json.
 function publishRepo() {
   if (repo) process.env[SKILLS_REPO_ENV] = repo;
   else delete process.env[SKILLS_REPO_ENV];
 }
 
 // Repo version from its git tags, e.g. "v1.4.0" or "v1.4.0-3-gabcdef" when ahead.
-function version() {
-  if (cachedVersion !== undefined) return cachedVersion;
-  if (!repo) return null;
+function version(root: string = currentRepo()) {
+  if (!root) return null;
+  const known = cacheFor(root);
+  if (known.version !== undefined) return known.version;
   try {
-    cachedVersion = execFileSync('git', ['-C', repo, 'describe', '--tags', '--always'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
+    known.version = execFileSync('git', ['-C', root, 'describe', '--tags', '--always'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
   } catch {
-    cachedVersion = null;
+    known.version = null;
   }
-  return cachedVersion;
+  return known.version;
 }
-function remoteOf() {
-  if (cachedRemote !== undefined) return cachedRemote;
-  if (!repo) return '';
+function remoteOf(root: string = currentRepo()) {
+  if (!root) return '';
+  const known = cacheFor(root);
+  if (known.remote !== undefined) return known.remote;
   try {
-    const out = execFileSync('git', ['-C', repo, 'config', '--get-regexp', '^remote\\..*\\.url$'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-    cachedRemote = out.split('\n')[0].replace(/^\S+\s+/, '').trim();
+    const out = execFileSync('git', ['-C', root, 'config', '--get-regexp', '^remote\\..*\\.url$'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    known.remote = out.split('\n')[0].replace(/^\S+\s+/, '').trim();
   } catch {
-    cachedRemote = '';
+    known.remote = '';
   }
-  return cachedRemote;
+  return known.remote;
 }
 function saveConfig() {
   try {
@@ -62,8 +87,7 @@ function saveConfig() {
 
 function setRepo(p: string) {
   repo = p;
-  cachedVersion = undefined;
-  cachedRemote = undefined;
+  forgetCache();
   publishRepo();
   saveConfig();
 }
@@ -84,38 +108,8 @@ function looksLikeRepo(dir: string) {
   }
 }
 
-function findSkillDirs(root: string) {
-  const res: string[] = [];
-  const stack = [root];
-  while (stack.length) {
-    const d = stack.pop()!;
-    let entries;
-    try {
-      entries = fs.readdirSync(d, { withFileTypes: true });
-    } catch {
-      continue;
-    }
-    if (entries.some((e) => e.isFile() && e.name === 'SKILL.md')) res.push(d);
-    for (const e of entries) {
-      if (e.isDirectory() && e.name !== 'node_modules' && e.name !== '.git') stack.push(path.join(d, e.name));
-    }
-  }
-  return res;
-}
-
-function available() {
-  if (!repo) return [];
-  return findSkillDirs(repo)
-    .map((dir) => {
-      const rel = path.relative(repo, dir);
-      if (!rel) return null;
-      const segs = rel.split(path.sep);
-      if (segs[0].startsWith('.')) return null;
-      if (segs.length === 1) return { role: '', name: segs[0], src: dir };
-      return { role: segs[0], name: segs.slice(1).join('-'), src: dir };
-    })
-    .filter((s): s is { role: string; name: string; src: string } => s !== null)
-    .sort((a, b) => a.role.localeCompare(b.role) || a.name.localeCompare(b.name));
+function available(root: string = currentRepo()) {
+  return catalogueOf(root);
 }
 
 function isInstalled() {
@@ -141,10 +135,10 @@ function removeLink(dest: string) {
 
 // Does a link target resolve inside the skills repo? Normalizes the Windows
 // `\\?\` junction prefix and compares case-insensitively there.
-function underRepo(dir: string, target: string) {
-  if (!repo) return false;
+function underRepo(dir: string, target: string, root: string) {
+  if (!root) return false;
   let resolved = path.resolve(dir, target).replace(/^\\\\\?\\/, '');
-  let base = repo;
+  let base = root;
   if (process.platform === 'win32') {
     resolved = resolved.toLowerCase();
     base = base.toLowerCase();
@@ -185,6 +179,7 @@ function linkedFor(projectPath: string, provider: Provider = 'claude') {
   } catch {
     return { linked, broken };
   }
+  const root = currentRepo();
   for (const e of entries) {
     const full = path.join(dir, e.name);
     let target;
@@ -194,7 +189,7 @@ function linkedFor(projectPath: string, provider: Provider = 'claude') {
     } catch {
       continue;
     }
-    if (underRepo(dir, target)) {
+    if (underRepo(dir, target, root)) {
       linked.push(e.name);
       if (!fs.existsSync(full)) broken.push(e.name);
     }
@@ -239,15 +234,17 @@ function recommendedFor(projectPath: string, all: { role: string; name: string }
 }
 
 function listFor(projectPath: string | null, provider: Provider = 'claude') {
-  const all = available();
+  const { root, fromLinker } = repoState();
+  const all = available(root);
   const project = projectPath ? { path: projectPath, name: path.basename(projectPath) } : null;
   const { linked, broken } = project ? linkedFor(projectPath!, provider) : { linked: [], broken: [] };
   const { bundled, local } = project ? realFoldersFor(projectPath!, provider) : { bundled: [], local: [] };
   return {
     installed: all.length > 0,
-    repo,
-    remote: remoteOf(),
-    version: all.length ? version() : null,
+    repo: root,
+    repoFromLinker: fromLinker,
+    remote: remoteOf(root),
+    version: all.length ? version(root) : null,
     project,
     available: all.map(({ role, name }) => ({ role, name })),
     linked,
@@ -331,12 +328,13 @@ function unlink(projectPath: string, names: string[], provider: Provider = 'clau
   if (!projectPath) return;
   const dir = safeSkillsDir(projectPath, provider);
   if (!dir) return;
+  const root = currentRepo();
   for (const name of names) {
     if (!isPlainName(name)) continue;
     const dest = path.join(dir, name);
     try {
       const target = fs.readlinkSync(dest);
-      if (underRepo(dir, target)) removeLink(dest);
+      if (underRepo(dir, target, root)) removeLink(dest);
     } catch {}
   }
 }
@@ -390,7 +388,7 @@ function defaultCloneParent() {
 }
 
 function repoPath() {
-  return repo;
+  return currentRepo();
 }
 
 function git(args: string[]) {
@@ -399,7 +397,7 @@ function git(args: string[]) {
     delete env.ELECTRON_RUN_AS_NODE;
     let p;
     try {
-      p = spawn('git', ['-C', repo, ...args], { env });
+      p = spawn('git', ['-C', currentRepo(), ...args], { env });
     } catch (e) {
       return resolve({ code: 1, out: '', err: (e as Error).message });
     }
@@ -420,11 +418,11 @@ async function sync() {
   const branch = (await git(['rev-parse', '--abbrev-ref', 'HEAD'])).out.trim();
   const fetchArgs = ['fetch', '--tags', remote, ...(branch && branch !== 'HEAD' ? [branch] : [])];
   const f = await git(fetchArgs);
-  cachedVersion = undefined;
+  forgetVersion();
   if (f.code !== 0) return { ok: false, error: (f.err || '').trim() || 'fetch failed', version: version() };
   if (branch && branch !== 'HEAD') {
     const m = await git(['merge', '--ff-only', 'FETCH_HEAD']);
-    cachedVersion = undefined;
+    forgetVersion();
     if (m.code !== 0) return { ok: false, error: (m.err || '').trim() || 'could not fast-forward', version: version() };
   }
   return { ok: true, version: version() };

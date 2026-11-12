@@ -72,18 +72,20 @@ function renderSkills() {
     skBody.insertAdjacentHTML('beforeend', '<div class="sk-msg"><h3>No project open</h3>Open a project to link skills into it.</div>');
     return closeOnlyFoot();
   }
-  if (!d.installed) return renderProjectNeedsRepo();
+  if (!d.installed) return renderProjectNeedsRepo(project);
 
   if (skNotice.length) skBody.appendChild(noticeEl(skNotice));
   renderProjectRoles(d);
   restore();
 }
 
-function renderProjectNeedsRepo() {
+function renderProjectNeedsRepo(project: string | null) {
   const note = el('div', 'sk-msg');
   note.append(el('h3', '', msg('skillsExtras.projectNeedsRepoTitle')), el('div', '', msg('skillsExtras.projectNeedsRepo')));
-  skBody.appendChild(note);
-  skFoot.append(footBtn(msg('skillsExtras.openLinker'), () => selectTab(TAB_LINKER), 'btn-primary'), el('span', 'spacer'), footBtn('Close', closeSkills));
+  const linker = el('div', 'sk-extras');
+  skBody.append(note, linker);
+  void mountLinker(linker, project, { linkerSaved: refreshSkills });
+  skFoot.append(footBtn(msg('skillsExtras.openLinker'), () => selectTab(TAB_LINKER)), el('span', 'spacer'), footBtn('Close', closeSkills));
 }
 
 function renderProjectRoles(d: any) {
@@ -177,13 +179,13 @@ async function renderLanternTab(project: string | null) {
   const host = el('div', 'sk-extras');
   skBody.appendChild(host);
   skFoot.append(footBtn(msg('skillsExtras.refresh'), refreshSkills), el('span', 'spacer'), footBtn('Close', closeSkills));
-  await mountExtras(host, project, openAddSkill, [...new Set<string>((skData.available ?? []).map((skill: { name: string }) => skill.name))]);
+  await mountExtras(host, project, openAddSkill, [...new Set<string>((skData.available ?? []).map((skill: { name: string }) => skill.name))], { linked: (listing) => (skData = listing) });
 }
 
 function renderLinkerTab(project: string | null) {
   const host = el('div', 'sk-extras');
   skBody.appendChild(host);
-  void mountLinker(host, project);
+  void mountLinker(host, project, { linkerSaved: refreshSkills });
   if (skData.installed) {
     closeOnlyFoot();
     skBody.appendChild(renderRepoSettings(skRepoError));
@@ -364,6 +366,7 @@ function renderRepoSettings(error?: string) {
     'Type/paste a path and Apply, or use Browse… — the app adopts an existing skills checkout there, or clones your remote into it. The path is remembered.';
   const actions = el('div', 'sk-set-actions');
   actions.append(footBtn('Browse…', () => changeRepoLocation(), 'sk-role-act'), footBtn('Open folder', () => window.ccmws.skillsReveal(), 'sk-role-act'));
+  if (skData.repoFromLinker) wrap.append(el('div', 'sk-set-note', msg('skillsExtras.repoFromLinker')));
   wrap.append(note, actions);
   return wrap;
 }
