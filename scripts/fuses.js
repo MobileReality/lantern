@@ -17,12 +17,10 @@ const TARGETS = {
   darwin: path.join('dist', 'Lantern-darwin-arm64', 'Lantern.app'),
 };
 
-const flagIndex = process.argv.indexOf('--platform');
-const platform = flagIndex >= 0 ? process.argv[flagIndex + 1] : process.platform;
-const target = TARGETS[platform];
+const target = TARGETS[process.platform];
 
 if (!target) {
-  console.error(`fuses: no packaged build for platform: ${platform}`);
+  console.error(`fuses: no packaged build for platform: ${process.platform}`);
   process.exit(1);
 }
 

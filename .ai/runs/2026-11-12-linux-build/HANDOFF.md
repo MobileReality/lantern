@@ -1,6 +1,6 @@
 # Handoff
 
-Plan was unreviewed (unattended run). Code is done; the map update and the review remain.
+Plan was unreviewed (unattended run). Code, review and tests are done.
 
 ## Blockers
 
@@ -8,4 +8,4 @@ Plan was unreviewed (unattended run). Code is done; the map update and the revie
 
 ## Reviewer follow-ups
 
-(none yet)
+Both non-blocking findings were fixed after the verdict (unreviewed): the unused `--platform` flag was dropped from `scripts/fuses.js`, and the release job now runs `scripts/check-linux-package.sh` before uploading.
