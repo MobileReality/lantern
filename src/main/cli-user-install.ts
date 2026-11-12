@@ -81,7 +81,7 @@ function describe(ctx: UserContext, userPath: string | null): CliStatus {
 const readPath = (ctx: UserContext) => (ctx.platform === 'win32' ? ctx.port.readUserPath() : Promise.resolve(null));
 
 async function userCliStatus(ctx: CliContext): Promise<CliStatus | null> {
-  return isUserContext(ctx) ? describe(ctx, await readPath(ctx)) : null;
+  return isUserContext(ctx) ? describe(ctx, await readPath(ctx).catch(() => null)) : null;
 }
 
 async function installUserCli(ctx: CliContext): Promise<CliStatus | null> {

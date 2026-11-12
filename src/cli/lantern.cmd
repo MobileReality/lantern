@@ -38,14 +38,14 @@ if defined compare (
   if not defined folder set "folder=."
 )
 set "project="
-if defined folder (
-  pushd "%folder%" 2> nul || (
-    echo lantern: no such directory: %folder% 1>&2
-    exit /b 1
-  )
-  set "project=%CD%"
-  popd
+if not defined folder goto launch
+if not exist "%folder%\" (
+  echo lantern: no such directory: %folder% 1>&2
+  exit /b 1
 )
+for %%I in ("%folder%") do set "project=%%~fI"
+
+:launch
 
 set "exe=%~dp0..\..\Lantern.exe"
 if not exist "%exe%" (

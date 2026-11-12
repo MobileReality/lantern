@@ -4,23 +4,23 @@ import { promisify } from 'node:util';
 import type { CliPort } from './cli-user-install';
 
 const execFileAsync = promisify(execFile);
-const USER_PATH_VALUE = /^\s*Path\s+REG_(?:EXPAND_)?SZ\s+(.*)$/im;
+const POWERSHELL_ARGS = ['-NoProfile', '-NonInteractive', '-Command'];
+const UTF8_OUTPUT = '[Console]::OutputEncoding = [Text.Encoding]::UTF8;';
+// DoNotExpandEnvironmentNames keeps %VAR% entries as the user wrote them; ExpandString keeps the value expandable.
+const READ_SCRIPT = `${UTF8_OUTPUT} $v = (Get-Item 'HKCU:\\Environment').GetValue('Path', $null, 'DoNotExpandEnvironmentNames'); if ($v) { [Console]::Out.Write($v) }`;
+const WRITE_SCRIPT = "Set-ItemProperty -Path 'HKCU:\\Environment' -Name Path -Value $env:LANTERN_NEW_PATH -Type ExpandString";
 // Setting a variable that does not exist to null changes nothing but broadcasts WM_SETTINGCHANGE, which
 // makes Explorer hand the new Path to terminals opened afterwards.
 const BROADCAST_SCRIPT = "[Environment]::SetEnvironmentVariable('LANTERN_PATH_REFRESH', $null, 'User')";
 
 async function readUserPath() {
-  try {
-    const { stdout } = await execFileAsync('reg', ['query', 'HKCU\\Environment', '/v', 'Path']);
-    return USER_PATH_VALUE.exec(stdout)?.[1].trimEnd() ?? null;
-  } catch {
-    return null;
-  }
+  const { stdout } = await execFileAsync('powershell', [...POWERSHELL_ARGS, READ_SCRIPT], { encoding: 'utf8' });
+  return stdout === '' ? null : stdout;
 }
 
 async function writeUserPath(value: string) {
-  await execFileAsync('reg', ['add', 'HKCU\\Environment', '/v', 'Path', '/t', 'REG_EXPAND_SZ', '/d', value, '/f']);
-  await execFileAsync('powershell', ['-NoProfile', '-NonInteractive', '-Command', BROADCAST_SCRIPT]).catch(() => undefined);
+  await execFileAsync('powershell', [...POWERSHELL_ARGS, WRITE_SCRIPT], { env: { ...process.env, LANTERN_NEW_PATH: value } });
+  await execFileAsync('powershell', [...POWERSHELL_ARGS, BROADCAST_SCRIPT]).catch(() => undefined);
 }
 
 function readOrNull<T>(read: () => T) {

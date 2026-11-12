@@ -57,7 +57,7 @@ describe('Linux install', () => {
     expect(links.get(launcher)).toBe('/elsewhere/lantern');
   });
 
-  it('reports missing and installs over a stale link of its own after the app moved', async () => {
+  it('reports missing before install and installed once the launcher links the script', async () => {
     const { port, links } = fakePort({ files: { [LINUX_SCRIPT]: '#!/bin/sh' } });
     expect((await userCliStatus(linux(port, bin)))?.state).toBe('missing');
     links.set(launcher, LINUX_SCRIPT);
@@ -91,6 +91,20 @@ describe('Windows install', () => {
     const { port, state } = fakePort({ files: { [WIN_SCRIPT]: '@echo off' } });
     await installUserCli(windows(port, {}));
     expect(state.pathWrites).toEqual([dir]);
+  });
+
+  it('keeps non-ASCII PATH entries and never rewrites the PATH when it cannot be read', async () => {
+    const accented = fakePort({ files: { [WIN_SCRIPT]: '@echo off' }, userPath: 'C:\\Users\\Łukasz\\bin' });
+    await installUserCli(windows(accented.port));
+    expect(accented.state.pathWrites).toEqual([`C:\\Users\\Łukasz\\bin;${dir}`]);
+
+    const unreadable = fakePort({ files: { [WIN_SCRIPT]: '@echo off' } });
+    unreadable.port.readUserPath = async () => {
+      throw new Error('powershell failed');
+    };
+    await expect(installUserCli(windows(unreadable.port))).rejects.toThrow('powershell failed');
+    expect(unreadable.state.pathWrites).toEqual([]);
+    expect(unreadable.files.has(shim)).toBe(false);
   });
 
   it('refuses to overwrite a lantern.cmd it did not write and rewrites its own after a move', async () => {

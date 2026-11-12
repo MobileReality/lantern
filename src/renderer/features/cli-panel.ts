@@ -12,7 +12,7 @@ function errorMessage(error: unknown): string {
 const USAGE_LINES = ['Use:', '  lantern              open Lantern', '  lantern .            open the current folder in its own window', '  lantern ~/code/app   open a folder in its own window'];
 
 function statusText(status: CliStatus | null): string {
-  if (!status) return 'The lantern command is not available in a development run.';
+  if (!status) return 'The lantern command cannot be installed from a development run or on this system.';
   if (status.state === 'installed') return `Installed — ${status.link}`;
   if (status.state === 'missing') return 'Not installed';
   return `${status.link} points somewhere else: ${status.target ?? 'not a link'}`;
@@ -20,9 +20,10 @@ function statusText(status: CliStatus | null): string {
 
 function userGuideText({ state, link, script, platform }: CliStatus): string {
   const windows = platform === 'win32';
-  const remove = windows ? `  del "${link}"` : `  rm ${link}`;
-  if (state === 'other') return [`Lantern won't replace a command it didn't install. To replace it yourself:`, remove, windows ? `  (then reinstall from here)` : `  ln -s ${shellQuote(script)} ${link}`].join('\n');
-  const install = windows ? 'Click Install: it writes the shim and adds its folder to your user PATH.' : `Install by hand:\n  mkdir -p ~/.local/bin\n  ln -sf ${shellQuote(script)} ${link}`;
+  const target = shellQuote(link);
+  const remove = windows ? `  del "${link}"` : `  rm ${target}`;
+  if (state === 'other') return [`Lantern won't replace a command it didn't install. To replace it yourself:`, remove, windows ? `  (then reinstall from here)` : `  ln -s ${shellQuote(script)} ${target}`].join('\n');
+  const install = windows ? 'Click Install: it writes the shim and adds its folder to your user PATH.' : `Install by hand:\n  mkdir -p ~/.local/bin\n  ln -sf ${shellQuote(script)} ${target}`;
   return [install, '', ...USAGE_LINES, '', 'Remove:', remove].join('\n');
 }
 
