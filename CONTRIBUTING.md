@@ -111,6 +111,7 @@ pnpm run coverage       # coverage report (text + html)
 pnpm run dist           # build + fuses + codesign → dist/ (macOS)
 pnpm run dist:share     # ad-hoc signed + zipped for sharing
 pnpm run build:win      # Windows build
+pnpm run build:linux    # Linux x64 build (run on Linux; pnpm run pack:linux zips it)
 ```
 
 **Before opening a PR:** `pnpm run typecheck`, `pnpm run lint` and `pnpm test` must all be clean.

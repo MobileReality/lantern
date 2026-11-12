@@ -46,7 +46,8 @@ Sessions are told apart by their working directory: one entry per VS Code projec
 
 Packages are attached to each release on the
 [releases page](https://github.com/MobileReality/lantern/releases): `Lantern-mac.zip` for
-Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. The Apple-silicon build is also published
+Apple-silicon Macs, `Lantern-win-x64.zip` for Windows and `Lantern-linux-x64.zip` for 64-bit Linux
+(Linux packages are x64 only). The Apple-silicon build is also published
 as `Lantern-mac-arm64.zip` for the updater, and the `Lantern-mac.zip` link stays the one to use. Until a release is published there,
 build Lantern from source ([installation](docs/installation.md#install-and-run-from-source)).
 
@@ -55,6 +56,23 @@ and notarized by Apple, so macOS only asks once to confirm opening it. Earlier r
 ad hoc and need the steps in
 [CONTRIBUTING.md](CONTRIBUTING.md#producing-a-build-to-share-distshare). The Windows build is not
 code-signed, so SmartScreen may warn on first launch.
+
+The Linux build is x64 only and unsigned. Extract it, make the binary executable and run it:
+
+```bash
+unzip Lantern-linux-x64.zip
+cd Lantern-linux-x64
+chmod +x Lantern
+./Lantern
+```
+
+Chromium's sandbox needs unprivileged user namespaces or a setuid helper. Ubuntu 24.04 and newer
+restrict user namespaces, so on such a system the app can exit at start with "The SUID sandbox
+helper binary was found, but is not configured correctly". Fix it once with
+`sudo chown root:root chrome-sandbox && sudo chmod 4755 chrome-sandbox` in the extracted folder,
+or start the app with `./Lantern --no-sandbox`, which switches the sandbox off for that run. The
+Linux build is new: CI builds it on Ubuntu but never runs it, and the memory view still says
+"Not supported yet" there.
 
 ## Documentation
 

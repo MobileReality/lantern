@@ -14,7 +14,8 @@ the app itself, see [getting-started.md](getting-started.md).
 
 Packages are attached to each release on the
 [releases page](https://github.com/MobileReality/lantern/releases): `Lantern-mac.zip` for
-Apple-silicon Macs and `Lantern-win-x64.zip` for Windows. The Apple-silicon build is also published
+Apple-silicon Macs, `Lantern-win-x64.zip` for Windows and `Lantern-linux-x64.zip` for 64-bit Linux
+(Linux packages are x64 only). The Apple-silicon build is also published
 as `Lantern-mac-arm64.zip` for the updater, and the `Lantern-mac.zip` link stays the one to use. Until a release is published there,
 build Lantern from source as described below.
 
@@ -23,6 +24,23 @@ and notarized by Apple, so macOS only asks once to confirm opening `Lantern-mac.
 releases are signed ad hoc and need the steps in
 [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-build-to-share-distshare). The Windows build is not
 code-signed, so SmartScreen may warn on first launch.
+
+The Linux build is x64 only and unsigned. Extract it, make the binary executable and run it:
+
+```bash
+unzip Lantern-linux-x64.zip
+cd Lantern-linux-x64
+chmod +x Lantern
+./Lantern
+```
+
+Chromium's sandbox needs unprivileged user namespaces or a setuid helper. Ubuntu 24.04 and newer
+restrict user namespaces, so on such a system the app can exit at start with "The SUID sandbox
+helper binary was found, but is not configured correctly". Fix it once with
+`sudo chown root:root chrome-sandbox && sudo chmod 4755 chrome-sandbox` in the extracted folder,
+or start the app with `./Lantern --no-sandbox`, which switches the sandbox off for that run. The
+Linux build is new: CI builds it on Ubuntu but never runs it, and the memory view still says
+"Not supported yet" there.
 
 ## Install and run from source
 
@@ -61,9 +79,10 @@ latest valid context, preserves the parent thread, and runs the child from that 
 runs the same package scripts as a local build. On a macOS runner, `pnpm run build` and
 `pnpm run fuses` build the app, `scripts/mac-sign-notarize.sh` signs and notarizes it, and
 `pnpm run pack` gives `Lantern-mac.zip` (Apple silicon). `pnpm run build:win` on a Windows runner
-gives `Lantern-win-x64.zip`. A last job creates the release for the tag when it is missing, with
+gives `Lantern-win-x64.zip`, and `pnpm run build:linux` then `pnpm run pack:linux` on an Ubuntu
+runner give `Lantern-linux-x64.zip`. A last job creates the release for the tag when it is missing, with
 generated release notes, copies `Lantern-mac.zip` to `Lantern-mac-arm64.zip` (the name the updater
-needs to find the Apple-silicon build) and uploads the three files; running it again replaces them.
+needs to find the Apple-silicon build) and uploads the four files; running it again replaces them.
 
 - **Release a new version**: push a tag that starts with `v`, for example
   `git tag v0.2.1 && git push origin v0.2.1`. The workflow starts on the push, and the macOS job
@@ -79,8 +98,8 @@ The macOS build is signed with a Developer ID Application certificate, hardened 
 notarized and stapled by Apple, so a downloaded `Lantern-mac.zip` opens without a Gatekeeper
 warning. The certificate and the notarization key are secrets of the protected `release` environment;
 how a maintainer sets them up is in
-[CONTRIBUTING.md](../CONTRIBUTING.md#release-signing-setup). The Windows build is not code-signed,
-so SmartScreen may warn on first launch.
+[CONTRIBUTING.md](../CONTRIBUTING.md#release-signing-setup). The Windows and Linux builds are not
+code-signed (Windows SmartScreen may warn on first launch).
 
 ## Use Lantern with any setup
 

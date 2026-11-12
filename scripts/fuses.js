@@ -11,10 +11,20 @@ const fs = require('fs');
 const path = require('path');
 const { flipFuses, FuseVersion, FuseV1Options } = require('@electron/fuses');
 
-const target =
-  process.platform === 'win32'
-    ? path.join('dist', 'Lantern-win32-x64', 'Lantern.exe')
-    : path.join('dist', 'Lantern-darwin-arm64', 'Lantern.app');
+const TARGETS = {
+  win32: path.join('dist', 'Lantern-win32-x64', 'Lantern.exe'),
+  linux: path.join('dist', 'Lantern-linux-x64', 'Lantern'),
+  darwin: path.join('dist', 'Lantern-darwin-arm64', 'Lantern.app'),
+};
+
+const flagIndex = process.argv.indexOf('--platform');
+const platform = flagIndex >= 0 ? process.argv[flagIndex + 1] : process.platform;
+const target = TARGETS[platform];
+
+if (!target) {
+  console.error(`fuses: no packaged build for platform: ${platform}`);
+  process.exit(1);
+}
 
 if (!fs.existsSync(target)) {
   console.error(`fuses: target not found: ${target}`);
