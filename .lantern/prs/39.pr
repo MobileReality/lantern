@@ -1,0 +1,46 @@
+lantern-pr 1
+# 39
+#title Give Linux windows the Lantern icon
+#url https://github.com/MobileReality/lantern/pull/39
+#branch feat/linux-window-icon
+#base main
+#opened 2026-11-12
+#head 488c068c166f55e003e9e68876b1e86efc78bb32
+#describe what Windows of the packaged Linux app get the Lantern icon from resources/icon.png, found by a pure lookup; macOS and Windows are unchanged.
+#describe before A Linux window had no icon option, so the window and taskbar showed Electron's default.
+#describe after On Linux the window icon is resources/icon.png when packaged and out/assets/appicon.png in dev; macOS and Windows get none.
+#describe verified Typecheck, lint, the new unit test and its mutation; the Linux package check asserts the icon. Not seen on a Linux desktop.
++ src/main/window-icon.ts
++ test/window-icon.test.ts
+~ package.json
+~ scripts/check-linux-package.sh
+~ src/main/main.ts
+~ src/main/popout.ts
+~ src/main/windows.ts
+#order src/main/window-icon.ts
+#order src/main/windows.ts
+#order src/main/popout.ts
+#order src/main/main.ts
+#order package.json
+#order scripts/check-linux-package.sh
+#order test/window-icon.test.ts
+#reason src/main/window-icon.ts Keeps the icon lookup a pure function of platform and paths so it can be tested.
+#reason test/window-icon.test.ts Proves Linux gets the icon path and macOS and Windows get none.
+#reason package.json Ships the app icon as a resource of the Linux package, which electron-packager ignores for --icon on Linux.
+#reason scripts/check-linux-package.sh Fails the Linux package check when the window icon is missing from the zip.
+#reason src/main/main.ts Resolves the Linux window icon once and hands it to the window and pop-out code.
+#reason src/main/popout.ts Gives pop-out windows the Linux icon so the taskbar does not show Electron's default.
+#reason src/main/windows.ts Gives workspace windows the Linux icon so the taskbar does not show Electron's default.
+#story A Linux user sees Lantern's icon on its windows
+#step actor Linux user
+#step action opens a Lantern window on
+#step subject the packaged Linux app
+#file src/main/window-icon.ts
+#file src/main/windows.ts
+#file src/main/popout.ts
+#file src/main/main.ts
+#file package.json
+#below interaction can spot Lantern by its icon in the taskbar
+#below consequence windows showed Electron's default icon => windows show the Lantern icon
+#file test/window-icon.test.ts
+#file scripts/check-linux-package.sh
