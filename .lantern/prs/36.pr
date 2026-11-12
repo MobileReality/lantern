@@ -1,0 +1,65 @@
+lantern-pr 1
+# 36
+#title Apply the review follow-ups of PRs 33 and 34
+#url https://github.com/MobileReality/lantern/pull/36
+#branch chore/review-followups-33-34
+#base main
+#opened 2026-11-12
+#head 14c624e7e17091a5643ae29568df4756f71675b4
+#describe what Applies the review follow-ups of PRs 33 and 34: a right-click test, a pointer module, literal-aware source blocks, a cleanup and two docs entries.
+#describe what Adds a light test that the docs CNAME holds exactly docs.thelantern.dev.
+#describe before isPrimaryTap lived in open-actions.ts, and a brace in a string or comment unbalanced the source-block helper.
+#describe after isPrimaryTap is in pointer.ts, and the helper skips strings, templates and comments; a right-click on a node is tested to change nothing.
+#describe verified Typecheck, lint, unit tests and the graph e2e pass, apart from two visual snapshot specs that also fail on main on this machine.
++ src/renderer/lib/lantern-pixi/pointer.ts
++ test/docs-cname.test.ts
++ test/source-blocks.test.ts
+~ docs/primitives.md
+~ src/renderer/lib/lantern-pixi/index.ts
+~ src/renderer/lib/lantern-pixi/node-graphics.ts
+~ src/renderer/lib/lantern-pixi/open-actions.ts
+~ src/renderer/lib/lantern-pixi/relation-graphics.ts
+~ test/e2e/graph-navigation.spec.ts
+~ test/helpers/source-blocks.ts
+~ test/install-skills.test.ts
+#order src/renderer/lib/lantern-pixi/pointer.ts
+#order src/renderer/lib/lantern-pixi/open-actions.ts
+#order src/renderer/lib/lantern-pixi/node-graphics.ts
+#order src/renderer/lib/lantern-pixi/relation-graphics.ts
+#order src/renderer/lib/lantern-pixi/index.ts
+#order test/e2e/graph-navigation.spec.ts
+#order test/helpers/source-blocks.ts
+#order test/source-blocks.test.ts
+#order test/install-skills.test.ts
+#order test/docs-cname.test.ts
+#order docs/primitives.md
+#reason src/renderer/lib/lantern-pixi/pointer.ts Gives the primary-button check its own small module so graphics files stop importing it from the open-button code.
+#reason test/docs-cname.test.ts Keeps a light guard on the file that decides the docs domain after the copy-text tests were removed.
+#reason test/source-blocks.test.ts Proves the block finder ignores brackets in literals and comments and still reports an unbalanced block.
+#reason docs/primitives.md Names the source-block and Overview-drawer helpers so the next change reuses them instead of writing its own.
+#reason src/renderer/lib/lantern-pixi/index.ts Imports the primary-tap check from the pointer module now that it lives there.
+#reason src/renderer/lib/lantern-pixi/node-graphics.ts Imports the primary-tap check from the pointer module now that it lives there.
+#reason src/renderer/lib/lantern-pixi/open-actions.ts Drops the helper it only borrowed to others and imports it from the pointer module like everyone else.
+#reason src/renderer/lib/lantern-pixi/relation-graphics.ts Imports the primary-tap check from the pointer module now that it lives there.
+#reason test/e2e/graph-navigation.spec.ts Pins that a right-click on a node changes neither selection nor layout, so removing the primary-tap guard fails a test.
+#reason test/helpers/source-blocks.ts Stops a brace inside a string, template or comment from unbalancing the block that wiring tests slice out.
+#reason test/install-skills.test.ts Removes a redundant alias of the skill name list that the reviewer flagged.
+#story A reviewer right-clicks a graph node
+#step actor Person using the graph
+#step action right-clicks
+#step subject a file card in the graph
+#file test/e2e/graph-navigation.spec.ts
+#file src/renderer/lib/lantern-pixi/pointer.ts
+#below interaction can open the context menu without selecting the card
+#file src/renderer/lib/lantern-pixi/node-graphics.ts
+#below consequence nothing checked this => a test fails if it selects
+#story A maintainer writes wiring tests
+#step actor Maintainer
+#step action slices a function body from
+#step subject source with braces in strings
+#file test/helpers/source-blocks.ts
+#file test/source-blocks.test.ts
+#below interaction can trust the slice and guard the docs domain
+#file test/docs-cname.test.ts
+#file docs/primitives.md
+#below consequence a stray brace broke the slice => strings and comments are skipped
