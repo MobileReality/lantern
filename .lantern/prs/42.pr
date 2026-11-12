@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/quit-on-last-window-without-tray
 #base main
 #opened 2026-11-12
-#head c3a85c7f6f6910cc6fd3052d54d1cb54284b42cf
+#head 453ccf6b9601105ae060ac94b914b840194b1adb
 #describe what Closing the last window quits Lantern on Windows and Linux unless a reachable tray icon exists; macOS is unchanged.
 #describe what It quits through the normal quit path and never while a quit is already running.
 #describe before The window-all-closed handler did nothing, so closing the last window on stock GNOME left an invisible process.
