@@ -734,6 +734,9 @@ src/main/server.ts . handler 73dc74717b18
   = src/main/codex-event.ts
   = src/main/state.ts
 
+src/main/serveweb-code-paths.ts . pure e97c99e06c88
+#feature serve-web
+
 src/main/serveweb-failure.ts . pure 012f37ae6ce7
 #feature serve-web
 
@@ -764,10 +767,11 @@ src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
 src/main/serveweb-settings.ts . service 95c6102e988e
 #feature serve-web
 
-src/main/serveweb.ts . service ea925d1a7891
+src/main/serveweb.ts . service a3a7e00dc6a0
 #feature serve-web
   > src/main/diagnostics/editor-server.ts#describeServerStop
   > src/main/diagnostics/index.ts#reportDiagnostic
+  = src/main/serveweb-code-paths.ts
   = src/main/serveweb-failure.ts
   = src/main/serveweb-launch.ts
   = src/main/serveweb-license.ts

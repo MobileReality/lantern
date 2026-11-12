@@ -2079,6 +2079,10 @@ test/serve-web-origin.test.ts . test e570699f3354
   = src/main/serveweb-launch.ts
   = src/main/serveweb-probe.ts
 
+test/serveweb-code-paths.test.ts . test af3267820172
+#feature serve-web
+  = src/main/serveweb-code-paths.ts
+
 test/serveweb-launch-wiring.test.ts . test 3bffe2ef65bd
 #feature serve-web
   = src/main/serveweb.ts
