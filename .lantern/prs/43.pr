@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/cli-install-win-linux
 #base main
 #opened 2026-11-12
-#head 1b3da33e5d303ce6ae267ecb44df450ec51d6158
+#head 4d3f4de7ee143003d22993dcdf1b11383d92d14f
 #describe what Settings, Command line installs a working lantern command on Linux and Windows too: a link in ~/.local/bin on Linux, a lantern.cmd shim and a user PATH entry on Windows, no admin rights.
 #describe before The command could be installed on macOS only; the panel said so.
 #describe after Linux and Windows get the command, with a PATH hint on Linux and a new-terminal note on Windows; macOS is unchanged.
