@@ -12,6 +12,8 @@ interface CliStatus {
   link: string;
   script: string;
   target: string | null;
+  platform?: NodeJS.Platform;
+  note?: string | null;
 }
 
 const PROJECT_FLAG = '--project=';
@@ -38,8 +40,8 @@ function compareArg(argv: readonly string[]) {
   return parseCompareSpec(argv.find((arg) => arg.startsWith(COMPARE_FLAG))?.slice(COMPARE_FLAG.length));
 }
 
-function scriptPath(packaged: boolean, resourcesPath: string, mainDirectory: string) {
-  return path.join(packaged ? resourcesPath : mainDirectory, 'cli', 'lantern');
+function scriptPath(packaged: boolean, resourcesPath: string, mainDirectory: string, platform: NodeJS.Platform = 'darwin') {
+  return path.join(packaged ? resourcesPath : mainDirectory, 'cli', platform === 'win32' ? 'lantern.cmd' : 'lantern');
 }
 
 function linkTarget(link: string) {

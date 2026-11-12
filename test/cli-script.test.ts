@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const SOURCE = path.join(__dirname, '..', 'src', 'cli', 'lantern');
 const BUNDLE_ID = 'com.mobilereality.lantern';
@@ -94,6 +94,17 @@ describe.skipIf(process.platform === 'win32')('the lantern command', () => {
     const folder = path.join(tmp, 'code');
     fs.mkdirSync(folder);
     expect(run(script, [folder]).open).toEqual(['-n', '-b', BUNDLE_ID, '--args', `--project=${folder}`]);
+  });
+
+  it('starts the packaged Linux executable next to resources/ with the folder as --project=, never open', async () => {
+    const script = install(['Lantern-linux-x64', 'resources', 'cli']);
+    const executable = path.join(tmp, 'Lantern-linux-x64', 'Lantern');
+    fs.writeFileSync(executable, `#!/bin/sh\nfor arg in "$@"; do printf '%s\\n' "$arg" >> '${calls}'; done\n`);
+    fs.chmodSync(executable, 0o755);
+    const folder = path.join(tmp, 'code');
+    fs.mkdirSync(folder);
+    expect(run(script, [folder]).status).toBe(0);
+    await vi.waitFor(() => expect(fs.readFileSync(calls, 'utf8').split('\n').filter(Boolean)).toEqual([`--project=${folder}`]));
   });
 
   it('reads a folder named like an option through "-"', () => {

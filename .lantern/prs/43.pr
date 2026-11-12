@@ -1,0 +1,74 @@
+lantern-pr 1
+# 43
+#title feat: install the lantern command on Linux and Windows
+#url https://github.com/MobileReality/lantern/pull/43
+#branch feat/cli-install-win-linux
+#base main
+#opened 2026-11-12
+#head 4d3f4de7ee143003d22993dcdf1b11383d92d14f
+#describe what Settings, Command line installs a working lantern command on Linux and Windows too: a link in ~/.local/bin on Linux, a lantern.cmd shim and a user PATH entry on Windows, no admin rights.
+#describe before The command could be installed on macOS only; the panel said so.
+#describe after Linux and Windows get the command, with a PATH hint on Linux and a new-terminal note on Windows; macOS is unchanged.
+#describe verified typecheck, lint and the full test run are green; the per-platform tests fail under their mutations. Nothing was run on Windows or Linux.
++ .gitattributes
++ src/cli/lantern.cmd
++ src/main/cli-user-install.ts
++ src/main/cli-user-port.ts
++ test/cli-user-install.test.ts
+~ docs/installation.md
+~ src/cli/lantern
+~ src/main/cli.ts
+~ src/main/main.ts
+~ src/renderer/features/cli-panel.ts
+~ test/cli-panel.test.ts
+~ test/cli-script.test.ts
+~ test/settings-dialog.test.ts
+#order src/main/cli-user-install.ts
+#order src/main/cli-user-port.ts
+#order src/main/cli.ts
+#order src/main/main.ts
+#order src/cli/lantern
+#order src/cli/lantern.cmd
+#order .gitattributes
+#order src/renderer/features/cli-panel.ts
+#order test/cli-user-install.test.ts
+#order test/cli-script.test.ts
+#order test/cli-panel.test.ts
+#order test/settings-dialog.test.ts
+#order docs/installation.md
+#reason .gitattributes Keeps the Windows batch script CRLF on checkout, since cmd label lookup misbehaves with LF.
+#reason src/cli/lantern.cmd Gives Windows a lantern command that opens a folder or a --compare review from a terminal.
+#reason src/main/cli-user-install.ts Installs the command per user on Linux and Windows through an injectable port so it is testable.
+#reason src/main/cli-user-port.ts Provides the real file-system and PowerShell user-PATH access, never rewriting the PATH on a failed read.
+#reason test/cli-user-install.test.ts Proves the Linux link and PATH hint, the Windows shim and PATH-once rule, and a safe PATH read.
+#reason docs/installation.md Tells Linux and Windows users how the command is installed, not only macOS users.
+#reason src/cli/lantern Lets the same command start the packaged Linux executable instead of only calling macOS open.
+#reason src/main/cli.ts Lets the script path follow the platform and carries the optional note on the status.
+#reason src/main/main.ts Routes the command channels to the per-user installer off macOS and keeps macOS as it was.
+#reason src/renderer/features/cli-panel.ts Shows the PATH hint and new-terminal note and drops the macOS-only wording.
+#reason test/cli-panel.test.ts Covers the Linux and Windows notes and guides in the panel.
+#reason test/cli-script.test.ts Proves the script starts the packaged Linux executable with the folder as --project.
+#reason test/settings-dialog.test.ts Follows the panel's new wording for an unsupported or development run.
+#story A Linux user installs the lantern command
+#step actor Linux user
+#step action clicks Install in Command line settings
+#file src/renderer/features/cli-panel.ts
+#file src/main/main.ts
+#step subject their own bin folder
+#file src/main/cli-user-install.ts
+#below interaction can open Lantern from any terminal
+#file src/cli/lantern
+#file test/cli-script.test.ts
+#below consequence no lantern command on Linux => lantern works, with a hint when PATH lacks the folder
+#file test/cli-user-install.test.ts
+#story A Windows user installs the lantern command
+#step actor Windows user
+#step action clicks Install in Command line settings
+#file src/renderer/features/cli-panel.ts
+#step subject their user command folder and PATH
+#file src/main/cli-user-install.ts
+#file src/main/cli-user-port.ts
+#below interaction can open Lantern from a new terminal
+#file src/cli/lantern.cmd
+#below consequence no lantern command on Windows => lantern works without admin rights
+#file test/cli-user-install.test.ts
