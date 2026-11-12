@@ -35,9 +35,10 @@ interface AttachedHandlers {
   scoped: boolean;
   onMove: () => void;
   onDetach: () => void;
+  onLink: (() => void) | null;
 }
 
-export function attachedItem(row: AttachedRow, { slot, scoped, onMove, onDetach }: AttachedHandlers) {
+export function attachedItem(row: AttachedRow, { slot, scoped, onMove, onDetach, onLink }: AttachedHandlers) {
   const item = el('div', `sk-arow${row.missing ? ' missing' : ''}`);
   item.setAttribute('role', 'listitem');
   item.setAttribute('aria-keyshortcuts', 'Delete Backspace');
@@ -51,6 +52,16 @@ export function attachedItem(row: AttachedRow, { slot, scoped, onMove, onDetach 
     missing.setAttribute('role', 'status');
     missing.dataset.tip = msg('skillsExtras.missing');
     item.append(missing);
+  }
+  if (onLink) {
+    const link = el('button', 'sk-role-act sk-link', msg('skillsExtras.attached.link'));
+    link.type = 'button';
+    link.tabIndex = -1;
+    link.dataset.link = row.name;
+    link.dataset.tip = msg('skillsExtras.attached.linkTip');
+    link.setAttribute('aria-label', msg('skillsExtras.attached.linkLabel', { name: row.name }));
+    link.addEventListener('click', onLink);
+    item.append(link);
   }
   if (scoped) item.append(scopeBadge(row.name, row.scope, onMove));
   const detach = el('button', 'sk-x', msg('skillsExtras.attached.detach'));
@@ -67,10 +78,11 @@ interface CandidateHandlers {
   slot: ExtensionSlot;
   scope: ExtensionScope;
   scoped: boolean;
+  links: boolean;
   onAttach: () => void;
 }
 
-export function candidateItem(row: CandidateRow, { slot, scope, scoped, onAttach }: CandidateHandlers) {
+export function candidateItem(row: CandidateRow, { slot, scope, scoped, links, onAttach }: CandidateHandlers) {
   const item = el('button', `sk-crow${row.attached ? ' is-attached' : ''}${row.locked ? ' is-locked' : ''}`);
   item.type = 'button';
   item.tabIndex = -1;
@@ -88,8 +100,13 @@ export function candidateItem(row: CandidateRow, { slot, scope, scoped, onAttach
     item.setAttribute('aria-disabled', 'true');
     item.setAttribute('aria-label', scoped ? msg('skillsExtras.attach.attachedLabel', { name: row.name, role: slotLabel(slot), scope: as }) : msg('skillsExtras.attach.attachedPlainLabel', { name: row.name, role: slotLabel(slot) }));
     item.append(el('span', `sk-tag sk-crow-state is-${row.attached}`, scoped ? msg('skillsExtras.attach.attachedAs', { scope: as }) : msg('skillsExtras.attach.attachedPlain')));
+  } else if (links) {
+    item.dataset.tip = msg('skillsExtras.attach.notInstalledTip');
+    item.setAttribute('aria-label', scoped ? msg('skillsExtras.attach.labelLink', { name: row.name, role: slotLabel(slot), scope: scopeLabel(scope) }) : msg('skillsExtras.attach.labelLinkPlain', { name: row.name, role: slotLabel(slot) }));
+    item.append(el('span', 'sk-tag sk-warn', msg('skillsExtras.attached.notInstalled')), el('span', 'sk-crow-act', msg('skillsExtras.attach.actionLink')));
   } else {
     item.setAttribute('aria-label', scoped ? msg('skillsExtras.attach.label', { name: row.name, role: slotLabel(slot), scope: scopeLabel(scope) }) : msg('skillsExtras.attach.labelPlain', { name: row.name, role: slotLabel(slot) }));
+    if (!row.installed) item.append(el('span', 'sk-tag sk-warn', msg('skillsExtras.attached.notInstalled')));
     item.append(el('span', 'sk-crow-act', msg('skillsExtras.attach.action')));
   }
   if (free) item.addEventListener('click', onAttach);

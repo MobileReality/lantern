@@ -1,0 +1,96 @@
+lantern-pr 1
+# 44
+#title feat: use the skill linker's repo as the skills catalogue
+#url https://github.com/MobileReality/lantern/pull/44
+#branch feat/skill-linker-catalogue
+#base main
+#opened 2026-11-12
+#head 3938ece4bae233fa78499ad6b48217d0b227429e
+#describe what The Skills window takes its catalogue from the skill linker when no repo is saved, so Project skills lists and links its skills and Lantern skills finds them.
+#describe what Skills not installed in the project are marked, attaching one links it first, and attached missing skills get a Link to project button.
+#describe what The linker status reads as plain words with the skill and role counts.
+#describe before With a linker set and no saved repo, Project skills showed only a notice and a button to another tab, and web-research could not be found.
+#describe after Project skills lists the linker's roles, the notice with no linker holds the linker path field, and searching web finds web-research as Not installed.
+#describe verified Typecheck, lint, the full unit suite and the skills Electron spec pass; the new unit test and e2e scenarios fail on the base.
++ src/main/skills-catalogue.ts
++ test/helpers/skill-linker-repo.ts
++ test/skills-linker-repo.test.ts
+~ src/main/extensions.ts
+~ src/main/skills.ts
+~ src/renderer/features/skills-extras.ts
+~ src/renderer/features/skills-roles.ts
+~ src/renderer/features/skills-rows.ts
+~ src/renderer/features/skills-state.ts
+~ src/renderer/features/skills.ts
+~ src/shared/lang/en/messages.json
+~ test/e2e/app/skills-extras-main.ts
+~ test/e2e/skills-extras.spec.ts
+~ test/e2e/support/skills-extras-harness.ts
+~ test/extensions-panel.test.ts
+~ test/skills-extras.test.ts
+~ test/skills-modal-scroll.test.ts
+~ test/skills-modal.test.ts
+~ test/skills-state.test.ts
+~ test/skills-unconfigured.test.ts
+#order src/main/skills-catalogue.ts
+#order src/main/skills.ts
+#order src/main/extensions.ts
+#order src/renderer/features/skills-state.ts
+#order src/renderer/features/skills-rows.ts
+#order src/renderer/features/skills-roles.ts
+#order src/renderer/features/skills-extras.ts
+#order src/renderer/features/skills.ts
+#order src/shared/lang/en/messages.json
+#order test/helpers/skill-linker-repo.ts
+#order test/skills-linker-repo.test.ts
+#order test/skills-state.test.ts
+#order test/skills-extras.test.ts
+#order test/skills-modal.test.ts
+#order test/e2e/skills-extras.spec.ts
+#order test/e2e/support/skills-extras-harness.ts
+#order test/e2e/app/skills-extras-main.ts
+#order test/skills-unconfigured.test.ts
+#order test/skills-modal-scroll.test.ts
+#order test/extensions-panel.test.ts
+#reason src/main/skills-catalogue.ts Gives the window one place to list a skills repo and to find the repo of the skill linker, so both tabs read the same catalogue.
+#reason test/helpers/skill-linker-repo.ts The unit test and the Electron harness both need the same fixture repo with role folders and an executable linker.
+#reason test/skills-linker-repo.test.ts Fails on the old code: a linker with no saved repo must give the catalogue, links and counts, and a saved repo must still win.
+#reason src/main/extensions.ts The linker status needs the skill and role counts, and must resolve SKILL_LINKER the way the catalogue does.
+#reason src/main/skills.ts A linker set on its own left the window with no skills, so the repo now falls back to the linker's without writing or publishing it.
+#reason src/renderer/features/skills-extras.ts Attaching a missing skill links it first so a delegate can read it, and the linker row can be reused where no linker is set.
+#reason src/renderer/features/skills-roles.ts Carries the repo skills to the rows so only a linkable missing skill gets the link action.
+#reason src/renderer/features/skills-rows.ts A skill that is not installed has to look different from an installed one, and an attached one needs a Link to project action.
+#reason src/renderer/features/skills-state.ts Candidates must say whether a skill is installed and whether it can be linked into the open project.
+#reason src/renderer/features/skills.ts The first tab asked for another tab when no linker was set, so it now holds the linker row and refreshes the catalogue after a save.
+#reason src/shared/lang/en/messages.json The status said only Initialized, so every linker state now has a plain sentence, and the new link and not-installed texts live here.
+#reason test/e2e/app/skills-extras-main.ts The harness needs the real link and unlink channels to exercise the new actions.
+#reason test/e2e/skills-extras.spec.ts Proves in the real window that the first tab lists the linker's roles, searching web finds web-research and linking works.
+#reason test/e2e/support/skills-extras-harness.ts The scenarios need a fixture skills repo and a saved or unsaved linker in the temporary home.
+#reason test/extensions-panel.test.ts The empty panel now carries zero skill and role counts.
+#reason test/skills-extras.test.ts Covers attach-and-link, a failed link attaching nothing, Link to project and the plain-word linker sentences.
+#reason test/skills-modal-scroll.test.ts The faked panel gained the skill and role counts.
+#reason test/skills-modal.test.ts Covers the linker row on the first tab, in-place fill after Save and the problem shown for a bad path.
+#reason test/skills-state.test.ts Covers the installed flag of candidates and the rule for linking a skill into the project.
+#reason test/skills-unconfigured.test.ts The no-repo cases must not read the developer's real home, which can now hold a linker.
+#story A user sets the skill linker and gets their skills
+#step actor A user with a skill linker
+#file src/main/skills.ts
+#file src/main/skills-catalogue.ts
+#step action saves its path in the Skills window
+#file src/renderer/features/skills.ts
+#step subject the project's skill list
+#file src/renderer/features/skills-extras.ts
+#below interaction can link any skill of the linker's repo
+#below consequence had to set a separate skills repo => the linker alone lists the skills
+#file test/skills-linker-repo.test.ts
+#file test/e2e/skills-extras.spec.ts
+#story A user attaches a skill that is not installed
+#step actor A user
+#step action attaches or links a skill
+#file src/renderer/features/skills-roles.ts
+#file src/renderer/features/skills-rows.ts
+#step subject a skill missing from the project
+#file src/renderer/features/skills-state.ts
+#below interaction can read it in the project at once
+#below consequence attached but unreadable => linked, then attached
+#file test/skills-extras.test.ts

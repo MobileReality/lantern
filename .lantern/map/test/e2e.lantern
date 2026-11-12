@@ -65,7 +65,7 @@ test/e2e/integrations.spec.ts . test 4333562959b8
   = test/e2e/support/overflow.ts#findClippedText
   < test/helpers/fake-tokens.ts#FAKE_ATLASSIAN_TOKEN_LONG
 
-test/e2e/skills-extras.spec.ts . test 55b79a7cb294
+test/e2e/skills-extras.spec.ts . test f7e7e54bb9c0
 #feature skill-installer
   = test/e2e/support/skills-extras-harness.ts#launchSkillsHarness
 

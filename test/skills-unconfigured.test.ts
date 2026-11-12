@@ -25,9 +25,13 @@ describe('skills repo settings with nothing configured', () => {
     base = makeTmp('ccm-skills-unset-');
     userData = path.join(base, 'user-data');
     fs.mkdirSync(userData);
+    const home = path.join(base, 'home');
+    fs.mkdirSync(home);
+    vi.spyOn(os, 'homedir').mockReturnValue(home);
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     fs.rmSync(base, { recursive: true, force: true });
   });
 

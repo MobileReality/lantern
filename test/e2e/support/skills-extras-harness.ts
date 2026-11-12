@@ -6,6 +6,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { LINKER_REPO_SKILLS, makeLinkerRepo, writeLinkerConfig } from '../../helpers/skill-linker-repo';
 
 const root = process.cwd();
 const appDir = path.join(root, 'test/e2e/app');
@@ -17,6 +18,8 @@ export interface SkillsHarnessSpec {
   globalExtras?: Record<string, string[]>;
   projectExtras?: Record<string, string[]>;
   viewport?: string;
+  skillRepo?: boolean;
+  saveLinker?: boolean;
 }
 
 export interface SkillsHarness {
@@ -25,6 +28,9 @@ export interface SkillsHarness {
   home: string;
   project: string;
   errors: string[];
+  repo: string;
+  linker: string;
+  userData: string;
   close(): Promise<void>;
 }
 
@@ -56,7 +62,9 @@ export async function launchSkillsHarness(spec: SkillsHarnessSpec): Promise<Skil
   execFileSync('git', ['init', '-q', project]);
   await writeSkills(home, spec.homeSkills);
   await writeSkills(project, spec.projectSkills);
-  if (spec.globalExtras) {
+  const skillRepo = spec.skillRepo ? makeLinkerRepo(path.join(work, 'skills'), LINKER_REPO_SKILLS) : { repo: '', linker: '' };
+  if (spec.skillRepo && spec.saveLinker) writeLinkerConfig(home, skillRepo.linker, spec.globalExtras);
+  else if (spec.globalExtras) {
     await mkdir(path.join(home, '.claude'), { recursive: true });
     await writeFile(path.join(home, '.claude', 'lantern-extensions.json'), JSON.stringify(spec.globalExtras));
   }
@@ -91,6 +99,9 @@ export async function launchSkillsHarness(spec: SkillsHarnessSpec): Promise<Skil
       home,
       project,
       errors,
+      repo: skillRepo.repo,
+      linker: skillRepo.linker,
+      userData,
       async close() {
         try {
           await app?.close();

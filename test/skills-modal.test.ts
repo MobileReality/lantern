@@ -96,6 +96,34 @@ describe('Skills modal without a skills repo', () => {
     expect(foot().textContent).not.toContain('Choose location & clone');
   });
 
+  it('Project skills holds the linker path field and Save, and fills the role list in place once it is saved', async () => {
+    withoutRepo(LISTING.project);
+    window.ccmws.extensionsSkillLinker = vi.fn(async (_project: string | null, value: string | null) => ({ ...PANEL, skillLinker: value, skillLinkerState: 'initialized', skillLinkerPath: value, skillLinkerSkills: 2, skillLinkerRoles: 2 })) as unknown as typeof window.ccmws.extensionsSkillLinker;
+    await openModal();
+    await openTab('project');
+    const field = body().querySelector<HTMLInputElement>('[data-skill-linker="path"]')!;
+    expect(field).not.toBeNull();
+    expect(body().querySelector('.sk-role .sk-role-name')).toBeNull();
+    window.ccmws.skillsList = vi.fn(async () => LISTING) as unknown as typeof window.ccmws.skillsList;
+    field.value = ' /skills/umrskill ';
+    [...body().querySelectorAll<HTMLButtonElement>('.sk-skill-linker button')].find((button) => button.textContent === msg('skillsExtras.skillLinker.save'))!.click();
+    await settled();
+    await settled();
+    expect(window.ccmws.extensionsSkillLinker).toHaveBeenCalledWith('/demo', '/skills/umrskill');
+    expect(activeTab()).toBe('project');
+    expect([...body().querySelectorAll('.sk-role .sk-role-name')].map((role) => role.textContent)).toEqual(['core', 'tech']);
+    expect(body().textContent).not.toContain(msg('skillsExtras.projectNeedsRepo'));
+  });
+
+  it('Project skills keeps the notice and names the problem while the saved path is no linker', async () => {
+    withoutRepo(LISTING.project);
+    window.ccmws.extensionsLoad = vi.fn(async () => ({ ...PANEL, skillLinker: '/nope', skillLinkerState: 'invalid', skillLinkerProblem: '/nope does not exist, so it is not an executable file.' })) as unknown as typeof window.ccmws.extensionsLoad;
+    await openModal();
+    await openTab('project');
+    expect(body().querySelector('[data-linker-state="invalid"]')!.textContent).toBe('Skill linker problem: /nope does not exist, so it is not an executable file.');
+    expect(body().querySelector('.sk-role .sk-role-name')).toBeNull();
+  });
+
   it('Project skills sends the person to the Skill linker tab, which carries the clone prompt', async () => {
     withoutRepo(LISTING.project);
     await openModal();
@@ -248,7 +276,7 @@ describe('Skills modal', () => {
     await openTab('linker');
     expect(activeTab()).toBe('linker');
     expect(body().querySelector('[data-skill-linker="path"]')).not.toBeNull();
-    expect(body().querySelector('[data-linker-state="unset"]')!.textContent).toBe('Not set');
+    expect(body().querySelector('[data-linker-state="unset"]')!.textContent).toBe(msg('skillsExtras.skillLinker.state.unset'));
     expect(body().querySelectorAll(':scope > .sk-role')).toHaveLength(0);
     expect(body().querySelector('[data-slot]')).toBeNull();
     expect(body().querySelector('[data-import]')).toBeNull();

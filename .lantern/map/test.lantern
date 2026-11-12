@@ -2278,18 +2278,24 @@ test/skill-test-vocabulary.test.ts . test 82b0bd923ab3
   = scripts/skill-test/vocab-checks.mjs
   = scripts/skill-test/vocab-fixtures.mjs
 
-test/skills-extras.test.ts . test b334c7179f54
+test/skills-extras.test.ts . test 9cb8adee20ce
 #feature skill-installer
   = src/renderer/features/skills-extras-step.ts
   = src/renderer/features/skills-extras.ts
   = src/renderer/features/skills-roles.ts#resetBoardUi
 
-test/skills-modal-scroll.test.ts . test da2454d822e7
+test/skills-linker-repo.test.ts . test 8b5d089bd9b8
+#feature skill-installer
+  = src/main/extensions.ts#loadExtensionsPanel
+  = src/main/skills.ts
+  = test/helpers/skill-linker-repo.ts
+
+test/skills-modal-scroll.test.ts . test 058681bc74e4
 #feature skill-installer
   = src/renderer/features/skills.ts
   = src/renderer/features/skills-extras.ts
 
-test/skills-modal.test.ts . test 2bf900434720
+test/skills-modal.test.ts . test a77417296079
 #feature skill-installer
   = src/renderer/features/skills.ts
 
@@ -2297,16 +2303,16 @@ test/skills-remote.test.ts . test 32db2af08145
 #feature skill-installer
   = src/main/skills.ts
 
-test/skills-state.test.ts . test 3ed2292cbf57
+test/skills-state.test.ts . test 678486f3579f
 #feature skill-installer
   = src/renderer/features/skills-state.ts
 
-test/skills-unconfigured.test.ts . test a11a60f25614
+test/skills-unconfigured.test.ts . test 664ce2aa4ace
 #feature skill-installer
   = src/main/skills.ts
   = src/renderer/features/skills.ts
 
-test/extensions-panel.test.ts . test 9e35e042f6ab
+test/extensions-panel.test.ts . test b991342dccae
 #feature skill-installer
   < skills/lantern-delegate/scripts/bundled-skills.mjs
   = src/main/extensions.ts

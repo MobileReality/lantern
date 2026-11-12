@@ -144,17 +144,21 @@ src/renderer/features/skills-extras-step.ts . component 1c9018ac8fe0
   < src/shared/extension-slots.ts#ExtensionSlot
   < src/shared/lang/messages.ts#msg
 
-src/renderer/features/skills-extras.ts . component 572104817313
+src/renderer/features/skills-extras.ts . component 900657ec95c9
 #feature skill-installer
   = src/preload/workspace.ts
   < src/renderer/features/skills-roles.ts#roleBoard
   < src/renderer/features/skills-rows.ts#scopeLabel
   < src/renderer/features/skills-rows.ts#slotLabel
+  < src/renderer/features/skills-state.ts#canLinkIntoProject
+  < src/renderer/features/skills-state.ts#linkProblems
   = src/renderer/lib/util.ts
   < src/shared/extension-slots.ts#EXTENSION_SCOPE
+  < src/shared/extension-slots.ts#SKILL_LINKER_STATE
   < src/shared/lang/messages.ts#msg
+  < src/shared/lang/messages.ts#msgCount
 
-src/renderer/features/skills-roles.ts . component 85f395b6d942
+src/renderer/features/skills-roles.ts . component 0186f31bbf69
 #feature skill-installer
   < src/renderer/features/skills-rows.ts#attachedItem
   < src/renderer/features/skills-rows.ts#candidateItem
@@ -162,11 +166,12 @@ src/renderer/features/skills-roles.ts . component 85f395b6d942
   < src/renderer/features/skills-shortcuts.ts#searchShortcuts
   < src/renderer/features/skills-state.ts#attachedRows
   < src/renderer/features/skills-state.ts#candidateRows
+  < src/renderer/features/skills-state.ts#canLinkIntoProject
   < src/renderer/lib/util.ts#el
   < src/shared/extension-slots.ts#EXTENSION_SLOTS
   < src/shared/lang/messages.ts#msg
 
-src/renderer/features/skills-rows.ts . component 76ff9f60fa81
+src/renderer/features/skills-rows.ts . component 5fd13e995604
 #feature skill-installer
   < src/renderer/features/skills-state.ts#otherScope
   < src/renderer/lib/util.ts#el
@@ -181,7 +186,7 @@ src/renderer/features/skills-segmented.ts . component cedd6a971b0f
 src/renderer/features/skills-shortcuts.ts . util 1844893a31c2
 #feature skill-installer
 
-src/renderer/features/skills-state.ts . pure e54c1f116173
+src/renderer/features/skills-state.ts . pure 3f4bc9a61148
 #feature skill-installer
   < src/shared/extension-slots.ts#EXTENSION_SCOPE
   < src/shared/extension-slots.ts#hasLockedPrefix
@@ -189,7 +194,7 @@ src/renderer/features/skills-state.ts . pure e54c1f116173
   < src/shared/extension-slots.ts#mergeExtras
   < src/shared/extension-slots.ts#SKILL_LINKER_STATE
 
-src/renderer/features/skills.ts . component 9af6c7fe2ba4
+src/renderer/features/skills.ts . component e6958cbc5f5f
 #feature skill-installer
   = src/preload/workspace.ts
   = src/renderer/features/skills-extras-step.ts

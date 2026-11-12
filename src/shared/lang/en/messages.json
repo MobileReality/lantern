@@ -355,8 +355,9 @@
     "switchLabel": "Use {name} in the {slot} slot",
     "refresh": "Refresh",
     "projectNeedsRepoTitle": "Nothing to link yet",
-    "projectNeedsRepo":"Linking skills needs the skills repo. Set its location on the Skill linker tab. Lantern skills works without it.",
-    "openLinker": "Open Skill linker",
+    "projectNeedsRepo": "Linking skills needs your skill linker. Enter its path below and save it: its skills are listed here to link into this project, and the Lantern skills tab finds them too.",
+    "openLinker": "Choose or clone a skills repo instead",
+    "repoFromLinker": "These skills come from the skill linker's folder. Apply a path above to use another repo instead.",
     "cloneNeedsRemote": "Cloning is off until you enter the remote URL of your skills repo above. To use a checkout you already have, type its path below and press Apply.",
     "missing": "Not installed, so it is skipped when a run starts.",
     "addSkill": "Add skill",
@@ -377,7 +378,10 @@
       "hintGlobal": "Arrows move, Delete detaches.",
       "detach": "Detach",
       "detachLabel": "Detach {name} from {role}",
-      "notInstalled": "Not installed"
+      "notInstalled": "Not installed",
+      "link": "Link to project",
+      "linkLabel": "Link {name} into this project",
+      "linkTip": "Links this skill from the skill linker's repo into the project's .claude/skills, so a run can read it."
     },
     "scope": {
       "attachAs": "Attach as",
@@ -399,6 +403,10 @@
       "attachedPlain": "Attached",
       "attachedPlainLabel": "{name} is already attached to {role}",
       "labelPlain": "Attach {name} to {role}",
+      "actionLink": "Attach and link",
+      "labelLink": "Attach {name} to {role} as {scope} and link it into this project",
+      "labelLinkPlain": "Attach {name} to {role} and link it into this project",
+      "notInstalledTip": "Not installed in this project yet. Attaching also links it from the skill linker's repo, so a run can read it.",
       "noMatch": "No skill matches \"{query}\".",
       "none": "No skills are installed yet. Add one below, or set the Skill linker.",
       "builtIn": "Built in",
@@ -411,6 +419,8 @@
     },
     "announce": {
       "attached": "Attached {name} to {role} ({scope}).",
+      "attachedLinked": "Attached {name} to {role} ({scope}) and linked it into this project.",
+      "linked": "Linked {name} into this project.",
       "detached": "Detached {name} from {role}.",
       "moved": "{name} is now {scope} for {role}."
     },
@@ -428,16 +438,30 @@
     },
     "loadFailed": "Extras could not be loaded.",
     "saveFailed": "Extras could not be saved: {reason}",
+    "linkFailed": "{name} could not be linked into this project, so nothing was changed. {reason}",
+    "linkFailedUnknown": "The skills repo did not link it.",
     "skillLinker": {
       "title": "Skill linker",
       "label": "Skill linker path",
       "hint": "The script that links skills into a project. Enter the absolute path of the script or of the repo folder that holds it, or leave it empty to use the one in the Skills repo.",
       "state": {
-        "initialized": "Initialized",
-        "unset": "Not set",
-        "invalid": "Path not found, not executable, or no skills repo beside it."
+        "initialized": "Skill linker ready: {path} ({skills} in {roles})",
+        "initializedEmpty": "Skill linker ready: {path}, but its repo holds no skills yet.",
+        "unset": "No skill linker set. Enter its path above and save it to list, link and find skills.",
+        "invalid": "Skill linker problem: the path was not found, is not executable, or has no skills repo beside it.",
+        "invalidWhy": "Skill linker problem: {problem}"
       },
-      "fromRepo": "Using {path} (from Skills repo)",
+      "count": {
+        "skills": {
+          "one": "{count} skill",
+          "other": "{count} skills"
+        },
+        "roles": {
+          "one": "{count} role",
+          "other": "{count} roles"
+        }
+      },
+      "fromRepo": "Skill linker ready: {path}, taken from the Skills repo ({skills} in {roles})",
       "placeholder": "/path/to/skill-linker",
       "save": "Save path",
       "clear": "Clear path"
