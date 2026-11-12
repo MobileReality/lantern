@@ -1,0 +1,79 @@
+lantern-pr 1
+# 38
+#title Build and release a Linux x64 package
+#url https://github.com/MobileReality/lantern/pull/38
+#branch feat/linux-x64-build
+#base main
+#opened 2026-11-12
+#head b7808acdd4de87291f5a850999d5180d77d8cc0f
+#describe what A tag release also publishes Lantern-linux-x64.zip, and CI builds, zips and checks the same Linux package on Ubuntu. The Linux build is x64 only and unsigned.
+#describe what The docs and README gain a Linux entry: extract, chmod +x, run, and a note on the Chromium sandbox.
+#describe before Releases had macOS and Windows packages only; Ubuntu CI only compiled the app.
+#describe after Releases also carry Lantern-linux-x64.zip; the Ubuntu CI leg builds the package, zips it and checks its files and the RunAsNode fuse.
+#describe verified Typecheck, lint and the full unit suite pass; the workflow hygiene test passes with the new job.
+#describe verified The package layout was checked by packaging for Linux from a Mac; only a Linux machine can show that the app starts.
++ scripts/check-linux-package.sh
+~ .github/workflows/ci.yml
+~ .github/workflows/release.yml
+~ CONTRIBUTING.md
+~ README.md
+~ docs/installation.md
+~ package.json
+~ scripts/fuses.js
+~ scripts/package-licences.mjs
+~ test/ci-workflow.test.ts
+~ test/licences.test.ts
+~ test/release-workflow.test.ts
+~ test/updater-service.test.ts
+#order package.json
+#order scripts/fuses.js
+#order scripts/package-licences.mjs
+#order scripts/check-linux-package.sh
+#order .github/workflows/release.yml
+#order .github/workflows/ci.yml
+#order test/updater-service.test.ts
+#order test/licences.test.ts
+#order test/release-workflow.test.ts
+#order test/ci-workflow.test.ts
+#order docs/installation.md
+#order README.md
+#order CONTRIBUTING.md
+#reason scripts/check-linux-package.sh Proves the zip that would ship holds the binaries, keeps them executable and has RunAsNode off.
+#reason .github/workflows/ci.yml Makes the ubuntu leg prove the Linux package builds and is complete, not just compiles.
+#reason .github/workflows/release.yml Builds, checks and uploads the Linux zip so a v* tag publishes it beside the others.
+#reason CONTRIBUTING.md Lists the Linux build command with the other platform builds.
+#reason README.md Adds the Linux download and how to run it beside the macOS and Windows entries.
+#reason docs/installation.md Tells Linux users how to download and run the unsigned zip and the sandbox workaround.
+#reason package.json Adds the Linux build and zip commands so CI and the release build the same package.
+#reason scripts/fuses.js Lets the post-package fuse step find the Linux binary instead of only macOS and Windows.
+#reason scripts/package-licences.mjs Names linux in the usage line so the licence step is documented for the new platform.
+#reason test/ci-workflow.test.ts Keeps the CI workflow guard true now that the ubuntu leg packages.
+#reason test/licences.test.ts Pins the Linux resources folder the licence step writes into.
+#reason test/release-workflow.test.ts Expects the Linux zip among the release uploads so a dropped job fails.
+#reason test/updater-service.test.ts Pins that Linux only offers the release page and never asks the macOS feed.
+#story A Linux user downloads Lantern from a release
+#step actor Maintainer
+#step action pushes a v* tag to release
+#file .github/workflows/release.yml
+#file package.json
+#step subject the Linux x64 package
+#below actor Linux user
+#below interaction can download, extract and run the zip
+#file docs/installation.md
+#file README.md
+#below consequence no Linux download existed => Lantern-linux-x64.zip is on the release
+#file scripts/fuses.js
+#file scripts/package-licences.mjs
+#story Contributors see the Linux package checked on every push
+#step actor Contributor
+#step action pushes a branch to
+#step subject the CI build on Ubuntu
+#file .github/workflows/ci.yml
+#below actor Contributor
+#below interaction sees a red build if the zip is incomplete
+#file scripts/check-linux-package.sh
+#below consequence Ubuntu only compiled the app => Ubuntu builds, zips and checks it
+#file test/ci-workflow.test.ts
+#file test/release-workflow.test.ts
+#file test/licences.test.ts
+#file test/updater-service.test.ts

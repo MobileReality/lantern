@@ -1,14 +1,16 @@
 lantern 1
 # .github/workflows
 
-.github/workflows/ci.yml . infra ad3871d1d037
+.github/workflows/ci.yml . infra a0dd455f5700
+  > scripts/check-linux-package.sh
 
 .github/workflows/codeql.yml . infra d64b441a205c
 
 .github/workflows/deploy-docs.yml . infra 41b0263d580d
   > website/package.json
 
-.github/workflows/release.yml . infra 41d03418640d
+.github/workflows/release.yml . infra 67ca9d1317d7
   > package.json
+  > scripts/check-linux-package.sh
   > scripts/mac-ci-keychain.sh
   > scripts/mac-sign-notarize.sh

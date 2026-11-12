@@ -331,6 +331,15 @@ describe('where Squirrel does not apply', () => {
     expect(world.published).toEqual([{ kind: 'available', version: '0.4.0' }]);
   });
 
+  it('does the same on Linux even when a Squirrel updater is handed in, and never asks the macOS feed', async () => {
+    const world = updaterWorld({ platform: 'linux', arch: 'x64', status: 200, body: LATEST_NEWER });
+    world.updater.start();
+    expect(await world.updater.check()).toEqual({ kind: 'available', version: '0.4.0', url: 'https://github.com/MobileReality/lantern/releases/tag/v0.4.0' });
+    expect(world.requests).toEqual(['https://api.github.com/repos/MobileReality/lantern/releases/latest']);
+    expect(world.native.setFeedUrl).not.toHaveBeenCalled();
+    expect(world.native.checkForUpdates).not.toHaveBeenCalled();
+  });
+
   it('shows no notice when the latest release is not newer', async () => {
     const world = windows({ body: JSON.stringify({ tag_name: 'v0.2.2' }) });
     expect(await world.updater.check()).toEqual({ kind: 'up-to-date' });

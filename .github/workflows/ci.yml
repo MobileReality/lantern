@@ -147,9 +147,17 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Compile
+      - name: Package for Linux
         if: runner.os == 'Linux'
-        run: pnpm run compile
+        run: pnpm run build:linux
+
+      - name: Zip the Linux package
+        if: runner.os == 'Linux'
+        run: pnpm run pack:linux
+
+      - name: Check the Linux package
+        if: runner.os == 'Linux'
+        run: bash scripts/check-linux-package.sh
 
       - name: Package for macOS
         if: runner.os == 'macOS'

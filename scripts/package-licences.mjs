@@ -7,7 +7,7 @@ const valueAfter = (flag) => {
 
 const platform = valueAfter('--platform');
 const arch = valueAfter('--arch');
-if (!platform || !arch) throw new Error('Usage: node scripts/package-licences.mjs --platform <darwin|win32> --arch <arch>');
+if (!platform || !arch) throw new Error('Usage: node scripts/package-licences.mjs --platform <darwin|win32|linux> --arch <arch>');
 
 const files = addElectronLicences(packagedLayout(valueAfter('--dist') ?? 'dist', platform, arch));
 console.log(`package-licences: ${files.join(', ')} added to the packaged app`);

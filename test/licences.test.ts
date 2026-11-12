@@ -138,6 +138,10 @@ describe('licences of the packaged app', () => {
     expect(packagedLayout('dist', 'win32', 'x64').resources).toBe(path.join('dist', 'Lantern-win32-x64', 'resources'));
   });
 
+  it('uses the resources folder of a Linux build', () => {
+    expect(packagedLayout('dist', 'linux', 'x64').resources).toBe(path.join('dist', 'Lantern-linux-x64', 'resources'));
+  });
+
   it('fails when the packager left the Chromium notices out', () => {
     const darwin = packagedLayout(path.join(scratch, 'dist'), 'darwin', 'arm64');
     put(path.join(darwin.directory, 'LICENSE'), 'Electron MIT\n');

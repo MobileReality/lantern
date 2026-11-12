@@ -1,6 +1,8 @@
 lantern 1
 # scripts
 
+scripts/check-linux-package.sh . script d225f14d0839
+
 scripts/esbuild.mjs . script 913468a9e4b4
   < scripts/app-manifest.mjs#appManifest
   < scripts/node-bundle.mjs#nodeBundle
@@ -39,7 +41,7 @@ scripts/esbuild.mjs . script 913468a9e4b4
   < scripts/aliases.cjs#sourceAliases
   < src/renderer/integrations.css
 
-scripts/fuses.js . script 024b32e5f00a
+scripts/fuses.js . script ea9ed396b874
 
 scripts/inline-json-reads.mjs . script aece13182c41
 
@@ -88,7 +90,7 @@ scripts/node-bundle.mjs . script 18523d7dfe4e
   < scripts/aliases.cjs#sourceAliases
   < scripts/inline-json-reads.mjs#inlineJsonReads
 
-scripts/package-licences.mjs . script dc62fafe6c07
+scripts/package-licences.mjs . script dca9ea4595ab
   = scripts/licenses.mjs#addElectronLicences
   < scripts/licenses.mjs#packagedLayout
 
