@@ -61,8 +61,16 @@ app=$(CDPATH= cd -- "$(dirname "$self")/../../.." 2>/dev/null && pwd -P)
 launch() {
   case $app in
     *.app) exec open -n -a "$app" "$@" ;;
-    *) exec open -n -b com.mobilereality.lantern "$@" ;;
   esac
+  # Packaged Linux layout: Lantern-linux-x64/resources/cli/lantern next to Lantern-linux-x64/Lantern.
+  # The second instance forwards its arguments to the running app and exits.
+  linux_exe=$(dirname "$self")/../../Lantern
+  if [ -x "$linux_exe" ]; then
+    [ "${1:-}" = --args ] && shift
+    nohup "$linux_exe" "$@" > /dev/null 2>&1 &
+    exit 0
+  fi
+  exec open -n -b com.mobilereality.lantern "$@"
 }
 
 if [ -n "$compare" ]; then

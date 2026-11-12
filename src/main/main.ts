@@ -39,6 +39,8 @@ import { msg } from '../shared/lang/messages';
 import * as popout from './popout';
 import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow, hideDockIfIdle, focusProjectWindow, openFromArgv, windowOpenHandler, ownsProject, projectKey } from './windows';
 import * as cli from './cli';
+import { installUserCli, userCliStatus } from './cli-user-install';
+import { cliPort } from './cli-user-port';
 import * as settings from './settings';
 import * as settingsStore from './settings-store';
 import { resolveLanguage } from './languages';
@@ -139,7 +141,8 @@ let server: import('node:http').Server | null = null;
 let pendingOpenCwd: string | null = null;
 let pendingCommands: CommandId[] = [];
 let wsLoaded = false;
-const cliScript = cli.scriptPath(app.isPackaged, process.resourcesPath, __dirname);
+const cliScript = cli.scriptPath(app.isPackaged, process.resourcesPath, __dirname, process.platform);
+const cliContext = () => ({ platform: process.platform, home: os.homedir(), env: process.env, script: cliScript, port: cliPort });
 const semanticService = new SemanticService(lspRuntimePath(app.isPackaged, process.resourcesPath, __dirname));
 
 app.setAppUserModelId('com.mobilereality.lantern'); // required for Windows toast notifications
@@ -959,9 +962,12 @@ ipcMain.handle('agent:cancel', fromWorkspace(async (e) => {
   if (codexRun) pushAgentStatus();
   return true;
 }));
-ipcMain.handle('cli:status', fromWorkspace(() => (process.platform === 'darwin' ? cli.status(cliScript) : null)));
+ipcMain.handle('cli:status', fromWorkspace(() => (process.platform === 'darwin' ? cli.status(cliScript) : userCliStatus(cliContext()))));
 // A dev run's script lives in out/, which the next build replaces: never link the CLI to it.
-ipcMain.handle('cli:install', fromWorkspace(() => (process.platform === 'darwin' && !DEV_PROFILE ? cli.install(cliScript) : null)));
+ipcMain.handle('cli:install', fromWorkspace(() => {
+  if (DEV_PROFILE) return null;
+  return process.platform === 'darwin' ? cli.install(cliScript) : installUserCli(cliContext());
+}));
 ipcMain.handle('rtk:status', fromWorkspace((_e, project: unknown) => rtkStatus(project, projectPaths())));
 ipcMain.handle('popout:open', fromWorkspace((e, { tool, project }: { tool: string; project: string }) => { popout.open(tool, project, e.sender); return true; }));
 ipcMain.handle('agent:status', fromWorkspace((_e, project: unknown) => {

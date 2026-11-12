@@ -139,8 +139,14 @@ and the macro view have no command: they open from the app.
 
 ## The `lantern` command
 
-On macOS, open **Settings → Command line** and click **Install** to link the `lantern`
-command into `/usr/local/bin` (it asks for your password if that folder needs it). Then:
+Open **Settings → Command line** and click **Install** to put the `lantern` command on your PATH:
+
+- macOS links it into `/usr/local/bin` (it asks for your password if that folder needs it).
+- Linux links it into `~/.local/bin`, no `sudo`; if that folder is not on your PATH the panel says what to add.
+- Windows writes a `lantern.cmd` into `%LOCALAPPDATA%\Lantern\bin` and adds that folder to your user PATH, no
+  administrator rights; open a new terminal afterwards.
+
+Then:
 
 ```bash
 lantern              # open Lantern

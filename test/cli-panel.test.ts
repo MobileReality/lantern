@@ -62,11 +62,22 @@ describe('Command line panel', () => {
     expect(guide).not.toContain('ln -sf');
   });
 
-  it('hides Install and the guide off macOS', async () => {
+  it('hides Install and the guide in a development run', async () => {
     await mount(null);
-    expect($('.cli-state').textContent).toMatch(/macOS only/);
+    expect($('.cli-state').textContent).toMatch(/development run/);
     expect(install().hidden).toBe(true);
     expect($('.cli-guide').hidden).toBe(true);
+  });
+
+  it('shows the Linux PATH hint and the Windows new-terminal note beside an installed command', async () => {
+    await mount(status({ state: 'installed', platform: 'linux', link: '/home/ann/.local/bin/lantern', target: SCRIPT, note: '~/.local/bin is not on your PATH.' }));
+    expect($('.cli-note').textContent).toBe('~/.local/bin is not on your PATH.');
+    expect($('.cli-note').hidden).toBe(false);
+    expect($('.cli-guide').textContent).toContain('ln -sf');
+    expect($('.cli-guide').textContent).not.toContain('sudo');
+    await mount(status({ state: 'missing', platform: 'win32', link: 'C:\\L\\bin\\lantern.cmd' }));
+    expect($('.cli-note').hidden).toBe(true);
+    expect($('.cli-guide').textContent).toContain('user PATH');
   });
 
   it('installs and shows the new status', async () => {
