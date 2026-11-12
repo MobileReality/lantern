@@ -42,7 +42,7 @@ async function launchGraphHarness(fixture = 'overview', pr?: string): Promise<Gr
   try {
     const startedAt = performance.now();
     app = await electron.launch({
-      args: [`--force-device-scale-factor=${process.env.LANTERN_GRAPH_DPR ?? '1'}`, path.join(appDir, 'main.cjs')],
+      args: ['--force-color-profile=srgb', `--force-device-scale-factor=${process.env.LANTERN_GRAPH_DPR ?? '1'}`, path.join(appDir, 'main.cjs')],
       env: { ...process.env, ELECTRON_RUN_AS_NODE: '', LANTERN_GRAPH_USER_DATA: userData, LANTERN_GRAPH_FIXTURE: fixture, LANTERN_GRAPH_PR: pr ?? '', LANTERN_GRAPH_VIEWPORT: process.env.LANTERN_GRAPH_PERFORMANCE_VIEWPORT ?? '1100x760' },
     });
     const page = await app.firstWindow();

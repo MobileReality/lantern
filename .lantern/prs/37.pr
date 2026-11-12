@@ -1,0 +1,30 @@
+lantern-pr 1
+# 37
+#title fix: pin the sRGB color profile so the visual specs pass
+#url https://github.com/MobileReality/lantern/pull/37
+#branch fix/visual-color-profile
+#base main
+#opened 2026-11-12
+#head ca4673cc998a1089fcce2ca7af606973b691ea99
+#describe what The graph harness pins the sRGB colour profile and the two darwin baselines are regenerated once.
+#describe before The visual specs failed on clean main with about 98% of pixels differing, because the display profile leaked into the screenshots.
+#describe after The visual specs pass on repeated runs; the comparison thresholds are unchanged.
+#describe verified typecheck, lint, pnpm test, test:graph:visual, test:graph:e2e all green.
+~ test/e2e/snapshots/darwin/pixi-overview.png
+~ test/e2e/snapshots/darwin/pixi-selected.png
+~ test/e2e/support/graph-harness.ts
+#order test/e2e/support/graph-harness.ts
+#order test/e2e/snapshots/darwin/pixi-overview.png
+#order test/e2e/snapshots/darwin/pixi-selected.png
+#reason test/e2e/snapshots/darwin/pixi-overview.png Regenerated once in sRGB so the baseline no longer depends on the display.
+#reason test/e2e/snapshots/darwin/pixi-selected.png Regenerated once in sRGB so the baseline no longer depends on the display.
+#reason test/e2e/support/graph-harness.ts The display colour profile leaked into screenshots, so the render is pinned to sRGB.
+#story Visual specs pass on any display
+#step actor A developer
+#file test/e2e/support/graph-harness.ts
+#step action runs the visual graph specs
+#step subject the graph harness window
+#file test/e2e/snapshots/darwin/pixi-overview.png
+#file test/e2e/snapshots/darwin/pixi-selected.png
+#below interaction Get the same pixels whatever the display colour profile
+#below consequence Specs failed on this Mac => Specs pass on every run
