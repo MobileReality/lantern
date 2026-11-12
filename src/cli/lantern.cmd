@@ -44,6 +44,7 @@ if not exist "%folder%\" (
   exit /b 1
 )
 for %%I in ("%folder%") do set "project=%%~fI"
+if "%project:~-1%"=="\" set "project=%project%."
 
 :launch
 

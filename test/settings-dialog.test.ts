@@ -54,7 +54,7 @@ describe('Settings dialog', () => {
     modal.querySelector<HTMLButtonElement>('.st-toc-group .st-toc-item[data-category="cli"]')!.click();
     expect(panel.hidden).toBe(false);
     expect(checkbox().closest<HTMLElement>('.st-row')!.hidden).toBe(true);
-    await vi.waitFor(() => expect(modal.querySelector('.cli-state')!.textContent).toMatch(/macOS only/));
+    await vi.waitFor(() => expect(modal.querySelector('.cli-state')!.textContent).toMatch(/development run/));
   });
 
   it('the settings.open command opens a labelled modal with the editor, search focused', () => {
