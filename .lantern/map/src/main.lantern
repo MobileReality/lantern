@@ -460,7 +460,11 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry 73b4e3f32f79
+src/main/last-window.ts . util 4467717adf73
+#feature projects-hub
+
+src/main/main.ts . entry 3e5902f29f48
+  = src/main/last-window.ts#createLastWindowHandler
   = src/main/diagnostics/index.ts#startDiagnostics
   = src/main/diagnostics/ipc-guard.ts#guardIpc
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
@@ -869,7 +873,7 @@ src/main/tray-popover.ts . service a13152f10000
 src/main/window-icon.ts . pure 0db979072650
 #feature projects-hub
 
-src/main/windows.ts . service 3c55e3c8a70e
+src/main/windows.ts . service e1ecb680abb8
 #feature projects-hub
   > src/main/bundle.ts#installOnOpen
   = src/main/popout.ts
