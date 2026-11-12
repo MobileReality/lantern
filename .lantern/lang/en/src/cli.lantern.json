@@ -1,0 +1,6 @@
+{
+ "text": {
+  "lantern.cmd": "Windows twin of the lantern command: opens Lantern, optionally on a folder or a --compare review, from a terminal.",
+  "lantern.cmd gotcha": "Keeps its own folder before the first shift, because shift moves the script path too."
+ }
+}
