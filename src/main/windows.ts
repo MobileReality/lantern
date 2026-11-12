@@ -16,6 +16,7 @@ interface Host {
   preload: string;
   htmlDir: string;
   dockIcon: NativeImage;
+  windowIcon?: string;
   trust: (wc: WebContents) => void;
   untrust: (wc: WebContents) => void;
   mainWindow: () => Win | null;
@@ -110,6 +111,7 @@ function newWorkspaceWindow(title: string) {
     title,
     show: false,
     backgroundColor: BG,
+    ...(h.windowIcon ? { icon: h.windowIcon } : {}),
     // Inset traffic-lights on macOS; a normal frame elsewhere (hiddenInset is a no-op
     // off-Mac and would leave the custom drag strip looking broken).
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',

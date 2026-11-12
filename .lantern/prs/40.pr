@@ -1,0 +1,30 @@
+lantern-pr 1
+# 40
+#title Find the VS Code command in the usual Linux install locations
+#url https://github.com/MobileReality/lantern/pull/40
+#branch feat/linux-code-lookup
+#base main
+#opened 2026-11-12
+#head 2c821e588d9f575dd4761c82f44d484c78169fc9
+#describe what The embedded editor looks for the VS Code command in the usual Linux install locations and on PATH, so a Linux install is launched directly instead of falling back to the serve-web download.
+#describe before On Linux only /usr/local/bin/code and the macOS paths were tried.
+#describe after /usr/bin, snap, /usr/share/code, /opt/visual-studio-code, ~/.local/bin, the flatpak exports and PATH are tried too; macOS and Windows are unchanged.
+#describe verified typecheck and lint green; pnpm test green except an unrelated self-test that times out under vitest and passes when run directly.
++ src/main/serveweb-code-paths.ts
++ test/serveweb-code-paths.test.ts
+~ src/main/serveweb.ts
+#order src/main/serveweb-code-paths.ts
+#order src/main/serveweb.ts
+#order test/serveweb-code-paths.test.ts
+#reason src/main/serveweb-code-paths.ts Linux installs put code in many places, so the lookup is a pure, injectable function that tests can cover without real files.
+#reason test/serveweb-code-paths.test.ts Pins that each Linux location is found, the order is fixed and the Linux paths stay out of macOS and Windows.
+#reason src/main/serveweb.ts The inline macOS-only candidate list could not find a deb install, so it now calls the shared lookup.
+#story Linux users get the installed editor
+#step actor A Linux user
+#step action opens the embedded editor
+#file src/main/serveweb.ts
+#step subject a VS Code installed by deb, rpm, snap or flatpak
+#file src/main/serveweb-code-paths.ts
+#below interaction The installed code command is used directly
+#file test/serveweb-code-paths.test.ts
+#below consequence Only macOS paths were tried, so a download followed => The usual Linux locations are tried first
