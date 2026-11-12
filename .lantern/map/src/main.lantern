@@ -855,7 +855,7 @@ src/main/skills-catalogue.ts . service 0a73aa6c75b5
 #feature skill-installer
   < skills/lantern-delegate/scripts/skill-linker.mjs#resolveSkillLinker
 
-src/main/skills.ts . service 5b82fdffcf3e
+src/main/skills.ts . service f98ae15eb875
 #feature skill-installer
   < skills/lantern-delegate/scripts/skill-linker.mjs#SKILLS_REPO_ENV
   < src/main/provider.ts#providerSkillsDir
