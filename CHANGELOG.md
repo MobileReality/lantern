@@ -6,6 +6,30 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-12
+
+### Added
+
+- A Linux x64 download, `Lantern-linux-x64.zip`. It is unsigned: extract it, make the file
+  executable and run it.
+- Every release now carries a `SHA256SUMS` file for its zips, so a download can be checked with
+  `sha256sum -c`.
+- The lantern command can be installed from Settings on Linux (a link in `~/.local/bin`) and on
+  Windows (a `lantern.cmd` shim and a user PATH entry, no admin rights), not only on macOS.
+- The Skills window lists the skills of the skill linker's catalogue when no repo is saved. Skills
+  not yet installed in the project are marked, and attaching one links it first.
+
+### Changed
+
+- On Linux the window shows the Lantern icon, and the VS Code command is found in the usual Linux
+  install locations (system packages, snap, flatpak and your PATH).
+- On Windows and Linux, closing the last window quits Lantern unless a reachable tray icon keeps it
+  running.
+
+### Fixed
+
+- Right-clicking or right-dragging the graph no longer selects a card or scrolls the view.
+
 ## [0.3.1] - 2026-11-10
 
 ### Added
@@ -88,7 +112,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/MobileReality/lantern/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/MobileReality/lantern/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/MobileReality/lantern/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/MobileReality/lantern/compare/v0.2.1...v0.2.2
