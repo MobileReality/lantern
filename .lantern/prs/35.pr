@@ -1,0 +1,26 @@
+lantern-pr 1
+# 35
+#title fix: type-check the e2e specs clean
+#url https://github.com/MobileReality/lantern/pull/35
+#branch fix/e2e-typecheck-green
+#base main
+#opened 2026-11-12
+#head cf67f57134b4d52fcc4907cdcf253d7f4135e0da
+#describe what The e2e typecheck now passes: its tsconfig includes the existing svg and skill-script declarations, and one spec uses the typed toBitmap.
+#describe before pnpm run test:graph:typecheck failed with about 64 errors.
+#describe after It exits zero with no suppressions.
+#describe verified test:graph:typecheck, typecheck, lint, graph-pixi e2e (14 passed).
+~ test/e2e/graph-pixi.spec.ts
+~ test/e2e/tsconfig.json
+#order test/e2e/tsconfig.json
+#order test/e2e/graph-pixi.spec.ts
+#reason test/e2e/graph-pixi.spec.ts getBitmap is typed void in Electron's types; toBitmap returns the Buffer the checks need.
+#reason test/e2e/tsconfig.json Lets the e2e typecheck see the svg and skill-script declarations the main tsconfig already has.
+#story Type-checking the graph specs
+#step actor A developer
+#file test/e2e/tsconfig.json
+#step action runs the graph spec typecheck
+#step subject the e2e specs
+#file test/e2e/graph-pixi.spec.ts
+#below interaction Trust a green typecheck for the specs
+#below consequence The typecheck failed with many errors => The typecheck passes

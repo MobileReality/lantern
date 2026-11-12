@@ -47,7 +47,7 @@ test/e2e/graph-navigation.spec.ts . test 0910cf6edfbd
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
-test/e2e/graph-pixi.spec.ts . test b75dd27e683c
+test/e2e/graph-pixi.spec.ts . test 661b9b4dc1e3
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
@@ -123,12 +123,14 @@ test/e2e/text-select.spec.ts . test b09fe6828137
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/fixtures/graph/pr-review-demo.ts#prReviewDemo
 
-test/e2e/tsconfig.json . config b024315ec7d5
+test/e2e/tsconfig.json . config 20fb9354fd10
   < playwright.config.ts
   < src/main/filecontent.ts
   < src/main/lantern-prfile.ts
   < src/main/lantern-types.ts
   < src/main/lantern.ts
+  < src/main/skill-scripts.d.ts
   < src/renderer/global.d.ts
+  < src/renderer/svg.d.ts
   < test/helpers/lantern-map.ts
   < tsconfig.json

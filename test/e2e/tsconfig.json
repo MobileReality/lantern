@@ -13,6 +13,8 @@
     "../../src/main/filecontent.ts",
     "../../src/main/lantern-prfile.ts",
     "../../src/renderer/global.d.ts",
+    "../../src/renderer/svg.d.ts",
+    "../../src/main/skill-scripts.d.ts",
     "../../src/renderer/lib/**/*.ts"
   ]
 }

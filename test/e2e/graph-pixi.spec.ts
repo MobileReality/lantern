@@ -38,8 +38,8 @@ test('repaints retained cards when platform tabs change their column width', asy
     if (!freshCanvasBox) throw new Error('Pixi canvas is not visible');
     const fresh = await page.screenshot({ path: testInfo.outputPath('fresh.png'), clip: { ...comparisonClip, x: freshCanvasBox.x, y: freshCanvasBox.y } });
     const difference = await harness.app.evaluate(({ nativeImage }, images) => {
-      const navigatedBitmap = nativeImage.createFromBuffer(Buffer.from(images.navigated, 'base64')).getBitmap();
-      const freshBitmap = nativeImage.createFromBuffer(Buffer.from(images.fresh, 'base64')).getBitmap();
+      const navigatedBitmap = nativeImage.createFromBuffer(Buffer.from(images.navigated, 'base64')).toBitmap();
+      const freshBitmap = nativeImage.createFromBuffer(Buffer.from(images.fresh, 'base64')).toBitmap();
       let channelDelta = 0;
       for (let index = 0; index < freshBitmap.length; index += 1) channelDelta += Math.abs(navigatedBitmap[index] - freshBitmap[index]);
       return channelDelta / freshBitmap.length / 255;
@@ -433,7 +433,7 @@ test('matches all four relation edge styles and highlights the canvas node under
     await page.mouse.move(canvasBox.x + 4, canvasBox.y + 4);
     const stable = await canvas.screenshot();
     const pixels = await harness.app.evaluate(({ nativeImage }, images) => {
-      const bitmap = (image: string) => nativeImage.createFromBuffer(Buffer.from(image, 'base64')).getBitmap();
+      const bitmap = (image: string) => nativeImage.createFromBuffer(Buffer.from(image, 'base64')).toBitmap();
       return {
         highlighted: bitmap(images.highlighted).equals(bitmap(images.cleared)),
         stable: bitmap(images.stable).equals(bitmap(images.cleared)),
@@ -505,8 +505,8 @@ test('keeps cached tile text consistent with freshly rendered tiles after zoomin
     await expect(host).toHaveAttribute('style', zoomedWidth!);
     const fresh = await canvas.screenshot({ path: testInfo.outputPath('fresh.png') });
     const difference = await harness.app.evaluate(({ nativeImage }, images) => {
-      const before = nativeImage.createFromBuffer(Buffer.from(images.before, 'base64')).getBitmap();
-      const after = nativeImage.createFromBuffer(Buffer.from(images.after, 'base64')).getBitmap();
+      const before = nativeImage.createFromBuffer(Buffer.from(images.before, 'base64')).toBitmap();
+      const after = nativeImage.createFromBuffer(Buffer.from(images.after, 'base64')).toBitmap();
       if (before.length !== after.length) return 1;
       let changed = 0;
       for (let index = 0; index < before.length; index += 1) if (before[index] !== after[index]) changed += 1;
