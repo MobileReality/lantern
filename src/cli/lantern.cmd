@@ -22,10 +22,7 @@ if /i "%arg:~0,10%"=="--compare=" (
   shift
   goto parse
 )
-if "%arg:~0,1%"=="-" (
-  echo lantern: unknown option: %~1 1>&2
-  goto usage_error
-)
+if "%arg:~0,1%"=="-" goto unknown_option
 if defined folder goto usage_error
 set "folder=%~1"
 shift
@@ -41,10 +38,11 @@ if defined compare (
 )
 set "project="
 if not defined folder goto launch
-if not exist "%folder%\" (
-  echo lantern: no such directory: %folder% 1>&2
-  exit /b 1
-)
+if exist "%folder%\" goto have_folder
+echo lantern: no such directory: "%folder%" 1>&2
+exit /b 1
+
+:have_folder
 for %%I in ("%folder%") do set "project=%%~fI"
 if "%project:~-1%"=="\" set "project=%project%."
 
@@ -63,6 +61,9 @@ if defined compare (
   start "" "%exe%"
 )
 exit /b 0
+
+:unknown_option
+echo lantern: unknown option: "%~1" 1>&2
 
 :usage_error
 call :usage 1>&2

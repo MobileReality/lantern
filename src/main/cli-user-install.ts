@@ -40,7 +40,7 @@ function location(ctx: UserContext) {
 }
 
 function shimText(script: string) {
-  return ['@echo off', SHIM_MARKER, 'chcp 65001 > nul', `call "${script}" %*`, 'exit /b %errorlevel%', ''].join('\r\n');
+  return ['@echo off', SHIM_MARKER, 'setlocal', `for /f "tokens=2 delims=:." %%c in ('chcp') do set "lantern_cp=%%c"`, 'chcp 65001 > nul', `call "${script}" %*`, 'set "lantern_status=%errorlevel%"', 'chcp %lantern_cp% > nul', 'exit /b %lantern_status%', ''].join('\r\n');
 }
 
 const trimSeparator = (entry: string, separator: string) => (entry.length > 1 && entry.endsWith(separator) ? entry.slice(0, -1) : entry);
