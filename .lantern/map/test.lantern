@@ -50,7 +50,7 @@ test/bundled-skills-standalone.test.ts . test cb4f3ecf7da0
 #feature skill-installer
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
 
-test/ci-workflow.test.ts . test 32fa993b7344
+test/ci-workflow.test.ts . test 41e4b4d96b85
   < .github/workflows/ci.yml
   < package.json
 
@@ -1683,7 +1683,7 @@ test/legacy-meta-dir-guard.test.ts . test 92c020e13599
 #feature code-insight
   = src/main/metadir-migrate.ts
 
-test/licences.test.ts . test 5cce7e46e5cd
+test/licences.test.ts . test a644dfdc012a
   = scripts/licenses.mjs
   < package.json
   < scripts/esbuild.mjs
@@ -2018,7 +2018,7 @@ test/reason-definition.test.ts . test 550e8f81a437
   = src/shared/reason.ts
   < skills/lantern-setup/scripts/prs.mjs#REASON_MAX_CHARS
 
-test/release-workflow.test.ts . test 3d985cb8cdbb
+test/release-workflow.test.ts . test 6fb938b62578
   < .github/workflows/release.yml
   < scripts/mac-sign-notarize.sh
 
@@ -2374,7 +2374,7 @@ test/updater-guard.test.ts . test 034892cd9043
   = src/main/updater/guard.ts
   = src/main/updater/process-activity.ts
 
-test/updater-service.test.ts . test 1d5fbcf971cd
+test/updater-service.test.ts . test 1f8c30b26720
 #feature app-updates
   = src/main/updater/service.ts
   < test/helpers/updater-world.ts#updaterWorld
