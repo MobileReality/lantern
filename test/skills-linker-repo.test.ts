@@ -18,6 +18,7 @@ describe('the skills catalogue follows the skill linker', () => {
 
   beforeEach(() => {
     vi.resetModules();
+    vi.stubEnv('SKILL_LINKER', '');
     delete process.env.SKILLS_REPO;
     base = makeTmp('ccm-skills-linker-repo-');
     home = path.join(base, 'home');
@@ -30,6 +31,7 @@ describe('the skills catalogue follows the skill linker', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.unstubAllEnvs();
     delete process.env.SKILLS_REPO;
     fs.rmSync(base, { recursive: true, force: true });
   });

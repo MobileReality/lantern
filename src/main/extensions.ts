@@ -222,7 +222,7 @@ interface LinkerState {
 const NO_LINKER: Omit<LinkerState, 'state' | 'problem'> = { path: null, fromRepo: false, skills: 0, roles: 0 };
 
 function linkerState(skillLinker: string | null, home: string): LinkerState {
-  const resolved = resolveSkillLinker({ env: { [SKILLS_REPO_ENV]: process.env[SKILLS_REPO_ENV] }, home });
+  const resolved = resolveSkillLinker({ env: { [SKILLS_REPO_ENV]: process.env[SKILLS_REPO_ENV], SKILL_LINKER: process.env.SKILL_LINKER }, home });
   if (resolved.path) return { state: SKILL_LINKER_STATE.initialized, problem: null, path: resolved.path, fromRepo: resolved.source === SKILL_LINKER_SOURCE.repo, ...catalogueSummary(resolved.repo ?? '') };
   if (skillLinker === null) return { ...NO_LINKER, state: SKILL_LINKER_STATE.unset, problem: null };
   return { ...NO_LINKER, state: SKILL_LINKER_STATE.invalid, problem: (resolved.problemKind ? linkerProblemText(resolved.problemKind, resolved.problemParams ?? {}) : null) ?? resolved.problem ?? null };
