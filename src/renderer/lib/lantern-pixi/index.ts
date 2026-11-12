@@ -23,7 +23,7 @@ import { blockKindText, captionOf } from '../lanternmacro';
 import { OPEN_FILE_LABEL } from '../lanternmacrocurrent';
 import { calmedAlpha, isMarked, markNote, markedAlpha, systemsOfBlocks, weakNearAlpha } from '../lanternmacromarks';
 import type { MacroMarks } from '../lanternmacromarks';
-import { syncOpenButtons } from './open-actions';
+import { isPrimaryTap, syncOpenButtons } from './open-actions';
 import type { FileActions } from './open-actions';
 
 const CULL_MARGIN = 0;
@@ -159,7 +159,7 @@ class PixiGraph {
     this.app.stage.eventMode = 'static';
     this.app.stage.hitArea = this.app.screen;
     this.app.stage.on('pointertap', (event) => {
-      if (event.target === this.app.stage) this.options.onBackground();
+      if (event.target === this.app.stage && isPrimaryTap(event)) this.options.onBackground();
     });
     this.options.host.prepend(this.app.canvas);
     this.app.canvas.className = 'lt-pixi-canvas';

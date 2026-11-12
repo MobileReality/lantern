@@ -83,7 +83,7 @@ test.describe('pixi', () => {
           element.scrollTop = side === 'bottom' ? element.scrollHeight : 0;
           return { x: element.scrollLeft, y: element.scrollTop, width: element.scrollWidth, height: element.scrollHeight };
         }, edge);
-        const fixedBefore = await Promise.all([toolbarOf(page).boundingBox(), page.locator('.lt-side').boundingBox()]);
+        const fixedBefore = await Promise.all([toolbarOf(page).boundingBox(), page.locator('.lt-side:not(.lt-overview)').boundingBox()]);
         await page.mouse.move(centre.x, centre.y);
         await page.mouse.down();
         await expect.poll(cursor).toBe('grabbing');
@@ -95,7 +95,7 @@ test.describe('pixi', () => {
         expect(Math.abs(offset)).toBeLessThanOrEqual(20);
         const extents = await main.evaluate((element) => ({ width: element.scrollWidth, height: element.scrollHeight }));
         expect(extents).toEqual({ width: start.width, height: start.height });
-        expect(await Promise.all([toolbarOf(page).boundingBox(), page.locator('.lt-side').boundingBox()])).toEqual(fixedBefore);
+        expect(await Promise.all([toolbarOf(page).boundingBox(), page.locator('.lt-side:not(.lt-overview)').boundingBox()])).toEqual(fixedBefore);
         await page.mouse.move(pushed.x - (horizontal ? 8 * direction : 0), pushed.y - (horizontal ? 0 : 8 * direction));
         const reversed = await main.evaluate((element, axis) => Number.parseFloat(getComputedStyle(element).getPropertyValue(axis === 'x' ? '--lt-pan-x' : '--lt-pan-y')), horizontal ? 'x' : 'y');
         expect(Math.abs(reversed)).toBeLessThan(Math.abs(offset));

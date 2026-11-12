@@ -7,26 +7,31 @@ test/e2e/flow-layout.spec.ts . test 271946bc6dd3
   = src/renderer/lib/lanternflow.ts#flowHtml
   = test/fixtures/graph/pr-review-demo.ts#prReviewDemo
 
-test/e2e/graph-macro-areas.spec.ts . test e2dc7142c1c2
+test/e2e/graph-macro-areas.spec.ts . test 07b2b9d4aa41
 #feature product-areas
   = test/e2e/support/graph-harness.ts
+  = test/e2e/support/overview.ts#openOverview
 
-test/e2e/graph-macro-foundation.spec.ts . test 35c636b38801
+test/e2e/graph-macro-foundation.spec.ts . test 01506182f3f4
 #feature macro-view
   = test/e2e/support/graph-harness.ts
+  = test/e2e/support/overview.ts#openOverview
 
-test/e2e/graph-macro-legend.spec.ts . test cd8e5c5067b4
+test/e2e/graph-macro-legend.spec.ts . test 3fc435cdb38d
 #feature macro-view
   = test/e2e/support/graph-harness.ts#launchGraphHarness
+  = test/e2e/support/overview.ts#openOverview
 
-test/e2e/graph-macro-platform-uses.spec.ts . test 29ba7e10682c
+test/e2e/graph-macro-platform-uses.spec.ts . test 676157fc745d
 #feature macro-view
   = test/e2e/support/graph-harness.ts
+  = test/e2e/support/overview.ts#openOverview
 
-test/e2e/graph-macro-systems.spec.ts . test 593952fe7774
+test/e2e/graph-macro-systems.spec.ts . test d5fd27d04ab3
 #feature macro-view
   = test/e2e/support/graph-harness.ts#launchGraphHarness
   = test/e2e/support/overflow.ts#findClippedText
+  = test/e2e/support/overview.ts#openOverview
 
 test/e2e/graph-macroview.spec.ts . test e2b1c81155f8
 #feature macro-view
@@ -38,11 +43,11 @@ test/e2e/graph-macro.spec.ts . test 0f4c5055ed0f
   = test/e2e/support/graph-harness.ts
   = test/fixtures/lantern-macro-own-view.json
 
-test/e2e/graph-navigation.spec.ts . test ba58988b46e7
+test/e2e/graph-navigation.spec.ts . test 0910cf6edfbd
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
-test/e2e/graph-pixi.spec.ts . test 0140b656f39e
+test/e2e/graph-pixi.spec.ts . test b75dd27e683c
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
@@ -76,13 +81,14 @@ test/e2e/lsp-semantic.spec.ts . test 8530fca71fbc
   < test/e2e/lsp-app/main.ts
   < test/e2e/lsp-app/renderer.ts
 
-test/e2e/pane-overflow.spec.ts . test 19f9901a956e
+test/e2e/pane-overflow.spec.ts . test 5ef61d648f76
 #feature review-screen
   = test/e2e/support/comments.ts
   = test/e2e/support/graph-harness.ts
   = test/e2e/support/overflow.ts
+  = test/e2e/support/overview.ts#openOverview
 
-test/e2e/pr-review-comments.spec.ts . test 47edbc30971b
+test/e2e/pr-review-comments.spec.ts . test af5931f154a5
 #feature review-comments
   = test/e2e/support/comments.ts
   = test/e2e/support/graph-harness.ts
@@ -107,7 +113,7 @@ test/e2e/pr-review-layout.spec.ts . test b31d6d6780c3
 #feature review-screen
   = test/e2e/support/graph-harness.ts
 
-test/e2e/pr-review-regions.spec.ts . test 508852413011
+test/e2e/pr-review-regions.spec.ts . test 207028749040
 #feature review-screen
   = test/e2e/support/graph-harness.ts
 

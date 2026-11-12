@@ -397,7 +397,7 @@ test('matches all four relation edge styles and highlights the canvas node under
     if (!canvasBox) throw new Error('Pixi canvas is not visible');
     await page.mouse.move(canvasBox.x + position.x - scroll.left + position.width / 2, canvasBox.y + position.y - scroll.top + position.height / 2);
     await expect(page.locator('html')).toHaveAttribute('data-graph-hovered', 'src/widget.tsx');
-    await expect(canvas).toHaveAttribute('title', /src\/widget\.tsx/);
+    await expect(canvas).toHaveAttribute('data-tip', /src\/widget\.tsx/);
     await page.evaluate(() => new Promise<void>((resolve) => {
       window.dispatchEvent(new Event('resize'));
       requestAnimationFrame(() => resolve());
@@ -456,7 +456,7 @@ test('matches all four relation edge styles and highlights the canvas node under
       y: 0.125 * fromPoint.y + 0.375 * control1.y + 0.375 * control2.y + 0.125 * toPoint.y,
     };
     await page.mouse.move(canvasBox.x + midpoint.x - scroll.left, canvasBox.y + midpoint.y - scroll.top);
-    await expect(canvas).toHaveAttribute('title', /src\/selected-service\.ts > src\/page\.tsx#loadPage/);
+    await expect(canvas).toHaveAttribute('data-tip', /src\/selected-service\.ts > src\/page\.tsx#loadPage/);
     expect(harness.errors).toEqual([]);
   } finally {
     await closeGraphHarness(harness);

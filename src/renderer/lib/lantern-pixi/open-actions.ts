@@ -15,6 +15,10 @@ const BUTTON_GAP = 2;
 const EDGE_GAP = 4;
 const PRIMARY_BUTTON = 0;
 
+export function isPrimaryTap(event: FederatedPointerEvent) {
+  return event.button === PRIMARY_BUTTON;
+}
+
 export function actionsWidth(actions: FileActions | null) {
   if (!actions) return 0;
   const count = actions.diff ? 2 : 1;
@@ -52,7 +56,7 @@ function openButton(kind: OpenKind, x: number, y: number, palette: PixiPalette, 
   button.on('pointerout', () => show(false));
   button.on('pointertap', (event: FederatedPointerEvent) => {
     event.stopPropagation();
-    if (event.button === PRIMARY_BUTTON) open();
+    if (isPrimaryTap(event)) open();
   });
   return button;
 }

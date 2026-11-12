@@ -14,7 +14,7 @@ import { markCaption } from '../lanternmacromarks';
 import type { BlockMark } from '../lanternmacromarks';
 import { PURPOSE_LINE_H } from '../lanternmacrocards';
 import { FLAT_LINE } from '../lanternmacrostyles';
-import { actionsWidth, drawFileActions } from './open-actions';
+import { actionsWidth, drawFileActions, isPrimaryTap } from './open-actions';
 import type { FileActions } from './open-actions';
 
 const CARD_TEXT_Y = 4;
@@ -90,6 +90,7 @@ function tileDisplay(position: Pos, palette: PixiPalette, fonts: PixiFonts, scal
   label.position.set(TILE_PAD, (h - size * 1.2) / 2);
   display.addChild(label);
   display.on('pointertap', (event: FederatedPointerEvent) => {
+    if (!isPrimaryTap(event)) return;
     event.stopPropagation();
     activate();
   });
@@ -153,6 +154,7 @@ function blockDisplay(position: Pos, palette: PixiPalette, fonts: PixiFonts, act
   display.addChild(caption);
   if (current) display.addChild(openFileBadge(position, palette, fonts));
   display.on('pointertap', (event: FederatedPointerEvent) => {
+    if (!isPrimaryTap(event)) return;
     event.stopPropagation();
     activate();
   });
@@ -207,6 +209,7 @@ export function nodeDisplay(position: Pos, profile: Profile, palette: PixiPalett
   label.position.set(slots.labelX, CARD_TEXT_Y);
   display.addChild(label);
   display.on('pointertap', (event: FederatedPointerEvent) => {
+    if (!isPrimaryTap(event)) return;
     event.stopPropagation();
     activate();
   });

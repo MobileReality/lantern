@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { closeGraphHarness, launchGraphHarness, loadGraphFixture } from './support/graph-harness';
+import { openOverview, overview } from './support/overview';
 
 const WIDE = '1600x1000';
 const map = (page: Page) => page.locator('.lt-macroview');
-const chip = (page: Page, name: string) => page.locator('.lt-side .chip', { hasText: name }).first();
-const sentences = (page: Page) => page.locator('.lt-side .lt-detail .lt-sentence');
+const chip = (page: Page, name: string) => overview(page).locator('.chip', { hasText: name }).first();
+const sentences = (page: Page) => overview(page).locator('.lt-detail .lt-sentence');
 
 async function settle(page: Page) {
   await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
@@ -20,6 +21,7 @@ async function open() {
   await loadGraphFixture(harness, 'macro-lab');
   await harness.page.getByRole('button', { name: /^Macro/ }).click();
   await expect(map(harness.page)).toBeVisible();
+  await openOverview(harness.page);
   return harness;
 }
 
@@ -29,7 +31,7 @@ test('lists what the infrastructure platform connects to and lights its partners
     const { page } = harness;
     await chip(page, 'Infrastructure').click();
     await settle(page);
-    await expect(page.locator('.lt-side .lt-detail')).not.toContainText('No relations to other blocks');
+    await expect(overview(page).locator('.lt-detail')).not.toContainText('No relations to other blocks');
     await expect(sentences(page).filter({ hasText: /^Uses / })).toContainText(['Service (2 relations)']);
     await expect(sentences(page).filter({ hasText: /^Uses / })).toContainText(['Storefront (2 relations)']);
     await expect(map(page).locator('.is-related')).toHaveCount(2);

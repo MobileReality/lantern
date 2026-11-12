@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { closeGraphHarness, launchGraphHarness, loadGraphFixture } from './support/graph-harness';
+import { closeOverview, openOverview, overview } from './support/overview';
 
 const SETTLE_MS = 700;
 const AREAS = ['block:project-map', 'block:pull-request-review', 'block:agent-sessions', 'block:workspace-setup', 'block:to-assign'];
@@ -52,7 +53,7 @@ test('opens on the areas, enters one with a double-click and comes back with Esc
     const at = await centreOf(page, 'block:project-map');
     await page.mouse.click(at.x, at.y);
     await expect(item(page, 'block:project-map')).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.locator('.lt-side .lt-detail')).toContainText('mapping a project and reading its code');
+    await expect(overview(page).locator('.lt-detail')).toContainText('mapping a project and reading its code');
     await page.screenshot({ path: testInfo.outputPath('areas-level-0-picked.png') });
 
     await dive(page, 'block:project-map');
@@ -84,9 +85,11 @@ test('goes sideways to another area from the panel, back with Backspace and with
     await expect(crumbs(page)).toContainText('Project map');
     expect(await keysOf(page, '.mv-feature')).toEqual(expect.arrayContaining(MAP_FEATURES));
 
-    await page.locator('.lt-side .chip[data-macro-go="block:pull-request-review"]').click();
-    await expect(page.locator('.lt-side .lt-detail')).toContainText('relation');
-    await page.locator('.lt-side .lt-detail [data-macro-enter]').click();
+    await openOverview(page);
+    await overview(page).locator('.chip[data-macro-go="block:pull-request-review"]').click();
+    await expect(overview(page).locator('.lt-detail')).toContainText('relation');
+    await overview(page).locator('.lt-detail [data-macro-enter]').click();
+    await closeOverview(page);
     await settle(page);
     await expect(crumbs(page)).toContainText('Pull request review');
 

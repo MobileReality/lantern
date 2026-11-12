@@ -3,6 +3,7 @@ import type { Page } from '@playwright/test';
 import { closeGraphHarness, launchGraphHarness, loadGraphFixture } from './support/graph-harness';
 import type { GraphHarness } from './support/graph-harness';
 import { findClippedText } from './support/overflow';
+import { closeOverview, openOverview, overview } from './support/overview';
 
 const SETTLE_MS = 600;
 const WIDE = '1600x1000';
@@ -15,7 +16,7 @@ const entries = (page: Page) => page.locator('.mv-dock .mv-system');
 const entry = (page: Page, name: string) => page.locator('.mv-dock .mv-system', { has: page.locator('.mv-system-name', { hasText: new RegExp(`^${name}$`) }) });
 const names = (page: Page) => entries(page).locator('.mv-system-name').allTextContents();
 const note = (page: Page) => page.locator('.mv-dock-note');
-const detail = (page: Page) => page.locator('.lt-side .lt-detail');
+const detail = (page: Page) => overview(page).locator('.lt-detail');
 const shape = (page: Page, key: string) => map(page).locator(`[data-key="${key}"]`).first().locator('> .mv-shape, > .mv-lane-shape');
 
 async function settle(page: Page) {
@@ -113,6 +114,7 @@ for (const viewport of [WIDE, LAPTOP]) {
         await entry(page, 'PostgreSQL').click();
         await settle(page);
         await expect(entry(page, 'PostgreSQL')).toHaveAttribute('aria-pressed', 'true');
+        await openOverview(page);
         await expect(map(page).locator('.mv-area.is-related')).toHaveCount(3);
         await expect(map(page).locator('[data-key="block:ordering"]')).toHaveClass(/is-related/);
         await expect(map(page).locator('[data-key="block:fulfilment"]')).toHaveClass(/is-related/);
@@ -128,6 +130,7 @@ for (const viewport of [WIDE, LAPTOP]) {
         expect(await findClippedText(page)).toEqual([]);
         await page.screenshot({ path: testInfo.outputPath(`systems-selected-${viewport}.png`) });
 
+        await closeOverview(page);
         await entry(page, 'PostgreSQL').click();
         await expect(map(page).locator('.is-related, .is-dim')).toHaveCount(0);
         await expect(detail(page)).toHaveCount(0);
@@ -142,7 +145,9 @@ for (const viewport of [WIDE, LAPTOP]) {
       try {
         const { page } = harness;
         await entry(page, 'PostgreSQL').click();
+        await openOverview(page);
         await detail(page).locator('[data-macro-feature="stock-levels"]').click();
+        await closeOverview(page);
         await settle(page);
         await expect(page.locator('.lt-graph-crumbs .lt-crumbs')).toContainText('Fulfilment');
         await expect(map(page).locator('[data-key="block:stock-levels"]')).toHaveClass(/is-selected/);
