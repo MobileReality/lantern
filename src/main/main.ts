@@ -39,6 +39,7 @@ import { msg } from '../shared/lang/messages';
 import * as popout from './popout';
 import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow, hideDockIfIdle, focusProjectWindow, openFromArgv, windowOpenHandler, ownsProject, projectKey } from './windows';
 import * as cli from './cli';
+import { createLastWindowHandler } from './last-window';
 import * as settings from './settings';
 import * as settingsStore from './settings-store';
 import { resolveLanguage } from './languages';
@@ -192,6 +193,8 @@ async function init() {
     trust: (wc) => trusted.add(wc),
     untrust: (wc) => trusted.delete(wc),
     mainWindow: () => wsWin,
+    // The hidden notification card window keeps window-all-closed from firing, so the last user window closing triggers it too.
+    onIdle: quitWithoutReachableTray,
   });
   let codexToken = '';
   try {
@@ -1029,9 +1032,17 @@ settingsStore.onDidChange((snapshot, changed) => {
   }
 });
 
-app.on('window-all-closed', () => {});
-
 let quitting = false;
+
+const quitWithoutReachableTray = createLastWindowHandler({
+  platform: process.platform,
+  env: process.env,
+  trayCreated: () => tray !== null,
+  isQuitting: () => quitting,
+  quit: () => app.quit(),
+});
+app.on('window-all-closed', quitWithoutReachableTray);
+
 // Quit waits for the serve-web tree to die; the second app.quit() passes straight through.
 app.on('before-quit', (e) => {
   if (quitting) return;

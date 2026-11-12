@@ -319,6 +319,28 @@ describe('the dock icon', () => {
   });
 });
 
+describe('the idle callback', () => {
+  it('fires once the last user window closes, without a dock', () => {
+    const onIdle = vi.fn();
+    windows.init({
+      preload: '/app/preload/workspace.js',
+      htmlDir: '/app/renderer',
+      dockIcon: { isEmpty: () => true } as never,
+      trust: () => {},
+      untrust: () => {},
+      mainWindow: () => main as never,
+      onIdle,
+    });
+    const mainWin = openMain();
+    windows.openProjectWindow(repo('alpha'));
+    const projectWin = lastWindow();
+    mainWin.close();
+    expect(onIdle).not.toHaveBeenCalled();
+    projectWin.close();
+    expect(onIdle).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('the window-open handler of web contents', () => {
   it.each(['https://auth.openai.com/login?x=1', 'http://localhost:1455/auth', 'HTTPS://Example.com'])('hands %s to the browser and denies the window', (url) => {
     const openExternal = vi.fn();

@@ -19,6 +19,7 @@ interface Host {
   trust: (wc: WebContents) => void;
   untrust: (wc: WebContents) => void;
   mainWindow: () => Win | null;
+  onIdle?: () => void;
 }
 
 const BG = '#040d23'; // matches the renderer so there's no white launch flash
@@ -61,7 +62,9 @@ function showDock() {
 }
 
 function hideDockIfIdle() {
-  if (app.dock && !isOpen(requireHost().mainWindow()) && !projectWins.size && !popout.hasOpen()) app.dock.hide();
+  if (isOpen(requireHost().mainWindow()) || projectWins.size || popout.hasOpen()) return;
+  app.dock?.hide();
+  requireHost().onIdle?.();
 }
 
 const SERVE_WEB_HOST = '127.0.0.1';
