@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { scriptPath } from '../src/main/cli';
 import { installUserCli, userCliStatus } from '../src/main/cli-user-install';
@@ -116,6 +118,15 @@ describe('Windows install', () => {
     const stale = fakePort({ files: { [WIN_SCRIPT]: '@echo off', [shim]: '@echo off\r\nrem lantern-cli-shim\r\ncall "D:\\Old\\lantern.cmd" %*\r\n' }, userPath: dir });
     expect((await userCliStatus(windows(stale.port)))?.state).toBe('missing');
     expect((await installUserCli(windows(stale.port)))?.state).toBe('installed');
+  });
+});
+
+describe('lantern.cmd', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'src', 'cli', 'lantern.cmd'), 'utf8');
+
+  it('captures its own folder once, before the first shift, since shift moves %0 as well', () => {
+    expect(source.match(/%~dp0/g)).toHaveLength(1);
+    expect(source.indexOf('%~dp0')).toBeLessThan(source.search(/^\s*shift/m));
   });
 });
 

@@ -1,5 +1,7 @@
 @echo off
 setlocal EnableExtensions
+rem shift moves %0 too, so keep the script folder before parsing
+set "here=%~dp0"
 set "folder="
 set "compare="
 
@@ -48,7 +50,7 @@ if "%project:~-1%"=="\" set "project=%project%."
 
 :launch
 
-set "exe=%~dp0..\..\Lantern.exe"
+set "exe=%here%..\..\Lantern.exe"
 if not exist "%exe%" (
   echo lantern: Lantern.exe not found next to resources\cli 1>&2
   exit /b 1
