@@ -2434,11 +2434,15 @@ test/window-icon.test.ts . test 3c8059ce8dad
 #feature projects-hub
   = src/main/window-icon.ts#windowIconPath
 
-test/windows.test.ts . test 2de79f10801b
+test/windows.test.ts . test c0d23a103dab
 #feature projects-hub
   = src/main/popout.ts
   = src/main/projects.ts
   = src/main/windows.ts
+
+test/last-window.test.ts . test d9c63cc3baa8
+#feature projects-hub
+  = src/main/last-window.ts
 
 test/macro-sizes-fixture.test.ts . test 35a228e5c0bc
 #feature macro-view
