@@ -291,6 +291,46 @@ test.describe('pixi', () => {
       await expect(page.locator('html')).toHaveAttribute('data-context-menus', '1');
       await expect(main).not.toHaveClass(/lt-panning/);
     });
+
+    test('leaves the selection and the layout alone on a right-click of a node', async () => {
+      const page = harness.page;
+      await loadGraphFixture(harness, 'overview');
+      const main = page.locator('.lt-main');
+      const selected = () => page.locator('.lt-pixi-node-access[aria-pressed="true"]').evaluateAll((buttons) => buttons.map((button) => button.getAttribute('aria-label')));
+      const selectedBefore = await selected();
+      const point = await page.locator('.lt-pixi-a11y').evaluate((accessibility) => {
+        const view = accessibility.closest('.lt-main') as HTMLElement;
+        const rect = view.getBoundingClientRect();
+        const button = [...accessibility.querySelectorAll<HTMLElement>('.lt-pixi-node-access')].find((candidate) => {
+          const x = Number(candidate.dataset.graphX) - view.scrollLeft;
+          const y = Number(candidate.dataset.graphY) - view.scrollTop;
+          return candidate.getAttribute('aria-pressed') !== 'true' && x > 0 && y > 0 && x < view.clientWidth - Number(candidate.dataset.graphWidth) && y < view.clientHeight - Number(candidate.dataset.graphHeight);
+        });
+        if (!button) throw new Error('No visible unselected Pixi node');
+        return {
+          x: rect.left + Number(button.dataset.graphX) - view.scrollLeft + Number(button.dataset.graphWidth) / 2,
+          y: rect.top + Number(button.dataset.graphY) - view.scrollTop + Number(button.dataset.graphHeight) / 2,
+          key: button.getAttribute('aria-label') ?? '',
+        };
+      });
+      const scrollBefore = await main.evaluate((element) => ({ left: element.scrollLeft, top: element.scrollTop }));
+      await page.evaluate(() => {
+        const root = document.documentElement;
+        root.dataset.transitionsStarted = '0';
+        new MutationObserver(() => {
+          if (root.dataset.graphTransition === 'running') root.dataset.transitionsStarted = String(Number(root.dataset.transitionsStarted) + 1);
+        }).observe(root, { attributes: true, attributeFilter: ['data-graph-transition'] });
+      });
+      await page.mouse.move(point.x, point.y);
+      await expect.poll(() => page.locator('html').getAttribute('data-graph-hovered')).toBe(point.key);
+      await page.mouse.click(point.x, point.y, { button: 'right' });
+      await page.waitForTimeout(500);
+      expect(await selected()).toEqual(selectedBefore);
+      await expect(page.locator('html')).toHaveAttribute('data-transitions-started', '0');
+      expect(await main.evaluate((element) => ({ left: element.scrollLeft, top: element.scrollTop }))).toEqual(scrollBefore);
+      await page.mouse.click(point.x, point.y);
+      await expect(page.getByRole('button', { name: point.key, exact: true })).toHaveAttribute('aria-pressed', 'true');
+    });
 });
 
 test('does not swallow the next click after Space is released before the pointer in Pixi', async () => {

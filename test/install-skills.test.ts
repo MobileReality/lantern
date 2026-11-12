@@ -64,11 +64,10 @@ describe('install-skills', () => {
   it('installs every bundled skill into a fresh project, lantern-local-loop with its nested files and executable loop.sh', async () => {
     const { stdout } = await install(project);
     const shipped = fs.readdirSync(SKILLS_SOURCE).filter((entry) => fs.existsSync(path.join(SKILLS_SOURCE, entry, 'SKILL.md'))).sort();
-    const all = SKILL_NAMES;
-    expect(all.length).toBeGreaterThan(0);
-    expect(new Set(all).size).toBe(all.length);
-    expect([...all].sort()).toEqual(shipped);
-    for (const name of all) {
+    expect(SKILL_NAMES.length).toBeGreaterThan(0);
+    expect(new Set(SKILL_NAMES).size).toBe(SKILL_NAMES.length);
+    expect([...SKILL_NAMES].sort()).toEqual(shipped);
+    for (const name of SKILL_NAMES) {
       expect(stdout, name).toMatch(new RegExp(`installed +${name}\\b`));
       expect(fs.existsSync(path.join(skills, name, 'SKILL.md')), name).toBe(true);
       expect(fs.existsSync(path.join(skills, name, SKILL_MARKER)), name).toBe(true);

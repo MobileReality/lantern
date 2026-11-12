@@ -1,6 +1,7 @@
 import { Container, Graphics, Rectangle } from 'pixi.js';
 import type { FederatedPointerEvent } from 'pixi.js';
 import type { PixiPalette } from './palette';
+import { isPrimaryTap } from './pointer';
 
 export interface FileActions {
   path: string;
@@ -13,11 +14,6 @@ type OpenKind = 'code' | 'diff';
 const BUTTON = 16;
 const BUTTON_GAP = 2;
 const EDGE_GAP = 4;
-const PRIMARY_BUTTON = 0;
-
-export function isPrimaryTap(event: FederatedPointerEvent) {
-  return event.button === PRIMARY_BUTTON;
-}
 
 export function actionsWidth(actions: FileActions | null) {
   if (!actions) return 0;

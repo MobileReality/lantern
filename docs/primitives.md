@@ -37,6 +37,14 @@ Build state with these instead of hand-writing it:
 - `test/helpers/lantern-plan-world.ts`: a project with the plan fixtures and a small map
   (`makeProject`), or one with an origin remote (`makeRemoteProject`) for item status from open and merged
   PR records. Any test of plans, in the skill scripts or in the app.
+- `test/helpers/source-blocks.ts` (`functionBody`, `callArguments`, `ipcHandler`, `occurrences`, `within`):
+  locate a function body, a call's arguments or an `ipcMain.handle` handler in a source file by balanced
+  brackets, skipping string and template literals and `//` and `/* */` comments. Any test that asserts what
+  a piece of source does or does not contain inside one block. Never slice by line count or a regex over the
+  whole file; `test/source-blocks.test.ts` pins the skipping. Regex literals are not skipped.
+- `test/e2e/support/overview.ts` (`openOverview`, `closeOverview`, `overview`): the Overview drawer. Macro
+  specs open it through this, not with their own selector. `.lt-side` also matches the hidden drawer, so a
+  spec that means the visible side pane uses `.lt-side:not(.lt-overview)`.
 - `test/fixtures/`: static maps and PR records (`lantern-map`, `lantern-prs`, `lantern-macro`, …) and
   `lantern-plans/` (`plan-on-the-map`, a worked plan; `draft-reader`, a draft; a small map beside them).
 

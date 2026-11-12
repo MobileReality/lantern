@@ -23,7 +23,8 @@ import { blockKindText, captionOf } from '../lanternmacro';
 import { OPEN_FILE_LABEL } from '../lanternmacrocurrent';
 import { calmedAlpha, isMarked, markNote, markedAlpha, systemsOfBlocks, weakNearAlpha } from '../lanternmacromarks';
 import type { MacroMarks } from '../lanternmacromarks';
-import { isPrimaryTap, syncOpenButtons } from './open-actions';
+import { syncOpenButtons } from './open-actions';
+import { isPrimaryTap } from './pointer';
 import type { FileActions } from './open-actions';
 
 const CULL_MARGIN = 0;
