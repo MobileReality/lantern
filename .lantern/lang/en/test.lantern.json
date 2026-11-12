@@ -301,6 +301,7 @@
   "serveweb-parse.test.ts": "Checks download placeholders, successful workbench pages and error-page classification.",
   "webview-permissions.test.ts": "Checks the editor server page and its webview frames are granted the microphone and clipboard while foreign pages, frames and ports are refused, and that a server-sent Permissions-Policy header is kept.",
   "serveweb-port.test.ts": "Holds real loopback and all-interface ports to check the chosen port moves off an occupied one and the in-use and output-tail messages.",
+  "serveweb-code-paths.test.ts": "Checks each Linux install location is found when only it exists, the first existing candidate wins in a fixed order, and the Linux paths are never consulted on macOS or Windows.",
   "serveweb-launch-wiring.test.ts": "Checks the server is spawned directly with the grace time when idle reclaiming is on, through serve-web when off, and falls back with a log when the direct server fails; and that nothing spawns before the licence is accepted, a decline ends in the error state and Retry launches; also that a workspace scan neither asks nor spawns until the Editor is first requested, and that the first request asks once.",
   "serveweb-license.test.ts": "Checks an acceptance is stored and never asked again, a decline or failing dialog stores nothing, and concurrent asks share one dialog.",
   "serve-web-origin.test.ts": "Fails when the embedded editor server starts without a connection token or the readiness probe stops presenting it.",
