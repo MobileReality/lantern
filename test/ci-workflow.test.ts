@@ -8,7 +8,7 @@ const PACKAGE = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf
 const RUN_STEPS = [...WORKFLOW.matchAll(/^\s*-?\s*run:\s*(.+?)\s*$/gm)].map((match) => match[1]);
 const USES_LINES = [...WORKFLOW.matchAll(/^\s*-?\s*uses:\s*(.+?)\s*$/gm)].map((match) => match[1]);
 const MATRIX_OS = (WORKFLOW.match(/^\s*os:\s*\[(.+)\]\s*$/m)?.[1] ?? '').split(',').map((os) => os.trim());
-const PACKAGING_STEPS = ['pnpm run dist:share', 'pnpm run build:win'];
+const PACKAGING_STEPS = ['pnpm run dist:share', 'pnpm run build:win', 'pnpm run build:linux'];
 const JOBS_SECTION = WORKFLOW.slice(WORKFLOW.search(/^jobs:\s*$/m));
 const JOBS = new Map(
   JOBS_SECTION.split(/^(?= {2}[\w-]+:\s*$)/m)
@@ -39,7 +39,7 @@ describe('ci workflow', () => {
     expect(WORKFLOW).toMatch(/fail-fast:\s*false/);
   });
 
-  it('packages on macos and windows with the release scripts', () => {
+  it('packages on macos, windows and linux with the release scripts', () => {
     for (const step of PACKAGING_STEPS) expect(RUN_STEPS).toContain(step);
   });
 

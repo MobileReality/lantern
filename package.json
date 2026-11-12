@@ -64,7 +64,7 @@
     "dist:share": "pnpm run build && pnpm run fuses && pnpm run sign:adhoc && pnpm run pack",
     "build:win": "node scripts/esbuild.mjs --target-platform win32 --target-arch x64 && electron-packager out \"Lantern\" --platform=win32 --arch=x64 --out=dist --overwrite --app-bundle-id=com.mobilereality.lantern --icon=build/icon.ico --ignore=\"^/lsp-runtime($|/)\" --ignore=\"^/cli($|/)\" --ignore=\"^/licenses($|/)\" --extra-resource=out/lsp-runtime --extra-resource=out/cli --extra-resource=out/licenses && node scripts/package-licences.mjs --platform win32 --arch x64 && pnpm run fuses",
     "build:linux": "node scripts/esbuild.mjs --target-platform linux --target-arch x64 && electron-packager out \"Lantern\" --platform=linux --arch=x64 --out=dist --overwrite --app-bundle-id=com.mobilereality.lantern --icon=build/icon.png --ignore=\"^/lsp-runtime($|/)\" --ignore=\"^/cli($|/)\" --ignore=\"^/licenses($|/)\" --extra-resource=out/lsp-runtime --extra-resource=out/cli --extra-resource=out/licenses && node scripts/package-licences.mjs --platform linux --arch x64 && pnpm run fuses",
-    "pack:linux": "cd dist && zip -r -y -q Lantern-linux-x64.zip Lantern-linux-x64",
+    "pack:linux": "cd dist && rm -f Lantern-linux-x64.zip && zip -r -y -q Lantern-linux-x64.zip Lantern-linux-x64",
     "app": "open \"dist/Lantern-darwin-arm64/Lantern.app\"",
     "patch-mic": "node scripts/patch-claude-mic.js",
     "patch-mic:check": "node scripts/patch-claude-mic.js --check",

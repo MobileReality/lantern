@@ -151,25 +151,13 @@ jobs:
         if: runner.os == 'Linux'
         run: pnpm run build:linux
 
-      - name: Zip the Linux package and check what is in it
+      - name: Zip the Linux package
         if: runner.os == 'Linux'
-        run: |
-          pnpm run pack:linux
-          names=$(zipinfo -1 dist/Lantern-linux-x64.zip)
-          for entry in \
-            Lantern-linux-x64/Lantern \
-            Lantern-linux-x64/chrome-sandbox \
-            Lantern-linux-x64/resources/app.asar \
-            Lantern-linux-x64/resources/cli/lantern \
-            Lantern-linux-x64/resources/lsp-runtime/node \
-            Lantern-linux-x64/resources/licenses/ELECTRON-LICENSE \
-            Lantern-linux-x64/resources/licenses/THIRD_PARTY_LICENSES.txt; do
-            grep -Fx -- "$entry" <<< "$names" > /dev/null || { echo "Missing from Lantern-linux-x64.zip: $entry"; exit 1; }
-          done
-          for executable in Lantern-linux-x64/Lantern Lantern-linux-x64/resources/lsp-runtime/node; do
-            zipinfo dist/Lantern-linux-x64.zip "$executable" | grep -q '^-rwx' || { echo "Not executable in Lantern-linux-x64.zip: $executable"; exit 1; }
-          done
-          pnpm exec electron-fuses read --app dist/Lantern-linux-x64/Lantern | grep -F 'RunAsNode is Disabled'
+        run: pnpm run pack:linux
+
+      - name: Check the Linux package
+        if: runner.os == 'Linux'
+        run: bash scripts/check-linux-package.sh
 
       - name: Package for macOS
         if: runner.os == 'macOS'

@@ -130,7 +130,7 @@ describe('release workflow, the publish job', () => {
       .flatMap((job) => job.steps)
       .filter((step) => step.uses?.startsWith('actions/upload-artifact@'))
       .map((step) => step.with?.path);
-    expect(uploadedByBuilds.sort()).toEqual(['dist/Lantern-mac.zip', 'dist/Lantern-win-x64.zip']);
+    expect(uploadedByBuilds.sort()).toEqual(['dist/Lantern-linux-x64.zip', 'dist/Lantern-mac.zip', 'dist/Lantern-win-x64.zip']);
   });
 
   it('builds and signs nothing in the publish job', () => {
