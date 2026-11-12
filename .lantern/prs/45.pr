@@ -1,0 +1,26 @@
+lantern-pr 1
+# 45
+#title chore: release 0.4.0
+#url https://github.com/MobileReality/lantern/pull/45
+#branch chore/release-0-4-0
+#base main
+#opened 2026-11-12
+#head 97506ca34fdc7e96ee1e4df659f7e2879b50db82
+#describe what Bumps the version to 0.4.0 and adds a dated 0.4.0 changelog entry for what changed since v0.3.1.
+#describe before package.json said 0.3.1 and the Unreleased section was empty.
+#describe after package.json says 0.4.0 and the changelog has an entry dated 2026-11-12 with compare links.
+#describe verified Install, typecheck, lint and the version/changelog tests pass. No tag was created.
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md Gives users a dated 0.4.0 entry of what changed since 0.3.1 before the tag is cut.
+#reason package.json The packaged app and the release workflow read the version from here, so it must say 0.4.0.
+#story A release reader sees what 0.4.0 brings
+#step actor A maintainer
+#step action bumps the version and writes the entry
+#file package.json
+#file CHANGELOG.md
+#step subject the release
+#below interaction Users read what changed since 0.3.1
+#below consequence Version said 0.3.1, nothing new listed => Version says 0.4.0, dated entry
