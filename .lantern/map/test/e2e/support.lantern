@@ -4,7 +4,7 @@ lantern 1
 test/e2e/support/comments.ts . test 10a03085057c
 #feature review-comments
 
-test/e2e/support/graph-harness.ts . test d436772c80cd
+test/e2e/support/graph-harness.ts . test 61db326d875e
   < src/renderer/lib/syntax-worker.ts
   < test/e2e/app/renderer.ts
   = test/e2e/app/main.cjs
