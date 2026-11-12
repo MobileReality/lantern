@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/skill-linker-catalogue
 #base main
 #opened 2026-11-12
-#head cad9c9fd9621af3c7ddfb797816361dc676945d7
+#head 3938ece4bae233fa78499ad6b48217d0b227429e
 #describe what The Skills window takes its catalogue from the skill linker when no repo is saved, so Project skills lists and links its skills and Lantern skills finds them.
 #describe what Skills not installed in the project are marked, attaching one links it first, and attached missing skills get a Link to project button.
 #describe what The linker status reads as plain words with the skill and role counts.
