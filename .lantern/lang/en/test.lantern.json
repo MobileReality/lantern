@@ -1,5 +1,6 @@
 {
  "text": {
+  "window-icon.test.ts": "Checks a window gets the packaged icon path on Linux, the built asset in a dev run, and no icon on macOS and Windows",
   "update-notice.test.ts": "Checks the update notice card shows the waiting message, sends the pressed button's action and follows a pushed notice",
   "updater-feed.test.ts": "Checks the update feed and latest-release readers: 204, 200, 404, failures, no token, a release page link only on the fixed repository",
   "updater-guard.test.ts": "Checks canInstallNow is false for a run started by Lantern, a terminal, a running process and unreadable activity, true when idle or when only watched sessions in other terminals are alive, and the terminal and running-process count from a process list",
@@ -300,6 +301,7 @@
   "serveweb-parse.test.ts": "Checks download placeholders, successful workbench pages and error-page classification.",
   "webview-permissions.test.ts": "Checks the editor server page and its webview frames are granted the microphone and clipboard while foreign pages, frames and ports are refused, and that a server-sent Permissions-Policy header is kept.",
   "serveweb-port.test.ts": "Holds real loopback and all-interface ports to check the chosen port moves off an occupied one and the in-use and output-tail messages.",
+  "serveweb-code-paths.test.ts": "Checks each Linux install location is found when only it exists, the first existing candidate wins in a fixed order, and the Linux paths are never consulted on macOS or Windows.",
   "serveweb-launch-wiring.test.ts": "Checks the server is spawned directly with the grace time when idle reclaiming is on, through serve-web when off, and falls back with a log when the direct server fails; and that nothing spawns before the licence is accepted, a decline ends in the error state and Retry launches; also that a workspace scan neither asks nor spawns until the Editor is first requested, and that the first request asks once.",
   "serveweb-license.test.ts": "Checks an acceptance is stored and never asked again, a decline or failing dialog stores nothing, and concurrent asks share one dialog.",
   "serve-web-origin.test.ts": "Fails when the embedded editor server starts without a connection token or the readiness probe stops presenting it.",
@@ -424,7 +426,7 @@
   "languages.test.ts": "Checks the map and explainer language order (team file, user setting, fallback), that an unknown language or broken file is ignored, and that both language settings default to automatic, and that a capitalised pick still counts",
   "platform.test.ts": "Checks that Node's darwin, win32 and linux map to mac, windows and linux, and that the page reads the same three names from a Macintosh, Windows or X11 user agent.",
   "project-ident.test.ts": "Checks a project is named by its folder and branch, a linked worktree by its main checkout and worktree, and a non-repository or bad input leaves the git part empty",
-  "release-workflow.test.ts": "Reads the parsed release workflow to check it starts only from a v* tag or by hand, refuses any other ref before a secret is delivered, signs in the release environment with each secret in the one step that needs it and none in a command line, always deletes the keychain and keeps the download artifact name, uploads exactly the macOS, Windows and Linux zips, checks the entitlements stay minimal, and runs the notarize command against stub tools to check it fails on a rejection and keeps the API key private and short-lived",
+  "release-workflow.test.ts": "Reads the parsed release workflow to check it starts only from a v* tag or by hand, refuses any other ref before a secret is delivered, signs in the release environment with each secret in the one step that needs it and none in a command line, always deletes the keychain and keeps the download artifact name, writes the checksums between the arm64 copy and the upload with no token kept by the checkout, uploads exactly the macOS, Windows and Linux zips, checks the entitlements stay minimal, and runs the notarize command against stub tools to check it fails on a rejection and keeps the API key private and short-lived",
   "renderer-stylesheets.test.ts":"Checks every stylesheet the workspace and overlay pages link is copied into out/ by the build script",
   "session-jump.test.ts": "Checks which terminal app owns a session's tty, and the kitty window and tmux target chosen for a session.",
   "command-keys.test.ts": "Checks that a bound key in a trusted window is sent as command:run and kept from the page, while misses, the embedded editor, untrusted targets, key-ups and auto-repeat are left alone",

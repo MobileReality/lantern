@@ -460,8 +460,7 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry b4437cd85dab
-  = src/main/last-window.ts#createLastWindowHandler
+src/main/main.ts . entry 73b4e3f32f79
   = src/main/diagnostics/index.ts#startDiagnostics
   = src/main/diagnostics/ipc-guard.ts#guardIpc
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
@@ -534,6 +533,7 @@ src/main/main.ts . entry b4437cd85dab
   = src/main/notifycard.ts
   = src/main/lsp/semantic-service.ts
   = src/main/lsp/runtime-path.ts
+  < src/main/window-icon.ts#windowIconPath
   = src/main/rtk-status.ts#rtkStatus
   < src/shared/code-highlighting.ts
   < src/shared/config.ts
@@ -653,7 +653,7 @@ src/main/overlay.ts . service 56ac8a99105f
 src/main/permission-consent.ts . service 9c6dcc47eafe
 #feature skill-installer
 
-src/main/popout.ts . service 4b5f08c9ba7c
+src/main/popout.ts . service 62de6a344953
 #feature code-insight
   < src/renderer/workspace.html
 
@@ -735,6 +735,9 @@ src/main/server.ts . handler 73dc74717b18
   = src/main/codex-event.ts
   = src/main/state.ts
 
+src/main/serveweb-code-paths.ts . pure e97c99e06c88
+#feature serve-web
+
 src/main/serveweb-failure.ts . pure 012f37ae6ce7
 #feature serve-web
 
@@ -765,10 +768,11 @@ src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
 src/main/serveweb-settings.ts . service 95c6102e988e
 #feature serve-web
 
-src/main/serveweb.ts . service ea925d1a7891
+src/main/serveweb.ts . service a3a7e00dc6a0
 #feature serve-web
   > src/main/diagnostics/editor-server.ts#describeServerStop
   > src/main/diagnostics/index.ts#reportDiagnostic
+  = src/main/serveweb-code-paths.ts
   = src/main/serveweb-failure.ts
   = src/main/serveweb-launch.ts
   = src/main/serveweb-license.ts
@@ -862,10 +866,10 @@ src/main/tray-popover.ts . service a13152f10000
   < src/shared/tray-action.ts#parseTrayAction
   < src/shared/tray-model.ts#TrayModel
 
-src/main/last-window.ts . util 4467717adf73
+src/main/window-icon.ts . pure 0db979072650
 #feature projects-hub
 
-src/main/windows.ts . service a5edc8a50e27
+src/main/windows.ts . service 3c55e3c8a70e
 #feature projects-hub
   > src/main/bundle.ts#installOnOpen
   = src/main/popout.ts

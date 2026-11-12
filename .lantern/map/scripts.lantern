@@ -1,7 +1,7 @@
 lantern 1
 # scripts
 
-scripts/check-linux-package.sh . script d225f14d0839
+scripts/check-linux-package.sh . script 89a5078ad7f6
 
 scripts/esbuild.mjs . script 913468a9e4b4
   < scripts/app-manifest.mjs#appManifest
@@ -104,6 +104,8 @@ scripts/pr-review-demo.mjs . script 1728a77e2872
   < test/e2e/app/renderer.ts
   > scripts/material-file-icons.mjs
   > test/e2e/app/main.cjs
+
+scripts/release-checksums.sh . script d12cbb28606e
 
 scripts/app-manifest.mjs . script c9f584e04125
 

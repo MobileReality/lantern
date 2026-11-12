@@ -64,6 +64,7 @@ import type { SemanticHighlightRequest } from '../shared/code-highlighting';
 import type { CommandId } from '../shared/commands';
 import { affectsSetting, type SettingsChange, type SettingsUpdateResult } from '../shared/settings-registry';
 import { lspRuntimePath } from './lsp/runtime-path';
+import { windowIconPath } from './window-icon';
 import { readTranscript, transcriptPath } from './session-context';
 import { SOUND_SETTING_FOR_KIND } from '../shared/settings-notifications';
 import { CARD_KINDS, type CardKind, deliverTransitionCard, sampleCard, sampleLabel } from './session-notification';
@@ -145,6 +146,7 @@ const semanticService = new SemanticService(lspRuntimePath(app.isPackaged, proce
 
 app.setAppUserModelId('com.mobilereality.lantern'); // required for Windows toast notifications
 
+const windowIcon = windowIconPath(process.platform, app.isPackaged, process.resourcesPath, __dirname);
 const dockIcon = nativeImage.createFromPath(path.join(__dirname, 'assets', 'appicon.png'));
 if (process.platform === 'darwin' && app.dock) {
   if (!dockIcon.isEmpty()) app.dock.setIcon(dockIcon);
@@ -190,6 +192,7 @@ async function init() {
     preload: path.join(__dirname, 'preload', 'workspace.js'),
     htmlDir: path.join(__dirname, 'renderer'),
     dockIcon,
+    windowIcon,
     trust: (wc) => trusted.add(wc),
     untrust: (wc) => trusted.delete(wc),
     mainWindow: () => wsWin,
@@ -257,6 +260,7 @@ async function init() {
     });
   }
   popout.init({
+    windowIcon,
     preload: path.join(__dirname, 'preload', 'workspace.js'),
     htmlDir: path.join(__dirname, 'renderer'),
     onCreated: (wc) => trusted.add(wc),

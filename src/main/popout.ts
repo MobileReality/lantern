@@ -12,6 +12,7 @@ const TOOLS: Record<string, { title: string; w: number; h: number }> = {
 };
 
 interface Options {
+  windowIcon?: string;
   preload: string;
   htmlDir: string;
   onCreated: (wc: WebContents) => void;
@@ -35,6 +36,7 @@ function open(tool: string, project: string, opener: WebContents | null = null) 
     minHeight: 420,
     title: `${def.title} — ${path.basename(project)}`,
     backgroundColor: BG,
+    ...(opts.windowIcon ? { icon: opts.windowIcon } : {}),
     show: false,
     webPreferences: {
       preload: opts.preload,

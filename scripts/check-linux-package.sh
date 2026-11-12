@@ -11,6 +11,7 @@ for entry in \
   Lantern \
   chrome-sandbox \
   resources/app.asar \
+  resources/icon.png \
   resources/cli/lantern \
   resources/lsp-runtime/node \
   resources/licenses/ELECTRON-LICENSE \
