@@ -41,6 +41,7 @@ import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow,
 import * as cli from './cli';
 import { installUserCli, userCliStatus } from './cli-user-install';
 import { cliPort } from './cli-user-port';
+import { createLastWindowHandler } from './last-window';
 import * as settings from './settings';
 import * as settingsStore from './settings-store';
 import { resolveLanguage } from './languages';
@@ -65,6 +66,7 @@ import type { SemanticHighlightRequest } from '../shared/code-highlighting';
 import type { CommandId } from '../shared/commands';
 import { affectsSetting, type SettingsChange, type SettingsUpdateResult } from '../shared/settings-registry';
 import { lspRuntimePath } from './lsp/runtime-path';
+import { windowIconPath } from './window-icon';
 import { readTranscript, transcriptPath } from './session-context';
 import { SOUND_SETTING_FOR_KIND } from '../shared/settings-notifications';
 import { CARD_KINDS, type CardKind, deliverTransitionCard, sampleCard, sampleLabel } from './session-notification';
@@ -147,6 +149,7 @@ const semanticService = new SemanticService(lspRuntimePath(app.isPackaged, proce
 
 app.setAppUserModelId('com.mobilereality.lantern'); // required for Windows toast notifications
 
+const windowIcon = windowIconPath(process.platform, app.isPackaged, process.resourcesPath, __dirname);
 const dockIcon = nativeImage.createFromPath(path.join(__dirname, 'assets', 'appicon.png'));
 if (process.platform === 'darwin' && app.dock) {
   if (!dockIcon.isEmpty()) app.dock.setIcon(dockIcon);
@@ -192,9 +195,12 @@ async function init() {
     preload: path.join(__dirname, 'preload', 'workspace.js'),
     htmlDir: path.join(__dirname, 'renderer'),
     dockIcon,
+    windowIcon,
     trust: (wc) => trusted.add(wc),
     untrust: (wc) => trusted.delete(wc),
     mainWindow: () => wsWin,
+    // The hidden notification card window keeps window-all-closed from firing, so the last user window closing triggers it too.
+    onIdle: quitWithoutReachableTray,
   });
   let codexToken = '';
   try {
@@ -257,6 +263,7 @@ async function init() {
     });
   }
   popout.init({
+    windowIcon,
     preload: path.join(__dirname, 'preload', 'workspace.js'),
     htmlDir: path.join(__dirname, 'renderer'),
     onCreated: (wc) => trusted.add(wc),
@@ -1035,9 +1042,17 @@ settingsStore.onDidChange((snapshot, changed) => {
   }
 });
 
-app.on('window-all-closed', () => {});
-
 let quitting = false;
+
+const quitWithoutReachableTray = createLastWindowHandler({
+  platform: process.platform,
+  env: process.env,
+  trayCreated: () => tray !== null,
+  isQuitting: () => quitting,
+  quit: () => app.quit(),
+});
+app.on('window-all-closed', quitWithoutReachableTray);
+
 // Quit waits for the serve-web tree to die; the second app.quit() passes straight through.
 app.on('before-quit', (e) => {
   if (quitting) return;

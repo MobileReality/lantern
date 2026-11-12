@@ -2023,9 +2023,10 @@ test/reason-definition.test.ts . test 550e8f81a437
   = src/shared/reason.ts
   < skills/lantern-setup/scripts/prs.mjs#REASON_MAX_CHARS
 
-test/release-workflow.test.ts . test 6fb938b62578
+test/release-workflow.test.ts . test ed8e42dc2143
   < .github/workflows/release.yml
   < scripts/mac-sign-notarize.sh
+  < scripts/release-checksums.sh
 
 test/renderer-stylesheets.test.ts . test df6d913c3bdd
   < scripts/esbuild.mjs
@@ -2083,6 +2084,10 @@ test/serve-web-origin.test.ts . test e570699f3354
 #feature serve-web
   = src/main/serveweb-launch.ts
   = src/main/serveweb-probe.ts
+
+test/serveweb-code-paths.test.ts . test af3267820172
+#feature serve-web
+  = src/main/serveweb-code-paths.ts
 
 test/serveweb-launch-wiring.test.ts . test 3bffe2ef65bd
 #feature serve-web
@@ -2430,11 +2435,19 @@ test/webview-hardening.test.ts . test 59dde6ea39bb
 #feature projects-hub
   = src/main/windows.ts#hardenWebContents
 
-test/windows.test.ts . test 2de79f10801b
+test/window-icon.test.ts . test 3c8059ce8dad
+#feature projects-hub
+  = src/main/window-icon.ts#windowIconPath
+
+test/windows.test.ts . test c0d23a103dab
 #feature projects-hub
   = src/main/popout.ts
   = src/main/projects.ts
   = src/main/windows.ts
+
+test/last-window.test.ts . test d9c63cc3baa8
+#feature projects-hub
+  = src/main/last-window.ts
 
 test/macro-sizes-fixture.test.ts . test 35a228e5c0bc
 #feature macro-view

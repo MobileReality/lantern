@@ -1,0 +1,46 @@
+lantern-pr 1
+# 41
+#title Publish SHA256SUMS with every release
+#url https://github.com/MobileReality/lantern/pull/41
+#branch feat/release-checksums
+#base main
+#opened 2026-11-12
+#head 848f10e6090e3cb4999f2759750988dfa788250b
+#describe what Every release now carries a SHA256SUMS file listing the macOS, macOS arm64, Windows and Linux zips, so a download can be checked with sha256sum -c. It needs no key or secret.
+#describe before A release had zips and no way to check them.
+#describe after The script writes one line per zip; shasum -c prints OK for each, and FAILED for a zip with a changed byte.
+#describe verified typecheck, lint and the three workflow tests are green; the script was run on dummy zips.
++ scripts/release-checksums.sh
+~ .github/workflows/release.yml
+~ README.md
+~ docs/installation.md
+~ test/release-workflow.test.ts
+#order scripts/release-checksums.sh
+#order .github/workflows/release.yml
+#order test/release-workflow.test.ts
+#order README.md
+#order docs/installation.md
+#reason scripts/release-checksums.sh A script file, because the workflow tests forbid block run steps, writes the checksums in the format sha256sum -c reads.
+#reason .github/workflows/release.yml The publish job needs the script and a checkout to run it, so releases carry SHA256SUMS without any secret.
+#reason README.md Downloaders need to know how to check a zip against the published checksums.
+#reason docs/installation.md The install guide carries the same verify note, with the Linux and macOS commands.
+#reason test/release-workflow.test.ts Without a test, moving or deleting the step would ship releases with no checksums or ones missing the arm64 zip.
+#story A maintainer publishes a release that can be checked
+#step actor Maintainer
+#step action publishes
+#file .github/workflows/release.yml
+#file scripts/release-checksums.sh
+#file test/release-workflow.test.ts
+#step subject a release
+#below actor Release
+#below interaction now lists a SHA-256 hash for every zip
+#below consequence zips with no way to check => zips with SHA256SUMS
+#story A user checks a downloaded zip
+#step actor User
+#step action checks
+#file README.md
+#file docs/installation.md
+#step subject a downloaded zip
+#below actor User
+#below interaction sees OK or FAILED for each zip
+#below consequence damaged download unnoticed => damaged download shows FAILED

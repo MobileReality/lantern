@@ -8,6 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { MAX_PERCENT, classifyProgressLine, type ServerPage } from './serveweb-parse';
 import { fetchServerPage } from './serveweb-probe';
+import { codeCandidates, findCodeBin } from './serveweb-code-paths';
 import { killChildTree } from './prockill';
 import { KILL_GRACE_MS, reclaimPort, type ReclaimOutcome } from './serveweb-reclaim';
 import { choosePort } from './serveweb-port';
@@ -56,27 +57,7 @@ const EXIT_GRACE_MS = 5000;
 const OUTPUT_DRAIN_MS = 500;
 const LICENSE_DECLINED = 'The editor needs you to accept the VS Code server licence. Retry to be asked again.';
 
-function codeCandidates() {
-  if (process.platform === 'win32') {
-    const la = process.env.LOCALAPPDATA || '';
-    const pf = process.env.ProgramFiles || '';
-    const pf86 = process.env['ProgramFiles(x86)'] || '';
-    return [
-      la && path.join(la, 'Programs', 'Microsoft VS Code', 'bin', 'code.cmd'),
-      la && path.join(la, 'Programs', 'Microsoft VS Code Insiders', 'bin', 'code-insiders.cmd'),
-      pf && path.join(pf, 'Microsoft VS Code', 'bin', 'code.cmd'),
-      pf86 && path.join(pf86, 'Microsoft VS Code', 'bin', 'code.cmd'),
-    ].filter(Boolean);
-  }
-  return [
-    '/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code',
-    '/Applications/Visual Studio Code - Insiders.app/Contents/Resources/app/bin/code-insiders',
-    '/usr/local/bin/code',
-    '/opt/homebrew/bin/code',
-  ];
-}
-
-const CODE_CANDIDATES = codeCandidates();
+const CODE_CANDIDATES = codeCandidates({ platform: process.platform, home: os.homedir(), env: process.env });
 
 // On Windows `code` is a .cmd shim, which Node refuses to spawn without a shell;
 // quote args so paths with spaces (Program Files) survive the shell join.
@@ -142,13 +123,7 @@ function consume(stream: NodeJS.ReadableStream | null, onLine?: (line: string) =
 }
 
 function codeBin() {
-  return CODE_CANDIDATES.find((p) => {
-    try {
-      return fs.existsSync(p);
-    } catch {
-      return false;
-    }
-  });
+  return findCodeBin(CODE_CANDIDATES, fs.existsSync);
 }
 
 function isAvailable() {

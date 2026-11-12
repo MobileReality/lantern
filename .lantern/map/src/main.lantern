@@ -55,16 +55,7 @@ src/main/claude-poll.ts . service 08d47300a4c0
 #feature session-monitoring
   < src/main/scanner.ts#SessionSnapshot
 
-src/main/cli-user-install.ts . service 6a37f83c5d7d
-#feature projects-hub
-  < src/main/cli.ts#CliStatus
-
-src/main/cli-user-port.ts . gateway 616cb65b26f3
-#feature projects-hub
-  < src/main/cli-user-install.ts#CliPort
-  = ext:windows-registry
-
-src/main/cli.ts . service b2d2cc527ec4
+src/main/cli.ts . service 0c9d341d2209
 #feature projects-hub
   < src/shared/shell-quote.ts#shellQuote
   = ext:osascript
@@ -469,7 +460,11 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry bd4dd4b7a972
+src/main/last-window.ts . util 4467717adf73
+#feature projects-hub
+
+src/main/main.ts . entry 3e5902f29f48
+  = src/main/last-window.ts#createLastWindowHandler
   = src/main/diagnostics/index.ts#startDiagnostics
   = src/main/diagnostics/ipc-guard.ts#guardIpc
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
@@ -490,8 +485,6 @@ src/main/main.ts . entry bd4dd4b7a972
   = src/main/agent-request.ts#registeredProject
   = src/main/agent-request.ts#safeAgentRequest
   = src/main/cli.ts
-  = src/main/cli-user-install.ts
-  < src/main/cli-user-port.ts#cliPort
   = src/main/dev-instance.ts
   = src/main/claude-poll.ts#createPoller
   = src/main/hook-cleanup.ts#runCleanups
@@ -544,6 +537,7 @@ src/main/main.ts . entry bd4dd4b7a972
   = src/main/notifycard.ts
   = src/main/lsp/semantic-service.ts
   = src/main/lsp/runtime-path.ts
+  < src/main/window-icon.ts#windowIconPath
   = src/main/rtk-status.ts#rtkStatus
   < src/shared/code-highlighting.ts
   < src/shared/config.ts
@@ -663,7 +657,7 @@ src/main/overlay.ts . service 56ac8a99105f
 src/main/permission-consent.ts . service 9c6dcc47eafe
 #feature skill-installer
 
-src/main/popout.ts . service 4b5f08c9ba7c
+src/main/popout.ts . service 62de6a344953
 #feature code-insight
   < src/renderer/workspace.html
 
@@ -745,6 +739,9 @@ src/main/server.ts . handler 73dc74717b18
   = src/main/codex-event.ts
   = src/main/state.ts
 
+src/main/serveweb-code-paths.ts . pure e97c99e06c88
+#feature serve-web
+
 src/main/serveweb-failure.ts . pure 012f37ae6ce7
 #feature serve-web
 
@@ -775,10 +772,11 @@ src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
 src/main/serveweb-settings.ts . service 95c6102e988e
 #feature serve-web
 
-src/main/serveweb.ts . service ea925d1a7891
+src/main/serveweb.ts . service a3a7e00dc6a0
 #feature serve-web
   > src/main/diagnostics/editor-server.ts#describeServerStop
   > src/main/diagnostics/index.ts#reportDiagnostic
+  = src/main/serveweb-code-paths.ts
   = src/main/serveweb-failure.ts
   = src/main/serveweb-launch.ts
   = src/main/serveweb-license.ts
@@ -872,7 +870,10 @@ src/main/tray-popover.ts . service a13152f10000
   < src/shared/tray-action.ts#parseTrayAction
   < src/shared/tray-model.ts#TrayModel
 
-src/main/windows.ts . service 20aef71a20de
+src/main/window-icon.ts . pure 0db979072650
+#feature projects-hub
+
+src/main/windows.ts . service e1ecb680abb8
 #feature projects-hub
   > src/main/bundle.ts#installOnOpen
   = src/main/popout.ts
