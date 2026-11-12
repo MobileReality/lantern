@@ -5,7 +5,7 @@ import type { RelationLayout, Refs, Side, Zone } from '../lanternrelview';
 import type { PixiPalette } from './palette';
 import { drawEdge } from './edge-graphics';
 import type { Profile } from '../lanternprofile';
-import { isPrimaryTap } from './open-actions';
+import { isPrimaryTap } from './pointer';
 
 const ZONE_NAMES: Record<Side, Record<Refs, string>> = {
   in: { none: 'Takes data from', mixed: 'Takes data from, referred to by', all: 'Referred to by' },

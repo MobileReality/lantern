@@ -6,13 +6,66 @@ export interface SourceRange {
 
 const CLOSERS: Record<string, string> = { '(': ')', '{': '}', '[': ']' };
 
+function skipQuoted(source: string, start: number, quote: string): number {
+  let i = start + 1;
+  while (i < source.length && source[i] !== quote) i += source[i] === '\\' ? 2 : 1;
+  return i + 1;
+}
+
+function skipTemplate(source: string, start: number): number {
+  let i = start + 1;
+  while (i < source.length && source[i] !== '`') {
+    if (source[i] === '\\') i += 2;
+    else if (source[i] === '$' && source[i + 1] === '{') i = skipTemplateExpression(source, i + 2);
+    else i++;
+  }
+  return i + 1;
+}
+
+function skipTemplateExpression(source: string, start: number): number {
+  let depth = 1;
+  let i = start;
+  while (i < source.length) {
+    const next = skipLiteral(source, i);
+    if (next !== i) i = next;
+    else {
+      if (source[i] === '{') depth++;
+      else if (source[i] === '}' && --depth === 0) return i + 1;
+      i++;
+    }
+  }
+  return i;
+}
+
+function skipLiteral(source: string, i: number): number {
+  const char = source[i];
+  if (char === "'" || char === '"') return skipQuoted(source, i, char);
+  if (char === '`') return skipTemplate(source, i);
+  if (char === '/' && source[i + 1] === '/') {
+    const end = source.indexOf('\n', i);
+    return end < 0 ? source.length : end + 1;
+  }
+  if (char === '/' && source[i + 1] === '*') {
+    const end = source.indexOf('*/', i + 2);
+    return end < 0 ? source.length : end + 2;
+  }
+  return i;
+}
+
 function balancedFrom(source: string, open: number): SourceRange {
   const opener = source[open];
   const closer = CLOSERS[opener];
   let depth = 0;
-  for (let i = open; i < source.length; i++) {
+  let i = open;
+  while (i < source.length) {
+    const next = skipLiteral(source, i);
+    if (next !== i) {
+      i = next;
+      continue;
+    }
     if (source[i] === opener) depth++;
     else if (source[i] === closer && --depth === 0) return { start: open, end: i + 1, text: source.slice(open, i + 1) };
+    i++;
   }
   throw new Error(`unbalanced ${opener} at ${open}`);
 }

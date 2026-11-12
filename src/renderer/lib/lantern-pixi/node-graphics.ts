@@ -14,7 +14,8 @@ import { markCaption } from '../lanternmacromarks';
 import type { BlockMark } from '../lanternmacromarks';
 import { PURPOSE_LINE_H } from '../lanternmacrocards';
 import { FLAT_LINE } from '../lanternmacrostyles';
-import { actionsWidth, drawFileActions, isPrimaryTap } from './open-actions';
+import { actionsWidth, drawFileActions } from './open-actions';
+import { isPrimaryTap } from './pointer';
 import type { FileActions } from './open-actions';
 
 const CARD_TEXT_Y = 4;
