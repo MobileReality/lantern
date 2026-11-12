@@ -25,6 +25,10 @@ releases are signed ad hoc and need the steps in
 [CONTRIBUTING.md](../CONTRIBUTING.md#producing-a-build-to-share-distshare). The Windows build is not
 code-signed, so SmartScreen may warn on first launch.
 
+**Verify the download.** Every release carries a `SHA256SUMS` file. Put it next to the zips you downloaded and run
+`sha256sum -c SHA256SUMS --ignore-missing` on Linux or
+`shasum -a 256 -c SHA256SUMS --ignore-missing` on macOS; each zip should print `OK`.
+
 The Linux build is x64 only and unsigned. Extract it, make the binary executable and run it:
 
 ```bash

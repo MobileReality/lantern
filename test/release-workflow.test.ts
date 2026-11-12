@@ -133,6 +133,17 @@ describe('release workflow, the publish job', () => {
     expect(uploadedByBuilds.sort()).toEqual(['dist/Lantern-linux-x64.zip', 'dist/Lantern-mac.zip', 'dist/Lantern-win-x64.zip']);
   });
 
+  it('writes the checksums after the arm64 copy and before the upload, from a script file', () => {
+    const checksumIndex = PUBLISH.findIndex((step) => step.run?.trim() === 'bash scripts/release-checksums.sh release-assets');
+    expect(checksumIndex).toBeGreaterThan(copyIndex);
+    expect(checksumIndex).toBeLessThan(uploadIndex);
+  });
+
+  it('keeps the checkout of the publish job from persisting the token', () => {
+    const checkout = PUBLISH.find((step) => step.uses?.startsWith('actions/checkout@'));
+    expect(checkout?.with?.['persist-credentials']).toBe(false);
+  });
+
   it('builds and signs nothing in the publish job', () => {
     expect(PUBLISH.map((step) => step.run ?? '').join('\n')).not.toMatch(/pnpm|mac-sign-notarize|codesign|notarytool/);
     expect(PUBLISH.some(readsSecret)).toBe(false);
@@ -220,5 +231,35 @@ fi`,
     expect(result.status).not.toBe(0);
     expect(callLog).not.toContain('stapler staple');
     expect(keyFileLeft).toBe(false);
+  });
+});
+
+describe('release-checksums.sh', () => {
+  const scratch: string[] = [];
+
+  afterEach(() => {
+    for (const dir of scratch.splice(0)) fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  const folderWith = (names: string[]) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checksums-'));
+    scratch.push(dir);
+    for (const name of names) fs.writeFileSync(path.join(dir, name), `content of ${name}`);
+    return dir;
+  };
+  const run = (dir: string) => spawnSync('bash', [path.join(ROOT, 'scripts/release-checksums.sh'), dir], { cwd: ROOT, encoding: 'utf8' });
+
+  it('lists every zip by bare name in the format sha256sum -c reads, and leaves out the other files', () => {
+    const zips = ['Lantern-linux-x64.zip', 'Lantern-mac-arm64.zip', 'Lantern-mac.zip', 'Lantern-win-x64.zip'];
+    const dir = folderWith([...zips, 'notes.txt']);
+    const result = run(dir);
+    expect(result.status, result.stderr).toBe(0);
+    const lines = fs.readFileSync(path.join(dir, 'SHA256SUMS'), 'utf8').trim().split('\n');
+    expect(lines.map((line) => line.replace(/^[0-9a-f]{64} {2}/, ''))).toEqual(zips);
+  });
+
+  it('fails when the folder holds no zip', () => {
+    const result = run(folderWith(['notes.txt']));
+    expect(result.status).not.toBe(0);
   });
 });

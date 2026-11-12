@@ -2018,9 +2018,10 @@ test/reason-definition.test.ts . test 550e8f81a437
   = src/shared/reason.ts
   < skills/lantern-setup/scripts/prs.mjs#REASON_MAX_CHARS
 
-test/release-workflow.test.ts . test 6fb938b62578
+test/release-workflow.test.ts . test ed8e42dc2143
   < .github/workflows/release.yml
   < scripts/mac-sign-notarize.sh
+  < scripts/release-checksums.sh
 
 test/renderer-stylesheets.test.ts . test df6d913c3bdd
   < scripts/esbuild.mjs
