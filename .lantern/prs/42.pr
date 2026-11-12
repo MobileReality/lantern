@@ -1,0 +1,39 @@
+lantern-pr 1
+# 42
+#title Quit on the last window close without a reachable tray
+#url https://github.com/MobileReality/lantern/pull/42
+#branch feat/quit-on-last-window-without-tray
+#base main
+#opened 2026-11-12
+#head c3a85c7f6f6910cc6fd3052d54d1cb54284b42cf
+#describe what Closing the last window quits Lantern on Windows and Linux unless a reachable tray icon exists; macOS is unchanged.
+#describe what It quits through the normal quit path and never while a quit is already running.
+#describe before The window-all-closed handler did nothing, so closing the last window on stock GNOME left an invisible process.
+#describe after Linux without a tray host quits, KDE and similar desktops with a tray stay, Windows stays only with a tray, macOS never quits.
+#describe verified Typecheck, lint and tests pass; the new tests fail when the macOS or Linux rule is removed. Not run on a real Linux or Windows machine.
++ src/main/last-window.ts
++ test/last-window.test.ts
+~ src/main/main.ts
+~ src/main/windows.ts
+~ test/windows.test.ts
+#order src/main/last-window.ts
+#order src/main/windows.ts
+#order src/main/main.ts
+#order test/last-window.test.ts
+#order test/windows.test.ts
+#reason src/main/last-window.ts Keeps the quit decision a pure function so each platform and tray case can be tested without Electron
+#reason test/last-window.test.ts Pins every platform and tray state, the Linux desktop list and the no-double-quit guard with a fake quit
+#reason src/main/main.ts An empty window-all-closed handler left an invisible Lantern running on GNOME, so it now quits via the normal path
+#reason src/main/windows.ts A hidden notification window stops window-all-closed from firing, so the last user window closing reports idle itself
+#reason test/windows.test.ts Proves the idle callback fires only once the last window has closed
+#story Closing the last window on Windows and Linux
+#step actor A user on Linux or Windows
+#file src/main/windows.ts
+#step action closes the last Lantern window
+#file src/main/main.ts
+#step subject Lantern, which checks for a tray the user can reach
+#file src/main/last-window.ts
+#file test/last-window.test.ts
+#below interaction Quit with the window, or stay in the tray where one can be clicked
+#file test/windows.test.ts
+#below consequence Lantern kept running with nothing to click on GNOME => Lantern quits cleanly unless a reachable tray exists
