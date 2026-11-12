@@ -71,13 +71,18 @@ test/claude-poll.test.ts . test ad717fa0ac1c
   = src/main/claude-poll.ts
   < src/main/scanner.ts#SessionSnapshot
 
-test/cli-panel.test.ts . test b791377031b0
+test/cli-panel.test.ts . test 92e904c47fed
 #feature projects-hub
   = src/renderer/features/cli-panel.ts
   < src/main/cli.ts#CliStatus
 
-test/cli-script.test.ts . test 3617b4c76a75
+test/cli-script.test.ts . test 3b8645f66e88
 #feature projects-hub
+
+test/cli-user-install.test.ts . test 34ee99250d3a
+#feature projects-hub
+  = src/main/cli-user-install.ts
+  = src/cli/lantern.cmd
 
 test/cli.test.ts . test d66e33f72b51
 #feature projects-hub
@@ -2141,7 +2146,7 @@ test/session-notification.test.ts . test bf6965916c89
   = src/main/projectroot.ts#readBranch
   = src/main/session-notification.ts
 
-test/settings-dialog.test.ts . test 0970b15946c3
+test/settings-dialog.test.ts . test cdc8c66bb62c
   = src/renderer/features/settings.ts
   = src/renderer/commands/index.ts
   = src/renderer/lib/settings-state.ts
