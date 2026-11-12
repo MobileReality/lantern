@@ -27,8 +27,6 @@ function forgetVersion() {
   cacheFor(currentRepo()).version = undefined;
 }
 
-// An explicitly saved repo wins. Without one the catalogue is the repo of the configured
-// skill linker, found again on every call so a changed linker needs no restart and nothing is written.
 function repoState(): { root: string; fromLinker: boolean } {
   if (repo) return { root: repo, fromLinker: false };
   const root = linkerRepo(os.homedir());
@@ -49,7 +47,6 @@ function loadConfig() {
   publishRepo();
 }
 
-// Only a saved repo is published: the linker's own path already reaches every session through lantern-extensions.json.
 function publishRepo() {
   if (repo) process.env[SKILLS_REPO_ENV] = repo;
   else delete process.env[SKILLS_REPO_ENV];
