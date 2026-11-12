@@ -8,7 +8,7 @@
   "graph-macro-legend.spec.ts": "Checks in the real app that the Macro legend in the Overview drawer is short, fits it, and that its swatches (selected, uses, To assign) are painted exactly like the shapes on the map, and screenshots the areas map and flat keys.",
   "graph-macro-platform-uses.spec.ts": "Checks in the real app that of two bots of one kind the accounts area is lit strongly for the one with files there and as uses for the one that only uses it, with the legend drawing it the same solid way, lists both in the Overview drawer, lights nothing as uses at rest and screenshots each.",
   "graph-macro.spec.ts": "Checks the macro view in the real canvas: the counts drawn at rest, readable names, selection, Escape and the way back to the file graph.",
-  "graph-navigation.spec.ts": "Checks graph zoom, panning, right-drag, overscroll, focus and input behaviour in Electron",
+  "graph-navigation.spec.ts": "Checks graph zoom, panning, right-drag, a right-click of a node that leaves selection and layout alone, overscroll, focus and input behaviour in Electron",
   "graph-pixi.spec.ts": "Checks WebGL rendering, retained tile text across zoom, interaction and failure recovery",
   "graph-regression.spec.ts": "Guards graph appearance, selection, search and empty states against regressions",
   "tray-popover.spec.ts": "Drives the menu bar popover in its harness with synthetic projects in every state: urgency order, a long name and path, nothing needing you, the empty state, the More panel with and without notifications, arrow keys, Enter and Escape, pointer selection, a live update, a scrolling list, and the stopped spinner when motion is reduced.",

@@ -36,7 +36,7 @@
   "macro-lab-world.ts": "Generates the invented Orchard Market project (six areas, eighteen features, five platforms with an infrastructure one and two chat bots, a foundation band, a feature left to assign, a pull request across three areas with its Flow, outside systems with different counts and some talked to by the foundation) and derives its Macro payload with the real derivation.",
   "lantern-plan-world.ts": "builds a throwaway project from the shared plan fixtures, with or without a remote, and runs the plan and sync scripts against it for the plan tests",
   "lantern-vocab-project.ts": "writes a synthetic project with its map, features, platforms, systems list and areas to a temp folder, runs the lantern-setup scripts on it and snapshots its .lantern files",
-  "source-blocks.ts": "finds a function body, an IPC handler's arguments or every occurrence of a call inside a source file by matching brackets, so wiring tests check where a call sits rather than counting matches",
+  "source-blocks.ts": "finds a function body, an IPC handler's arguments or every occurrence of a call inside a source file by matching brackets while skipping strings, template literals and comments, so wiring tests check where a call sits rather than counting matches",
   "lantern-map.ts":"builders for map nodes, whole maps (with their plans and unreadable plan files) and PR records",
   "lantern-sections.ts": "section fixtures (RBAC, states) and a mount helper for the map view",
   "macro-sizes-world.ts": "Generates a small (4 areas, 8 features) and a large (7 areas, 24 features) invented project and derives their Macro payloads with the real derivation.",

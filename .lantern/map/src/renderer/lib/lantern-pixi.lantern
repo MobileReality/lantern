@@ -6,13 +6,14 @@ src/renderer/lib/lantern-pixi/edge-graphics.ts . component 42b2871e19fb
   < src/renderer/lib/lanternctx.ts
   < src/renderer/lib/lanternlayout.ts#EdgeCurve
 
-src/renderer/lib/lantern-pixi/index.ts . component 77ff3400d9ac
+src/renderer/lib/lantern-pixi/index.ts . component fabb2f822ffa
 #feature file-graph
   = src/renderer/lib/lantern-pixi/edge-graphics.ts
   = src/renderer/lib/lantern-pixi/macro-graphics.ts#macroGraphics
   = src/renderer/lib/lantern-pixi/node-graphics.ts
   = src/renderer/lib/lantern-pixi/open-actions.ts
   = src/renderer/lib/lantern-pixi/palette.ts
+  = src/renderer/lib/lantern-pixi/pointer.ts#isPrimaryTap
   = src/renderer/lib/lantern-pixi/relation-graphics.ts#relationGraphics
   = src/renderer/lib/lantern-pixi/text-quality.ts
   < src/renderer/lib/lantern-pixi/viewport-size.ts#innerSize
@@ -42,11 +43,12 @@ src/renderer/lib/lantern-pixi/macro-graphics.ts . component f7cbb30b31b9
   < src/renderer/lib/lanternmacromarks.ts#MacroMarks
   < src/renderer/lib/lanternmacrostyles.ts#FLAT_LINE
 
-src/renderer/lib/lantern-pixi/node-graphics.ts . component c33a2f532103
+src/renderer/lib/lantern-pixi/node-graphics.ts . component 3d82d474c23b
 #feature file-graph
   = src/renderer/lib/file-icons.ts#fileIconUrl
   = src/renderer/lib/lantern-pixi/open-actions.ts
   < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+  = src/renderer/lib/lantern-pixi/pointer.ts#isPrimaryTap
   = src/renderer/lib/lanterncollapse.ts#tileFontSize
   = src/renderer/lib/lanternlayout.ts
   = src/renderer/lib/lanternmacro.ts#captionOf
@@ -58,18 +60,22 @@ src/renderer/lib/lantern-pixi/node-graphics.ts . component c33a2f532103
   = src/renderer/lib/lanterntile.ts#tileSlots
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lantern-pixi/open-actions.ts . component e712cc868338
+src/renderer/lib/lantern-pixi/open-actions.ts . component a3fa6f5ba722
 #feature file-graph
   < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+  = src/renderer/lib/lantern-pixi/pointer.ts#isPrimaryTap
 
 src/renderer/lib/lantern-pixi/palette.ts . util efd6ac83e6b9
 #feature file-graph
 
-src/renderer/lib/lantern-pixi/relation-graphics.ts . component 8ea124725b7a
+src/renderer/lib/lantern-pixi/pointer.ts . util 2f6985fab160
+#feature file-graph
+
+src/renderer/lib/lantern-pixi/relation-graphics.ts . component ed6c5cf2fdd1
 #feature file-graph
   = src/renderer/lib/lantern-pixi/edge-graphics.ts#drawEdge
-  = src/renderer/lib/lantern-pixi/open-actions.ts#isPrimaryTap
   < src/renderer/lib/lantern-pixi/palette.ts#PixiPalette
+  = src/renderer/lib/lantern-pixi/pointer.ts#isPrimaryTap
   < src/renderer/lib/lanternlayout.ts
   = src/renderer/lib/lanternprofile.ts#Profile
   < src/renderer/lib/lanternrelview.ts

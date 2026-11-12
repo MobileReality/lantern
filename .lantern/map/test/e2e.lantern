@@ -43,7 +43,7 @@ test/e2e/graph-macro.spec.ts . test 0f4c5055ed0f
   = test/e2e/support/graph-harness.ts
   = test/fixtures/lantern-macro-own-view.json
 
-test/e2e/graph-navigation.spec.ts . test 0910cf6edfbd
+test/e2e/graph-navigation.spec.ts . test 722e99b31b37
 #feature file-graph
   = test/e2e/support/graph-harness.ts
 
