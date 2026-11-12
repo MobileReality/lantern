@@ -3,7 +3,7 @@
     "comments.ts": "Selects added diff lines, comments on the selection and records the clipboard for the review comment specs",
     "graph-harness.ts":"Builds and manages isolated Electron graph fixtures for browser tests",
     "tray-popover-harness.ts": "Bundles the popover page and launches the hidden Electron popover harness at a chosen pixel density, finds its frame and lets a test open or update the popover with a model and read the calls it made",
-    "skills-extras-harness.ts": "Builds and launches the Electron Skills window harness over a temporary home and a git project seeded with installed skills and extras files, resolving the import aliases in its bundles, and cleans them up",
+    "skills-extras-harness.ts": "Builds and launches the Electron Skills window harness over a temporary home and a git project seeded with installed skills and extras files and, on request, a skills repo with a skill linker that is saved or only returned, resolving the import aliases in its bundles, and cleans them up",
     "integrations-harness.ts": "Builds and launches the Electron Integrations harness with git projects and a stub provider server, resolving the import aliases and loading svg icons as text in its bundles, and cleans them up",
     "overflow.ts":"Finds text cut off at a pane edge, in the Macro Overview drawer too, and ellipsised names that are squeezed or have no tooltip (a title or a data-tip)",
     "overview.ts": "Opens and closes the Macro Overview drawer, which holds the chips, legend and details of the picked block, so a spec can read or leave them"

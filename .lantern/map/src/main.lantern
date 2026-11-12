@@ -120,8 +120,9 @@ src/main/extensions-ipc.ts . handler ceae8e8424b7
   = src/main/extensions.ts#saveSkillLinker
   < src/shared/extension-slots.ts#EXTENSION_SCOPE
 
-src/main/extensions.ts . service 76636e152e1d
+src/main/extensions.ts . service f57457608cd6
 #feature skill-installer
+  < src/main/skills-catalogue.ts#catalogueSummary
   < src/shared/extension-problem.ts#extraProblemMessage
   < src/shared/extension-problem.ts#offProblemMessage
   < src/shared/extension-slots.ts#EXTENSION_SCOPE
@@ -835,10 +836,16 @@ src/main/skill-scripts.d.ts . schema b8e3daf0c47f
   < src/shared/rtk.ts#RtkStatus
   < skills/lantern-plan/scripts/plan-flow.mjs
 
-src/main/skills.ts . service cbcd36680f1f
+src/main/skills-catalogue.ts . service 0a73aa6c75b5
+#feature skill-installer
+  < skills/lantern-delegate/scripts/skill-linker.mjs#resolveSkillLinker
+
+src/main/skills.ts . service 5b82fdffcf3e
 #feature skill-installer
   < skills/lantern-delegate/scripts/skill-linker.mjs#SKILLS_REPO_ENV
   < src/main/provider.ts#providerSkillsDir
+  < src/main/skills-catalogue.ts#catalogueOf
+  < src/main/skills-catalogue.ts#linkerRepo
   = ext:git
   < scripts/lantern-bundle.mjs#SKILL_MARKER
 

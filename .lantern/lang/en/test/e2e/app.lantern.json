@@ -2,7 +2,7 @@
  "text": {
   "harness.css": "Sizes the isolated graph regression viewport",
   "index.html": "Loads graph harness markup with production map styles",
-  "skills-extras-main.ts": "Launches the Skills window harness's main process: the real extensions channels and the real skills listing over a temporary home and project folder, so every attach, move and detach writes real files",
+  "skills-extras-main.ts": "Launches the Skills window harness's main process: the real extensions channels and the real skills listing, link and unlink over a temporary home and project folder, so every attach, move, detach and link writes real files",
   "skills-extras-renderer.ts": "Opens the real Skills modal on the harness page for the project it is given, with the shared tooltips installed",
   "skills-extras.html": "Loads the Skills modal markup with the production workspace and floating styles",
   "integrations-main.ts": "Launches the Integrations harness's main process: the real account service and IPC handlers with a fake cipher, pointed at a stub provider server and real git projects",

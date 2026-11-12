@@ -28,7 +28,7 @@ test/e2e/app/integrations-renderer.ts . test 55d5fb4637b7
   = src/renderer/features/integrations.ts#openIntegrations
   = src/renderer/lib/integrations-chip.ts#mountIntegrationChip
 
-test/e2e/app/skills-extras-main.ts . test f37b4dab5cfb
+test/e2e/app/skills-extras-main.ts . test 0c28b7f57860
 #feature skill-installer
   = src/main/extensions-ipc.ts#registerExtensionsIpc
   = src/main/skills.ts

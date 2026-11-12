@@ -183,6 +183,9 @@ test/helpers/setup-project.ts . test ba3482dd793f
 #feature map-setup
   < skills/lantern-setup/scripts/lib.mjs#hashContent
 
+test/helpers/skill-linker-repo.ts . test e57b452105fc
+#feature skill-installer
+
 test/helpers/skill-runner.ts . test a4d326b00dd5
 #feature integrations
   < test/helpers/git-repo.ts#makeTmp

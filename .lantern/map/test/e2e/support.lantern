@@ -19,9 +19,10 @@ test/e2e/support/integrations-harness.ts . test 98b5ae56d657
   > test/e2e/app/integrations-main.ts
   > test/e2e/app/integrations-renderer.ts
 
-test/e2e/support/skills-extras-harness.ts . test 5b4d999930e5
+test/e2e/support/skills-extras-harness.ts . test ead8d774a734
 #feature skill-installer
   < src/preload/workspace.ts
+  < test/helpers/skill-linker-repo.ts#makeLinkerRepo
   > test/e2e/app/skills-extras-main.ts
   > test/e2e/app/skills-extras-renderer.ts
 
