@@ -460,7 +460,7 @@ src/main/lantern.ts . service ce57c170d070
   = src/main/lantern-texts.ts
   < src/main/lantern-types.ts
 
-src/main/main.ts . entry 02557d675b5c
+src/main/main.ts . entry 73b4e3f32f79
   = src/main/diagnostics/index.ts#startDiagnostics
   = src/main/diagnostics/ipc-guard.ts#guardIpc
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
@@ -533,6 +533,7 @@ src/main/main.ts . entry 02557d675b5c
   = src/main/notifycard.ts
   = src/main/lsp/semantic-service.ts
   = src/main/lsp/runtime-path.ts
+  < src/main/window-icon.ts#windowIconPath
   = src/main/rtk-status.ts#rtkStatus
   < src/shared/code-highlighting.ts
   < src/shared/config.ts
@@ -652,7 +653,7 @@ src/main/overlay.ts . service 56ac8a99105f
 src/main/permission-consent.ts . service 9c6dcc47eafe
 #feature skill-installer
 
-src/main/popout.ts . service 4b5f08c9ba7c
+src/main/popout.ts . service 62de6a344953
 #feature code-insight
   < src/renderer/workspace.html
 
@@ -861,7 +862,10 @@ src/main/tray-popover.ts . service a13152f10000
   < src/shared/tray-action.ts#parseTrayAction
   < src/shared/tray-model.ts#TrayModel
 
-src/main/windows.ts . service 20aef71a20de
+src/main/window-icon.ts . pure 0db979072650
+#feature projects-hub
+
+src/main/windows.ts . service 3c55e3c8a70e
 #feature projects-hub
   > src/main/bundle.ts#installOnOpen
   = src/main/popout.ts

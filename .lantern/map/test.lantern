@@ -2425,6 +2425,10 @@ test/webview-hardening.test.ts . test 59dde6ea39bb
 #feature projects-hub
   = src/main/windows.ts#hardenWebContents
 
+test/window-icon.test.ts . test 3c8059ce8dad
+#feature projects-hub
+  = src/main/window-icon.ts#windowIconPath
+
 test/windows.test.ts . test 2de79f10801b
 #feature projects-hub
   = src/main/popout.ts
