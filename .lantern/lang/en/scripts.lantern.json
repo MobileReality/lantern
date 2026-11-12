@@ -23,6 +23,7 @@
     "make-icon.js":"Generates Lantern application and tray icons for desktop platforms",
     "material-file-icons.mjs": "Validates or refreshes the icon manifest and copies its licensed SVG assets",
     "patch-claude-mic.js": "Applies, checks or reverts the local Claude extension voice guard patch by hand",
+    "release-checksums.sh": "Writes SHA256SUMS in a release's asset folder, one line per zip in the format sha256sum -c reads, and fails when the folder holds no zip",
     "pr-review-demo.mjs": "Builds and launches the interactive pull request review fixture, opened on its rich flow"
   }
 }
