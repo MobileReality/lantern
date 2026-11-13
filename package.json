@@ -108,6 +108,6 @@
     "marked": "^18.0.6",
     "pixi.js": "8.14.3",
     "shiki": "3.13.0",
-    "vscode-jsonrpc": "8.2.1"
+    "vscode-jsonrpc": "10.0.0"
   }
 }
