@@ -23,8 +23,6 @@ function knownOf(root: string) {
   return known;
 }
 
-// A declined pull request never merges, so its record lives only on a branch that gets deleted and
-// pruned; without this memory it would vanish from the load the moment that happens.
 function restoreVanished(root: string, found: Seen[]) {
   const known = knownOf(root);
   const present = new Set(found.map((f) => f.pr.id));
