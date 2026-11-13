@@ -45,6 +45,7 @@ contextBridge.exposeInMainWorld('ccmws', {
   onShowCompare: (cb: (project: string, id: string) => void) => ipcRenderer.on('lantern:show-compare', (_e, { project, id }) => cb(project, id)),
   cliStatus: () => ipcRenderer.invoke('cli:status'),
   cliInstall: () => ipcRenderer.invoke('cli:install'),
+  cliUninstall: () => ipcRenderer.invoke('cli:uninstall'),
   rtkStatus: (project: string | null) => ipcRenderer.invoke('rtk:status', project),
 
   skillsList: (project: string | null) => ipcRenderer.invoke('skills:list', project),

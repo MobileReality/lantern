@@ -49,6 +49,7 @@ interface CcmwsBridge {
   onShowCompare(cb: (project: string, id: string) => void): void;
   cliStatus(): Promise<CliStatus | null>;
   cliInstall(): Promise<CliStatus | null>;
+  cliUninstall(): Promise<CliStatus | null>;
   rtkStatus(project: string | null): Promise<RtkStatus>;
   skillsList(project: string | null): Promise<any>;
   skillsLink(project: string, names: string[]): Promise<any>;

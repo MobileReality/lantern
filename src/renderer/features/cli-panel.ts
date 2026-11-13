@@ -53,17 +53,21 @@ function mountCliPanel(section: HTMLElement): void {
   const install = el('button', 'st-edit cli-install');
   install.type = 'button';
   install.hidden = true;
+  const uninstall = el('button', 'st-edit cli-uninstall', 'Uninstall');
+  uninstall.type = 'button';
+  uninstall.hidden = true;
   const error = el('p', 'cli-error');
   error.setAttribute('role', 'alert');
   const guide = el('pre', 'cli-guide');
   guide.hidden = true;
-  section.append(desc, state, note, install, error, guide);
+  section.append(desc, state, note, install, uninstall, error, guide);
 
   function show(status: CliStatus | null): void {
     state.textContent = statusText(status);
     note.textContent = status?.note ?? '';
     note.hidden = !status?.note;
     install.hidden = !status || status.state === 'other';
+    uninstall.hidden = status?.state !== 'installed';
     install.textContent = status?.state === 'missing' ? 'Install' : 'Reinstall';
     guide.hidden = !status;
     if (status) guide.textContent = guideText(status);
@@ -78,6 +82,18 @@ function mountCliPanel(section: HTMLElement): void {
       error.textContent = `Couldn't install: ${errorMessage(err)}`;
     } finally {
       install.disabled = false;
+    }
+  });
+
+  uninstall.addEventListener('click', async () => {
+    uninstall.disabled = true;
+    error.textContent = '';
+    try {
+      show(await window.ccmws.cliUninstall());
+    } catch (err) {
+      error.textContent = `Couldn't uninstall: ${errorMessage(err)}`;
+    } finally {
+      uninstall.disabled = false;
     }
   });
 
