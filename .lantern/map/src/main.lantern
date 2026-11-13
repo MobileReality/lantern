@@ -473,9 +473,10 @@ src/main/lantern.ts . service ce57c170d070
 src/main/last-window.ts . util 4467717adf73
 #feature projects-hub
 
-src/main/main.ts . entry 2c2e7e2889a8
+src/main/main.ts . entry 1d9d5eed2dc6
   = src/main/cli-user-install.ts
   < src/main/cli-user-port.ts#cliPort
+  = src/main/squirrel-events.ts#handleSquirrelEvent
   = src/main/last-window.ts#createLastWindowHandler
   = src/main/diagnostics/index.ts#startDiagnostics
   = src/main/diagnostics/ipc-guard.ts#guardIpc
@@ -863,6 +864,10 @@ src/main/skills.ts . service f98ae15eb875
   < src/main/skills-catalogue.ts#linkerRepo
   = ext:git
   < scripts/lantern-bundle.mjs#SKILL_MARKER
+
+src/main/squirrel-events.ts . pure b66c97bb5c90
+#feature projects-hub
+  < src/main/cli.ts#CliStatus
 
 src/main/state.ts . state 3d173dde395a
 #feature session-monitoring
