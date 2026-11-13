@@ -71,17 +71,17 @@
     "patch-mic:revert": "node scripts/patch-claude-mic.js --revert"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.5",
+    "@biomejs/biome": "2.6.6",
     "@electron/fuses": "^2.1.2",
     "@electron/osx-sign": "^2.7.2",
     "@electron/packager": "^20.3.0",
-    "@playwright/test": "1.55.1",
-    "@types/node": "^26.0.1",
+    "@playwright/test": "1.65.0",
+    "@types/node": "^26.6.6",
     "@vitest/coverage-v8": "^4.1.12",
-    "electron": "^45.2.2",
-    "esbuild": "^0.28.1",
+    "electron": "^45.2.3",
+    "esbuild": "^0.28.2",
     "jsdom": "^29.1.1",
-    "material-icon-theme": "5.39.0",
+    "material-icon-theme": "5.40.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.12"
   },
@@ -105,8 +105,8 @@
     "dompurify": "^3.4.17",
     "js-yaml": "^5.5.0",
     "jsonc-parser": "3.3.1",
-    "marked": "^18.0.6",
-    "pixi.js": "8.14.3",
+    "marked": "^18.2.0",
+    "pixi.js": "8.22.0",
     "shiki": "3.13.0",
     "vscode-jsonrpc": "8.2.1"
   }
