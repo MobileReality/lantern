@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { scriptPath } from '../src/main/cli';
-import { installUserCli, userCliStatus } from '../src/main/cli-user-install';
+import { installUserCli, uninstallUserCli, userCliStatus } from '../src/main/cli-user-install';
 import type { CliContext, CliPort } from '../src/main/cli-user-install';
 
 const LINUX_SCRIPT = '/opt/Lantern-linux-x64/resources/cli/lantern';
@@ -118,6 +118,92 @@ describe('Windows install', () => {
     const stale = fakePort({ files: { [WIN_SCRIPT]: '@echo off', [shim]: '@echo off\r\nrem lantern-cli-shim\r\ncall "D:\\Old\\lantern.cmd" %*\r\n' }, userPath: dir });
     expect((await userCliStatus(windows(stale.port)))?.state).toBe('missing');
     expect((await installUserCli(windows(stale.port)))?.state).toBe('installed');
+  });
+});
+
+describe('Linux uninstall', () => {
+  const bin = '/home/ann/.local/bin';
+  const launcher = `${bin}/lantern`;
+
+  it('removes the symlink it made and reports missing', async () => {
+    const { port, links } = fakePort({ files: { [LINUX_SCRIPT]: '#!/bin/sh' }, links: { [launcher]: LINUX_SCRIPT } });
+    const result = await uninstallUserCli(linux(port, bin));
+    expect(links.has(launcher)).toBe(false);
+    expect(result).toMatchObject({ state: 'missing', link: launcher, platform: 'linux' });
+  });
+
+  it('removes its link even when the packaged script is gone', async () => {
+    const { port, links } = fakePort({ links: { [launcher]: LINUX_SCRIPT } });
+    await uninstallUserCli(linux(port, bin));
+    expect(links.has(launcher)).toBe(false);
+  });
+
+  it('leaves a launcher it did not install alone', async () => {
+    const { port, links } = fakePort({ links: { [launcher]: '/elsewhere/lantern' } });
+    expect(await uninstallUserCli(linux(port, bin))).toMatchObject({ state: 'other' });
+    expect(links.get(launcher)).toBe('/elsewhere/lantern');
+
+    const regular = fakePort({ files: { [launcher]: '#!/bin/sh' } });
+    expect(await uninstallUserCli(linux(regular.port, bin))).toMatchObject({ state: 'other' });
+    expect(regular.files.get(launcher)).toBe('#!/bin/sh');
+  });
+
+  it('is a clean no-op when nothing is installed', async () => {
+    const { port, links, files } = fakePort();
+    expect(await uninstallUserCli(linux(port, bin))).toMatchObject({ state: 'missing', note: null });
+    expect(links.size + files.size).toBe(0);
+  });
+});
+
+describe('Windows uninstall', () => {
+  const dir = 'C:\\Users\\ann\\AppData\\Local\\Lantern\\bin';
+  const shim = `${dir}\\lantern.cmd`;
+  const ownShim = `@echo off\r\nrem lantern-cli-shim\r\ncall "${WIN_SCRIPT}" %*\r\n`;
+
+  it('removes the shim and only its PATH entry, ignoring case and a trailing slash', async () => {
+    const { port, files, state } = fakePort({ files: { [shim]: ownShim }, userPath: `C:\\Tools;${dir.toLowerCase()}\\;%USERPROFILE%\\bin` });
+    const result = await uninstallUserCli(windows(port));
+    expect(files.has(shim)).toBe(false);
+    expect(state.userPath).toBe('C:\\Tools;%USERPROFILE%\\bin');
+    expect(result).toMatchObject({ state: 'missing', link: shim, platform: 'win32' });
+  });
+
+  it('removes a shim that points at a moved app', async () => {
+    const stale = ownShim.replace(WIN_SCRIPT, 'D:\\Old\\lantern.cmd');
+    const { port, files, state } = fakePort({ files: { [shim]: stale }, userPath: dir });
+    await uninstallUserCli(windows(port));
+    expect(files.has(shim)).toBe(false);
+    expect(state.userPath).toBe('');
+  });
+
+  it('leaves a lantern.cmd it did not write, and the PATH, alone', async () => {
+    const { port, files, state } = fakePort({ files: { [shim]: '@echo hi' }, userPath: `C:\\Tools;${dir}` });
+    expect(await uninstallUserCli(windows(port))).toMatchObject({ state: 'other' });
+    expect(files.get(shim)).toBe('@echo hi');
+    expect(state.pathWrites).toEqual([]);
+  });
+
+  it('drops a leftover PATH entry when the shim is already gone', async () => {
+    const { port, state } = fakePort({ userPath: `C:\\Tools;${dir}` });
+    await uninstallUserCli(windows(port));
+    expect(state.userPath).toBe('C:\\Tools');
+  });
+
+  it('is a clean no-op when nothing is installed, and never rewrites the PATH when it cannot be read', async () => {
+    const empty = fakePort({ userPath: 'C:\\Tools' });
+    expect(await uninstallUserCli(windows(empty.port))).toMatchObject({ state: 'missing', note: null });
+    expect(empty.state.pathWrites).toEqual([]);
+
+    const unreadable = fakePort({ files: { [shim]: ownShim } });
+    unreadable.port.readUserPath = async () => {
+      throw new Error('powershell failed');
+    };
+    await expect(uninstallUserCli(windows(unreadable.port))).rejects.toThrow('powershell failed');
+    expect(unreadable.files.has(shim)).toBe(true);
+  });
+
+  it('leaves macOS to the existing installer', async () => {
+    expect(await uninstallUserCli({ ...windows(fakePort().port), platform: 'darwin' })).toBeNull();
   });
 });
 

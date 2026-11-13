@@ -49,9 +49,12 @@ function onLinuxPath(ctx: CliContext, dir: string) {
   return (ctx.env.PATH ?? '').split(':').some((entry) => entry !== '' && trimSeparator(entry, '/') === dir);
 }
 
+function isWindowsEntry(entry: string, dir: string) {
+  return trimSeparator(entry.trim(), '\\').toLowerCase() === trimSeparator(dir, '\\').toLowerCase();
+}
+
 function onWindowsPath(userPath: string | null, dir: string) {
-  const wanted = trimSeparator(dir, '\\').toLowerCase();
-  return (userPath ?? '').split(';').some((entry) => trimSeparator(entry.trim(), '\\').toLowerCase() === wanted);
+  return (userPath ?? '').split(';').some((entry) => isWindowsEntry(entry, dir));
 }
 
 function linuxState(ctx: CliContext, link: string): Pick<CliStatus, 'state' | 'target'> {
@@ -105,5 +108,34 @@ async function installUserCli(ctx: CliContext): Promise<CliStatus | null> {
   return { ...describe(ctx, updated), note: `Added ${dir} to your user PATH. Open a new terminal to use lantern.` };
 }
 
+const ownsLinuxLink = (ctx: CliContext, link: string) => ctx.port.readlink(link) !== null && linuxState(ctx, link).target === ctx.script;
+
+const ownsShim = (ctx: CliContext, link: string) => ctx.port.readText(link)?.includes(SHIM_MARKER) ?? false;
+
+const withoutEntry = (userPath: string, dir: string) =>
+  userPath
+    .split(';')
+    .filter((entry) => !isWindowsEntry(entry, dir))
+    .join(';');
+
+async function uninstallUserCli(ctx: CliContext): Promise<CliStatus | null> {
+  if (!isUserContext(ctx)) return null;
+  const { dir, link } = location(ctx);
+  const userPath = await readPath(ctx);
+  const current = describe(ctx, userPath);
+  if (current.state === 'other') return current;
+
+  if (ctx.platform === 'linux') {
+    if (ownsLinuxLink(ctx, link)) ctx.port.remove(link);
+    return describe(ctx, null);
+  }
+
+  if (ownsShim(ctx, link)) ctx.port.remove(link);
+  if (!onWindowsPath(userPath, dir)) return describe(ctx, userPath);
+  const updated = withoutEntry(userPath ?? '', dir);
+  await ctx.port.writeUserPath(updated);
+  return { ...describe(ctx, updated), note: `Removed ${dir} from your user PATH. Open a new terminal for it to take effect.` };
+}
+
 export type { CliContext, CliPort };
-export { installUserCli, userCliStatus };
+export { installUserCli, uninstallUserCli, userCliStatus };

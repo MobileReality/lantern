@@ -1,0 +1,27 @@
+lantern-pr 1
+# 47
+#title Uninstall the Linux and Windows lantern command
+#url https://github.com/MobileReality/lantern/pull/47
+#branch feat/uninstall-lantern-cli-win-linux
+#base feat/windows-installer
+#opened 2026-11-13
+#head ee47c94d7e09073d51a11535393119ae6e0bc4ab
+#describe what Adds an uninstall for the lantern command on Linux and Windows that removes only what Lantern made.
+#describe before The command could only be removed by hand.
+#describe after Uninstall removes Lantern's link or shim and its PATH entry, leaves foreign commands and other PATH entries alone, and is a clean no-op when nothing is installed.
+#describe verified Typecheck and the full test suite pass; new Linux and Windows uninstall tests failed before the code.
+#plan windows-squirrel-installer s1.1
+~ src/main/cli-user-install.ts
+~ test/cli-user-install.test.ts
+#order src/main/cli-user-install.ts
+#order test/cli-user-install.test.ts
+#reason src/main/cli-user-install.ts Lets the command be removed again without touching a link or shim Lantern did not create.
+#reason test/cli-user-install.test.ts Pins uninstall so a left-behind link, shim or PATH entry fails the suite.
+#story Removing the lantern command
+#step actor A Linux or Windows user
+#file src/main/cli-user-install.ts
+#step action asks Lantern to remove the lantern command
+#step subject the link or shim Lantern made
+#file test/cli-user-install.test.ts
+#below interaction Can undo the install and add it again later
+#below consequence The command stays until removed by hand => Only Lantern's own link, shim and PATH entry go

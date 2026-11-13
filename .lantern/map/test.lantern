@@ -79,7 +79,7 @@ test/cli-panel.test.ts . test 92e904c47fed
 test/cli-script.test.ts . test 3b8645f66e88
 #feature projects-hub
 
-test/cli-user-install.test.ts . test 34ee99250d3a
+test/cli-user-install.test.ts . test ac3c5cd1ee9f
 #feature projects-hub
   = src/main/cli-user-install.ts
   = src/cli/lantern.cmd
