@@ -1,6 +1,8 @@
 lantern 1
 # scripts
 
+scripts/build-windows-installer.mjs . script e35a6cf38565
+
 scripts/check-linux-package.sh . script 89a5078ad7f6
 
 scripts/esbuild.mjs . script 913468a9e4b4

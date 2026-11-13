@@ -63,6 +63,7 @@
     "pack": "ditto -c -k --keepParent \"dist/Lantern-darwin-arm64/Lantern.app\" \"dist/Lantern-mac.zip\"",
     "dist:share": "pnpm run build && pnpm run fuses && pnpm run sign:adhoc && pnpm run pack",
     "build:win": "node scripts/esbuild.mjs --target-platform win32 --target-arch x64 && electron-packager out \"Lantern\" --platform=win32 --arch=x64 --out=dist --overwrite --app-bundle-id=com.mobilereality.lantern --icon=build/icon.ico --ignore=\"^/lsp-runtime($|/)\" --ignore=\"^/cli($|/)\" --ignore=\"^/licenses($|/)\" --extra-resource=out/lsp-runtime --extra-resource=out/cli --extra-resource=out/licenses && node scripts/package-licences.mjs --platform win32 --arch x64 && pnpm run fuses",
+    "build:win:installer": "node scripts/build-windows-installer.mjs",
     "build:linux": "node scripts/esbuild.mjs --target-platform linux --target-arch x64 && electron-packager out \"Lantern\" --platform=linux --arch=x64 --out=dist --overwrite --app-bundle-id=com.mobilereality.lantern --icon=build/icon.png --ignore=\"^/lsp-runtime($|/)\" --ignore=\"^/cli($|/)\" --ignore=\"^/licenses($|/)\" --extra-resource=out/lsp-runtime --extra-resource=out/cli --extra-resource=out/licenses --extra-resource=build/icon.png && node scripts/package-licences.mjs --platform linux --arch x64 && pnpm run fuses",
     "pack:linux": "cd dist && rm -f Lantern-linux-x64.zip && zip -r -y -q Lantern-linux-x64.zip Lantern-linux-x64",
     "app": "open \"dist/Lantern-darwin-arm64/Lantern.app\"",
@@ -79,6 +80,7 @@
     "@types/node": "^26.0.1",
     "@vitest/coverage-v8": "^4.1.12",
     "electron": "^45.2.2",
+    "electron-winstaller": "^5.4.4",
     "esbuild": "^0.28.1",
     "jsdom": "^29.1.1",
     "material-icon-theme": "5.39.0",
@@ -88,6 +90,7 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
+      "electron-winstaller",
       "esbuild"
     ],
     "overrides": {
