@@ -55,7 +55,7 @@ src/main/claude-poll.ts . service 08d47300a4c0
 #feature session-monitoring
   < src/main/scanner.ts#SessionSnapshot
 
-src/main/cli-user-install.ts . service 6a37f83c5d7d
+src/main/cli-user-install.ts . service 762a34ad2b6a
 #feature projects-hub
   < src/main/cli.ts#CliStatus
 
