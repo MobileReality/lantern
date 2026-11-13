@@ -5,7 +5,7 @@ lantern-pr 1
 #branch fix/pr-declined-state
 #base main
 #opened 2026-11-13
-#head 08b7ca4829bdff8a7c45cf559753a1fd2bb5cd18
+#head 51c1d6cd09f5c8ce36ce45f1f8634a33a349edc4
 #describe what A pull request closed without a merge, declined on Bitbucket or closed unmerged on GitHub, now stays in Lantern as declined on both hosts.
 #describe before Once its branch was deleted and pruned, the declined pull request vanished, and the strip hid it two days after it was opened.
 #describe after It stays as declined (host answered) or closed (host could not be asked) and shows for two days from when it was declined.

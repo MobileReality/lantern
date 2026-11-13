@@ -356,7 +356,7 @@ src/main/lantern-pr-parse.ts . pure c50c203d8348
   < src/main/lantern-types.ts
   < src/shared/reason.ts#REASON_MAX_CHARS
 
-src/main/lantern-pr-remembered.ts . service bd2cc874bc8c
+src/main/lantern-pr-remembered.ts . service 58155dc59be3
 #feature pull-requests
   < src/main/lantern-pr-parse.ts#ParsedPr
 
