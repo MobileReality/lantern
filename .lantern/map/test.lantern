@@ -71,7 +71,7 @@ test/claude-poll.test.ts . test ad717fa0ac1c
   = src/main/claude-poll.ts
   < src/main/scanner.ts#SessionSnapshot
 
-test/cli-panel.test.ts . test 92e904c47fed
+test/cli-panel.test.ts . test 5639c109ad8a
 #feature projects-hub
   = src/renderer/features/cli-panel.ts
   < src/main/cli.ts#CliStatus

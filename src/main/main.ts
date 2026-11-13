@@ -39,7 +39,7 @@ import { msg } from '../shared/lang/messages';
 import * as popout from './popout';
 import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow, hideDockIfIdle, focusProjectWindow, openFromArgv, windowOpenHandler, ownsProject, projectKey } from './windows';
 import * as cli from './cli';
-import { installUserCli, userCliStatus } from './cli-user-install';
+import { installUserCli, uninstallUserCli, userCliStatus } from './cli-user-install';
 import { cliPort } from './cli-user-port';
 import { createLastWindowHandler } from './last-window';
 import * as settings from './settings';
@@ -974,6 +974,10 @@ ipcMain.handle('cli:status', fromWorkspace(() => (process.platform === 'darwin' 
 ipcMain.handle('cli:install', fromWorkspace(() => {
   if (DEV_PROFILE) return null;
   return process.platform === 'darwin' ? cli.install(cliScript) : installUserCli(cliContext());
+}));
+ipcMain.handle('cli:uninstall', fromWorkspace(() => {
+  if (DEV_PROFILE) return null;
+  return process.platform === 'darwin' ? cli.uninstall(cliScript) : uninstallUserCli(cliContext());
 }));
 ipcMain.handle('rtk:status', fromWorkspace((_e, project: unknown) => rtkStatus(project, projectPaths())));
 ipcMain.handle('popout:open', fromWorkspace((e, { tool, project }: { tool: string; project: string }) => { popout.open(tool, project, e.sender); return true; }));

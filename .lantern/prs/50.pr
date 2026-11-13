@@ -1,0 +1,39 @@
+lantern-pr 1
+# 50
+#title feat: add Uninstall to the Settings command line panel
+#url https://github.com/MobileReality/lantern/pull/50
+#branch feat/settings-uninstall-cli
+#base feat/windows-installer
+#opened 2026-11-13
+#head fbbafc3a1d26078afd974042ffabac6bdf3bcb7b
+#describe what The Settings command line panel gets an Uninstall button, shown only when the lantern command is installed, wired through a new cli:uninstall IPC channel to the platform uninstall.
+#describe before The panel could Install or Reinstall; removing the command meant running rm or del by hand.
+#describe after An installed command shows Uninstall; one click removes it and the panel redraws as Not installed, with the Windows new-terminal note or an inline error.
+#describe verified pnpm run typecheck, pnpm test and the cli-panel test are green; the new tests failed before the change.
+#plan windows-squirrel-installer s2.1
+~ src/main/main.ts
+~ src/preload/workspace.ts
+~ src/renderer/features/cli-panel.ts
+~ src/renderer/global.d.ts
+~ test/cli-panel.test.ts
+#order src/renderer/global.d.ts
+#order src/main/main.ts
+#order src/preload/workspace.ts
+#order src/renderer/features/cli-panel.ts
+#order test/cli-panel.test.ts
+#reason src/main/main.ts Serves the uninstall through the same per-platform split install already uses.
+#reason src/preload/workspace.ts Exposes the uninstall call to the renderer through invoke only, so no raw ipcRenderer leaks.
+#reason src/renderer/features/cli-panel.ts Lets a person remove the lantern command from Settings instead of deleting the link by hand.
+#reason src/renderer/global.d.ts Types the new bridge call like cliInstall so the panel type-checks.
+#reason test/cli-panel.test.ts Pins that Uninstall shows only when installed and is called once, with the note and error shown.
+#story Remove the lantern command from Settings
+#step actor A person with the command installed
+#file src/renderer/features/cli-panel.ts
+#step action clicks Uninstall in the command line panel
+#file src/preload/workspace.ts
+#file src/main/main.ts
+#step subject the lantern command on their system
+#file src/main/main.ts
+#below interaction Sees the panel switch to Not installed, with any new-terminal note
+#file test/cli-panel.test.ts
+#below consequence Removing it meant deleting the link by hand => One click removes it on every OS

@@ -12,7 +12,7 @@ src/renderer/features/agent-run.ts . component 6657f28898dc
   < src/shared/lantern-plan-messages.ts#say
   > src/renderer/features/explain.ts
 
-src/renderer/features/cli-panel.ts . component 3c6383254ee0
+src/renderer/features/cli-panel.ts . component e5ae9ca005f3
   < src/main/cli.ts#CliStatus
   = src/preload/workspace.ts#cliInstall
   < src/renderer/lib/settings-editor.ts#SettingsPanel

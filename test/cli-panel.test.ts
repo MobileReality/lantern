@@ -9,9 +9,11 @@ const status = (overrides: Partial<CliStatus> = {}): CliStatus => ({ state: 'mis
 
 const cliStatus = vi.fn<() => Promise<CliStatus | null>>();
 const cliInstall = vi.fn<() => Promise<CliStatus | null>>();
+const cliUninstall = vi.fn<() => Promise<CliStatus | null>>();
 
 const $ = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector)!;
 const install = () => $<HTMLButtonElement>('.cli-install');
+const uninstall = () => $<HTMLButtonElement>('.cli-uninstall');
 
 async function mount(initial: CliStatus | null) {
   cliStatus.mockResolvedValue(initial);
@@ -24,7 +26,8 @@ async function mount(initial: CliStatus | null) {
 beforeEach(() => {
   cliStatus.mockReset();
   cliInstall.mockReset();
-  window.ccmws = { cliStatus, cliInstall } as unknown as Window['ccmws'];
+  cliUninstall.mockReset();
+  window.ccmws = { cliStatus, cliInstall, cliUninstall } as unknown as Window['ccmws'];
 });
 
 describe('Command line panel', () => {
@@ -96,5 +99,37 @@ describe('Command line panel', () => {
     await vi.waitFor(() => expect($('.cli-error').textContent).toBe("Couldn't install: User canceled."));
     expect($('.cli-state').textContent).toBe('Not installed');
     expect(install().disabled).toBe(false);
+  });
+
+  it('shows Uninstall only when the command is installed', async () => {
+    await mount(status({ state: 'installed', target: SCRIPT }));
+    expect(uninstall().hidden).toBe(false);
+    expect(uninstall().textContent).toBe('Uninstall');
+    for (const other of [status(), status({ state: 'other' }), null]) {
+      await mount(other);
+      expect(uninstall().hidden).toBe(true);
+    }
+  });
+
+  it('uninstalls once and shows the new status with its note', async () => {
+    await mount(status({ state: 'installed', platform: 'win32', target: SCRIPT }));
+    cliUninstall.mockResolvedValue(status({ state: 'missing', platform: 'win32', note: 'Open a new terminal for it to take effect.' }));
+    uninstall().click();
+    await vi.waitFor(() => expect($('.cli-state').textContent).toBe('Not installed'));
+    expect(cliUninstall).toHaveBeenCalledTimes(1);
+    expect($('.cli-note').textContent).toBe('Open a new terminal for it to take effect.');
+    expect(uninstall().hidden).toBe(true);
+    expect(uninstall().disabled).toBe(false);
+    expect($('.cli-error').textContent).toBe('');
+  });
+
+  it('shows an uninstall failure inline and keeps the command installed', async () => {
+    await mount(status({ state: 'installed', target: SCRIPT }));
+    cliUninstall.mockRejectedValue(new Error("Error invoking remote method 'cli:uninstall': Error: User canceled."));
+    uninstall().click();
+    await vi.waitFor(() => expect($('.cli-error').textContent).toBe("Couldn't uninstall: User canceled."));
+    expect($('.cli-state').textContent).toBe(`Installed — ${LINK}`);
+    expect(uninstall().hidden).toBe(false);
+    expect(uninstall().disabled).toBe(false);
   });
 });

@@ -473,7 +473,7 @@ src/main/lantern.ts . service ce57c170d070
 src/main/last-window.ts . util 4467717adf73
 #feature projects-hub
 
-src/main/main.ts . entry 81bad742ab6b
+src/main/main.ts . entry 2c2e7e2889a8
   = src/main/cli-user-install.ts
   < src/main/cli-user-port.ts#cliPort
   = src/main/last-window.ts#createLastWindowHandler
