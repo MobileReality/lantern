@@ -1,0 +1,117 @@
+lantern-plan 1
+# windows-squirrel-installer
+#title Windows installer with updates, and uninstalling the lantern command
+#opened 2026-11-12
+
+#goal Windows gets a per-user Squirrel installer and uninstaller that also updates itself, next to the portable zip.
+#goal The lantern command can be removed from Settings on macOS, Linux and Windows.
+
+#scope-in Squirrel.Windows installer, uninstaller and auto-update through the existing update.electronjs.org feed.
+#scope-in Uninstall of the lantern command on all three systems, from Settings.
+#scope-in Keeping the Windows lantern shim valid across updates and removing it on uninstall.
+#scope-in Release assets and checksums for the installer; README and docs for install and uninstall.
+#scope-out Signing with SignPath: its own stage, started after the application is accepted.
+#scope-out Installers for macOS (zip stays) and Linux (zip stays); the marketing site.
+#scope-out Deleting app data: the Windows uninstaller keeps it, as Squirrel apps do.
+
+#impact area project-workspace The lantern command installer and its Settings panel live here.
+#impact area keep-lantern-healthy Windows joins macOS in the Squirrel updater.
+#impact feature projects-hub Uninstall for the lantern command, shim refresh on update.
+#impact feature app-updates Windows auto-update through the win32-x64 feed.
+#impact file src/main/cli-user-install.ts Gains uninstall for Linux and Windows.
+#impact file src/main/cli-user-port.ts Gains the registry and file removal the uninstall needs.
+#impact file src/main/cli.ts Gains uninstall of the macOS link.
+#impact file src/main/main.ts Handles Squirrel events, the uninstall IPC and the Windows updater.
+#impact file src/preload/workspace.ts Exposes the uninstall call.
+#impact file src/renderer/global.d.ts Types the uninstall call.
+#impact file src/renderer/features/cli-panel.ts Shows an Uninstall button when the command is installed.
+#impact file src/main/updater/feed.ts Builds the win32-x64 feed URL next to the macOS one.
+#impact file src/main/updater/native.ts Wraps the Squirrel autoUpdater for Windows too.
+#impact file .github/workflows/release.yml Builds and uploads the Squirrel files and signs nothing yet.
+#impact file package.json New build script for the installer and its dependency.
+#impact file scripts/release-checksums.sh Covers the installer exe as well as the zips.
+#impact file test/cli-user-install.test.ts Pins the uninstall behaviour.
+#impact file test/cli.test.ts Pins the macOS uninstall.
+#impact file test/cli-panel.test.ts Pins the Uninstall button.
+#impact file test/updater-feed.test.ts Pins the win32-x64 feed.
+#impact file test/release-workflow.test.ts Pins the new release steps.
+#impact new scripts/build-windows-installer.mjs Turns the packaged Windows app into Setup.exe, RELEASES and the nupkg.
+#impact new src/main/squirrel-events.ts Answers Squirrel install, update and uninstall launches and exits.
+#impact new test/squirrel-events.test.ts Pins what each Squirrel launch does to shortcuts and the shim.
+
+#stage s1 Uninstall the lantern command
+#item s1.1 Remove the Linux and Windows lantern command, shim and PATH entry
+#touch file src/main/cli-user-install.ts
+#touch file src/main/cli-user-port.ts
+#touch file test/cli-user-install.test.ts
+#accept vitest run test/cli-user-install.test.ts covers uninstall on both systems and fails when the PATH entry or the link is left behind.
+#item s1.2 Remove the macOS lantern link with the administrator prompt
+#touch file src/main/cli.ts
+#touch file test/cli.test.ts
+#accept vitest run test/cli.test.ts fails on main and passes here: uninstall removes only a link Lantern made and leaves a foreign one.
+
+#stage s2 Uninstall from Settings
+#item s2.1 Add an Uninstall button for the lantern command through IPC
+#touch file src/main/main.ts
+#touch file src/preload/workspace.ts
+#touch file src/renderer/global.d.ts
+#touch file src/renderer/features/cli-panel.ts
+#touch file test/cli-panel.test.ts
+#accept vitest run test/cli-panel.test.ts shows Uninstall only when installed and calls the platform uninstall once.
+
+#stage s3 The Windows installer
+#item s3.1 Build Setup.exe, RELEASES and the nupkg from the packaged Windows app
+#touch file package.json
+#touch new scripts/build-windows-installer.mjs
+#accept On windows-2022 pnpm run build:win:installer leaves Setup.exe, RELEASES and a full nupkg in dist; the script does not exist on main.
+#item s3.2 Answer Squirrel install, update and uninstall launches
+#touch file src/main/main.ts
+#touch new src/main/squirrel-events.ts
+#touch new test/squirrel-events.test.ts
+#accept vitest run test/squirrel-events.test.ts: install and update make shortcuts and refresh the shim, uninstall removes shim and PATH entry, each launch exits.
+
+#stage s4 Windows updates and the release
+#item s4.1 Enable the Squirrel auto-update on Windows with the win32-x64 feed
+#touch file src/main/updater/feed.ts
+#touch file src/main/updater/native.ts
+#touch file src/main/main.ts
+#touch file test/updater-feed.test.ts
+#accept vitest run test/updater-feed.test.ts returns a win32-x64 feed URL and none for an unsupported arch; it fails on main.
+#item s4.2 Build, upload and checksum the installer files in the release workflow
+#touch file .github/workflows/release.yml
+#touch file scripts/release-checksums.sh
+#touch file test/release-workflow.test.ts
+#accept vitest run test/release-workflow.test.ts finds the installer step, its upload and the Setup.exe checksum; test/workflow-hygiene.test.ts stays green.
+
+#stage s5 Docs
+#item s5.1 Document the installer, the portable zip and uninstalling on every system in README and docs
+#touch feature projects-hub
+#accept README.md and docs/installation.md name Setup.exe, the portable zip, where data stays and how to remove the command; grep -n Uninstall finds it in both.
+
+#stage s6 Sign with SignPath
+#item s6.1 Sign Lantern.exe and Setup.exe with SignPath before the Squirrel files are uploaded
+#touch file .github/workflows/release.yml
+#accept A tagged release has a valid SignPath signature on Lantern.exe and Setup.exe (signtool verify /pa passes); it fails on an unsigned build.
+#question s6.q1 Has the SignPath Foundation application been accepted? Give the organisation, project and signing policy slugs. Default: not yet, so this stage waits.
+#answer user not yet, so this stage waits.
+
+#risk Squirrel installs to app-<version>; the shim must be refreshed on update or it points at a deleted folder.
+#risk Squirrel hooks must finish in seconds and exit, or the install hangs; keep them minimal.
+#risk update.electronjs.org needs RELEASES and *-full.nupkg as Squirrel names them; prove it on a test tag.
+#risk @electron/windows-installer needs Windows; build it only on the windows-2022 job.
+#risk Signing must come before the nupkg is built, so stage s6 reorders the Windows job.
+#risk Nothing here runs on a Windows machine in CI; one real install, update and uninstall must be done by hand.
+#risk Removing the macOS link asks for the administrator password, as installing it does.
+
+#approved title Marcin 2026-11-13 b15651912671
+#approved goal Marcin 2026-11-13 71a2bba4c46f
+#approved scope Marcin 2026-11-13 e40226cba5d9
+#approved impact Marcin 2026-11-13 acb947c1243b
+#approved s1 Marcin 2026-11-13 c8cb9e5f5012
+#approved s2 Marcin 2026-11-13 ea4daecb4301
+#approved s3 Marcin 2026-11-13 c60de82ab53e
+#approved s4 Marcin 2026-11-13 1688d48dd68d
+#approved s5 Marcin 2026-11-13 047ef90ca7a5
+#approved s6 Marcin 2026-11-13 fba9e4aff86e
+#approved risks Marcin 2026-11-13 ccba7e546bdf
+#approved plan Marcin 2026-11-13
