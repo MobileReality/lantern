@@ -80,7 +80,7 @@
     "@vitest/coverage-v8": "^4.1.12",
     "electron": "^45.2.2",
     "esbuild": "^0.28.1",
-    "jsdom": "^29.1.1",
+    "jsdom": "^31.0.0",
     "material-icon-theme": "5.39.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.12"
