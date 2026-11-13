@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { compareArg, install, projectArg, scriptPath, status } from '../src/main/cli';
+import { compareArg, install, projectArg, scriptPath, status, uninstall } from '../src/main/cli';
 
 describe('projectArg', () => {
   let tmp: string;
@@ -125,6 +125,39 @@ describe('lantern command install', () => {
     expect(status(script, link)).toMatchObject({ state: 'other', target: null });
     expect(await install(script, link)).toMatchObject({ state: 'other', target: null });
     expect(fs.readFileSync(link, 'utf8')).toBe('mine');
+  });
+
+  it('removes its own link on uninstall', async () => {
+    await install(script, link);
+    expect(await uninstall(script, link)).toEqual({ state: 'missing', link, script, target: null });
+    expect(fs.existsSync(link)).toBe(false);
+    expect(fs.existsSync(script)).toBe(true);
+  });
+
+  it('removes its own link even when the script is gone', async () => {
+    await install(script, link);
+    fs.rmSync(script);
+    expect((await uninstall(script, link)).state).toBe('missing');
+    expect(() => fs.lstatSync(link)).toThrow();
+  });
+
+  it('leaves a link to another command alone on uninstall', async () => {
+    const elsewhere = path.join(tmp, 'Other.app', 'lantern');
+    fs.mkdirSync(path.dirname(link));
+    fs.symlinkSync(elsewhere, link);
+    expect(await uninstall(script, link)).toMatchObject({ state: 'other', target: elsewhere });
+    expect(fs.readlinkSync(link)).toBe(elsewhere);
+  });
+
+  it('leaves a plain file in the way alone on uninstall', async () => {
+    fs.mkdirSync(path.dirname(link));
+    fs.writeFileSync(link, 'mine');
+    expect(await uninstall(script, link)).toMatchObject({ state: 'other', target: null });
+    expect(fs.readFileSync(link, 'utf8')).toBe('mine');
+  });
+
+  it('uninstalls cleanly when nothing is installed', async () => {
+    expect(await uninstall(script, link)).toEqual({ state: 'missing', link, script, target: null });
   });
 });
 

@@ -64,7 +64,7 @@ src/main/cli-user-port.ts . gateway 616cb65b26f3
   < src/main/cli-user-install.ts#CliPort
   = ext:windows-registry
 
-src/main/cli.ts . service b2d2cc527ec4
+src/main/cli.ts . service 948c439595a3
 #feature projects-hub
   < src/shared/shell-quote.ts#shellQuote
   = ext:osascript

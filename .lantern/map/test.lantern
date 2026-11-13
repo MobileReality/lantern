@@ -84,7 +84,7 @@ test/cli-user-install.test.ts . test ac3c5cd1ee9f
   = src/main/cli-user-install.ts
   = src/cli/lantern.cmd
 
-test/cli.test.ts . test d66e33f72b51
+test/cli.test.ts . test f69b023075b8
 #feature projects-hub
   = src/main/cli.ts
 

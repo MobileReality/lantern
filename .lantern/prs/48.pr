@@ -1,0 +1,28 @@
+lantern-pr 1
+# 48
+#title Add uninstall for the macOS lantern command
+#url https://github.com/MobileReality/lantern/pull/48
+#branch feat/uninstall-lantern-cli-macos
+#base feat/windows-installer
+#opened 2026-11-13
+#head 2c5be0c671608960296d2d9f8a3ce31995dea43c
+#describe what The macOS lantern command can be uninstalled: only a link to Lantern's own launcher is removed, with an administrator prompt when needed.
+#describe before No way to remove the link except by hand.
+#describe after Uninstall removes Lantern's link, leaves a foreign file or link alone, and does nothing when nothing is installed.
+#describe verified Typecheck and the cli tests pass; the cli tests fail without the change.
+#plan windows-squirrel-installer s1.2
+~ src/main/cli.ts
+~ test/cli.test.ts
+#order src/main/cli.ts
+#order test/cli.test.ts
+#reason src/main/cli.ts Settings needs a way to remove the lantern command link Lantern made, without touching a foreign one.
+#reason test/cli.test.ts Proves uninstall removes only Lantern's own link and is a clean no-op when nothing is installed.
+#story Removing the lantern command on macOS
+#step actor A Lantern user
+#file src/main/cli.ts
+#step action asks to uninstall the lantern command
+#file src/main/cli.ts
+#step subject the link Lantern put in the bin folder
+#file test/cli.test.ts
+#below interaction The command can be removed, asking for administrator rights only when needed
+#below consequence The link could only be removed by hand => Lantern removes its own link and never a foreign one

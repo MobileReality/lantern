@@ -28,7 +28,7 @@
   "cli-user-install.test.ts = src/main/cli-user-install.ts": "the installer under test",
   "cli-user-install.test.ts = src/cli/lantern.cmd": "its source is read to pin the folder capture before shift",
   "cli-script.test.ts gotcha": "Runs the real script in a POSIX shell with a fake open on PATH, so it is skipped on Windows.",
-  "cli.test.ts": "Checks --project and --compare argument parsing, script location and the lantern command install that never replaces another command.",
+  "cli.test.ts": "Checks --project and --compare argument parsing, script location and the lantern command install and uninstall that never replace or remove another command.",
   "codex-event-route.test.ts": "Checks that the local Codex event endpoint rejects a bad token, malformed payloads and oversized bodies, and applies a valid event.",
   "codex-event-route.test.ts gotcha": "Mocks the config PORT to 0 so the server binds an ephemeral port instead of the real one.",
   "codex-event-route.test.ts = src/main/server.ts#start": "serves POST /codex/event under test",

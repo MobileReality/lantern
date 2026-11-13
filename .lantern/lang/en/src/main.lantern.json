@@ -22,7 +22,7 @@
   "cli-user-port.ts": "The real file system and Windows user-PATH access behind the per-user lantern installer, reading and writing the PATH through PowerShell without ever overwriting it on a failed read.",
   "cli-user-port.ts < src/main/cli-user-install.ts#CliPort": "the port it implements",
   "cli-user-port.ts = ext:windows-registry": "reads and writes the user Path value",
-  "cli.ts":"Reads the --project folder only when it is an existing directory and the --compare spec only when it parses, and reports or installs the lantern command link without replacing one Lantern did not create.",
+  "cli.ts":"Reads the --project folder only when it is an existing directory and the --compare spec only when it parses, and reports, installs or removes the lantern command link without replacing or deleting one Lantern did not create.",
   "codex-event.ts": "Validates and normalizes Codex hook payloads and checks the hook token in constant time.",
   "codex-turns.ts": "Per-session window of recent Codex turns that tells state.ts which Stop, Interrupt and permission events are duplicate, late or belong to a new turn.",
   "codex-turns.ts gotcha": "Hook events may lack a turn id, so turns are synthesized locally and Stop repeats within six seconds count as one.",
