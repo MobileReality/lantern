@@ -69,15 +69,19 @@ function status(script: string, link = BIN_LINK): CliStatus {
 
 const appleScriptString = (value: string) => `"${value.replace(/[\\"]/g, '\\$&')}"`;
 
-async function linkAsAdmin(link: string, script: string) {
-  const command = `mkdir -p ${shellQuote(path.dirname(link))} && ln -sf ${shellQuote(script)} ${shellQuote(link)}`;
+async function runAsAdmin(command: string, cancelled: string) {
   try {
     await execFileAsync('osascript', ['-e', `do shell script ${appleScriptString(command)} with administrator privileges`]);
   } catch (err) {
     const stderr = String((err as { stderr?: unknown }).stderr ?? '').trim();
-    throw new Error(stderr.includes(USER_CANCELLED) ? 'Installation cancelled' : stderr || (err as Error).message);
+    throw new Error(stderr.includes(USER_CANCELLED) ? cancelled : stderr || (err as Error).message);
   }
 }
+
+const linkAsAdmin = (link: string, script: string) =>
+  runAsAdmin(`mkdir -p ${shellQuote(path.dirname(link))} && ln -sf ${shellQuote(script)} ${shellQuote(link)}`, 'Installation cancelled');
+
+const unlinkAsAdmin = (link: string) => runAsAdmin(`rm -f ${shellQuote(link)}`, 'Uninstall cancelled');
 
 async function install(script: string, link = BIN_LINK) {
   const current = status(script, link);
@@ -94,5 +98,17 @@ async function install(script: string, link = BIN_LINK) {
   return status(script, link);
 }
 
+async function uninstall(script: string, link = BIN_LINK) {
+  if (linkTarget(link) !== script) return status(script, link);
+  try {
+    fs.rmSync(link, { force: true });
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException).code;
+    if (code !== 'EACCES' && code !== 'EPERM') throw err;
+    await unlinkAsAdmin(link);
+  }
+  return status(script, link);
+}
+
 export type { CliStatus };
-export { compareArg, projectArg, scriptPath, status, install };
+export { compareArg, projectArg, scriptPath, status, install, uninstall };
