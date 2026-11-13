@@ -402,6 +402,7 @@
   "lantern-delegate-preferences.test.ts": "Checks the stored delivery choice is created, read, updated and refused when invalid or damaged, never loses another key, and works from the command line",
   "icons.test.ts": "Checks that every svg file in the icon and logo folders is one well-formed svg that screen readers skip",
   "messages.test.ts": "Checks the messages accessor (placeholders, English fallback, singular and plural, lists), that the English catalogue is well formed and keeps its wording, and that every message the source asks for by key exists",
+  "build-windows-installer.test.ts": "Checks the installer options come from the manifest, name the setup file and main executable and point at the repo icon, and that the three expected outputs are listed and a missing one fails the check, without Windows",
   "path-aliases.test.ts": "Checks that the three import aliases are declared in tsconfig and resolve in vitest and in esbuild, with and without the shared alias map",
   "provider-logos.test.ts": "Checks that every provider has an inline logo from providerLogo(), that the logo element is hidden from readers, and that no integrations screen draws a letter or its own SVG for a provider",
   "providers-table.test.ts": "Checks that the provider table has one consistent entry per provider, with GitHub's extra ssh host, and that the main process re-exports that same table",
