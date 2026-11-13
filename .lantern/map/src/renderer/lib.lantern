@@ -434,7 +434,7 @@ src/renderer/lib/lanternprpanel.ts . component b65da7a7b17a
   < src/shared/providers.ts#providerOfRecordUrl
   = src/renderer/lib/provider-logo.ts#providerLogo
 
-src/renderer/lib/lanternprs.ts . component 80e6b3d662a5
+src/renderer/lib/lanternprs.ts . component d84d24fb9f2b
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/lanternctx.ts#esc

@@ -213,7 +213,7 @@ src/main/lantern-host-request.ts . gateway 1a99851f21b5
   < src/main/lantern-types.ts#LanternPrInfo
   = ext:bitbucket-api
 
-src/main/lantern-host-status.ts . service 7b8d2196bbe1
+src/main/lantern-host-status.ts . service 66fdd8b85598
 #feature pull-requests
   = src/main/lantern-batch.ts
   = src/main/lantern-host-drivers.ts#DRIVERS
@@ -356,6 +356,10 @@ src/main/lantern-pr-parse.ts . pure c50c203d8348
   < src/main/lantern-types.ts
   < src/shared/reason.ts#REASON_MAX_CHARS
 
+src/main/lantern-pr-remembered.ts . service bd2cc874bc8c
+#feature pull-requests
+  < src/main/lantern-pr-parse.ts#ParsedPr
+
 src/main/lantern-pr-remote.ts . service 7715ea0227e3
 #feature pull-requests
   = src/main/lantern-batch.ts
@@ -412,12 +416,13 @@ src/main/lantern-proverlay.ts . service 0442b90dfd9c
   < src/main/lantern-types.ts
   = src/main/lantern-local.ts
 
-src/main/lantern-prs.ts . service 8e6758fc6848
+src/main/lantern-prs.ts . service 7cc35c41b5c2
 #feature pull-requests
   = src/main/lantern-git.ts
   = src/main/lantern-host-status.ts
   = src/main/lantern-pr-cache.ts#createRefCache
   = src/main/lantern-pr-parse.ts
+  = src/main/lantern-pr-remembered.ts#restoreVanished
   = src/main/lantern-pr-remote.ts
   < src/main/lantern-pr-revisions.ts#PrRevisions
   < src/main/lantern-types.ts
@@ -444,7 +449,7 @@ src/main/lantern-texts.ts . service 18029fc1c004
   = src/main/lantern-parse.ts
   < src/main/lantern-types.ts
 
-src/main/lantern-types.ts . model 2e25e38c51b2
+src/main/lantern-types.ts . model 21e1450b2111
 #feature file-graph
   < src/main/lantern-plan-view-types.ts#LanternPlanView
   < src/shared/lantern-plan-fix.ts#LanternBrokenPlan
@@ -945,7 +950,7 @@ src/main/lantern-host-account.ts . service 452eeac04aae
   < src/main/auth/env-names.ts#CREDENTIAL_VARS
   < src/shared/providers.ts#PROVIDER
 
-src/main/lantern-host-drivers.ts . service 9391b117a89d
+src/main/lantern-host-drivers.ts . service 0b62435aa021
 #feature pull-requests
   < src/main/lantern-host-account.ts#AccountCredentials
   = src/main/lantern-host-credentials.ts#readHostCredentials

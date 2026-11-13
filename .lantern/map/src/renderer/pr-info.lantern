@@ -1,7 +1,7 @@
 lantern 1
 # src/renderer/pr-info
 
-src/renderer/pr-info/index.ts . component bd569d868f1d
+src/renderer/pr-info/index.ts . component 7cc7f3fe3e2d
 #feature pull-requests
   < src/main/lantern.ts
   < src/renderer/lib/lanternctx.ts#esc

@@ -54,3 +54,4 @@ state pr declined terminal @ src/main/lantern-host-status.ts#apply
 tr pr open merged @ src/main/lantern-prs.ts#findMerge
 tr pr open closed @ src/main/lantern-prs.ts#remoteTips
 tr pr open declined @ src/main/lantern-host-status.ts#apply
+tr pr closed declined @ src/main/lantern-host-status.ts#apply
