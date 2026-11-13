@@ -6,6 +6,12 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- A pull request closed without a merge (declined on Bitbucket, closed on GitHub) no longer
+  vanishes from Lantern when its branch is deleted. It stays as declined, on both hosts, and the
+  strip keeps it for two days from when it was declined rather than from when it was opened.
+
 ## [0.4.0] - 2026-11-12
 
 ### Added

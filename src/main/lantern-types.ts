@@ -234,6 +234,7 @@ interface LanternPr {
   revision?: string;
   hostBase?: string;
   mergedAt?: string;
+  closedAt?: string;
   info?: LanternPrInfo;
   source: 'tree' | 'remote' | 'local';
 }

@@ -22,11 +22,11 @@ interface HostDriver {
   fetch(host: CodeHost, id: string, credentials: AccountCredentials, options: RequestOptions): Promise<HostLookup>;
 }
 
-const isOpen = (state: LanternPrState) => state === 'open';
+const isUnsettled = (state: LanternPrState) => state !== 'merged';
 
 const DRIVERS: Record<CodeHostId, HostDriver> = {
   [PROVIDER.bitbucket]: {
-    asks: isOpen,
+    asks: isUnsettled,
     credentials: async (root, { account, env }) => (await account?.(root, PROVIDER.bitbucket)) ?? (await readHostCredentials(root, env)),
     fetch: async (host, id, { email, token }, options) => (email ? fetchHostState({ workspace: host.owner, repo: host.repo }, id, { email, token }, options) : null),
   },

@@ -7,6 +7,7 @@ import type { HostStatus } from './lantern-host-status';
 import { createRefCache } from './lantern-pr-cache';
 import { PR_DIR, parsePrRecord } from './lantern-pr-parse';
 import type { ParsedPr } from './lantern-pr-parse';
+import { restoreVanished } from './lantern-pr-remembered';
 import { MAX_BRANCHES, REMOTE_PREFIX, scanRemote } from './lantern-pr-remote';
 import type { PrRevisions } from './lantern-pr-revisions';
 import type { LanternPr, LanternPrInfo, LanternPrState } from './lantern-types';
@@ -204,6 +205,8 @@ async function loadGitPrs(root: string, mapped: Set<string>): Promise<PrLoadDeta
     found.push({ pr: rec.result.pr, source: 'remote' });
   }
   if (scan.capped > 0) warnings.push(`PR scan: examined the ${MAX_BRANCHES} newest remote branches, skipped ${scan.capped} older`);
+  const { restored, closedAt } = restoreVanished(root, found);
+  found.push(...restored);
 
   const remoteTips = new Map(scan.branches.map((b) => [b.name, b.sha]));
   const lineTips = await defaultLineTips(root);
@@ -246,6 +249,7 @@ async function loadGitPrs(root: string, mapped: Set<string>): Promise<PrLoadDeta
       state,
       ...(tip ? { tip } : {}),
       ...(merged?.at ? { mergedAt: merged.at } : {}),
+      ...(state === 'closed' && closedAt.has(pr.id) ? { closedAt: closedAt.get(pr.id) } : {}),
       ...(info ? { info } : {}),
       source,
     });

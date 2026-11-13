@@ -159,18 +159,63 @@ describe('host state mapping', () => {
     expect(fake.requests).toHaveLength(0);
   });
 
-  it('does not call the host for pull requests git already calls merged or closed', async () => {
+  it('does not call the host for a pull request git already calls merged', async () => {
     world = makeHostWorld([40]);
     git(world.project, ['merge', '-q', '--no-ff', '-m', 'Merged in feat/pr-40 (pull request #40)', 'feat/pr-40']);
-    commitRecord(world.project, { id: 41, branch: 'feat/gone', base: 'main', head: 'd'.repeat(40) });
     fake.state(40, 'DECLINED');
-    fake.state(41, 'OPEN');
     const host = service();
     await fetchPrs(world.project, true, host);
     const load = await loadPrsDetailed(world.project, new Set(), host);
-    expect(Object.fromEntries(load.prs.map((p) => [p.id, p.state]))).toEqual({ 40: 'merged', 41: 'closed' });
+    expect(Object.fromEntries(load.prs.map((p) => [p.id, p.state]))).toEqual({ 40: 'merged' });
     expect(fake.requests).toHaveLength(0);
     expect(load.warnings).toEqual([]);
+  });
+
+  it('asks the host about a pull request git calls closed and shows it declined', async () => {
+    world = makeHostWorld([]);
+    commitRecord(world.project, { id: 41, branch: 'feat/gone', base: 'main', head: 'd'.repeat(40) });
+    fake.state(41, 'DECLINED');
+    const host = service();
+    await fetchPrs(world.project, true, host);
+    const load = await loadPrsDetailed(world.project, new Set(), host);
+    expect(Object.fromEntries(load.prs.map((p) => [p.id, p.state]))).toEqual({ 41: 'declined' });
+    expect(fake.requests.map((r) => r.url)).toEqual(['/2.0/repositories/acme/shop/pullrequests/41']);
+  });
+
+  it('shows a closed pull request the host calls merged as merged, not declined', async () => {
+    world = makeHostWorld([]);
+    commitRecord(world.project, { id: 42, branch: 'feat/squashed', base: 'main', head: 'e'.repeat(40) });
+    fake.state(42, 'MERGED');
+    const host = service();
+    await fetchPrs(world.project, true, host);
+    const load = await loadPrsDetailed(world.project, new Set(), host);
+    expect(Object.fromEntries(load.prs.map((p) => [p.id, p.state]))).toEqual({ 42: 'merged' });
+  });
+
+  it('keeps a declined pull request whose branch was deleted on Bitbucket, labelled declined', async () => {
+    world = makeHostWorld([126]);
+    const host = service();
+    await fetchPrs(world.project, true, host);
+    expect((await loadPrsDetailed(world.project, new Set(), host)).prs.map((p) => p.state)).toEqual(['open']);
+    git(world.project, ['update-ref', '-d', 'refs/remotes/origin/feat/pr-126']);
+    fake.reply(126, { body: JSON.stringify({ state: 'DECLINED', updated_on: '2026-10-09T10:00:00Z' }) });
+    await fetchPrs(world.project, true, host);
+    const { prs } = await loadPrsDetailed(world.project, new Set(), host);
+    expect(prs).toHaveLength(1);
+    expect(prs[0]).toMatchObject({ id: '126', state: 'declined', info: { from: 'host', updated: '2026-10-09T10:00:00Z' } });
+    expect(prs[0]).not.toHaveProperty('tip');
+  });
+
+  it('keeps a pull request whose branch was deleted as closed while the host cannot be asked', async () => {
+    world = makeHostWorld([126]);
+    const host = service({ env: {} });
+    await fetchPrs(world.project, true, host);
+    await loadPrsDetailed(world.project, new Set(), host);
+    git(world.project, ['update-ref', '-d', 'refs/remotes/origin/feat/pr-126']);
+    await fetchPrs(world.project, true, host);
+    const { prs } = await loadPrsDetailed(world.project, new Set(), host);
+    expect(prs.map((p) => [p.id, p.state])).toEqual([['126', 'closed']]);
+    expect(Date.parse(prs[0].closedAt as string)).not.toBeNaN();
   });
 });
 
