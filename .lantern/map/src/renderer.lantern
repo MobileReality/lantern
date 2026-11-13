@@ -3,7 +3,7 @@ lantern 1
 
 src/renderer/svg.d.ts . schema 0f5231031c58
 
-src/renderer/global.d.ts . schema 4544cc508980
+src/renderer/global.d.ts . schema e04063b41dd1
   < src/main/cli.ts#CliStatus
   < src/main/dev-instance.ts#DevInstance
   < src/main/extensions.ts#ExtensionsPanel

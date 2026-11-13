@@ -7,7 +7,7 @@ src/preload/overlay.ts . gateway ca0ee7fc362a
 src/preload/tray-popover.ts . gateway 2fd4f639f5a6
 #feature session-monitoring
 
-src/preload/workspace.ts . gateway 01a2e0bda2b6
+src/preload/workspace.ts . gateway ecdc42a15104
   < src/main/provider.ts#Provider
   < src/shared/auth.ts#AUTH_STATUS_CHANNEL
   < src/shared/code-highlighting.ts
