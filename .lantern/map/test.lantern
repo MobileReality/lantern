@@ -2343,6 +2343,10 @@ test/skills.test.ts . test 60d4f06a1fff
 test/source-blocks.test.ts . test 4a34775ee293
   = test/helpers/source-blocks.ts
 
+test/squirrel-events.test.ts . test 5c3a985c763d
+#feature projects-hub
+  = src/main/squirrel-events.ts
+
 test/state.test.ts . test eb2c2d09754c
 #feature session-monitoring
   = src/main/state.ts

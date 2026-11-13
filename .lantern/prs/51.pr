@@ -1,0 +1,32 @@
+lantern-pr 1
+# 51
+#title Handle Squirrel.Windows install, update and uninstall launches
+#url https://github.com/MobileReality/lantern/pull/51
+#branch feat/squirrel-events
+#base feat/windows-installer
+#opened 2026-11-13
+#head d4f0b0663c01cecb97333f1db33b9eac97bd6036
+#describe what Lantern answers the Squirrel.Windows install, update, uninstall and obsolete launches itself and quits afterwards.
+#describe before A Squirrel launch started the whole app.
+#describe after Install and update make the shortcuts and refresh an installed lantern command; uninstall removes shortcuts and the command; first run starts the app normally.
+#describe verified Typecheck, the new tests and the full suite pass.
+#plan windows-squirrel-installer s3.2
++ src/main/squirrel-events.ts
++ test/squirrel-events.test.ts
+~ src/main/main.ts
+#order src/main/squirrel-events.ts
+#order src/main/main.ts
+#order test/squirrel-events.test.ts
+#reason src/main/squirrel-events.ts The Windows installer launches the app with Squirrel arguments, which need shortcuts and the command shim handled before a normal start.
+#reason test/squirrel-events.test.ts Proves each Squirrel event does its work and exits, without needing Windows.
+#reason src/main/main.ts A handled Squirrel launch must quit before the single-instance lock and the normal start run.
+#story Installing, updating and removing Lantern on Windows
+#step actor The Windows installer
+#file src/main/main.ts
+#step action starts Lantern once with an install, update or uninstall argument
+#file src/main/squirrel-events.ts
+#step subject the shortcuts and the lantern command
+#file src/main/squirrel-events.ts
+#file test/squirrel-events.test.ts
+#below interaction Users find Lantern in the Start menu and on the desktop
+#below consequence The installer started a whole app window => The installer step does its job and quits
