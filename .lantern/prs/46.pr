@@ -1,0 +1,57 @@
+lantern-pr 1
+# 46
+#title docs: add screenshots and a tour video to the README
+#url https://github.com/MobileReality/lantern/pull/46
+#branch docs/readme-media
+#base origin/main
+#opened 2026-11-13
+#head ec19e04d9eefd31b2b4565787ee6963eb0f8ee9d
+#describe what Adds a 70 second tour (gif inline, mp4 linked) and six screenshots to the README, with a new Planning section.
+#describe before The README described Lantern in text only and had no picture of the app.
+#describe after The README shows the map, the macro view, a plan with a stage selected, a pull request flow and a diff review with the flow on.
+#describe verified Captured from the e2e harness on synthetic data (Orchard Market, PRs 77 and 317) and looked at frame by frame; no real project, name or ticket shows.
+#describe verified Only README.md and docs/assets/readme/ change; no code or test was touched.
++ docs/assets/readme/lantern-tour.gif
++ docs/assets/readme/lantern-tour.mp4
++ docs/assets/readme/map-files.png
++ docs/assets/readme/map-macro.png
++ docs/assets/readme/plan-stage.png
++ docs/assets/readme/pr-flow.png
++ docs/assets/readme/pr-review-diff.png
++ docs/assets/readme/review-flow-code.png
+~ README.md
+#order README.md
+#order docs/assets/readme/lantern-tour.gif
+#order docs/assets/readme/lantern-tour.mp4
+#order docs/assets/readme/map-files.png
+#order docs/assets/readme/map-macro.png
+#order docs/assets/readme/plan-stage.png
+#order docs/assets/readme/pr-flow.png
+#order docs/assets/readme/review-flow-code.png
+#order docs/assets/readme/pr-review-diff.png
+#reason docs/assets/readme/lantern-tour.gif Inline preview of the 70 second tour, because GitHub does not play an mp4 from the repository in a README.
+#reason docs/assets/readme/lantern-tour.mp4 The full 70 second tour of the map, a plan, a pull request flow and a diff review, linked from the README.
+#reason docs/assets/readme/map-files.png Screenshot of the project graph with the files of pull request 77 lit, on the synthetic Orchard Market project.
+#reason docs/assets/readme/map-macro.png Screenshot of the macro view: one card per area, the shared foundation and the outside systems.
+#reason docs/assets/readme/plan-stage.png Screenshot of a plan with stage s2 selected and the areas it changes marked on the macro view.
+#reason docs/assets/readme/pr-flow.png Screenshot of a pull request flow in plain words, with the files that carry each step.
+#reason docs/assets/readme/pr-review-diff.png Screenshot of a diff next to its reason, the changed-file list and the graph.
+#reason docs/assets/readme/review-flow-code.png Screenshot of a diff with the flow on and the step the file belongs to highlighted beside the code.
+#reason README.md Shows the tour and the screenshots right under What it does, with a Planning section and the flow on the review.
+#story A visitor sees Lantern working before installing
+#step actor A visitor
+#step action opens the repository page and watches
+#step subject the tour under What it does
+#file README.md
+#file docs/assets/readme/lantern-tour.gif
+#file docs/assets/readme/lantern-tour.mp4
+#below interaction scrolls to the map, plan and review screenshots
+#below consequence the README was only text => the README shows the map, a plan and a review
+#story A reader follows a change from plan to review
+#step actor A reader
+#step action looks at the plan stage and then the review
+#step subject the plan and review screenshots
+#file docs/assets/readme/plan-stage.png
+#file docs/assets/readme/review-flow-code.png
+#file docs/assets/readme/pr-review-diff.png
+#below interaction sees the flow lit next to the code of a file
