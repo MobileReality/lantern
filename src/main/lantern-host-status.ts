@@ -159,8 +159,8 @@ function createHostStatus(options: HostStatusOptions = {}) {
 }
 
 function withHostState(pr: LanternPr, state: LanternPr['state'], base?: string): LanternPr {
-  const { mergedAt: _mergedAt, ...rest } = pr;
-  return { ...rest, state, ...(base ? { hostBase: base } : {}) };
+  const { mergedAt: _mergedAt, closedAt, ...rest } = pr;
+  return { ...rest, state, ...(state === 'declined' && closedAt ? { closedAt } : {}), ...(base ? { hostBase: base } : {}) };
 }
 
 type HostStatus = ReturnType<typeof createHostStatus>;

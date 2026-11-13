@@ -25,6 +25,7 @@ function stateClass(pr: LanternPr) {
 }
 
 function stateLabel(pr: LanternPr) {
+  if (pr.state === 'closed') return 'declined';
   return pr.info?.draft && pr.state === 'open' ? 'draft' : pr.state;
 }
 

@@ -123,6 +123,28 @@ describe('GitHub pull request state', () => {
     expect(statesOf((await load(service())).prs)).toEqual({ 126: 'declined' });
   });
 
+  it('keeps a pull request closed without a merge once its branch is deleted, labelled declined', async () => {
+    world = makeHostWorld([126], GITHUB_ORIGIN);
+    const host = service();
+    expect(statesOf((await load(host)).prs)).toEqual({ 126: 'open' });
+    git(world.project, ['update-ref', '-d', 'refs/remotes/origin/feat/pr-126']);
+    fake.state(126, 'declined', { updated_at: '2026-10-09T10:00:00Z' });
+    const { prs } = await load(host, true);
+    expect(prs).toHaveLength(1);
+    expect(prs[0]).toMatchObject({ id: '126', state: 'declined', info: { from: 'host', updated: '2026-10-09T10:00:00Z' } });
+    expect(prs[0]).not.toHaveProperty('tip');
+  });
+
+  it('keeps a pull request whose branch was deleted as closed while no account is added', async () => {
+    world = makeHostWorld([126], GITHUB_ORIGIN);
+    const host = service({ account: accountLookup(accounts(null).auth) });
+    await load(host);
+    git(world.project, ['update-ref', '-d', 'refs/remotes/origin/feat/pr-126']);
+    const { prs } = await load(host, true);
+    expect(prs.map((p) => [p.id, p.state])).toEqual([['126', 'closed']]);
+    expect(Date.parse(prs[0].closedAt as string)).not.toBeNaN();
+  });
+
   it('prefers the host over a commit message that says merged', async () => {
     world = makeHostWorld([40], GITHUB_ORIGIN);
     mergeNoFf(world.project, 'feat/pr-40', 40);

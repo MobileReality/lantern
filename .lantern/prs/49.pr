@@ -1,0 +1,62 @@
+lantern-pr 1
+# 49
+#title fix: keep a declined pull request visible as declined on both hosts
+#url https://github.com/MobileReality/lantern/pull/49
+#branch fix/pr-declined-state
+#base main
+#opened 2026-11-13
+#head 51c1d6cd09f5c8ce36ce45f1f8634a33a349edc4
+#describe what A pull request closed without a merge, declined on Bitbucket or closed unmerged on GitHub, now stays in Lantern as declined on both hosts.
+#describe before Once its branch was deleted and pruned, the declined pull request vanished, and the strip hid it two days after it was opened.
+#describe after It stays as declined (host answered) or closed (host could not be asked) and shows for two days from when it was declined.
+#describe verified typecheck, the full vitest run and the pull request host e2e are green; the new per-host tests fail on main.
++ src/main/lantern-pr-remembered.ts
+~ CHANGELOG.md
+~ src/main/lantern-host-drivers.ts
+~ src/main/lantern-host-status.ts
+~ src/main/lantern-prs.ts
+~ src/main/lantern-types.ts
+~ src/renderer/lib/lanternprs.ts
+~ src/renderer/pr-info/index.ts
+~ test/lantern-host-github.test.ts
+~ test/lantern-host-status.test.ts
+~ test/lantern-pr-declined.test.ts
+~ test/lantern-prs.test.ts
+#order src/main/lantern-types.ts
+#order src/main/lantern-pr-remembered.ts
+#order src/main/lantern-prs.ts
+#order src/main/lantern-host-drivers.ts
+#order src/main/lantern-host-status.ts
+#order src/renderer/lib/lanternprs.ts
+#order src/renderer/pr-info/index.ts
+#order test/lantern-host-status.test.ts
+#order test/lantern-host-github.test.ts
+#order test/lantern-prs.test.ts
+#order test/lantern-pr-declined.test.ts
+#order CHANGELOG.md
+#reason src/main/lantern-pr-remembered.ts A declined PR's record lives only on a branch that gets pruned, so it is remembered to keep the PR from vanishing.
+#reason CHANGELOG.md Tells users a declined pull request no longer vanishes when its branch is deleted.
+#reason src/main/lantern-host-drivers.ts Makes Bitbucket confirm closed pull requests with the host, as GitHub already did, so they read declined or merged.
+#reason src/main/lantern-host-status.ts Keeps the time a pull request was noticed gone only while it stays declined, and drops it if the host reopens it.
+#reason src/main/lantern-prs.ts Restores remembered records whose branch vanished, as closed with the time they were noticed gone.
+#reason src/main/lantern-types.ts Adds closedAt so the strip can count a decline from when it happened.
+#reason src/renderer/lib/lanternprs.ts Counts the two days a declined PR stays in the strip from its decline, not from when it was opened.
+#reason src/renderer/pr-info/index.ts Reads declined in the hover card for a closed PR, matching the strip.
+#reason test/lantern-host-github.test.ts Proves a closed-unmerged GitHub PR whose branch is deleted stays, declined or closed.
+#reason test/lantern-host-status.test.ts Proves the Bitbucket equivalents and that the host is now asked about closed pull requests.
+#reason test/lantern-pr-declined.test.ts Proves the strip timing from the decline and the declined word in the hover card.
+#reason test/lantern-prs.test.ts Updates the test that expected a deleted branch to drop its PR, which now stays as closed.
+#story A declined pull request stays visible
+#step actor A reviewer
+#file src/main/lantern-pr-remembered.ts
+#file src/main/lantern-prs.ts
+#step action declines a pull request and deletes its branch
+#step subject the pull request in Lantern
+#file src/main/lantern-host-drivers.ts
+#below actor Anyone using Lantern
+#below interaction still sees it, labelled declined
+#file src/renderer/lib/lanternprs.ts
+#file src/renderer/pr-info/index.ts
+#file test/lantern-host-status.test.ts
+#file test/lantern-host-github.test.ts
+#below consequence it vanished with its branch => it stays as declined for two days

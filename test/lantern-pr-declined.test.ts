@@ -4,6 +4,7 @@ import type { LanternMap, LanternPr } from '../src/main/lantern';
 import { unreadableReason } from '../src/main/lantern-pr-revisions';
 import { overlayKey } from '../src/renderer/lib/lanternoverlay';
 import { prPanelHtml } from '../src/renderer/lib/lanternprpanel';
+import { prCard } from '../src/renderer/pr-info';
 import { mountLanternView } from '../src/renderer/lib/lanternview';
 import type { ViewOptions } from '../src/renderer/lib/lanternview';
 import { mapOf, node, pr } from './helpers/lantern-map';
@@ -118,5 +119,37 @@ describe('a host-declined pull request elsewhere', () => {
     expect(unreadableReason(pr('7', { state: 'closed' }))).toBe('this pull request was declined and its branch is gone');
     expect(unreadableReason(pr('8', { state: 'open' }))).toBeNull();
     expect(unreadableReason(pr('9', { state: 'merged' }))).toBeNull();
+  });
+});
+
+describe('how long a declined pull request stays in the strip', () => {
+  const iso = (ms: number) => new Date(ms).toISOString();
+  const byHost = (id: string, updatedAgo: number) => declined(id, { opened: day(NOW - 30 * DAY), info: { from: 'host', updated: iso(NOW - updatedAgo) } });
+  const shown = (root: HTMLElement) => [...root.querySelectorAll('.pr-chip')].map((c) => c.getAttribute('data-pr'));
+
+  it('counts from when the host declined it, not from when it was opened', () => {
+    const { root } = mount([byHost('1', DAY), byHost('2', 5 * DAY)]);
+    expect(shown(root)).toEqual(['1']);
+  });
+
+  it('counts from when Lantern saw the branch go, for a closed one the host could not be asked about', () => {
+    const gone = pr('3', { state: 'closed', opened: day(NOW - 30 * DAY), closedAt: iso(NOW - DAY), files: FILES });
+    const old = pr('4', { state: 'closed', opened: day(NOW - 30 * DAY), closedAt: iso(NOW - 5 * DAY), files: FILES });
+    const { root } = mount([gone, old]);
+    expect(shown(root)).toEqual(['3']);
+  });
+
+  it('ignores git-derived activity, which says nothing about when it was declined', () => {
+    const { root } = mount([declined('5', { opened: day(NOW - 30 * DAY), info: { from: 'git', updated: iso(NOW) } })]);
+    expect(shown(root)).toEqual([]);
+  });
+});
+
+describe('the state word of a pull request closed without a merge', () => {
+  it('reads declined in the hover card whether the host confirmed it or only the branch is gone', () => {
+    for (const state of ['declined', 'closed'] as const) {
+      const badge = prCard(pr('9', { state, opened: day(NOW) }), NOW).querySelector('.pr-badge');
+      expect(badge?.textContent).toBe('declined');
+    }
   });
 });

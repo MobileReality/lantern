@@ -24,6 +24,7 @@
   "state pr closed": "declined: not merged and its branch is gone from origin",
   "state pr declined": "the host says the PR was declined, superseded or closed without a merge, whatever git reads from its branch",
   "tr pr open declined": "Bitbucket answers DECLINED or SUPERSEDED, or GitHub answers closed without a merge, for a PR that git still reads as open",
+  "tr pr closed declined": "the host answers declined, superseded or closed without a merge for a PR whose branch is gone, or whose record was kept after its branch was deleted",
   "tr pr open merged": "the base or default branch now contains the PR, or GitHub answers that a squash or rebase merged it",
   "tr pr open closed": "the branch is deleted from origin without a merge",
   "machine session": "a Claude Code session's state in the project list, replaced wholesale by each successful poll",

@@ -41,10 +41,15 @@ function isRecent(stamp: string, now: number) {
   return Number.isFinite(t) && now - t <= RECENT_MS;
 }
 
+function declinedAt(pr: LanternPr) {
+  if (pr.closedAt) return pr.closedAt;
+  return pr.info?.from === 'host' && pr.info.updated ? pr.info.updated : pr.opened;
+}
+
 function isShown(pr: LanternPr, now: number) {
   if (pr.state === 'open') return true;
   if (pr.state === 'merged') return isRecent(pr.mergedAt || pr.opened, now);
-  return isRecent(pr.opened, now);
+  return isRecent(declinedAt(pr), now);
 }
 
 function visiblePrs(prs: LanternPr[], now: number) {

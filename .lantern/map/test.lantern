@@ -708,7 +708,7 @@ test/lantern-host-leak.test.ts . test 2ebeb98a1a04
   = test/helpers/git-repo.ts
   = test/helpers/host-world.ts
 
-test/lantern-host-status.test.ts . test 619f7e29dbc0
+test/lantern-host-status.test.ts . test 829eead92223
 #feature pull-requests
   = src/main/lantern-host-status.ts
   = src/main/lantern-host-account.ts#accountLookup
@@ -719,7 +719,7 @@ test/lantern-host-status.test.ts . test 619f7e29dbc0
   = test/helpers/git-repo.ts
   = test/helpers/host-world.ts
 
-test/lantern-host-github.test.ts . test 9ad5efc6b232
+test/lantern-host-github.test.ts . test ac81e08f781c
 #feature pull-requests
   = src/main/lantern-host-status.ts
   = src/main/lantern-host-account.ts#accountLookup
@@ -1290,7 +1290,7 @@ test/lantern-pr-code-modal.test.ts . test 2df734840365
   = test/helpers/lantern-map.ts
   = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-pr-declined.test.ts . test b26ab7f12071
+test/lantern-pr-declined.test.ts . test e4b016b0b560
 #feature pull-requests
   = src/main/lantern-pr-revisions.ts
   = src/renderer/lib/lanternoverlay.ts
@@ -1432,7 +1432,7 @@ test/lantern-project-data-ignored.test.ts . test 653fdc742b00
   = src/main/lantern.ts
   = test/helpers/git-repo.ts
 
-test/lantern-prs.test.ts . test 3c7a540c2c28
+test/lantern-prs.test.ts . test aa70c574e3d4
 #feature pull-requests
   = src/main/lantern-pr-remote.ts
   = src/main/lantern.ts

@@ -338,7 +338,7 @@ describe('lantern.load pull requests from git', () => {
 });
 
 describe('fetchPrs', () => {
-  it('fetches a branch pushed to origin by someone else, and prunes deleted ones', async () => {
+  it('fetches a branch pushed to origin by someone else, and keeps its pull request as closed once the branch is deleted', async () => {
     const other = path.join(world.dir, 'other');
     git(world.dir, ['clone', '-q', world.origin, other]);
     branchOff(other, 'feat/theirs');
@@ -352,7 +352,10 @@ describe('fetchPrs', () => {
 
     git(other, ['push', '-q', 'origin', '--delete', 'feat/theirs']);
     expect(await fetchPrs(world.project)).toEqual({ ok: true });
-    expect((await load(world.project)).prs).toEqual([]);
+    const { prs } = await load(world.project);
+    expect(prs).toMatchObject([{ id: '60', state: 'closed', source: 'remote' }]);
+    expect(prs[0]).not.toHaveProperty('tip');
+    expect(Number.isFinite(Date.parse(prs[0].closedAt as string))).toBe(true);
   });
 
   it('returns ok:false instead of throwing for a non-git dir, a missing origin and bad input', async () => {
