@@ -42,6 +42,44 @@
 
 Sessions are told apart by their working directory: one entry per VS Code project window.
 
+<p align="center">
+  <img src="docs/assets/readme/lantern-tour.gif" alt="A short tour: the map, a plan lit on it, a pull request opened from the plan, its flow and a diff review" width="800"><br>
+  <sub>A short tour (<a href="docs/assets/readme/lantern-tour.mp4">mp4, 70 s</a>). The screenshots show a synthetic demo project.</sub>
+</p>
+
+### The map of a project
+
+Every file with its role, purpose and relations, drawn as a graph. The changed files of a pull
+request are lit in it.
+
+![The map of a project with the files of pull request #77 highlighted](docs/assets/readme/map-files.png)
+
+The macro view folds the same map into one card per area, with the systems the code talks to.
+
+![The macro view: one card per area, the shared foundation and the outside systems](docs/assets/readme/map-macro.png)
+
+### Planning a change
+
+A plan is a file under `.lantern/plans/`, written against the map and approved section by section.
+Lantern shows its goal, scope, stages, open questions and the progress of every item, which comes
+from the pull requests that tick it. Pick a stage and the areas, features and files it changes are
+marked on the map; open a pull request from an item to review it.
+
+![A plan with the stage s2 selected: the areas it changes are marked on the macro view](docs/assets/readme/plan-stage.png)
+
+### Reviewing a pull request
+
+A flow in plain words says who does what and what changed, with the files that carry each step.
+
+![A pull request flow: who does what, and what changed in each step](docs/assets/readme/pr-flow.png)
+
+Then the diffs, in review order, each with the reason the file changed and its place in the graph.
+With the flow on, the step the file belongs to is lit next to the code.
+
+![A diff next to its reason and the flow, with the step the file carries highlighted](docs/assets/readme/review-flow-code.png)
+
+![A diff next to its reason, the changed-file list and the graph](docs/assets/readme/pr-review-diff.png)
+
 ## Download
 
 Packages are attached to each release on the
