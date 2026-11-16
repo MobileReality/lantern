@@ -41,6 +41,7 @@ import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow,
 import * as cli from './cli';
 import { installUserCli, uninstallUserCli, userCliStatus } from './cli-user-install';
 import { cliPort } from './cli-user-port';
+import { handleSquirrelEvent, squirrelLaunchEvent } from './squirrel-events';
 import { createLastWindowHandler } from './last-window';
 import * as settings from './settings';
 import * as settingsStore from './settings-store';
@@ -156,7 +157,17 @@ if (process.platform === 'darwin' && app.dock) {
   app.dock.hide();
 }
 
-if (!app.requestSingleInstanceLock()) {
+const squirrelLaunch = squirrelLaunchEvent(process.platform, process.argv) !== null;
+if (squirrelLaunch) {
+  void handleSquirrelEvent({
+    platform: process.platform,
+    argv: process.argv,
+    execPath: process.execPath,
+    spawn: (file, args) => new Promise<void>((resolve, reject) => execFile(file, args, { windowsHide: true }, (error) => (error ? reject(error) : resolve()))),
+    exit: () => app.quit(),
+    cli: { status: () => userCliStatus(cliContext()), install: () => installUserCli(cliContext()), uninstall: () => uninstallUserCli(cliContext()) },
+  });
+} else if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
   // The CLI launches with `open -n` because plain `open --args` drops the args when
