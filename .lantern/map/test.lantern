@@ -37,6 +37,9 @@ test/app-menu.test.ts . test 92c147868cdd
   < src/shared/commands/keymap.ts#defaultBindings
   < src/shared/commands/keymap.ts#resolveKeymap
 
+test/build-windows-installer.test.ts . test 792fb4ec156d
+  = scripts/build-windows-installer.mjs
+
 test/built-bundle.test.ts . test 4be9db1bfd8e
   < scripts/node-bundle.mjs#nodeBundle
   < src/main/main.ts

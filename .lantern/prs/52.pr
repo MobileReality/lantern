@@ -1,0 +1,34 @@
+lantern-pr 1
+# 52
+#title Add build:win:installer for the Squirrel installer
+#url https://github.com/MobileReality/lantern/pull/52
+#branch feat/windows-installer-build
+#base feat/windows-installer
+#opened 2026-11-13
+#head a8d772da69dfb49b21ce3f025be393283d4a67a8
+#describe what A build:win:installer command builds a Squirrel.Windows installer from the packaged Windows app, leaving the setup file, the update index and a full package, and failing when one is missing.
+#describe before Only the portable Windows zip could be built.
+#describe after The installer, RELEASES and lantern-<version>-full.nupkg are also built into dist.
+#describe verified Typecheck and tests pass; the real Squirrel build cannot run on macOS and is checked by CI once the release workflow wires it.
+#plan windows-squirrel-installer s3.1
++ scripts/build-windows-installer.mjs
++ test/build-windows-installer.test.ts
+~ package.json
+~ pnpm-lock.yaml
+#order scripts/build-windows-installer.mjs
+#order package.json
+#order pnpm-lock.yaml
+#order test/build-windows-installer.test.ts
+#reason scripts/build-windows-installer.mjs The release needs an installer from the packaged app, with pure option and output checks that can fail without Windows
+#reason test/build-windows-installer.test.ts Proves the options and the three-output check without a Windows build
+#reason package.json Adds the build:win:installer command and lets pnpm run the installer tool's install script that selects 7z.exe
+#reason pnpm-lock.yaml Lockfile, asset or generated file; nothing to reason about beyond its source.
+#story Building the Windows installer
+#step actor A maintainer on Windows
+#file package.json
+#step action runs the installer command after packaging
+#step subject the packaged Windows app
+#file scripts/build-windows-installer.mjs
+#below interaction Get a setup file, an update index and a full package
+#below consequence Only a portable zip could be shipped => A real installer is built, and a missing output fails the build
+#file test/build-windows-installer.test.ts
