@@ -6,6 +6,13 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-16
+
+### Changed
+
+- Dependency updates: shiki 4 for syntax highlighting, and the build tooling on TypeScript 7 and
+  the current GitHub Actions artifact steps.
+
 ### Fixed
 
 - A pull request closed without a merge (declined on Bitbucket, closed on GitHub) no longer
@@ -118,7 +125,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/MobileReality/lantern/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/MobileReality/lantern/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/MobileReality/lantern/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/MobileReality/lantern/compare/v0.2.2...v0.3.0
