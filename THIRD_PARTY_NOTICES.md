@@ -2916,12 +2916,12 @@ The packages that end up in `out/lsp-runtime/app/node_modules` (versions of the 
 
 - Licence: Electron is MIT. Chromium and the components it bundles are under their own licences, listed in
   `LICENSES.chromium.html`.
-- Source: https://github.com/electron/electron (version 45.2.2, the `electron` development dependency in `package.json`)
+- Source: https://github.com/electron/electron (version 45.3.2, the `electron` development dependency in `package.json`)
 - Where it lives in this repo: not committed. `electron-packager` builds the app around the Electron runtime
   and leaves Electron's `LICENSE` and `LICENSES.chromium.html` beside `Lantern.app`, outside the app and the
   zip. `scripts/package-licences.mjs` copies them into the app as `licenses/ELECTRON-LICENSE` and
   `licenses/LICENSES.chromium.html`, so they travel with it. The text below is Electron's `LICENSE` from
-  v45.2.2.
+  v45.3.2.
 
 ```
 Copyright (c) Electron contributors
