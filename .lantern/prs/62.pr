@@ -1,0 +1,15 @@
+lantern-pr 1
+# 62
+#title chore: release 0.4.1
+#url https://github.com/MobileReality/lantern/pull/62
+#branch chore/release-0.4.1
+#base main
+#opened 2026-11-16
+#head 7d72566a4d1ccdaaeed83f2636308e1c1a1790db
+#summary Release 0.4.1: version bump and changelog
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md Moves the unreleased fix under 0.4.1 and lists the dependency updates
+#reason package.json Version 0.4.0 to 0.4.1 for the patch release
