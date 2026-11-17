@@ -11,7 +11,7 @@ export default defineConfig({
     testTimeout: process.env.CI ? 30_000 : 15_000,
     hookTimeout: process.env.CI ? 30_000 : 15_000,
     environment: 'node',
-    setupFiles: ['test/setup-process-guard.ts', 'test/setup-yield.ts'],
+    setupFiles: ['test/setup-process-guard.ts', 'test/setup-yield.ts', 'test/setup-popover.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],

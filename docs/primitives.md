@@ -23,6 +23,13 @@ caps `maxWorkers` at 6. Without them, long runs of synchronous process-spawning 
 worker channel and a full `pnpm test` fails with `Timeout calling "onTaskUpdate"` and 5 s timeouts.
 Keep both; a test that spawns many processes builds its repos from a copied template, not one `git init` each.
 
+### Popover shim
+`test/support/popover-shim.ts`, installed for every jsdom test by `test/setup-popover.ts`. jsdom has no
+`showPopover`, and since jsdom 31 it refuses to focus anything inside a `popover` element that is not
+open. The shim adds `showPopover`, `hidePopover` and `togglePopover` (open state is a `data-popover-open`
+attribute) and makes `matches(':popover-open')` see it. It only installs when the method is missing, so
+Node-env tests are untouched. Use it as is: never change `src/renderer` to suit jsdom.
+
 ### Test worlds
 Build state with these instead of hand-writing it:
 - `test/helpers/git-repo.ts`: a throwaway git repo with a fixed identity and dates. Any test that

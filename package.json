@@ -80,7 +80,7 @@
     "@vitest/coverage-v8": "^4.1.12",
     "electron": "^45.3.2",
     "esbuild": "^0.28.2",
-    "jsdom": "^29.1.1",
+    "jsdom": "^31.0.1",
     "material-icon-theme": "5.40.0",
     "typescript": "^7.0.2",
     "vitest": "^4.1.12"
@@ -108,6 +108,6 @@
     "marked": "^18.2.0",
     "pixi.js": "8.23.0",
     "shiki": "4.6.0",
-    "vscode-jsonrpc": "8.2.1"
+    "vscode-jsonrpc": "10.0.0"
   }
 }

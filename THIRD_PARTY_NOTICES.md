@@ -2887,7 +2887,7 @@ The externally maintained libraries used by Node.js are:
 - Licences: MIT, Apache-2.0 (TypeScript) and ISC, per package below
 - Source: the packages named below, from the npm registry; the versions are pinned by `pnpm-lock.yaml`
 - Where it lives in this repo: not committed. `packages/lsp-runtime/package.json` depends on
-  `@vtsls/language-server` 0.3.0 and `vscode-jsonrpc` 8.2.1. `scripts/lsp-runtime.mjs` runs
+  `@vtsls/language-server` 0.3.0 and `vscode-jsonrpc` 10.0.0. `scripts/lsp-runtime.mjs` runs
   `pnpm deploy --prod` for it into `out/lsp-runtime/app/node_modules`, which the app ships as the extra
   resource `lsp-runtime/`. Every package folder there keeps its own licence file, and the packages are also
   in `THIRD_PARTY_LICENSES.txt`.
@@ -2900,7 +2900,7 @@ The packages that end up in `out/lsp-runtime/app/node_modules` (versions of the 
 | `@vtsls/language-service` | 0.3.0 | MIT | https://github.com/yioneko/vtsls |
 | `@vtsls/vscode-fuzzy` | 0.1.0 | MIT | https://github.com/yioneko/vtsls |
 | `typescript` | 5.9.3 | Apache-2.0 | https://github.com/microsoft/TypeScript |
-| `vscode-jsonrpc` | 8.2.1 | MIT | https://github.com/Microsoft/vscode-languageserver-node |
+| `vscode-jsonrpc` | 10.0.0 | MIT | https://github.com/Microsoft/vscode-languageserver-node |
 | `vscode-languageserver` | 9.0.1 | MIT | https://github.com/Microsoft/vscode-languageserver-node |
 | `vscode-languageserver-protocol` | 3.18.4 | MIT | https://github.com/Microsoft/vscode-languageserver-node |
 | `vscode-languageserver-textdocument` | 1.0.15 | MIT | https://github.com/Microsoft/vscode-languageserver-node |
@@ -2916,12 +2916,12 @@ The packages that end up in `out/lsp-runtime/app/node_modules` (versions of the 
 
 - Licence: Electron is MIT. Chromium and the components it bundles are under their own licences, listed in
   `LICENSES.chromium.html`.
-- Source: https://github.com/electron/electron (version 45.3.2, the `electron` development dependency in `package.json`)
+- Source: https://github.com/electron/electron (version 45.3.3, the `electron` development dependency in `package.json`)
 - Where it lives in this repo: not committed. `electron-packager` builds the app around the Electron runtime
   and leaves Electron's `LICENSE` and `LICENSES.chromium.html` beside `Lantern.app`, outside the app and the
   zip. `scripts/package-licences.mjs` copies them into the app as `licenses/ELECTRON-LICENSE` and
   `licenses/LICENSES.chromium.html`, so they travel with it. The text below is Electron's `LICENSE` from
-  v45.3.2.
+  v45.3.3.
 
 ```
 Copyright (c) Electron contributors
