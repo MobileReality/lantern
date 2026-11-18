@@ -1,0 +1,26 @@
+lantern-pr 1
+# 70
+#title fix: Macro map is no longer drawn twice when it enters an area while mounting
+#url https://github.com/MobileReality/lantern/pull/70
+#branch fix/macro-single-mount
+#base origin/main
+#opened 2026-11-18
+#head e4bceb6d4e4856b4361f8b06a9df9b41b3953767
+#summary Macro map: one map instead of two stacked copies on projects with a large area
+#describe what The Macro map is drawn once even when it enters an area while it is still being mounted.
+#describe before On a project with a large area (mobile-reality-site-v2), opening Macro left two maps stacked at different zoom levels.
+#describe after The repaint caused by entering the area is applied to the one map as an update.
+#describe verified Reproduced with the real mobile-reality-site-v2 map in the graph harness (two maps before, one after); new stage test, macro e2e, typecheck and lint green.
++ test/macroview-stage.test.ts
+~ src/renderer/lib/macroview/stage.ts
+#order src/renderer/lib/macroview/stage.ts
+#order test/macroview-stage.test.ts
+#reason test/macroview-stage.test.ts Fails when a map that enters an area while mounting leaves two maps in the host
+#reason src/renderer/lib/macroview/stage.ts Holds a repaint that arrives during mounting and applies it as an update, so a second map is never mounted on top
+#story Opening the Macro map
+#step actor Reviewer
+#step action opens the Macro view of a project with one large area
+#file src/renderer/lib/macroview/stage.ts
+#step subject the areas map
+#below interaction can read and zoom one map
+#below consequence two copies of the map drawn on top of each other => one map, the area entry applied as an update
