@@ -278,6 +278,10 @@
     "allow": "Allow",
     "decline": "Don't allow"
   },
+  "editorDrop": {
+    "title": "A dropped file was not attached",
+    "body": "Lantern stopped the file from opening as a page in the editor. To attach it to a Claude chat, use the + button in the Claude Code panel and pick the file."
+  },
   "micPatch": {
     "message": "Enable the microphone in the Claude Code extension?",
     "detail": "Lantern would edit extension.js inside the Claude Code extension in ~/.vscode-server/extensions, a file that belongs to a third party, and keep a copy of the original next to it (extension.js.ccm-bak). The change removes the check that turns voice input off in a remote editor. It can stop working or break the extension when the extension updates, and Anthropic does not endorse it. Nothing is changed if you cancel.",

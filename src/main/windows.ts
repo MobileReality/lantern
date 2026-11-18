@@ -104,6 +104,32 @@ function hardenWebContents(wc: WebContents, htmlDir: string) {
   }) as never);
 }
 
+const DROP_NOTICE_GAP_MS = 3000;
+
+function isLocalFileUrl(url: string) {
+  try {
+    return new URL(url).protocol === 'file:';
+  } catch {
+    return false;
+  }
+}
+
+// A file dropped where the editor page does not consume it makes Chromium navigate the
+// guest to file://..., which replaces the whole editor with the file. The host window's
+// will-navigate never sees guest navigations, so the guest needs its own guard.
+function hardenGuestContents(wc: WebContents, onFileDropBlocked: () => void, now: () => number = Date.now) {
+  let lastNotice = Number.NEGATIVE_INFINITY;
+  const guard = (event: { preventDefault: () => void }, url: string) => {
+    if (!isLocalFileUrl(url)) return;
+    event.preventDefault();
+    if (now() - lastNotice < DROP_NOTICE_GAP_MS) return;
+    lastNotice = now();
+    onFileDropBlocked();
+  };
+  wc.on('will-navigate', ((event: { preventDefault: () => void }, url: string) => guard(event, url)) as never);
+  wc.on('will-frame-navigate', ((event: { preventDefault: () => void; url: string }) => guard(event, event.url)) as never);
+}
+
 function newWorkspaceWindow(title: string) {
   const h = requireHost();
   const win = new BrowserWindow({
@@ -197,4 +223,4 @@ function windowOpenHandler(openExternal: (url: string) => unknown) {
   };
 }
 
-export { isServeWebUrl, isAppUrl, onAttachWebview, hardenWebContents, windowOpenHandler, init, projectWins, isOpen, raise, focusWin, showDock, hideDockIfIdle, newWorkspaceWindow, projectKey, focusProjectWindow, openProjectWindow, openFromArgv, ownsProject };
+export { isServeWebUrl, isAppUrl, onAttachWebview, hardenWebContents, hardenGuestContents,windowOpenHandler, init, projectWins, isOpen, raise, focusWin, showDock, hideDockIfIdle, newWorkspaceWindow, projectKey, focusProjectWindow, openProjectWindow, openFromArgv, ownsProject };

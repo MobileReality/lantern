@@ -37,7 +37,7 @@ import { createPermissionConsent } from './permission-consent';
 import { enableMicrophone } from './mic-consent';
 import { msg } from '../shared/lang/messages';
 import * as popout from './popout';
-import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow, hideDockIfIdle, focusProjectWindow, openFromArgv, windowOpenHandler, ownsProject, projectKey } from './windows';
+import { init as initWindows, projectWins, isOpen, focusWin, newWorkspaceWindow, hideDockIfIdle, focusProjectWindow, openFromArgv, windowOpenHandler, hardenGuestContents, ownsProject, projectKey } from './windows';
 import * as cli from './cli';
 import { installUserCli, userCliStatus } from './cli-user-install';
 import { cliPort } from './cli-user-port';
@@ -593,6 +593,7 @@ function setupWebviewPermissions() {
 function hardenWebContents() {
   app.on('web-contents-created', (_e, contents) => {
     contents.setWindowOpenHandler(windowOpenHandler((url) => shell.openExternal(url)));
+    if (contents.getType() === 'webview') hardenGuestContents(contents, () => alertUser(msg('editorDrop.title'), msg('editorDrop.body')));
     commandKeys.attach(contents);
   });
 }
