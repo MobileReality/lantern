@@ -1,0 +1,56 @@
+lantern-pr 1
+# 65
+#title feat: update Lantern through Squirrel on Windows
+#url https://github.com/MobileReality/lantern/pull/65
+#branch feat/windows-updater-feed
+#base feat/windows-installer
+#opened 2026-11-18
+#head 2007b1e815ea0ed555e641adde2f6fadc3b8c1ab
+#describe what The updater builds a win32-x64 update.electronjs.org feed, reads its RELEASES file and hands the feed to Squirrel.Windows when Lantern was started by Squirrel. No feed for arm64, ia32 or other platforms.
+#describe before Only macOS used Squirrel; Windows only showed a release notice.
+#describe after A Squirrel-installed Windows x64 build downloads and installs updates; a portable zip (no Update.exe next to the app) keeps the release notice.
+#describe verified pnpm run typecheck and pnpm test green; the new feed, service and adapter tests fail on the base.
+#plan windows-squirrel-installer s4.1
+~ src/main/main.ts
+~ src/main/updater/feed.ts
+~ src/main/updater/native.ts
+~ src/main/updater/service.ts
+~ test/helpers/updater-world.ts
+~ test/updater-feed.test.ts
+~ test/updater-service.test.ts
+~ test/updater-surface.test.ts
+#order src/main/updater/feed.ts
+#order src/main/updater/native.ts
+#order src/main/updater/service.ts
+#order src/main/main.ts
+#order test/updater-feed.test.ts
+#order test/updater-service.test.ts
+#order test/updater-surface.test.ts
+#order test/helpers/updater-world.ts
+#reason src/main/main.ts Hands the Squirrel updater to the service on Windows only when the app was launched by Squirrel.
+#reason src/main/updater/feed.ts Windows needs its own feed address and a RELEASES reader, since Squirrel.Windows reads that file, not the JSON the Mac feed gives.
+#reason src/main/updater/native.ts Squirrel.Windows rejects the JSON server type, and a portable zip has no Update.exe so it must not try to update.
+#reason src/main/updater/service.ts Lets the updater run Squirrel on win32 with the platform's own feed and reader, and keeps the release notice elsewhere.
+#reason test/helpers/updater-world.ts Shares one RELEASES answer so the service tests can feed the Windows path.
+#reason test/updater-feed.test.ts Pins the win32-x64 feed address, no feed for other architectures and platforms, and the RELEASES reader.
+#reason test/updater-service.test.ts Proves Windows downloads and installs through Squirrel, stays quiet on arm64 and falls back for the portable zip.
+#reason test/updater-surface.test.ts Covers the Windows feed call without a server type and the Update.exe check that tells Squirrel from a portable zip.
+#story A Windows install updates itself
+#step actor Lantern on Windows
+#file src/main/updater/service.ts
+#file src/main/main.ts
+#step action checks the update feed for a newer release
+#file src/main/updater/feed.ts
+#step subject the installed Windows build
+#file test/updater-service.test.ts
+#below interaction Restart now installs the downloaded update
+#below consequence Windows only saw a release notice => Windows downloads and installs updates
+#story A portable zip stays on notices
+#step actor Lantern from the zip
+#file src/main/main.ts
+#step action finds no installer next to itself
+#file src/main/updater/native.ts
+#step subject the update check
+#file test/updater-surface.test.ts
+#below interaction A new release shows a notice with its page
+#below consequence Zip users got the notice => Zip users still get the notice

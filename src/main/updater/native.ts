@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 export interface NativeUpdater {
   setFeedUrl(url: string): void;
   checkForUpdates(): void;
@@ -8,15 +10,15 @@ export interface NativeUpdater {
 }
 
 export interface AutoUpdaterLike {
-  setFeedURL(options: { url: string; serverType: 'json' }): void;
+  setFeedURL(options: { url: string; serverType?: 'json' }): void;
   checkForUpdates(): void;
   quitAndInstall(): void;
   on(event: string, listener: (...args: unknown[]) => void): unknown;
 }
 
-export function squirrelUpdater(autoUpdater: AutoUpdaterLike): NativeUpdater {
+export function squirrelUpdater(autoUpdater: AutoUpdaterLike, platform: NodeJS.Platform = 'darwin'): NativeUpdater {
   return {
-    setFeedUrl: (url) => autoUpdater.setFeedURL({ url, serverType: 'json' }),
+    setFeedUrl: (url) => autoUpdater.setFeedURL(platform === 'win32' ? { url } : { url, serverType: 'json' }),
     checkForUpdates: () => autoUpdater.checkForUpdates(),
     quitAndInstall: () => autoUpdater.quitAndInstall(),
     onDownloaded: (listener) => {
@@ -29,4 +31,8 @@ export function squirrelUpdater(autoUpdater: AutoUpdaterLike): NativeUpdater {
       autoUpdater.on('error', (error) => listener(error instanceof Error ? error.message : String(error)));
     },
   };
+}
+
+export function launchedBySquirrel(execPath: string, exists: (file: string) => boolean): boolean {
+  return exists(path.win32.resolve(path.win32.dirname(execPath), '..', 'Update.exe'));
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { type HttpFetch, isReleasePageUrl, macFeedUrl, readLatestRelease, readMacFeed, releasePageUrl } from '../src/main/updater/feed';
+import { type HttpFetch, isReleasePageUrl, macFeedUrl, readLatestRelease, readMacFeed, readWindowsFeed, releasePageUrl, squirrelFeedUrl, windowsFeedUrl } from '../src/main/updater/feed';
 
 const answering =
   (status: number, body = ''): HttpFetch =>
@@ -16,6 +16,61 @@ describe('macFeedUrl', () => {
 
   it('has no feed for an architecture Lantern does not publish', () => {
     expect(macFeedUrl('0.2.2', 'x64')).toBeNull();
+  });
+});
+
+describe('windowsFeedUrl', () => {
+  it('names the update service, the repository, win32-x64 and the running version', () => {
+    expect(windowsFeedUrl('0.2.2', 'x64')).toBe('https://update.electronjs.org/MobileReality/lantern/win32-x64/0.2.2');
+  });
+
+  it.each(['arm64', 'ia32'])('has no feed for %s, which Lantern does not publish for Windows', (arch) => {
+    expect(windowsFeedUrl('0.2.2', arch)).toBeNull();
+  });
+});
+
+describe('squirrelFeedUrl', () => {
+  it('picks the feed of the platform and leaves the macOS one as it was', () => {
+    expect(squirrelFeedUrl('darwin', '0.2.2', 'arm64')).toBe(macFeedUrl('0.2.2', 'arm64'));
+    expect(squirrelFeedUrl('darwin', '0.2.2', 'x64')).toBeNull();
+    expect(squirrelFeedUrl('win32', '0.2.2', 'x64')).toBe(windowsFeedUrl('0.2.2', 'x64'));
+    expect(squirrelFeedUrl('win32', '0.2.2', 'arm64')).toBeNull();
+  });
+
+  it('has no feed on any other platform', () => {
+    expect(squirrelFeedUrl('linux', '0.2.2', 'x64')).toBeNull();
+    expect(squirrelFeedUrl('freebsd', '0.2.2', 'arm64')).toBeNull();
+  });
+});
+
+describe('readWindowsFeed', () => {
+  const URL = 'https://update.electronjs.org/MobileReality/lantern/win32-x64/0.2.2';
+  const RELEASES = (version: string) => `4D6B2C1E9F0A3B5C7D8E9F001122334455667788 lantern-${version}-full.nupkg 98765432\n`;
+
+  it('asks for the RELEASES file under the feed and sends only the running version', async () => {
+    const seen: { url: string; headers: Record<string, string> }[] = [];
+    const fetchUrl: HttpFetch = async (url, { headers }) => {
+      seen.push({ url, headers });
+      return { status: 200, text: async () => RELEASES('0.3.0') };
+    };
+    await readWindowsFeed(fetchUrl, URL, '0.2.2');
+    expect(seen).toEqual([{ url: `${URL}/RELEASES`, headers: { Accept: 'text/plain', 'User-Agent': 'Lantern/0.2.2' } }]);
+  });
+
+  it('reports a newer full package as an update', async () => {
+    expect(await readWindowsFeed(answering(200, RELEASES('0.3.0')), URL, '0.2.2')).toEqual({ kind: 'available', version: '0.3.0' });
+  });
+
+  it('reports the same or an older package, or a 204, as up to date', async () => {
+    expect(await readWindowsFeed(answering(200, RELEASES('0.2.2')), URL, '0.2.2')).toEqual({ kind: 'up-to-date' });
+    expect(await readWindowsFeed(answering(204), URL, '0.2.2')).toEqual({ kind: 'up-to-date' });
+  });
+
+  it('reports a 404 as a feed that is not available and other statuses, a network error and an unreadable file as failures', async () => {
+    expect(await readWindowsFeed(answering(404), URL, '0.2.2')).toMatchObject({ kind: 'unavailable' });
+    expect(await readWindowsFeed(answering(500), URL, '0.2.2')).toMatchObject({ kind: 'failed', reason: expect.stringContaining('500') });
+    expect(await readWindowsFeed(failing('offline'), URL, '0.2.2')).toMatchObject({ kind: 'failed', reason: expect.stringContaining('offline') });
+    expect(await readWindowsFeed(answering(200, 'not a releases file'), URL, '0.2.2')).toMatchObject({ kind: 'failed' });
   });
 });
 

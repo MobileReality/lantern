@@ -15,7 +15,7 @@ src/main/updater/dialogs.ts . pure 0b8341cca2e5
   < src/main/updater/service.ts#CheckOutcome
   < src/shared/lang/messages.ts#msg
 
-src/main/updater/feed.ts . gateway c94a2fbe3c61
+src/main/updater/feed.ts . gateway 92cebfa7556e
 #feature app-updates
   < src/main/updater/version.ts#isNewerVersion
   = ext:electron-update-service
@@ -24,7 +24,7 @@ src/main/updater/feed.ts . gateway c94a2fbe3c61
 src/main/updater/guard.ts . pure 2110f685c5af
 #feature app-updates
 
-src/main/updater/native.ts . gateway 4c9b40c58772
+src/main/updater/native.ts . gateway 4a82443038a7
 #feature app-updates
   = ext:electron-update-service
 
@@ -35,10 +35,12 @@ src/main/updater/process-activity.ts . service a7d95c85b333
   < src/main/updater/guard.ts#ProcessActivity
   = ext:macos-process-tools
 
-src/main/updater/service.ts . service 81f08eeb646d
+src/main/updater/service.ts . service 08f77be3b86a
 #feature app-updates
   < src/main/updater/feed.ts#readLatestRelease
   < src/main/updater/feed.ts#readMacFeed
+  < src/main/updater/feed.ts#readWindowsFeed
+  < src/main/updater/feed.ts#squirrelFeedUrl
   < src/main/updater/guard.ts#canInstallNow
   < src/main/updater/native.ts#NativeUpdater
   < src/main/updater/version.ts#displayVersion

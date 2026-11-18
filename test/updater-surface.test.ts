@@ -4,7 +4,7 @@ import type { MenuItemConstructorOptions } from 'electron';
 import { appMenuTemplate } from '../src/main/app-menu';
 import { createUpdateController, registerUpdateIpc } from '../src/main/updater/controller';
 import { lostItems, restartDialog, resultDialog } from '../src/main/updater/dialogs';
-import { squirrelUpdater } from '../src/main/updater/native';
+import { launchedBySquirrel, squirrelUpdater } from '../src/main/updater/native';
 import { updateNoticeView } from '../src/renderer/lib/update-notice-view';
 import { defaultBindings, resolveKeymap } from '../src/shared/commands/keymap';
 import { SETTING_DEFAULTS, SETTINGS } from '../src/shared/settings-registry';
@@ -29,6 +29,13 @@ describe('the Squirrel adapter', () => {
     expect(autoUpdater.quitAndInstall).toHaveBeenCalledOnce();
   });
 
+  it('sets a plain feed on Windows, whose Squirrel takes a folder with RELEASES and no JSON server type', () => {
+    const emitter = new EventEmitter();
+    const autoUpdater = Object.assign(emitter, { setFeedURL: vi.fn(), checkForUpdates: vi.fn(), quitAndInstall: vi.fn() });
+    squirrelUpdater(autoUpdater, 'win32').setFeedUrl('https://update.electronjs.org/x');
+    expect(autoUpdater.setFeedURL).toHaveBeenCalledExactlyOnceWith({ url: 'https://update.electronjs.org/x' });
+  });
+
   it('turns update-downloaded into the release name, update-not-available into a call and error into its message', () => {
     const { autoUpdater, native } = adapter();
     const downloaded = vi.fn();
@@ -44,6 +51,20 @@ describe('the Squirrel adapter', () => {
     expect(downloaded.mock.calls).toEqual([['v0.3.0'], ['']]);
     expect(notAvailable).toHaveBeenCalledOnce();
     expect(failed).toHaveBeenCalledExactlyOnceWith('boom');
+  });
+});
+
+describe('launchedBySquirrel', () => {
+  const installed = 'C:\\Users\\a\\AppData\\Local\\Lantern\\app-0.2.2\\Lantern.exe';
+
+  it('is true when Update.exe sits one folder above the app', () => {
+    const seen: string[] = [];
+    expect(launchedBySquirrel(installed, (file) => (seen.push(file), true))).toBe(true);
+    expect(seen).toEqual(['C:\\Users\\a\\AppData\\Local\\Lantern\\Update.exe']);
+  });
+
+  it('is false for the portable zip, which has no Update.exe next to it', () => {
+    expect(launchedBySquirrel('D:\\tools\\Lantern\\Lantern.exe', () => false)).toBe(false);
   });
 });
 
