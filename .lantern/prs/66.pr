@@ -1,0 +1,35 @@
+lantern-pr 1
+# 66
+#title Block a dropped file from navigating the editor webview
+#url https://github.com/MobileReality/lantern/pull/66
+#branch fix/editor-file-drop-guard
+#base main
+#opened 2026-11-18
+#head 1e3ac519e3aa26500c054f6b63443d0efe4380ed
+#describe what The editor webview now refuses to navigate to a local file, which is what an unhandled file drop did, and a notification tells the user to use the + button in the Claude Code panel.
+#describe before A dropped image that the chat panel did not consume replaced the whole editor with that image.
+#describe after The navigation is cancelled, the editor stays, and the notice appears at most once every few seconds.
+#describe verified Typecheck is clean and the new tests pass. The cause is inferred from the code and was not reproduced in the running app.
+~ src/main/main.ts
+~ src/main/windows.ts
+~ src/shared/lang/en/messages.json
+~ test/webview-hardening.test.ts
+#order src/main/windows.ts
+#order src/main/main.ts
+#order src/shared/lang/en/messages.json
+#order test/webview-hardening.test.ts
+#reason src/main/main.ts Attaches the guard to every webview guest and tells the user a dropped file was not attached.
+#reason src/main/windows.ts Adds the guard the editor webview lacked, since the host window's will-navigate never sees guest navigations.
+#reason src/shared/lang/en/messages.json Holds the notice text shown when a dropped file is stopped, as every user-facing string goes through msg().
+#reason test/webview-hardening.test.ts Pins that a file navigation is blocked and reported once, and that editor addresses still navigate.
+#story A dropped screenshot no longer replaces the editor
+#step actor A Lantern user
+#step action drops an image file onto
+#file src/main/windows.ts
+#step subject the Claude Code panel
+#below actor The same user
+#file src/main/main.ts
+#below interaction is told the file was not attached and to use +
+#file src/shared/lang/en/messages.json
+#below consequence the editor turned into the image => the editor stays as it was
+#file test/webview-hardening.test.ts
