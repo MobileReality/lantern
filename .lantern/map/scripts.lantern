@@ -107,7 +107,7 @@ scripts/pr-review-demo.mjs . script 1728a77e2872
   > scripts/material-file-icons.mjs
   > test/e2e/app/main.cjs
 
-scripts/release-checksums.sh . script d12cbb28606e
+scripts/release-checksums.sh . script 8423a0da15bf
 
 scripts/app-manifest.mjs . script c9f584e04125
 
