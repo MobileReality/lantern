@@ -68,7 +68,7 @@ src/renderer/lib/editorload.ts . pure 1a135e4756e2
 src/renderer/lib/explain.ts . pure 9535e7408e72
 #feature code-insight
 
-src/renderer/lib/file-icon-manifest.json . config 5673c93d104a
+src/renderer/lib/file-icon-manifest.json . config 03905e40c1b1
 
 src/renderer/lib/file-icons.ts . component a1fca8f26ed3
   < src/renderer/lib/file-icon-manifest.json

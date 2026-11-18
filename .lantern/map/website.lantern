@@ -4,7 +4,7 @@ lantern 1
 website/index.html . entry 57ed9a239d81
   > website/src/main.tsx
 
-website/package.json . config 2cc1552344c2
+website/package.json . config 4df7a544107f
 
 website/pnpm-workspace.yaml . config 7937976a52e8
 
