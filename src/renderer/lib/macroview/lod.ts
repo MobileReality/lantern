@@ -15,6 +15,7 @@ interface Detail {
 const FEATURES_RAMP: Ramp = { from: 290, span: 150 };
 const FILES_RAMP: Ramp = { from: 250, span: 110 };
 const VISIBLE = 0.02;
+const HANDOFF = 0.3;
 const ACTIVE = 0.5;
 const CHAR_EM = 0.56;
 const ELLIPSIS = '…';
@@ -30,6 +31,14 @@ function featuresWeight(areaScreenWidth: number) {
 
 function filesWeight(featureScreenWidth: number, parentFeatures: number) {
   return rampWeight(featureScreenWidth, FILES_RAMP) * parentFeatures;
+}
+
+function overviewOpacity(featuresWeightNow: number) {
+  return clamp(1 - featuresWeightNow / HANDOFF, 0, 1);
+}
+
+function detailOpacity(featuresWeightNow: number) {
+  return clamp((featuresWeightNow - HANDOFF) / (1 - HANDOFF), 0, 1);
 }
 
 function levelOf(detail: Detail): DetailLevel {
@@ -89,5 +98,5 @@ function closeLines(lines: string[], rest: string, perLine: number) {
   return [...lines.slice(0, -1), last.length > perLine ? `${last.slice(0, perLine - 1).trimEnd()}${ELLIPSIS}` : last];
 }
 
-export { ACTIVE, FEATURES_RAMP, FILES_RAMP, VISIBLE, featuresWeight, filesWeight, fitLabel, isActive, isShown, levelOf, rampWeight, textWidth, wrapLines };
+export { ACTIVE, FEATURES_RAMP, FILES_RAMP, VISIBLE, featuresWeight, filesWeight, detailOpacity, fitLabel, isActive, isShown, levelOf, overviewOpacity, rampWeight, textWidth, wrapLines };
 export type { Detail, DetailLevel, FittedLabel, Ramp };

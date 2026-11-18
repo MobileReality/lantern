@@ -1756,9 +1756,11 @@ test/macroview-layout.test.ts . test 4c4aebeafaac
   = src/renderer/lib/macroview/model.ts#buildModel
   = test/helpers/macroview-world.ts#macroViewWorld
 
-test/macroview-lod.test.ts . test 2bfdc41912db
+test/macroview-lod.test.ts . test 5f65855d0408
 #feature macro-view
+  = src/renderer/lib/macroview/lod.ts#detailOpacity
   = src/renderer/lib/macroview/lod.ts#fitLabel
+  = src/renderer/lib/macroview/lod.ts#overviewOpacity
 
 test/macroview-systems.test.ts . test 649b71b51a83
 #feature macro-view

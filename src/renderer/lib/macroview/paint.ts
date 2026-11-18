@@ -8,7 +8,7 @@ import { clamp, inflate, intersects, worldRect } from './camera';
 import type { FileList } from './files';
 import { relationRows } from './files';
 import { AREA_HEADER } from './layout';
-import { featuresWeight, filesWeight, fitLabel, isShown, wrapLines } from './lod';
+import { detailOpacity, featuresWeight, filesWeight, fitLabel, isShown, overviewOpacity, wrapLines } from './lod';
 import type { MacroViewMarks } from './marks';
 import { tallyText } from './marks';
 import type { Tally } from './marks';
@@ -31,8 +31,6 @@ const MARK_STEP = 'STEP';
 const OVERVIEW_PAD = 8;
 const OVERVIEW_GAP = 8;
 const CAPTION_H = 16;
-const OVERVIEW_FADE = 2.4;
-const DETAIL_LAG = 0.15;
 const HEADER_GROWS_AT = 650;
 const MAX_HEADER_UNIT = 2.1;
 const TEXT_GROWS_AT = 420;
@@ -240,8 +238,8 @@ function paintFeature(feature: FeatureNodes, input: PaintInput, areaWeight: numb
 function paintArea(area: AreaNodes, input: PaintInput) {
   const k = input.camera.k;
   const weight = featuresWeight(area.rect.w * k);
-  const detail = clamp((weight - DETAIL_LAG) / (1 - DETAIL_LAG), 0, 1);
-  paintOverview(area, k, clamp(1 - weight * OVERVIEW_FADE, 0, 1));
+  const detail = detailOpacity(weight);
+  paintOverview(area, k, overviewOpacity(weight));
   paintHeader(area, k, detail);
   const counted = paintCount(area.count, area.rect, k, input.counts.get(area.key), 6, COUNT_MIN_ROOM);
   const tallied = paintBadge(area.badge, area.rect, k, input.marks.areas.get(area.id), 6, counted);
