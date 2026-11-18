@@ -3,9 +3,9 @@ lantern-pr 1
 #title fix: take a remote that names bitbucket.org or github.com as that host without asking ssh
 #url https://github.com/MobileReality/lantern/pull/71
 #branch fix/preflight-host-literal
-#base main
+#base origin/main
 #opened 2026-11-18
-#head 8b50d208c89623c8a69bc85fdc71dcc733f7098c
+#head 3eb93dc56fb48244d468fe0fe7ee406894ed9694
 #describe what A remote whose host is literally bitbucket.org or github.com is taken as that host; ssh -G is asked only for aliases.
 #describe before A user's own ssh HostName for bitbucket.org made preflight reject the remote and print no host, identity or target line.
 #describe after Preflight, PR creation and the delivery flow read the host from the remote itself, on any machine.
