@@ -7,8 +7,6 @@ import { parseRemoteUrl, sshEffective } from './github/github.mjs';
 
 const defaultHostname = (host) => sshEffective(host).hostname ?? host;
 
-// A remote that names the host itself is that host: how ssh routes it (the user's own
-// `Host bitbucket.org / HostName ssh.bitbucket.org` entry, say) does not change the service.
 const KNOWN_HOSTS = new Set(['bitbucket.org', 'github.com', 'www.github.com']);
 
 // `{ host: 'bitbucket' | 'github', parsed }`, or `{ error }` for an unreadable URL or any other host.
