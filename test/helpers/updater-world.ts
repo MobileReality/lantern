@@ -9,6 +9,7 @@ export const IDLE: ActivityState = { agentRunning: false, processes: { terminals
 export const BUSY: ActivityState = { agentRunning: false, processes: { terminals: 1, running: 0 } };
 
 export const FEED_NEWER = JSON.stringify({ name: 'v0.3.0', url: 'https://github.com/MobileReality/lantern/releases/download/v0.3.0/Lantern-mac.zip' });
+export const RELEASES_NEWER = '4D6B2C1E9F0A3B5C7D8E9F001122334455667788 lantern-0.3.0-full.nupkg 98765432\n';
 export const LATEST_NEWER = JSON.stringify({ tag_name: 'v0.4.0' });
 
 export interface Timer {

@@ -98,7 +98,7 @@ import { guardIpc } from './diagnostics/ipc-guard';
 import { registerDiagnosticsIpc } from './diagnostics/ipc';
 import { createUpdater } from './updater/service';
 import { createUpdateController, registerUpdateIpc } from './updater/controller';
-import { squirrelUpdater, type AutoUpdaterLike } from './updater/native';
+import { launchedBySquirrel, squirrelUpdater, type AutoUpdaterLike } from './updater/native';
 import { readProcessActivity } from './updater/process-activity';
 import { restartDialog } from './updater/dialogs';
 import { runCommand } from './memory-collect';
@@ -716,6 +716,8 @@ registerAuthIpc({
   },
 });
 
+const squirrelSupported = () => process.platform === 'darwin' || (process.platform === 'win32' && launchedBySquirrel(process.execPath, fs.existsSync));
+
 const updater = createUpdater({
   packaged: app.isPackaged && !DEV_PROFILE,
   platform: process.platform,
@@ -723,7 +725,7 @@ const updater = createUpdater({
   version: app.getVersion(),
   enabled: () => settingsStore.get('updates.checkAutomatically'),
   fetch: (url, { headers, signal }) => electron.net.fetch(url, { headers, signal }),
-  native: process.platform === 'darwin' ? squirrelUpdater(electron.autoUpdater as unknown as AutoUpdaterLike) : null,
+  native: squirrelSupported() ? squirrelUpdater(electron.autoUpdater as unknown as AutoUpdaterLike, process.platform) : null,
   activity: async () => ({
     agentRunning: agent.isRunning() || prExplain.running() > 0,
     processes: await readProcessActivity({ platform: process.platform, supportedPlatforms: MEMORY_SUPPORTED_PLATFORMS, run: runCommand, rootPid: process.pid }),

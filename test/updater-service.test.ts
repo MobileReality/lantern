@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { CHECK_INTERVAL_MS, GUARD_INTERVAL_MS, INITIAL_CHECK_DELAY_MS } from '../src/main/updater/service';
-import { BUSY, FEED_NEWER, IDLE, LATEST_NEWER, type WorldOptions, flush, updaterWorld } from './helpers/updater-world';
+import { BUSY, FEED_NEWER, IDLE, LATEST_NEWER, RELEASES_NEWER, type WorldOptions, flush, updaterWorld } from './helpers/updater-world';
 
 const MAC_FEED = 'https://update.electronjs.org/MobileReality/lantern/darwin-arm64/0.2.2';
 
@@ -318,6 +318,49 @@ describe('Restart now', () => {
     await world.updater.restartNow();
     expect(world.logs.at(-1)).toMatchObject({ severity: 'warning', detail: 'ShipIt failed' });
     expect(world.clock.running().some((timer) => timer.ms === GUARD_INTERVAL_MS)).toBe(true);
+  });
+});
+
+describe('the Windows feed', () => {
+  const WIN_FEED = 'https://update.electronjs.org/MobileReality/lantern/win32-x64/0.2.2';
+  const windows = (extra: WorldOptions = {}) => updaterWorld({ platform: 'win32', arch: 'x64', status: 200, body: RELEASES_NEWER, ...extra });
+
+  it('asks the RELEASES file of the win32-x64 feed and hands the feed to Squirrel for a newer release', async () => {
+    const world = windows();
+    expect(await world.updater.check()).toEqual({ kind: 'downloading', version: '0.3.0' });
+    expect(world.requests).toEqual([`${WIN_FEED}/RELEASES`]);
+    expect(world.native.setFeedUrl).toHaveBeenCalledExactlyOnceWith(WIN_FEED);
+    expect(world.native.checkForUpdates).toHaveBeenCalledOnce();
+  });
+
+  it('does nothing when the release is not newer', async () => {
+    const world = windows({ status: 204, body: '' });
+    expect(await world.updater.check()).toEqual({ kind: 'up-to-date' });
+    expect(world.native.checkForUpdates).not.toHaveBeenCalled();
+  });
+
+  it('installs the downloaded update through Squirrel when nothing is running', async () => {
+    const world = windows();
+    world.updater.start();
+    await world.updater.check();
+    world.handlers.downloaded?.('0.3.0');
+    await flush();
+    expect(world.native.quitAndInstall).toHaveBeenCalledOnce();
+  });
+
+  it.each(['arm64', 'ia32'])('is a quiet no-op on %s, and asks the service nothing', async (arch) => {
+    const world = windows({ arch });
+    expect(await world.updater.check()).toEqual({ kind: 'unavailable' });
+    expect(world.requests).toEqual([]);
+    expect(world.native.setFeedUrl).not.toHaveBeenCalled();
+  });
+
+  it('falls back to the release page when the app was not launched by Squirrel (the portable zip)', async () => {
+    const world = windows({ native: null, body: LATEST_NEWER });
+    expect(await world.updater.check()).toEqual({ kind: 'available', version: '0.4.0', url: 'https://github.com/MobileReality/lantern/releases/tag/v0.4.0' });
+    expect(world.requests).toEqual(['https://api.github.com/repos/MobileReality/lantern/releases/latest']);
+    expect(world.native.setFeedUrl).not.toHaveBeenCalled();
+    expect(world.native.checkForUpdates).not.toHaveBeenCalled();
   });
 });
 

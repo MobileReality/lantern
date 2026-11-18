@@ -1,6 +1,6 @@
 import type { UpdateAction, UpdateNotice } from '../../shared/updates';
 import { type ActivityState, type LiveParts, canInstallNow, liveParts } from './guard';
-import { type HttpFetch, isReleasePageUrl, macFeedUrl, readLatestRelease, readMacFeed } from './feed';
+import { type FeedAnswer, type HttpFetch, isReleasePageUrl, readLatestRelease, readMacFeed, readWindowsFeed, squirrelFeedUrl } from './feed';
 import type { NativeUpdater } from './native';
 import { displayVersion } from './version';
 
@@ -42,7 +42,7 @@ export interface UpdaterDeps {
 const UNKNOWN_ACTIVITY: ActivityState = { agentRunning: false, processes: null };
 
 export function createUpdater(deps: UpdaterDeps) {
-  const native = deps.platform === 'darwin' ? deps.native : null;
+  const native = deps.platform === 'darwin' || deps.platform === 'win32' ? deps.native : null;
   let checking: Promise<CheckOutcome> | null = null;
   let downloading: string | null = null;
   let downloaded: string | null = null;
@@ -125,13 +125,13 @@ export function createUpdater(deps: UpdaterDeps) {
 
   async function checkSquirrel(squirrel: NativeUpdater): Promise<CheckOutcome> {
     if (downloaded !== null) return { kind: 'ready', version: downloaded };
-    const url = macFeedUrl(deps.version, deps.arch);
+    const url = squirrelFeedUrl(deps.platform, deps.version, deps.arch);
     if (!url) {
       logUnavailableOnce(`no update feed is published for ${deps.arch}`);
       return { kind: 'unavailable' };
     }
     if (downloading !== null) return { kind: 'downloading', version: downloading };
-    const answer = await readMacFeed(deps.fetch, url, deps.version);
+    const answer: FeedAnswer = await (deps.platform === 'win32' ? readWindowsFeed : readMacFeed)(deps.fetch, url, deps.version);
     if (answer.kind === 'up-to-date') return answer;
     if (answer.kind === 'unavailable') {
       logUnavailableOnce(answer.reason);

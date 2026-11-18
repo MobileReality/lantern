@@ -6,7 +6,9 @@ export const RELEASE_PAGE_PREFIX = `/${RELEASE_REPO}/releases`;
 export const RELEASES_URL = `${RELEASE_PAGE_ORIGIN}${RELEASE_PAGE_PREFIX}`;
 const FEED_ORIGIN = 'https://update.electronjs.org';
 const LATEST_RELEASE_URL = `https://api.github.com/repos/${RELEASE_REPO}/releases/latest`;
-const FEED_ARCHES: readonly string[] = ['arm64'];
+const MAC_FEED_ARCHES: readonly string[] = ['arm64'];
+const WINDOWS_FEED_ARCHES: readonly string[] = ['x64'];
+const FULL_PACKAGE = /^\S+\s+\S+?-(\d\S*?)-full\.nupkg\s+\d+\s*$/;
 const TIMEOUT_MS = 20_000;
 const MAX_BODY_CHARS = 1_000_000;
 
@@ -31,8 +33,19 @@ export type FeedAnswer =
 export type ReleaseAnswer = { kind: 'up-to-date' } | { kind: 'available'; version: string; url: string } | { kind: 'failed'; reason: string };
 
 export function macFeedUrl(version: string, arch: string): string | null {
-  if (!FEED_ARCHES.includes(arch)) return null;
+  if (!MAC_FEED_ARCHES.includes(arch)) return null;
   return `${FEED_ORIGIN}/${RELEASE_REPO}/darwin-${arch}/${encodeURIComponent(version)}`;
+}
+
+export function windowsFeedUrl(version: string, arch: string): string | null {
+  if (!WINDOWS_FEED_ARCHES.includes(arch)) return null;
+  return `${FEED_ORIGIN}/${RELEASE_REPO}/win32-${arch}/${encodeURIComponent(version)}`;
+}
+
+export function squirrelFeedUrl(platform: string, version: string, arch: string): string | null {
+  if (platform === 'darwin') return macFeedUrl(version, arch);
+  if (platform === 'win32') return windowsFeedUrl(version, arch);
+  return null;
 }
 
 export function releasePageUrl(tag: string): string {
@@ -92,6 +105,31 @@ export async function readMacFeed(fetchUrl: HttpFetch, url: string, version: str
     if (!name || !download) return { kind: 'failed', reason: 'the update service answered without a version or a download' };
     if (parseVersion(name) && !isNewerVersion(name, version)) return { kind: 'up-to-date' };
     return { kind: 'available', version: displayVersion(name) };
+  } catch (error) {
+    return { kind: 'failed', reason: `the update service answer could not be read: ${reasonOf(error)}` };
+  }
+}
+
+export async function readWindowsFeed(fetchUrl: HttpFetch, url: string, version: string): Promise<FeedAnswer> {
+  let response: HttpResponse;
+  try {
+    response = await request(fetchUrl, `${url}/RELEASES`, { Accept: 'text/plain', 'User-Agent': `Lantern/${version}` });
+  } catch (error) {
+    return { kind: 'failed', reason: `the update service did not answer: ${reasonOf(error)}` };
+  }
+  if (response.status === 204) return { kind: 'up-to-date' };
+  if (response.status === 404 || response.status === 410) return { kind: 'unavailable', reason: `the update service has no download for this build (HTTP ${response.status})` };
+  if (response.status !== 200) return { kind: 'failed', reason: `the update service answered HTTP ${response.status}` };
+  try {
+    const text = await response.text();
+    if (text.length > MAX_BODY_CHARS) throw new Error('the answer is too large');
+    const latest = text
+      .split(/\r?\n/)
+      .map((line) => FULL_PACKAGE.exec(line.trim())?.[1])
+      .filter((name): name is string => name !== undefined && parseVersion(name) !== null)
+      .reduce<string | null>((best, name) => (best === null || isNewerVersion(name, best) ? name : best), null);
+    if (latest === null) return { kind: 'failed', reason: 'the update service answered without a full package' };
+    return isNewerVersion(latest, version) ? { kind: 'available', version: displayVersion(latest) } : { kind: 'up-to-date' };
   } catch (error) {
     return { kind: 'failed', reason: `the update service answer could not be read: ${reasonOf(error)}` };
   }
