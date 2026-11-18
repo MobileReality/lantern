@@ -6,6 +6,11 @@ lantern-pr 1
 #base origin/main
 #opened 2026-11-18
 #head cbabcf3388e914c878828e3a576a56df0542b690
+#summary Macro map: the area overview no longer overlaps feature tiles mid-zoom
+#describe what The Macro map no longer draws an area's overview text on top of its header and feature tiles while zooming.
+#describe before Between the Overview and Features zoom levels the area name, purpose and counts overlapped the tiles.
+#describe after The overview fades out completely before the header and the feature tiles fade in.
+#describe verified Reproduced the overlap by zooming out from an entered area and checked it is gone; macro e2e (41), typecheck, lint and the lod unit tests are green.
 ~ src/renderer/lib/macroview/lod.ts
 ~ src/renderer/lib/macroview/paint.ts
 ~ test/macroview-lod.test.ts
