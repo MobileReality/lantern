@@ -130,7 +130,12 @@ describe('release workflow, the publish job', () => {
       .flatMap((job) => job.steps)
       .filter((step) => step.uses?.startsWith('actions/upload-artifact@'))
       .map((step) => step.with?.path);
-    expect(uploadedByBuilds.sort()).toEqual(['dist/Lantern-linux-x64.zip', 'dist/Lantern-mac.zip', 'dist/Lantern-win-x64.zip']);
+    expect(uploadedByBuilds.sort()).toEqual([
+      'dist/Lantern-Setup.exe\ndist/RELEASES\ndist/*-full.nupkg',
+      'dist/Lantern-linux-x64.zip',
+      'dist/Lantern-mac.zip',
+      'dist/Lantern-win-x64.zip',
+    ]);
   });
 
   it('writes the checksums after the arm64 copy and before the upload, from a script file', () => {
@@ -147,6 +152,35 @@ describe('release workflow, the publish job', () => {
   it('builds and signs nothing in the publish job', () => {
     expect(PUBLISH.map((step) => step.run ?? '').join('\n')).not.toMatch(/pnpm|mac-sign-notarize|codesign|notarytool/);
     expect(PUBLISH.some(readsSecret)).toBe(false);
+  });
+});
+
+describe('release workflow, the Windows installer', () => {
+  const WINDOWS = WORKFLOW.jobs['build-windows'].steps;
+  const buildIndex = WINDOWS.findIndex((step) => step.run?.trim() === 'pnpm run build:win');
+  const zipIndex = WINDOWS.findIndex((step) => step.run?.includes('Lantern-win-x64.zip'));
+  const installerIndex = WINDOWS.findIndex((step) => step.run?.trim() === 'pnpm run build:win:installer');
+  const uploads = WINDOWS.map((step, index) => ({ step, index })).filter(({ step }) => step.uses?.startsWith('actions/upload-artifact@'));
+  const installerUpload = uploads.find(({ step }) => String(step.with?.path).includes('Lantern-Setup.exe'));
+
+  it('builds the Squirrel installer after the Windows build and the portable zip', () => {
+    expect(installerIndex).toBeGreaterThan(buildIndex);
+    expect(installerIndex).toBeGreaterThan(zipIndex);
+  });
+
+  it('uploads Lantern-Setup.exe, RELEASES and the full nupkg after the installer is built, keeping the portable zip', () => {
+    expect(installerUpload).toBeDefined();
+    expect(installerUpload?.index).toBeGreaterThan(installerIndex);
+    expect(installerUpload?.step.with).toMatchObject({
+      path: 'dist/Lantern-Setup.exe\ndist/RELEASES\ndist/*-full.nupkg',
+      'if-no-files-found': 'error',
+    });
+    expect(uploads.map(({ step }) => step.with?.path)).toContain('dist/Lantern-win-x64.zip');
+  });
+
+  it('checksums Lantern-Setup.exe in the publish job through the checksum script', () => {
+    const script = read('scripts/release-checksums.sh');
+    expect(script).toContain('Lantern-Setup.exe');
   });
 });
 
@@ -249,17 +283,25 @@ describe('release-checksums.sh', () => {
   };
   const run = (dir: string) => spawnSync('bash', [path.join(ROOT, 'scripts/release-checksums.sh'), dir], { cwd: ROOT, encoding: 'utf8' });
 
-  it('lists every zip by bare name in the format sha256sum -c reads, and leaves out the other files', () => {
-    const zips = ['Lantern-linux-x64.zip', 'Lantern-mac-arm64.zip', 'Lantern-mac.zip', 'Lantern-win-x64.zip'];
-    const dir = folderWith([...zips, 'notes.txt']);
+  const zips = ['Lantern-linux-x64.zip', 'Lantern-mac-arm64.zip', 'Lantern-mac.zip', 'Lantern-win-x64.zip'];
+  const squirrelFiles = ['RELEASES', 'lantern-0.4.0-full.nupkg'];
+
+  it('lists every zip and the installer by bare name in the format sha256sum -c reads, and leaves out the other files', () => {
+    const dir = folderWith([...zips, 'Lantern-Setup.exe', ...squirrelFiles, 'notes.txt']);
     const result = run(dir);
     expect(result.status, result.stderr).toBe(0);
     const lines = fs.readFileSync(path.join(dir, 'SHA256SUMS'), 'utf8').trim().split('\n');
-    expect(lines.map((line) => line.replace(/^[0-9a-f]{64} {2}/, ''))).toEqual(zips);
+    expect(lines.map((line) => line.replace(/^[0-9a-f]{64} {2}/, ''))).toEqual([...zips, 'Lantern-Setup.exe']);
   });
 
   it('fails when the folder holds no zip', () => {
-    const result = run(folderWith(['notes.txt']));
+    const result = run(folderWith(['Lantern-Setup.exe', 'notes.txt']));
     expect(result.status).not.toBe(0);
+  });
+
+  it('fails when the installer is missing', () => {
+    const result = run(folderWith(zips));
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('Lantern-Setup.exe');
   });
 });
