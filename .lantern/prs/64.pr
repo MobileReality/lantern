@@ -1,0 +1,25 @@
+lantern-pr 1
+# 64
+#title fix: Macro map no longer overlaps the area overview and the feature tiles
+#url https://github.com/MobileReality/lantern/pull/64
+#branch fix/macro-lod-overlap
+#base origin/main
+#opened 2026-11-18
+#head cbabcf3388e914c878828e3a576a56df0542b690
+~ src/renderer/lib/macroview/lod.ts
+~ src/renderer/lib/macroview/paint.ts
+~ test/macroview-lod.test.ts
+#order src/renderer/lib/macroview/lod.ts
+#order src/renderer/lib/macroview/paint.ts
+#order test/macroview-lod.test.ts
+#reason src/renderer/lib/macroview/lod.ts Adds one hand-off point so the area overview and the feature detail never show together
+#reason src/renderer/lib/macroview/paint.ts Fades the overview and the header with tiles through the shared hand-off instead of two overlapping ramps
+#reason test/macroview-lod.test.ts Pins that the overview and the detail are never both visible at any zoom weight
+#story Zooming the Macro map
+#step actor Reviewer
+#step action zooms the map in or out between areas and features
+#file src/renderer/lib/macroview/paint.ts
+#step subject an area on the Macro map
+#file src/renderer/lib/macroview/lod.ts
+#below interaction can read each area while it changes level
+#below consequence area name and feature tiles overlapped mid-zoom => the overview fades out before the tiles appear
