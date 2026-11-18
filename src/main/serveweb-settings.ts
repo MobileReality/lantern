@@ -11,6 +11,8 @@ const TS_SERVER_MEMORY_MB = 2048;
 const TS_WATCH_OPTIONS_KEYS = ['js/ts.tsserver.watchOptions', 'typescript.tsserver.watchOptions'] as const;
 const TS_EXCLUDE_DIRECTORIES_KEY = 'excludeDirectories';
 const TRUST_KEY = 'security.workspace.trust.enabled';
+const CLAUDE_LOCATION_KEY = 'claudeCode.preferredLocation';
+const CLAUDE_LOCATION_DEFAULT = 'sidebar';
 
 const EXCLUDE_OBJECTS: Record<string, readonly string[]> = {
   'files.exclude': [WORKTREES_GLOB],
@@ -56,6 +58,12 @@ export function mergeEditorSettings(current: Settings): MergeResult {
   // Restricted Mode disables extensions, including Claude Code.
   if (settings[TRUST_KEY] !== false) {
     settings[TRUST_KEY] = false;
+    changed = true;
+  }
+  // The extension rewrites this setting whenever the person moves Claude, so only seed it when absent.
+  // In the side bar a dragged file attaches to the chat; in an editor tab VS Code's drop overlay opens it instead.
+  if (!(CLAUDE_LOCATION_KEY in settings)) {
+    settings[CLAUDE_LOCATION_KEY] = CLAUDE_LOCATION_DEFAULT;
     changed = true;
   }
   // The unified key is read by current VS Code servers; the old one is still read by older servers.

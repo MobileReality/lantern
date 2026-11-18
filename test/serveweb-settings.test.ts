@@ -13,6 +13,7 @@ describe('mergeEditorSettings', () => {
     expect(changed).toBe(true);
     expect(settings).toEqual({
       'security.workspace.trust.enabled': false,
+      'claudeCode.preferredLocation': 'sidebar',
       'js/ts.tsserver.maxMemory': 2048,
       'typescript.tsserver.maxTsServerMemory': 2048,
       'files.exclude': { [WORKTREES]: true },
@@ -195,6 +196,28 @@ describe('ensureEditorSettingsFile', () => {
     expect(result['typescript.tsserver.maxTsServerMemory']).toBe(4096);
     expect(result['editor.tabSize']).toBe(2);
     expect(result['search.exclude']).toEqual({ [WORKTREES]: true });
+  });
+
+  it('seeds Claude Code into the side bar in a fresh file', () => {
+    const file = path.join(dir, 'settings.json');
+    ensureEditorSettingsFile(file);
+    expect(read(file)['claudeCode.preferredLocation']).toBe('sidebar');
+  });
+
+  it('keeps a panel location the person or the extension set', () => {
+    const file = path.join(dir, 'settings.json');
+    fs.writeFileSync(file, JSON.stringify({ 'claudeCode.preferredLocation': 'panel' }));
+    ensureEditorSettingsFile(file);
+    expect(read(file)['claudeCode.preferredLocation']).toBe('panel');
+  });
+
+  it('adds the location to a file with other keys and keeps them', () => {
+    const file = path.join(dir, 'settings.json');
+    fs.writeFileSync(file, JSON.stringify({ 'editor.tabSize': 2 }));
+    ensureEditorSettingsFile(file);
+    const result = read(file);
+    expect(result['claudeCode.preferredLocation']).toBe('sidebar');
+    expect(result['editor.tabSize']).toBe(2);
   });
 
   it('does not rewrite the file the second time', () => {
