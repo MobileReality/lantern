@@ -129,7 +129,7 @@ src/renderer/lib/macroview/session.ts . schema 54a4717a5126
   < src/renderer/lib/macroview/marks.ts#MacroViewMarks
   < src/renderer/lib/macroview/types.ts#MacroViewContext
 
-src/renderer/lib/macroview/stage.ts . state 7b2e77ecec56
+src/renderer/lib/macroview/stage.ts . state 97daa69f8b2a
 #feature macro-view
   = src/renderer/lib/macroview/mount.ts#mountMacroView
   < src/renderer/lib/macroview/types.ts#MacroViewContext

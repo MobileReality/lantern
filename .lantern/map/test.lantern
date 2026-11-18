@@ -1762,6 +1762,10 @@ test/macroview-lod.test.ts . test 5f65855d0408
   = src/renderer/lib/macroview/lod.ts#fitLabel
   = src/renderer/lib/macroview/lod.ts#overviewOpacity
 
+test/macroview-stage.test.ts . test 69e74a0a1238
+#feature macro-view
+  = src/renderer/lib/macroview/stage.ts#createMacroViewStage
+
 test/macroview-systems.test.ts . test 649b71b51a83
 #feature macro-view
   = src/renderer/lib/macroview/dock.ts#dockView

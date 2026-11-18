@@ -13,6 +13,20 @@ interface StageHosts {
 
 function createMacroViewStage({ canvasHost, ownHost }: StageHosts): MacroViewStage {
   let mounted: MountedMacroView | null = null;
+  let mounting = false;
+  let pending: MacroViewContext | null = null;
+
+  function mount(ctx: MacroViewContext) {
+    mounting = true;
+    try {
+      mounted = mountMacroView(ownHost, ctx);
+    } finally {
+      mounting = false;
+    }
+    const next = pending;
+    pending = null;
+    if (next) mounted.update(next);
+  }
 
   function showCanvas(canvas: boolean) {
     canvasHost.hidden = !canvas;
@@ -28,8 +42,12 @@ function createMacroViewStage({ canvasHost, ownHost }: StageHosts): MacroViewSta
 
   return {
     paint(ctx) {
+      if (mounting) {
+        pending = ctx;
+        return;
+      }
       if (mounted) mounted.update(ctx);
-      else mounted = mountMacroView(ownHost, ctx);
+      else mount(ctx);
       showCanvas(false);
     },
     drop,
