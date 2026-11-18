@@ -65,41 +65,38 @@ describe('guest navigation on a file drop', () => {
     const onBlocked = vi.fn();
     let clock = 0;
     hardenGuestContents({ on: (name: string, fn: (...args: never[]) => void) => handlers.set(name, fn) } as never, onBlocked, () => clock);
-    const willNavigate = (url: string) => {
-      const event = { preventDefault: vi.fn() };
-      (handlers.get('will-navigate') as (e: unknown, u: string) => void)(event, url);
-      return event.preventDefault;
-    };
     const willFrameNavigate = (url: string) => {
       const event = { preventDefault: vi.fn(), url };
       (handlers.get('will-frame-navigate') as (e: unknown) => void)(event);
       return event.preventDefault;
     };
-    return { willNavigate, willFrameNavigate, onBlocked, advance: (ms: number) => (clock += ms) };
+    return { handlers, willFrameNavigate, onBlocked, advance: (ms: number) => (clock += ms) };
   }
 
+  it('listens to will-frame-navigate only', () => {
+    expect([...guest().handlers.keys()]).toEqual(['will-frame-navigate']);
+  });
+
   it('blocks a dropped file from opening in the editor and says so', () => {
-    const { willNavigate, willFrameNavigate, onBlocked } = guest();
-    expect(willNavigate('file:///Users/me/Desktop/Screenshot.png')).toHaveBeenCalled();
+    const { willFrameNavigate, onBlocked } = guest();
     expect(willFrameNavigate('file:///Users/me/Desktop/Screenshot.png')).toHaveBeenCalled();
     expect(onBlocked).toHaveBeenCalledTimes(1);
   });
 
   it('says so again only after a pause', () => {
-    const { willNavigate, onBlocked, advance } = guest();
-    willNavigate('file:///a.png');
+    const { willFrameNavigate, onBlocked, advance } = guest();
+    willFrameNavigate('file:///a.png');
     advance(1000);
-    willNavigate('file:///b.png');
+    willFrameNavigate('file:///b.png');
     expect(onBlocked).toHaveBeenCalledTimes(1);
     advance(3000);
-    willNavigate('file:///c.png');
+    willFrameNavigate('file:///c.png');
     expect(onBlocked).toHaveBeenCalledTimes(2);
   });
 
   it('leaves editor navigation alone', () => {
-    const { willNavigate, willFrameNavigate, onBlocked } = guest();
+    const { willFrameNavigate, onBlocked } = guest();
     for (const url of ['http://127.0.0.1:9000/?folder=%2Ftmp', 'https://abc.vscode-cdn.net/index.html', 'about:blank', 'not a url']) {
-      expect(willNavigate(url)).not.toHaveBeenCalled();
       expect(willFrameNavigate(url)).not.toHaveBeenCalled();
     }
     expect(onBlocked).not.toHaveBeenCalled();

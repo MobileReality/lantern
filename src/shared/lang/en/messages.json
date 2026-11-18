@@ -280,7 +280,7 @@
   },
   "editorDrop": {
     "title": "A dropped file was not attached",
-    "body": "Lantern stopped the file from opening as a page in the editor. To attach it to a Claude chat, use the + button in the Claude Code panel and pick the file."
+    "body": "Lantern stopped the file from opening as a page in the editor. To attach it to the chat, use the + button of the chat panel and pick the file. Holding Shift while dropping may attach it in VS Code."
   },
   "micPatch": {
     "message": "Enable the microphone in the Claude Code extension?",
