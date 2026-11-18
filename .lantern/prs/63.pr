@@ -1,0 +1,31 @@
+lantern-pr 1
+# 63
+#title Build and publish the Squirrel installer in the release workflow
+#url https://github.com/MobileReality/lantern/pull/63
+#branch feat/release-windows-installer
+#base feat/windows-installer
+#opened 2026-11-18
+#head 691f4434478b51c10278c627cb1f9e3e9c9863ad
+#describe what A v* tag now builds the Squirrel installer on Windows and publishes Lantern-Setup.exe, RELEASES and the full nupkg next to the portable zip; SHA256SUMS covers the installer.
+#describe before Release assets were the zips and SHA256SUMS only.
+#describe after Release assets also hold the installer, RELEASES and the full nupkg; SHA256SUMS lists the four zips and the installer.
+#describe verified pnpm run typecheck, release-workflow and workflow-hygiene tests green; the workflow itself was not run.
+#plan windows-squirrel-installer s4.2
+~ .github/workflows/release.yml
+~ scripts/release-checksums.sh
+~ test/release-workflow.test.ts
+#order test/release-workflow.test.ts
+#order .github/workflows/release.yml
+#order scripts/release-checksums.sh
+#reason .github/workflows/release.yml The Squirrel update feed needs the installer, RELEASES and the nupkg as release assets, so the Windows job now builds and uploads them.
+#reason scripts/release-checksums.sh Users download the installer, so SHA256SUMS must cover it and the release must fail when it is missing.
+#reason test/release-workflow.test.ts Pins the installer step, its upload and the Setup.exe checksum so a tag cannot release without the installer.
+#story A release ships a Windows installer
+#step actor A maintainer pushing a v* tag
+#step action gets the Windows installer built and published
+#file .github/workflows/release.yml
+#step subject the release assets and their checksums
+#file scripts/release-checksums.sh
+#file test/release-workflow.test.ts
+#below interaction Download an installer, RELEASES and the full package
+#below consequence Windows got only a portable zip => Windows also gets an installer, listed in SHA256SUMS
