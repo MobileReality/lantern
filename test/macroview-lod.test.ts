@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FEATURES_RAMP, FILES_RAMP, featuresWeight, filesWeight, fitLabel, isActive, isShown, levelOf, rampWeight, textWidth, wrapLines } from '../src/renderer/lib/macroview/lod';
+import { FEATURES_RAMP, FILES_RAMP, detailOpacity, featuresWeight, filesWeight, fitLabel, isActive, isShown, levelOf, overviewOpacity, rampWeight, textWidth, wrapLines } from '../src/renderer/lib/macroview/lod';
 
 describe('level of detail', () => {
   it('shows no features on a small area, all of them on a big one, and fades in between', () => {
@@ -36,6 +36,21 @@ describe('level of detail', () => {
     expect(isActive(0.4)).toBe(false);
     expect(isActive(0.5)).toBe(true);
     expect(rampWeight(5, { from: 0, span: 10 })).toBe(0.5);
+  });
+});
+
+describe('hand-off from the area overview to the feature tiles', () => {
+  it('never draws the overview and the feature tiles at the same time', () => {
+    for (let weight = 0; weight <= 1; weight += 0.01) {
+      expect(Math.min(overviewOpacity(weight), detailOpacity(weight))).toBe(0);
+    }
+  });
+
+  it('shows only the overview when zoomed out and only the detail when zoomed in', () => {
+    expect(overviewOpacity(0)).toBe(1);
+    expect(detailOpacity(0)).toBe(0);
+    expect(overviewOpacity(1)).toBe(0);
+    expect(detailOpacity(1)).toBe(1);
   });
 });
 
