@@ -82,6 +82,7 @@
   "diagnostics-view.test.ts":"Checks the Diagnostics dialog (live list, filters, details, copy and GitHub actions), the one-time crash notice and the forwarding of window errors",
   "diff-collapse.test.ts":"Checks diff folding, change statistics and enclosing scopes",
   "dom.test.ts": "Checks safe code rendering and the DOM helpers",
+  "editor-drop-wiring.test.ts": "Checks that the app's main file attaches the file-drop guard to editor webviews when a web contents is created and builds its notice from the editorDrop texts, so removing the guard fails the test.",
   "editor-demand-wiring.test.ts": "Guards the wiring in the app's main file: starting the app, opening the workspace or a project window never starts the editor server or asks the licence, only the need-editor and restart channels do, and the scan only keeps it warm after a first request.",
   "editor-tab.test.ts": "Checks editor loading covers, probes and timeout recovery",
   "editorload.test.ts": "Checks editor loading state transitions and progress messages",

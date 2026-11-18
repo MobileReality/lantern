@@ -897,7 +897,7 @@ src/main/tray-popover.ts . service a13152f10000
 src/main/window-icon.ts . pure 0db979072650
 #feature projects-hub
 
-src/main/windows.ts . service 1bfa7d093fc5
+src/main/windows.ts . service e2843fee3e43
 #feature projects-hub
   > src/main/bundle.ts#installOnOpen
   = src/main/popout.ts

@@ -360,6 +360,11 @@ test/editor-demand-wiring.test.ts . test 08482bc6b8e1
   = src/main/windows.ts
   = test/helpers/source-blocks.ts
 
+test/editor-drop-wiring.test.ts . test 1695b06b0b1b
+#feature projects-hub
+  = src/main/main.ts#hardenWebContents
+  = test/helpers/source-blocks.ts
+
 test/editor-tab.test.ts . test f3f282dd27ed
 #feature serve-web
   = src/renderer/features/editor-tab.ts
@@ -2443,7 +2448,7 @@ test/safe-markdown.test.ts . test d35a984126ce
 test/website-tags.test.ts . test af26ec0d0ee5
   = website/src/lib/tags.ts#withoutTags
 
-test/webview-hardening.test.ts . test f05469183e06
+test/webview-hardening.test.ts . test 3e8a8bf47277
 #feature projects-hub
   = src/main/windows.ts#hardenGuestContents
   = src/main/windows.ts#hardenWebContents
