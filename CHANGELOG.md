@@ -6,6 +6,18 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-11-18
+
+### Changed
+
+- Dependency updates: Electron 45.3, the graph renderer (pixi.js 8.23), the Markdown renderer
+  (marked 18.2), the icon theme for the file tree (material-icon-theme 5.40) and the language
+  server connection (vscode-jsonrpc 10), plus newer test and build tooling.
+
+### Fixed
+
+- In the Macro map, the area overview no longer overlaps the feature tiles while you zoom in.
+
 ## [0.4.1] - 2026-11-16
 
 ### Changed
@@ -125,7 +137,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/MobileReality/lantern/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/MobileReality/lantern/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/MobileReality/lantern/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/MobileReality/lantern/compare/v0.3.0...v0.3.1
