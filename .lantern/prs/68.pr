@@ -1,0 +1,27 @@
+lantern-pr 1
+# 68
+#title feat: seed Claude Code to open in the side bar
+#url https://github.com/MobileReality/lantern/pull/68
+#branch feat/seed-claude-sidebar
+#base main
+#opened 2026-11-18
+#head ba4f411bdb9e7e616d558b20ed62101adeab6cba
+#describe what The embedded editor seeds the Claude Code side bar location when the person has not chosen one, on every launch.
+#describe before A fresh settings file left Claude in an editor tab, where a dragged file is opened as a document.
+#describe after The file gets the side bar location; a panel choice already there stays.
+#describe verified Typecheck and the settings tests are green; the full suite shows only the known failures of clean main.
+~ src/main/serveweb-settings.ts
+~ test/serveweb-settings.test.ts
+#order src/main/serveweb-settings.ts
+#order test/serveweb-settings.test.ts
+#reason src/main/serveweb-settings.ts Claude Code in the side bar takes a dragged screenshot as an attachment, so the editor seeds that location when unset.
+#reason test/serveweb-settings.test.ts Pins that the side bar is seeded, an existing panel choice survives, and other keys are kept.
+#story Claude opens in the side bar
+#step actor Lantern
+#file src/main/serveweb-settings.ts
+#step action sets the chat location in
+#step subject the editor's settings
+#below actor A person
+#below interaction can drop a screenshot on the chat and it attaches
+#file test/serveweb-settings.test.ts
+#below consequence chat opened as a tab and opened dropped files => chat opens in the side bar and attaches them
