@@ -1,0 +1,29 @@
+lantern-pr 1
+# 69
+#title chore: release 0.4.2
+#url https://github.com/MobileReality/lantern/pull/69
+#branch chore/release-0.4.2
+#base main
+#opened 2026-11-18
+#head 4be4575d0d5ffe59dcb925d1bb182a382ddd2710
+#describe what Raises the version to 0.4.2 and adds the 0.4.2 section and compare links to the changelog, so tagging v0.4.2 after the merge is all that is left.
+#describe before The latest release is 0.4.1 and the changelog has nothing under 0.4.2.
+#describe after The version is 0.4.2. The changelog lists the Macro map fix (the area overview no longer overlaps the feature tiles while zooming) and the dependency updates.
+#describe verified Typecheck is green and 6978 tests pass; four delegate preflight test files cannot run in a bare worktree and were left out. Reviewed with no blocking findings.
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md Gives users the 0.4.2 notes and the compare links, as the 0.4.1 release did.
+#reason package.json The release tag v0.4.2 must match the version the packaged app reports.
+#story A maintainer ships Lantern 0.4.2
+#step actor Maintainer
+#file package.json
+#step action merges this and tags
+#file package.json
+#step subject the 0.4.2 release
+#below actor Lantern user
+#below interaction can read what 0.4.2 fixed and updated
+#file CHANGELOG.md
+#below consequence 0.4.1 is the latest release => 0.4.2 is the latest release
+#file package.json

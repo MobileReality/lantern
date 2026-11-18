@@ -1,5 +1,5 @@
 lantern 1
 # packages/lsp-runtime
 
-packages/lsp-runtime/package.json . config 9f5a696ec74b
+packages/lsp-runtime/package.json . config 184c9098ada1
 #feature code-insight

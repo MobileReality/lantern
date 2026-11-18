@@ -326,6 +326,8 @@
   "settings-store.test.ts": "Checks the settings store reads a project's valid settings with comments, ignores a wrong or broken one, loads, updates atomically through symlinks keeping the mode, persists and refuses key bindings, refuses bad input, emits change events, reloads on external edits and re-attaches a failed watcher",
   "settings.test.ts": "Checks settings defaults, persistence, defensive reads, a legacy file with the retired dataFlow and headless keys,the old per-project language still read as a fallback, providers, dismissed PR limits, remembered local reviews capped at twenty, the licence acceptance default, CLI overrides and unfinished runs.",
   "setup-claude-folder.test.ts": "Checks that an agent refused any write under a .claude folder still reaches a settled map for the skills under .claude/skills, through the alias paths and the fold, including a record that changes later.",
+  "setup-popover.ts": "Installs the popover shim into every DOM test window before tests run.",
+  "popover-shim.test.ts": "Checks the shim gives jsdom working popover methods and the open-state selector, keeps focus out of an unopened popover and leaves a native implementation alone.",
   "setup-process-guard.ts": "Installs the suite-wide guard against dangerous process signals before tests run.",
   "setup-yield.ts": "Ends every test with a turn of the real event loop, so a long run of synchronous tests cannot starve the runner's worker channel.",
   "setup-progress.test.ts": "Checks plan progress and resume accounting, worker failures and timeouts, map-language selection and progress-cache invalidation.",
