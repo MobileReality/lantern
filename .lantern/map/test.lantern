@@ -2388,7 +2388,7 @@ test/update-notice.test.ts . test b13807b50d50
   = src/renderer/features/update-notice.ts
   < src/renderer/workspace.html
 
-test/updater-feed.test.ts . test c9db44290e43
+test/updater-feed.test.ts . test 47d09432ae73
 #feature app-updates
   = src/main/updater/feed.ts
 
@@ -2397,12 +2397,12 @@ test/updater-guard.test.ts . test 034892cd9043
   = src/main/updater/guard.ts
   = src/main/updater/process-activity.ts
 
-test/updater-service.test.ts . test 1f8c30b26720
+test/updater-service.test.ts . test 7e60ebab3d56
 #feature app-updates
   = src/main/updater/service.ts
   < test/helpers/updater-world.ts#updaterWorld
 
-test/updater-surface.test.ts . test 82d5f8107907
+test/updater-surface.test.ts . test 34086c913802
 #feature app-updates
   = src/main/app-menu.ts
   = src/main/updater/controller.ts

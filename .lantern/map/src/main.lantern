@@ -473,7 +473,7 @@ src/main/lantern.ts . service ce57c170d070
 src/main/last-window.ts . util 4467717adf73
 #feature projects-hub
 
-src/main/main.ts . entry 1d9d5eed2dc6
+src/main/main.ts . entry 0eabb1b26bde
   = src/main/cli-user-install.ts
   < src/main/cli-user-port.ts#cliPort
   = src/main/squirrel-events.ts#handleSquirrelEvent
@@ -581,6 +581,7 @@ src/main/main.ts . entry 1d9d5eed2dc6
   = src/main/updater/controller.ts#createUpdateController
   = src/main/updater/controller.ts#registerUpdateIpc
   = src/main/updater/native.ts#squirrelUpdater
+  < src/main/updater/native.ts#launchedBySquirrel
   = src/main/updater/process-activity.ts#readProcessActivity
   = src/main/updater/dialogs.ts#restartDialog
   < src/shared/updates.ts#UPDATE_NOTICE_CHANNEL
