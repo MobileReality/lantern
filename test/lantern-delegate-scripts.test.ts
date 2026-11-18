@@ -712,6 +712,12 @@ describe('host dispatcher', () => {
     expect(classifyRemote('https://work-github/acme/widgets.git', alias).error).toMatch(/neither bitbucket.org nor github.com/);
   });
 
+  it('keeps a remote that names the host as that host, whatever ssh routes it to', () => {
+    const routed = (h: string) => (h === 'bitbucket.org' ? 'ssh.bitbucket.org' : h === 'github.com' ? 'ssh.github.com' : h);
+    expect(classifyRemote('git@bitbucket.org:acme/widgets.git', routed).host).toBe('bitbucket');
+    expect(classifyRemote('git@github.com:acme/widgets.git', routed).host).toBe('github');
+  });
+
   it('refuses another host and an unreadable URL', () => {
     expect(classifyRemote('git@gitlab.com:acme/widgets.git', (h: string) => h).error).toMatch(/"gitlab.com" is neither/);
     expect(classifyRemote('/srv/git/widgets.git', (h: string) => h).error).toMatch(/cannot read a host/);

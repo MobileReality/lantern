@@ -74,8 +74,9 @@ export function commitIdentity() {
 export function remoteAccount(remoteUrl) {
     const parsed = remoteUrl && parseRemoteUrl(remoteUrl);
     if (!parsed?.ssh) return { via: 'https', host: parsed?.host };
-    const hostname = sshEffective(parsed.host).hostname ?? parsed.host;
-    const onGithub = hostname === 'github.com';
+    const named = parsed.host === 'github.com' || parsed.host === 'www.github.com';
+    const hostname = named ? parsed.host : (sshEffective(parsed.host).hostname ?? parsed.host);
+    const onGithub = named || hostname === 'github.com';
     return { via: 'ssh', host: parsed.host, hostname, onGithub, sshLogin: onGithub ? accountBehindSsh(parsed.host) : undefined };
 }
 
