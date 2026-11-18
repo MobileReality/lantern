@@ -30,7 +30,7 @@ skills/lantern-delegate/scripts/extensions.mjs . script 7369bfb0bd0d
   < skills/lantern-delegate/scripts/bundled-skills.mjs#switchableSkills
   < skills/lantern-delegate/scripts/messages.mjs#message
 
-skills/lantern-delegate/scripts/host.mjs . util 4a307d61cb70
+skills/lantern-delegate/scripts/host.mjs . util 9559e638a63a
 #feature delegate-runs
   < skills/lantern-delegate/scripts/github/github.mjs#parseRemoteUrl
   < skills/lantern-delegate/scripts/github/github.mjs#sshEffective
