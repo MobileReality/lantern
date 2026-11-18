@@ -79,7 +79,7 @@ src/renderer/lib/macroview/links.ts . component 7c45843768f8
   < src/renderer/lib/macroview/model.ts#MacroViewModel
   = src/renderer/lib/macroview/svg.ts#el
 
-src/renderer/lib/macroview/lod.ts . pure 5a9f1a5096cb
+src/renderer/lib/macroview/lod.ts . pure 1d018af3b3a6
 #feature macro-view
   < src/renderer/lib/macroview/camera.ts#clamp
 
@@ -107,7 +107,7 @@ src/renderer/lib/macroview/navigation.ts . pure 50f6f000093a
   < src/renderer/lib/macroview/layout.ts#MacroViewLayout
   = src/renderer/lib/macroview/lod.ts#levelOf
 
-src/renderer/lib/macroview/paint.ts . component e0609570d571
+src/renderer/lib/macroview/paint.ts . component 91349b9cd23b
 #feature macro-view
   < src/renderer/lib/lanternmacro.ts#plural
   < src/renderer/lib/lanternmacrostyles.ts#MACRO_STYLE_CLASSES
@@ -115,7 +115,9 @@ src/renderer/lib/macroview/paint.ts . component e0609570d571
   < src/renderer/lib/macroview/camera.ts#clamp
   < src/renderer/lib/macroview/files.ts#relationRows
   < src/renderer/lib/macroview/layout.ts#AREA_HEADER
+  = src/renderer/lib/macroview/lod.ts#detailOpacity
   = src/renderer/lib/macroview/lod.ts#fitLabel
+  = src/renderer/lib/macroview/lod.ts#overviewOpacity
   < src/renderer/lib/macroview/marks.ts#MacroViewMarks
   = src/renderer/lib/macroview/svg.ts#placeText
   < src/shared/lantern-plan-messages.ts#say
