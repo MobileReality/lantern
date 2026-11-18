@@ -1902,6 +1902,9 @@ test/pr-diff-cache.test.ts . test 13b39fdda4db
   = test/helpers/lantern-map.ts
   = test/helpers/pr-rows.ts#openPrFile
 
+test/popover-shim.test.ts . test d1a1f0b95b37
+  = test/support/popover-shim.ts#installPopoverShim
+
 test/popover.test.ts . test c0cd6cb7215a
   = src/renderer/popover/index.ts#mountPopover
   = src/renderer/popover/index.ts#rovingFocus
@@ -2206,6 +2209,9 @@ test/setup-claude-folder.test.ts . test 558c03a2b32f
   = skills/lantern-setup/scripts/plan.mjs
   = skills/lantern-setup/scripts/validate.mjs
 
+test/setup-popover.ts . test 6e7e0c0fadaf
+  > test/support/popover-shim.ts#installPopoverShim
+
 test/setup-process-guard.ts . test f66fce10b688
 #feature serve-web
   > test/support/process-guard.ts
@@ -2437,8 +2443,9 @@ test/safe-markdown.test.ts . test d35a984126ce
 test/website-tags.test.ts . test af26ec0d0ee5
   = website/src/lib/tags.ts#withoutTags
 
-test/webview-hardening.test.ts . test 59dde6ea39bb
+test/webview-hardening.test.ts . test f05469183e06
 #feature projects-hub
+  = src/main/windows.ts#hardenGuestContents
   = src/main/windows.ts#hardenWebContents
 
 test/window-icon.test.ts . test 3c8059ce8dad

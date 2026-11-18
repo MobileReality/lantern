@@ -6,6 +6,6 @@
   "playwright.config.ts": "Configures serial Electron browser tests and exact visual snapshots",
   "pnpm-workspace.yaml": "Includes local packages and enables deployable injected workspace dependencies",
   "tsconfig.json": "Sets strict TypeScript checking for main, preload, shared and renderer sources and declares the @shared, @main and @renderer import aliases",
-  "vitest.config.ts": "Configures unit tests, process cleanup, coverage, the import aliases and loading .svg imports as text"
+  "vitest.config.ts": "Configures unit tests, process cleanup, the jsdom popover shim, coverage, the import aliases and loading .svg imports as text"
  }
 }

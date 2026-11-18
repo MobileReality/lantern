@@ -478,7 +478,7 @@ src/main/lantern.ts . service ce57c170d070
 src/main/last-window.ts . util 4467717adf73
 #feature projects-hub
 
-src/main/main.ts . entry 81bad742ab6b
+src/main/main.ts . entry c0ef5a331108
   = src/main/cli-user-install.ts
   < src/main/cli-user-port.ts#cliPort
   = src/main/last-window.ts#createLastWindowHandler
@@ -588,6 +588,7 @@ src/main/main.ts . entry 81bad742ab6b
   = src/main/updater/process-activity.ts#readProcessActivity
   = src/main/updater/dialogs.ts#restartDialog
   < src/shared/updates.ts#UPDATE_NOTICE_CHANNEL
+  > src/main/windows.ts#hardenGuestContents
 
 src/main/memory-attribute.ts . pure a21577f26876
 #feature process-memory
@@ -896,7 +897,7 @@ src/main/tray-popover.ts . service a13152f10000
 src/main/window-icon.ts . pure 0db979072650
 #feature projects-hub
 
-src/main/windows.ts . service e1ecb680abb8
+src/main/windows.ts . service 1bfa7d093fc5
 #feature projects-hub
   > src/main/bundle.ts#installOnOpen
   = src/main/popout.ts
