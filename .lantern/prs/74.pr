@@ -5,11 +5,11 @@ lantern-pr 1
 #branch feat/plans-done-modal
 #base main
 #opened 2026-11-19
-#head cd682f119ffd83f911895a5c714e9a007f98389d
-#describe what The Plans strip lists only unfinished plans; finished ones sit behind a Done N control that opens a list.
-#describe before Every plan was a chip in the strip, and a long list of done plans overflowed it.
-#describe after Unfinished plans are chips; Done N opens a popover of finished plans, and picking one opens it in the Planning view.
-#describe verified typecheck, lint and the full test suite pass; the new test file fails 6 of 6 on the old strip.
+#head 59da502a767bdb4558bf7e17b1f7b88f8503b587
+#describe what The Plans strip shows at most five chips of unfinished plans; More N opens the rest and Done N opens finished plans.
+#describe before Every plan was a chip in the strip, and a long list of plans overflowed it.
+#describe after Five chips, then More N and Done N, each opening a popover list; picking a plan opens it in the Planning view.
+#describe verified typecheck, lint and the full test suite pass; the new test file fails on the old strip.
 + test/lantern-plan-strip-done.test.ts
 ~ skills/lantern-plan/scripts/messages.json
 ~ src/renderer/lantern-plans.css
@@ -18,16 +18,16 @@ lantern-pr 1
 #order skills/lantern-plan/scripts/messages.json
 #order src/renderer/lantern-plans.css
 #order test/lantern-plan-strip-done.test.ts
-#reason test/lantern-plan-strip-done.test.ts Proves finished plans leave the strip, the control counts them, the list opens and closes, and a pick opens the plan.
-#reason skills/lantern-plan/scripts/messages.json Adds the Done control's label, tooltip and list heading as view messages, as the catalogue rule requires.
-#reason src/renderer/lantern-plans.css Styles the Done control and its popover list so they match the strip's chips.
-#reason src/renderer/lib/lanternplanstrip.ts Keeps the strip short by moving finished plans behind one Done control that opens them in a popover.
+#reason test/lantern-plan-strip-done.test.ts Proves five chips and a More list, finished plans leaving the strip, lists opening and closing, and a pick opening the plan.
+#reason skills/lantern-plan/scripts/messages.json Adds the More and Done controls' labels, tooltips and list headings as view messages, as the catalogue rule requires.
+#reason src/renderer/lantern-plans.css Styles the More and Done controls and their lists so they match the strip's chips.
+#reason src/renderer/lib/lanternplanstrip.ts Keeps the strip short: five chips, a More list for the rest and a Done list for finished plans, one shared popover helper.
 #story Finding an unfinished plan in a long list
 #step actor A person with many plans
 #step action opens the Plans strip
 #file src/renderer/lib/lanternplanstrip.ts
 #step subject the list of plans
-#below interaction Sees only plans still in progress, plus a Done count
+#below interaction Sees five plans in progress, plus More and Done counts
 #below consequence Every plan, done or not, filled and overflowed the strip => Finished plans wait behind one Done control
 #story Opening a finished plan
 #step actor A person
