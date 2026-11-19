@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { CHECK_INTERVAL_MS, GUARD_INTERVAL_MS, INITIAL_CHECK_DELAY_MS } from '../src/main/updater/service';
+import { CHECK_INTERVAL_MS, GUARD_INTERVAL_MS, INITIAL_CHECK_DELAY_MS, RECHECK_AFTER_MS } from '../src/main/updater/service';
 import { BUSY, FEED_NEWER, IDLE, LATEST_NEWER, type WorldOptions, flush, updaterWorld } from './helpers/updater-world';
 
 const MAC_FEED = 'https://update.electronjs.org/MobileReality/lantern/darwin-arm64/0.2.2';
@@ -389,5 +389,62 @@ describe('the notice a new window asks for', () => {
     world.handlers.downloaded?.('0.3.0');
     await flush();
     expect(world.updater.notice()).toEqual({ kind: 'ready', version: '0.3.0', waiting: true });
+  });
+});
+
+describe('checking again after sleep or a return to the window', () => {
+  const HOUR = 60 * 60 * 1000;
+  const windows = (extra = {}) => updaterWorld({ platform: 'win32', arch: 'x64', native: null, status: 204, ...extra });
+
+  it('finds a release published during five hours of sleep when the computer wakes', async () => {
+    const world = windows();
+    world.updater.start();
+    for (const timer of world.clock.running().filter((entry) => !entry.repeating)) timer.run();
+    await flush();
+    expect(world.requests).toHaveLength(1);
+    world.state.status = 200;
+    world.state.body = LATEST_NEWER;
+    world.time.now += 5 * HOUR;
+    world.wake();
+    await flush();
+    expect(world.requests).toHaveLength(2);
+    expect(world.published).toEqual([{ kind: 'available', version: '0.4.0' }]);
+  });
+
+  it('checks once for two focus events a minute apart', async () => {
+    const world = windows();
+    world.updater.start();
+    world.time.now += RECHECK_AFTER_MS + 1;
+    world.wake();
+    await flush();
+    world.time.now += 60_000;
+    world.wake();
+    await flush();
+    expect(world.requests).toHaveLength(1);
+  });
+
+  it('does not check on a wake event while the setting is off, and does once it is on', async () => {
+    const world = windows({ status: 200, body: LATEST_NEWER });
+    world.state.enabled = false;
+    world.updater.start();
+    world.time.now += 5 * HOUR;
+    world.wake();
+    await flush();
+    expect(world.requests).toEqual([]);
+    expect(world.published).toEqual([]);
+    world.state.enabled = true;
+    world.wake();
+    await flush();
+    expect(world.requests).toHaveLength(1);
+  });
+
+  it('stops listening once the updater is stopped', async () => {
+    const world = windows();
+    world.updater.start();
+    world.updater.stop();
+    world.time.now += 5 * HOUR;
+    world.wake();
+    await flush();
+    expect(world.requests).toEqual([]);
   });
 });

@@ -42,6 +42,23 @@ export function manualTimers() {
   };
 }
 
+export function fakeWake() {
+  const listeners = new Set<() => void>();
+  return {
+    source: {
+      onWake: (run: () => void) => {
+        listeners.add(run);
+        return () => {
+          listeners.delete(run);
+        };
+      },
+    },
+    wake: () => {
+      for (const run of [...listeners]) run();
+    },
+  };
+}
+
 export function fakeNative() {
   const handlers: { downloaded?: (version: string) => void; notAvailable?: () => void; error?: (message: string) => void } = {};
   const native: NativeUpdater & { setFeedUrl: ReturnType<typeof vi.fn>; checkForUpdates: ReturnType<typeof vi.fn>; quitAndInstall: ReturnType<typeof vi.fn> } = {
@@ -73,6 +90,8 @@ export function updaterWorld(options: WorldOptions = {}) {
   const logs: { severity: string; message: string; detail?: string }[] = [];
   const published: (UpdateNotice | null)[] = [];
   const clock = manualTimers();
+  const time = { now: 0 };
+  const wake = fakeWake();
   const { native, handlers } = fakeNative();
   const state = { enabled: true, status, body, activity };
   const fetchUrl: HttpFetch = async (url) => {
@@ -95,9 +114,11 @@ export function updaterWorld(options: WorldOptions = {}) {
     confirmRestart,
     openRelease,
     timers: clock.api,
+    wake: wake.source,
+    now: () => time.now,
     ...rest,
   });
-  return { updater, state, requests, logs, published, clock, native, handlers, confirmRestart, openRelease };
+  return { updater, state, time, wake: wake.wake, requests, logs, published, clock, native, handlers, confirmRestart, openRelease };
 }
 
 export const flush = () => new Promise<void>((resolve) => setImmediate(resolve));
