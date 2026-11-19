@@ -6,6 +6,20 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-11-19
+
+### Changed
+
+- The Plans strip shows at most five plans that are not started or in progress. The rest are
+  under **More**, and finished plans are under **Done**, each in its own list.
+
+### Fixed
+
+- Lantern finds a new release without you turning the update check off and on again. Besides the
+  check at start and every four hours, it now also checks when your computer wakes, when the
+  screen is unlocked and when you come back to its window, if the last check was more than 15
+  minutes ago.
+
 ## [0.4.3] - 2026-11-19
 
 ### Fixed
@@ -146,7 +160,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.3...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.4...HEAD
+[0.4.4]: https://github.com/MobileReality/lantern/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/MobileReality/lantern/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/MobileReality/lantern/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/MobileReality/lantern/compare/v0.4.0...v0.4.1
