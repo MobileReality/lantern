@@ -28,11 +28,12 @@ function mountPlanStrip(el: HTMLElement, onSelect: (slug: string) => void): Plan
   done.hidden = true;
   const pop = document.createElement('div');
   pop.className = 'pl-done-pop';
-  pop.setAttribute('role', 'dialog');
   el.replaceChildren(label, chips, done, pop);
 
   const popover = mountPopover(done, pop, {
     placement: 'bottom-start',
+    onOpen: () => pop.setAttribute('role', 'dialog'),
+    onClose: () => pop.removeAttribute('role'),
     focus: () => pop.querySelector<HTMLElement>('button[data-plan]'),
   });
   rovingFocus(pop, () => [...pop.querySelectorAll<HTMLElement>('button[data-plan]')]);
@@ -40,7 +41,7 @@ function mountPlanStrip(el: HTMLElement, onSelect: (slug: string) => void): Plan
   el.addEventListener('click', (ev) => {
     const chip = (ev.target as Element).closest('button[data-plan]');
     if (!chip) return;
-    popover.close(false);
+    if (pop.contains(chip)) popover.close(true);
     onSelect(chip.getAttribute('data-plan') ?? '');
   });
 

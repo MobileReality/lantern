@@ -276,7 +276,7 @@
     "CHIP_TITLE": "{title} ({state}): {finished} of {total} items implemented. Click to open the plan.",
     "CHIP_PROGRESS": "{finished}/{total}",
     "DONE_LABEL": "Done {count}",
-    "DONE_TITLE": "{count} finished plans. Click to list them.",
+    "DONE_TITLE": "Finished plans: {count}. Click to list them.",
     "DONE_HEADING": "Finished plans",
     "STATE_DRAFT": "draft",
     "STATE_APPROVED": "approved",
