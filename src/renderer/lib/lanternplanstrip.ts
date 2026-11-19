@@ -1,3 +1,4 @@
+import { mountPopover, rovingFocus } from '@renderer/popover';
 import type { LanternPlanView } from '../../main/lantern-plan-view-types';
 import { VIEW, say } from '../../shared/lantern-plan-messages';
 import { esc } from './lanternctx';
@@ -5,6 +6,8 @@ import { esc } from './lanternctx';
 interface PlanStrip {
   sync(plans: readonly LanternPlanView[], selected: string | null): void;
 }
+
+const isDone = (plan: LanternPlanView) => plan.total > 0 && plan.finished === plan.total;
 
 function chipHtml(plan: LanternPlanView, on: boolean) {
   const state = say(plan.lifecycle === 'approved' ? VIEW.STATE_APPROVED : plan.lifecycle === 'stale' ? VIEW.STATE_STALE : VIEW.STATE_DRAFT);
@@ -15,20 +18,53 @@ function chipHtml(plan: LanternPlanView, on: boolean) {
 }
 
 function mountPlanStrip(el: HTMLElement, onSelect: (slug: string) => void): PlanStrip {
+  const label = document.createElement('span');
+  label.className = 'pr-label';
+  const chips = document.createElement('div');
+  chips.className = 'pr-chips';
+  const done = document.createElement('button');
+  done.type = 'button';
+  done.className = 'pl-done';
+  done.hidden = true;
+  const pop = document.createElement('div');
+  pop.className = 'pl-done-pop';
+  pop.setAttribute('role', 'dialog');
+  el.replaceChildren(label, chips, done, pop);
+
+  const popover = mountPopover(done, pop, {
+    placement: 'bottom-start',
+    focus: () => pop.querySelector<HTMLElement>('button[data-plan]'),
+  });
+  rovingFocus(pop, () => [...pop.querySelectorAll<HTMLElement>('button[data-plan]')]);
+
   el.addEventListener('click', (ev) => {
     const chip = (ev.target as Element).closest('button[data-plan]');
-    if (chip) onSelect(chip.getAttribute('data-plan') ?? '');
+    if (!chip) return;
+    popover.close(false);
+    onSelect(chip.getAttribute('data-plan') ?? '');
   });
 
   return {
     sync(plans, selected) {
       el.hidden = plans.length === 0;
       if (!plans.length) {
-        el.textContent = '';
+        popover.close(false);
+        done.hidden = true;
+        chips.textContent = '';
+        pop.textContent = '';
+        label.textContent = '';
         return;
       }
       const focused = el.contains(document.activeElement) ? (document.activeElement as Element).getAttribute('data-plan') : null;
-      el.innerHTML = `<span class="pr-label">${esc(say(VIEW.STRIP_LABEL))}</span><div class="pr-chips">${plans.map((plan) => chipHtml(plan, plan.slug === selected)).join('')}</div>`;
+      const finished = plans.filter(isDone);
+      label.textContent = say(VIEW.STRIP_LABEL);
+      chips.innerHTML = plans.filter((plan) => !isDone(plan)).map((plan) => chipHtml(plan, plan.slug === selected)).join('');
+      done.hidden = finished.length === 0;
+      if (!finished.length) popover.close(false);
+      done.textContent = say(VIEW.DONE_LABEL, { count: finished.length });
+      done.dataset.tip = say(VIEW.DONE_TITLE, { count: finished.length });
+      pop.setAttribute('aria-label', say(VIEW.DONE_HEADING));
+      pop.innerHTML = finished.map((plan) => chipHtml(plan, plan.slug === selected)).join('');
       if (focused) [...el.querySelectorAll<HTMLElement>('button[data-plan]')].find((chip) => chip.getAttribute('data-plan') === focused)?.focus();
     },
   };
