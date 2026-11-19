@@ -1,0 +1,38 @@
+lantern-pr 1
+# 74
+#title Put finished plans behind one Done control in the Plans strip
+#url https://github.com/MobileReality/lantern/pull/74
+#branch feat/plans-done-modal
+#base main
+#opened 2026-11-19
+#head cd682f119ffd83f911895a5c714e9a007f98389d
+#describe what The Plans strip lists only unfinished plans; finished ones sit behind a Done N control that opens a list.
+#describe before Every plan was a chip in the strip, and a long list of done plans overflowed it.
+#describe after Unfinished plans are chips; Done N opens a popover of finished plans, and picking one opens it in the Planning view.
+#describe verified typecheck, lint and the full test suite pass; the new test file fails 6 of 6 on the old strip.
++ test/lantern-plan-strip-done.test.ts
+~ skills/lantern-plan/scripts/messages.json
+~ src/renderer/lantern-plans.css
+~ src/renderer/lib/lanternplanstrip.ts
+#order src/renderer/lib/lanternplanstrip.ts
+#order skills/lantern-plan/scripts/messages.json
+#order src/renderer/lantern-plans.css
+#order test/lantern-plan-strip-done.test.ts
+#reason test/lantern-plan-strip-done.test.ts Proves finished plans leave the strip, the control counts them, the list opens and closes, and a pick opens the plan.
+#reason skills/lantern-plan/scripts/messages.json Adds the Done control's label, tooltip and list heading as view messages, as the catalogue rule requires.
+#reason src/renderer/lantern-plans.css Styles the Done control and its popover list so they match the strip's chips.
+#reason src/renderer/lib/lanternplanstrip.ts Keeps the strip short by moving finished plans behind one Done control that opens them in a popover.
+#story Finding an unfinished plan in a long list
+#step actor A person with many plans
+#step action opens the Plans strip
+#file src/renderer/lib/lanternplanstrip.ts
+#step subject the list of plans
+#below interaction Sees only plans still in progress, plus a Done count
+#below consequence Every plan, done or not, filled and overflowed the strip => Finished plans wait behind one Done control
+#story Opening a finished plan
+#step actor A person
+#step action presses Done and picks a plan
+#file test/lantern-plan-strip-done.test.ts
+#step subject the finished plan
+#below interaction Reads it in the Planning view, as with any chip
+#below consequence A finished plan was a chip among the rest => It is reached from a list that Escape or a click away closes
