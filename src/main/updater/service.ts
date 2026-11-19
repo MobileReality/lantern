@@ -231,6 +231,7 @@ export function createUpdater(deps: UpdaterDeps) {
   function start() {
     if (!deps.packaged || stops.length > 0) return;
     wasEnabled = deps.enabled();
+    lastCheckAt = deps.now();
     if (native) {
       native.onDownloaded(onDownloaded);
       native.onNotAvailable(() => {

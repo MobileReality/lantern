@@ -423,6 +423,17 @@ describe('checking again after sleep or a return to the window', () => {
     expect(world.requests).toHaveLength(1);
   });
 
+  it('leaves the startup check to its timer when a window takes focus right after launch', async () => {
+    const world = windows();
+    world.updater.start();
+    world.wake();
+    await flush();
+    expect(world.requests).toEqual([]);
+    for (const timer of world.clock.running().filter((entry) => !entry.repeating)) timer.run();
+    await flush();
+    expect(world.requests).toHaveLength(1);
+  });
+
   it('does not check on a wake event while the setting is off, and does once it is on', async () => {
     const world = windows({ status: 200, body: LATEST_NEWER });
     world.state.enabled = false;
