@@ -1,0 +1,36 @@
+lantern-pr 1
+# 73
+#title Check for updates on wake, unlock and window focus
+#url https://github.com/MobileReality/lantern/pull/73
+#branch feat/update-check-on-wake
+#base main
+#opened 2026-11-19
+#head a62672eb898fd8514b1f28d83121a3a2b49c9f51
+#describe what Lantern checks for updates when the computer wakes, the screen unlocks or a window gets focus, if the last check is over 15 minutes old.
+#describe before Timers paused in sleep, so an overnight app found a release only on toggling the setting.
+#describe after A wake or focus event after 15 minutes checks; the startup check and four-hour tick are unchanged, and nothing checks with the setting off.
+#describe verified pnpm test, pnpm run typecheck and pnpm run lint pass; three new tests fail on the old service.
+~ docs/updates.md
+~ src/main/main.ts
+~ src/main/updater/service.ts
+~ test/helpers/updater-world.ts
+~ test/updater-service.test.ts
+#order src/main/updater/service.ts
+#order src/main/main.ts
+#order test/helpers/updater-world.ts
+#order test/updater-service.test.ts
+#order docs/updates.md
+#reason docs/updates.md Tells people when Lantern checks, now including wake, unlock and focus.
+#reason src/main/main.ts Feeds the updater the real wake, unlock and window-focus events and the clock.
+#reason src/main/updater/service.ts An app left open overnight missed releases because timers pause in sleep, so wake and focus now trigger a check when the last one is old.
+#reason test/helpers/updater-world.ts Gives the tests a fake wake source and a controllable clock so sleep can be simulated.
+#reason test/updater-service.test.ts Proves a wake after five hours finds a release, focus events do not hammer the API, and an off setting stays silent.
+#story Finding a release after the computer slept
+#step actor A user
+#step action wakes the computer or returns to a Lantern window
+#file src/main/main.ts
+#file src/main/updater/service.ts
+#step subject Lantern's update check
+#file test/updater-service.test.ts
+#below interaction Sees a newer release without toggling the update setting
+#below consequence Waited for the next four-hour tick => Checks on wake or focus after 15 minutes
