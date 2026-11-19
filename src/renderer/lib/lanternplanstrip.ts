@@ -84,7 +84,7 @@ function mountPlanStrip(el: HTMLElement, onSelect: (slug: string) => void): Plan
       if (!plans.length) {
         label.textContent = '';
         chips.textContent = '';
-        lists.forEach((list) => list.clear());
+        for (const list of lists) list.clear();
         return;
       }
       const focused = el.contains(document.activeElement) ? (document.activeElement as Element).getAttribute('data-plan') : null;
