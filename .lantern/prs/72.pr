@@ -1,0 +1,24 @@
+lantern-pr 1
+# 72
+#title chore: release 0.4.3
+#url https://github.com/MobileReality/lantern/pull/72
+#branch chore/release-0.4.3
+#base origin/main
+#opened 2026-11-19
+#head a94f781328217dacda443c2caaf22e5e325eabfa
+#summary Lantern 0.4.3: ships the single Macro map fix and the delegate preflight host fix
+~ CHANGELOG.md
+~ package.json
+#order package.json
+#order CHANGELOG.md
+#reason CHANGELOG.md Gives users the 0.4.3 notes and the compare links, as the 0.4.2 release did
+#reason package.json The release tag v0.4.3 must match the version the packaged app reports
+#story A maintainer ships Lantern 0.4.3
+#step actor Maintainer
+#step action merges this and tags
+#file package.json
+#step subject the 0.4.3 release
+#file CHANGELOG.md
+#below actor Lantern user
+#below interaction can read what 0.4.3 fixed
+#below consequence 0.4.2 is the latest release => 0.4.3 is the latest release

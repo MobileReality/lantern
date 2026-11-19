@@ -6,6 +6,15 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-11-19
+
+### Fixed
+
+- The Macro map is drawn once. On a project with a large area it could show two copies of the map
+  on top of each other, at different zoom levels.
+- Delegate runs no longer stop at the preflight check when your SSH config routes `bitbucket.org`
+  or `github.com` through another host name (for example `ssh.bitbucket.org`).
+
 ## [0.4.2] - 2026-11-18
 
 ### Changed
@@ -137,7 +146,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.2...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/MobileReality/lantern/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/MobileReality/lantern/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/MobileReality/lantern/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/MobileReality/lantern/compare/v0.3.1...v0.4.0
