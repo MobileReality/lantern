@@ -395,7 +395,7 @@ src/renderer/lib/lanternplanpanel.ts . component 5998128affac
 src/renderer/lib/lanternplanselection.ts . util 9f356a03e6c2
 #feature planning
 
-src/renderer/lib/lanternplanstrip.ts . component ce7f00c25919
+src/renderer/lib/lanternplanstrip.ts . component 4cb38b4864b9
 #feature planning
   < src/main/lantern-plan-view-types.ts#LanternPlanView
   = src/renderer/lib/lanternctx.ts#esc

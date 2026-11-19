@@ -1150,7 +1150,7 @@ test/lantern-plan-messages.test.ts . test 4ef906dbbca2
   = src/main/lantern-plan.ts
   = test/helpers/lantern-plan-world.ts
 
-test/lantern-plan-strip-done.test.ts . test 7399bff6d2d0
+test/lantern-plan-strip-done.test.ts . test cdbfca21f5ff
 #feature planning
   = src/main/lantern-plan-view.ts#planView
   = src/main/lantern-plan.ts#parsePlanFile
