@@ -1,7 +1,7 @@
 lantern 1
 # skills/lantern-plan/scripts
 
-skills/lantern-plan/scripts/messages.json . config 902eee7bca7c
+skills/lantern-plan/scripts/messages.json . config a10381e4c020
 #feature planning
 
 skills/lantern-plan/scripts/plan-approval.mjs . pure 8730f23b09af
