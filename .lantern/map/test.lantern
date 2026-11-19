@@ -211,7 +211,7 @@ test/lantern-delegate-lint-transcript.test.ts . test f3ae16011a46
   < skills/lantern-code-reviewer/README.md
   < skills/lantern-code-reviewer/SKILL.md
 
-test/lantern-delegate-scripts.test.ts . test 328e1f1fcfcc
+test/lantern-delegate-scripts.test.ts . test 6c8745766f1c
 #feature delegate-runs
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
   = skills/lantern-delegate/scripts/bundled-skills.mjs

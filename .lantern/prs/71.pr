@@ -1,0 +1,30 @@
+lantern-pr 1
+# 71
+#title fix: take a remote that names bitbucket.org or github.com as that host without asking ssh
+#url https://github.com/MobileReality/lantern/pull/71
+#branch fix/preflight-host-literal
+#base origin/main
+#opened 2026-11-18
+#head 3eb93dc56fb48244d468fe0fe7ee406894ed9694
+#describe what A remote whose host is literally bitbucket.org or github.com is taken as that host; ssh -G is asked only for aliases.
+#describe before A user's own ssh HostName for bitbucket.org made preflight reject the remote and print no host, identity or target line.
+#describe after Preflight, PR creation and the delivery flow read the host from the remote itself, on any machine.
+#describe verified The four lantern-delegate test files (147 tests), pnpm test, typecheck and lint pass.
+~ skills/lantern-delegate/scripts/github/identity.mjs
+~ skills/lantern-delegate/scripts/host.mjs
+~ test/lantern-delegate-scripts.test.ts
+#order skills/lantern-delegate/scripts/host.mjs
+#order skills/lantern-delegate/scripts/github/identity.mjs
+#order test/lantern-delegate-scripts.test.ts
+#reason skills/lantern-delegate/scripts/github/identity.mjs Keeps the GitHub check consistent with host.mjs, so ssh routing of github.com does not hide the account behind the push.
+#reason skills/lantern-delegate/scripts/host.mjs A remote that names bitbucket.org or github.com is that host, so the user's own ssh HostName routing cannot turn it into an error.
+#reason test/lantern-delegate-scripts.test.ts Pins that a remote routed to another ssh HostName still classifies as its host, with no dependence on the developer's ssh config.
+#story A delegate run on a machine with its own ssh setup
+#step actor A developer
+#step action runs the delegate preflight in a Bitbucket or GitHub project
+#step subject the project's remote
+#file skills/lantern-delegate/scripts/host.mjs
+#below interaction Gets a normal host, identity and target check instead of a rejected remote
+#file skills/lantern-delegate/scripts/github/identity.mjs
+#file test/lantern-delegate-scripts.test.ts
+#below consequence A personal ssh HostName made the remote read as an unknown host => A remote naming the host is that host; only aliases ask ssh

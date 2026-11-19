@@ -7,6 +7,8 @@ import { parseRemoteUrl, sshEffective } from './github/github.mjs';
 
 const defaultHostname = (host) => sshEffective(host).hostname ?? host;
 
+const KNOWN_HOSTS = new Set(['bitbucket.org', 'github.com', 'www.github.com']);
+
 // `{ host: 'bitbucket' | 'github', parsed }`, or `{ error }` for an unreadable URL or any other host.
 // An SSH alias is resolved with `ssh -G` (`resolveHostname` replaces that lookup in tests).
 export function classifyRemote(url, resolveHostname = defaultHostname, rawUrl = url) {
@@ -15,7 +17,8 @@ export function classifyRemote(url, resolveHostname = defaultHostname, rawUrl = 
         const rewritten = rawUrl !== url ? ` (configured as "${rawUrl}", rewritten by url.<base>.insteadOf to "${url}")` : '';
         return { error: `cannot read a host from remote URL "${url}"${rewritten}; the host is unknown, so the delegate could not push or open a pull request.` };
     }
-    const hostname = parsed.ssh ? resolveHostname(parsed.host) : parsed.host;
+    const literal = KNOWN_HOSTS.has(parsed.host);
+    const hostname = parsed.ssh && !literal ? resolveHostname(parsed.host) : parsed.host;
     if (hostname === 'bitbucket.org') return { host: 'bitbucket', parsed };
     if (hostname === 'github.com' || hostname === 'www.github.com') return { host: 'github', parsed };
     return { error: `remote host "${hostname}" is neither bitbucket.org nor github.com; delegates open pull requests on those two only.` };
