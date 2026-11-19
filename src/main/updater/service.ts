@@ -7,6 +7,7 @@ import { displayVersion } from './version';
 export const INITIAL_CHECK_DELAY_MS = 20_000;
 export const CHECK_INTERVAL_MS = 4 * 60 * 60 * 1000;
 export const GUARD_INTERVAL_MS = 30_000;
+export const RECHECK_AFTER_MS = 15 * 60 * 1000;
 
 export type CheckOutcome =
   | { kind: 'disabled' }
@@ -23,6 +24,10 @@ export interface UpdateTimers {
   every(ms: number, run: () => void): () => void;
 }
 
+export interface WakeSource {
+  onWake(run: () => void): () => void;
+}
+
 export interface UpdaterDeps {
   packaged: boolean;
   platform: NodeJS.Platform;
@@ -37,6 +42,8 @@ export interface UpdaterDeps {
   confirmRestart: (live: LiveParts) => Promise<boolean>;
   openRelease: (url: string) => void;
   timers: UpdateTimers;
+  wake: WakeSource;
+  now: () => number;
 }
 
 const UNKNOWN_ACTIVITY: ActivityState = { agentRunning: false, processes: null };
@@ -44,6 +51,7 @@ const UNKNOWN_ACTIVITY: ActivityState = { agentRunning: false, processes: null }
 export function createUpdater(deps: UpdaterDeps) {
   const native = deps.platform === 'darwin' ? deps.native : null;
   let checking: Promise<CheckOutcome> | null = null;
+  let lastCheckAt: number | null = null;
   let downloading: string | null = null;
   let downloaded: string | null = null;
   let release: { version: string; url: string } | null = null;
@@ -172,10 +180,16 @@ export function createUpdater(deps: UpdaterDeps) {
   function check(): Promise<CheckOutcome> {
     if (!deps.packaged) return Promise.resolve({ kind: 'not-packaged' });
     if (!deps.enabled()) return Promise.resolve({ kind: 'disabled' });
+    if (checking === null) lastCheckAt = deps.now();
     checking ??= performCheck().finally(() => {
       checking = null;
     });
     return checking;
+  }
+
+  function checkIfStale() {
+    if (lastCheckAt !== null && deps.now() - lastCheckAt < RECHECK_AFTER_MS) return;
+    void check();
   }
 
   function onDownloaded(name: string) {
@@ -217,6 +231,7 @@ export function createUpdater(deps: UpdaterDeps) {
   function start() {
     if (!deps.packaged || stops.length > 0) return;
     wasEnabled = deps.enabled();
+    lastCheckAt = deps.now();
     if (native) {
       native.onDownloaded(onDownloaded);
       native.onNotAvailable(() => {
@@ -229,7 +244,7 @@ export function createUpdater(deps: UpdaterDeps) {
         startGuard();
       });
     }
-    stops.push(deps.timers.after(INITIAL_CHECK_DELAY_MS, () => void check()), deps.timers.every(CHECK_INTERVAL_MS, () => void check()));
+    stops.push(deps.timers.after(INITIAL_CHECK_DELAY_MS, () => void check()), deps.timers.every(CHECK_INTERVAL_MS, () => void check()), deps.wake.onWake(checkIfStale));
   }
 
   function stop() {

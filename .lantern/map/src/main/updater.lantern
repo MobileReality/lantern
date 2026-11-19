@@ -35,7 +35,7 @@ src/main/updater/process-activity.ts . service a7d95c85b333
   < src/main/updater/guard.ts#ProcessActivity
   = ext:macos-process-tools
 
-src/main/updater/service.ts . service 81f08eeb646d
+src/main/updater/service.ts . service 4149631276e0
 #feature app-updates
   < src/main/updater/feed.ts#readLatestRelease
   < src/main/updater/feed.ts#readMacFeed

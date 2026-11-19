@@ -739,6 +739,19 @@ const updater = createUpdater({
       return () => clearInterval(timer);
     },
   },
+  wake: {
+    onWake: (run) => {
+      electron.powerMonitor.on('resume', run);
+      electron.powerMonitor.on('unlock-screen', run);
+      app.on('browser-window-focus', run);
+      return () => {
+        electron.powerMonitor.off('resume', run);
+        electron.powerMonitor.off('unlock-screen', run);
+        app.off('browser-window-focus', run);
+      };
+    },
+  },
+  now: Date.now,
 });
 const checkForUpdates = createUpdateController({
   updater,

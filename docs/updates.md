@@ -3,10 +3,12 @@
 An installed Lantern looks for a newer release by itself. On a Mac it downloads the update in the
 background and installs it only when no terminal or running work would be ended. On Windows it only tells you that a new
 version exists and links to it. A copy started from source (`pnpm start`) or a dev profile never checks.
+Lantern checks when it starts and every four hours, and also when the computer wakes from sleep, the screen
+is unlocked or a Lantern window gets focus, if the last check was more than 15 minutes ago.
 
 ## On a Mac
 
-Lantern checks when it starts and then every four hours. When there is a newer release it downloads it
+When there is a newer release Lantern downloads it
 and waits. The update installs, and Lantern restarts, only when nothing would be ended:
 
 - no run started by Lantern itself is going,
