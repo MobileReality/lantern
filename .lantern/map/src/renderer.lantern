@@ -42,7 +42,7 @@ src/renderer/lantern-flow.css . style 934625fc4247
 src/renderer/lantern-macroview.css . style 14604f7b1dc4
 #feature macro-view
 
-src/renderer/lantern-plans.css . style 18e809058f89
+src/renderer/lantern-plans.css . style 58ea0d406a54
 #feature planning
 
 src/renderer/lantern-prs.css . style 1cbb697a6c59
