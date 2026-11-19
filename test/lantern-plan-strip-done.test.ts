@@ -77,9 +77,48 @@ async function open(map: LanternMap, loaded: MacroLoad = areasPayload()) {
 
 const strip = (root: HTMLElement) => root.querySelector('.lt-plans') as HTMLElement;
 const inStrip = (root: HTMLElement) => [...strip(root).querySelectorAll('.pr-chips [data-plan]')].map((c) => c.getAttribute('data-plan'));
-const control = (root: HTMLElement) => strip(root).querySelector('.pl-done') as HTMLButtonElement;
-const listed = (root: HTMLElement) => [...strip(root).querySelectorAll('.pl-done-pop [data-plan]')].map((c) => c.getAttribute('data-plan'));
+const control = (root: HTMLElement) => strip(root).querySelector('.pl-list-done') as HTMLButtonElement;
+const listed = (root: HTMLElement) => [...strip(root).querySelectorAll('.pl-list-done-pop [data-plan]')].map((c) => c.getAttribute('data-plan'));
 const panel = (root: HTMLElement) => root.querySelector('.lt-planpane .pl-panel') as HTMLElement | null;
+
+const going = (count: number) => Array.from({ length: count }, (_, at) => viewOf(`going-${at + 1}`, `Going ${at + 1}`, []));
+const more = (root: HTMLElement) => strip(root).querySelector('.pl-list-more') as HTMLButtonElement;
+const inMore = (root: HTMLElement) => [...strip(root).querySelectorAll('.pl-list-more-pop [data-plan]')].map((c) => c.getAttribute('data-plan'));
+
+describe('the plans in progress in the strip', () => {
+  it('shows five chips and puts the rest behind a More control placed before Done', async () => {
+    const root = await open(withPlans([...going(7), shipped()], allPrs('shipped')));
+    expect(inStrip(root)).toEqual(['going-1', 'going-2', 'going-3', 'going-4', 'going-5']);
+    expect(more(root).hidden).toBe(false);
+    expect(more(root).textContent).toBe('More 2');
+    expect(more(root).nextElementSibling?.nextElementSibling).toBe(control(root));
+  });
+
+  it('lists the other plans in the More list and opens a picked one', async () => {
+    const root = await open(withPlans(going(7), []));
+    more(root).click();
+    expect(more(root).getAttribute('aria-expanded')).toBe('true');
+    expect(inMore(root)).toEqual(['going-6', 'going-7']);
+    (strip(root).querySelector('.pl-list-more-pop [data-plan="going-7"]') as HTMLButtonElement).click();
+    await flush();
+    expect(panel(root)).not.toBeNull();
+    expect(more(root).getAttribute('aria-expanded')).toBe('false');
+    expect(more(root).getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('keeps More unpressed while the selected plan is one of the chips', async () => {
+    const root = await open(withPlans(going(7), []));
+    (strip(root).querySelector('.pr-chips [data-plan="going-1"]') as HTMLButtonElement).click();
+    await flush();
+    expect(more(root).getAttribute('aria-pressed')).toBe('false');
+  });
+
+  it('shows no More control with five plans in progress', async () => {
+    const root = await open(withPlans(going(5), []));
+    expect(inStrip(root)).toHaveLength(5);
+    expect(more(root).hidden).toBe(true);
+  });
+});
 
 describe('the finished plans in the strip', () => {
   it('keeps a finished plan out of the strip and counts it in one control', async () => {
@@ -109,7 +148,7 @@ describe('the finished plans in the strip', () => {
     control(root).click();
     expect(control(root).getAttribute('aria-expanded')).toBe('true');
     expect(listed(root)).toEqual(['shipped', 'later']);
-    const first = strip(root).querySelector('.pl-done-pop [data-plan="shipped"]') as HTMLElement;
+    const first = strip(root).querySelector('.pl-list-done-pop [data-plan="shipped"]') as HTMLElement;
     expect(first.textContent).toContain('Ship the plans');
     expect(first.textContent).toContain('stale');
     expect(first.textContent).toContain('2/2');
@@ -128,10 +167,10 @@ describe('the finished plans in the strip', () => {
   it('opens a picked finished plan in the Planning view', async () => {
     const root = await open(withPlans([running(), shipped()], [open1, ...allPrs('shipped')]));
     control(root).click();
-    (strip(root).querySelector('.pl-done-pop [data-plan="shipped"]') as HTMLButtonElement).click();
+    (strip(root).querySelector('.pl-list-done-pop [data-plan="shipped"]') as HTMLButtonElement).click();
     await flush();
     expect(panel(root)).not.toBeNull();
     expect(control(root).getAttribute('aria-expanded')).toBe('false');
-    expect(strip(root).querySelector('.pl-done-pop [data-plan="shipped"]')?.getAttribute('aria-pressed')).toBe('true');
+    expect(strip(root).querySelector('.pl-list-done-pop [data-plan="shipped"]')?.getAttribute('aria-pressed')).toBe('true');
   });
 });
