@@ -36,7 +36,7 @@ src/main/auth/credential-socket.ts . schema 68c6b5d2ea34
 #feature integrations
   < src/main/auth/providers.ts#isProviderId
   < src/shared/auth-kinds.ts#CREDENTIAL_REFUSAL
-src/main/auth/electron-cipher.ts . gateway b23556e355dc
+src/main/auth/electron-cipher.ts . gateway ed7f3b4829c8
 #feature integrations
   < src/main/auth/secret-store.ts#Cipher
   = ext:os-keychain
