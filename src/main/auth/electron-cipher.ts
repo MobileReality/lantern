@@ -33,8 +33,6 @@ interface VaultChoice {
   optIn: boolean;
 }
 
-// Asking safeStorage whether encryption is available is what makes macOS ask for the login password,
-// so a dev run that did not opt in must never reach it.
 function vaultCipher(storage: SafeStorageLike, { dev, optIn }: VaultChoice, platform: NodeJS.Platform = process.platform): Cipher {
   return dev && !optIn ? sessionOnlyCipher : electronCipher(storage, platform);
 }
