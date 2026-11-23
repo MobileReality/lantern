@@ -2504,6 +2504,13 @@ test/auth-commit-email.test.ts . test 87a2ac2e2f61
   < test/helpers/fake-providers.ts#startFakeProviders
   < test/helpers/fake-tokens.ts#FAKE_GITHUB_TOKEN
 
+test/auth-dev-vault.test.ts . test c4e09baf2a45
+#feature integrations
+  > src/main/auth/electron-cipher.ts#vaultCipher
+  > src/main/auth/secret-store.ts#createSecretStore
+  < test/helpers/auth-world.ts
+  < test/helpers/credential-world.ts#createCredentialWorld
+
 test/auth-expiry.test.ts . test 408dd4d74393
 #feature integrations
   > src/shared/auth-expiry.ts#expiryState

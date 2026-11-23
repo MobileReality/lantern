@@ -478,7 +478,7 @@ src/main/lantern.ts . service ce57c170d070
 src/main/last-window.ts . util 4467717adf73
 #feature projects-hub
 
-src/main/main.ts . entry 4ed5fa65274d
+src/main/main.ts . entry 83231ca9ce79
   = src/main/cli-user-install.ts
   < src/main/cli-user-port.ts#cliPort
   = src/main/last-window.ts#createLastWindowHandler
@@ -494,7 +494,7 @@ src/main/main.ts . entry 4ed5fa65274d
   = src/main/auth/credential-server.ts#createCredentialServer
   = src/main/auth/credential-socket.ts#credentialSocketPath
   = src/main/auth/known-project.ts#knownProject
-  = src/main/auth/electron-cipher.ts#electronCipher
+  = src/main/auth/electron-cipher.ts#vaultCipher
   = src/main/auth/env-names.ts#namesInProjectFiles
   = src/main/auth/ipc.ts#registerAuthIpc
   = src/main/lantern-host-origin.ts#codeHostOf

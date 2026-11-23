@@ -413,6 +413,7 @@
   "auth-profiles-bindings.test.ts": "Checks several profiles per provider, the default and choose-one rules, two projects using two accounts, Jira as a project's tracker, and that removing a profile clears its choices and secrets",
   "auth-providers.test.ts": "Checks the provider table, the id guard and that only https URLs on a provider's hosts are allowed",
   "auth-redact.test.ts": "Checks tokens, codes, verifiers and client secrets are hidden in URLs, bodies, headers and log lines while safe text stays",
+  "auth-dev-vault.test.ts": "Checks a dev run without the opt-in never calls the protected storage, writes no token to disk and still serves an account over the credential socket, while the opt-in and a production run do use it",
   "auth-secret-store.test.ts": "Checks refresh tokens round-trip through an owner-only file holding neither the token nor its base64, that nothing is written when encryption is unavailable, and the Electron cipher adapter",
   "auth-token-manager.test.ts": "Checks single-flight refresh, refreshing at 80 percent of the lifetime, persisting the rotated refresh token before returning the new access token, and that only a rejected token is deleted",
   "integration-skills-bitbucket.test.ts": "Checks the Bitbucket skill against a fake host and a real git repo: list, show, comment, create with push, dry run, refusals and remote choice",
