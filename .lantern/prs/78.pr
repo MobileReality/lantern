@@ -1,0 +1,40 @@
+lantern-pr 1
+# 78
+#title Keep the protected vault closed in dev builds unless LANTERN_DEV_VAULT=1
+#url https://github.com/MobileReality/lantern/pull/78
+#branch feat/dev-vault-off-by-default
+#base main
+#opened 2026-11-23
+#head d8c8a8531341d970f0412ee2e9f9acfdb49f8c3b
+#describe what A dev build no longer opens the protected credential vault, so it stops asking for the macOS password at every start.
+#describe before Every dev start called safeStorage and asked for the login password.
+#describe after Dev keeps accounts in memory for the session and serves them over the credential socket; LANTERN_DEV_VAULT=1 opts into the real vault. Production is unchanged.
+#describe verified pnpm run typecheck, pnpm run lint and pnpm test are green; test/auth-dev-vault.test.ts fails on origin/main and passes here.
++ test/auth-dev-vault.test.ts
+~ docs/architecture.md
+~ docs/getting-started.md
+~ src/main/auth/electron-cipher.ts
+~ src/main/main.ts
+~ src/shared/config.ts
+#order src/main/auth/electron-cipher.ts
+#order src/shared/config.ts
+#order src/main/main.ts
+#order test/auth-dev-vault.test.ts
+#order docs/architecture.md
+#order docs/getting-started.md
+#reason test/auth-dev-vault.test.ts Pins that dev skips the protected storage, the opt-in and production use it, and a dev account is still served.
+#reason docs/architecture.md Developers need to know why a dev build keeps accounts in memory and how to opt back into the vault.
+#reason docs/getting-started.md Names LANTERN_DEV_VAULT beside the other dev-profile switches so it can be found.
+#reason src/main/auth/electron-cipher.ts Only asking safeStorage triggers the keychain prompt, so a dev run without the opt-in gets a cipher that never does.
+#reason src/main/main.ts Chooses the account store's cipher from the dev profile and the opt-in instead of always using safeStorage.
+#reason src/shared/config.ts Gives the dev opt-in for the protected vault one named flag read once at load.
+#story Starting a dev build
+#step actor A developer
+#file src/main/main.ts
+#step action starts a dev build with pnpm start
+#file src/shared/config.ts
+#step subject the credential vault
+#file src/main/auth/electron-cipher.ts
+#below interaction Starts without a password prompt and adds accounts for the session
+#file test/auth-dev-vault.test.ts
+#below consequence Every start asked for the macOS password => Dev keeps accounts in memory; LANTERN_DEV_VAULT=1 opts back in
