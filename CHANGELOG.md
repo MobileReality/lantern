@@ -6,6 +6,17 @@ All notable changes to Lantern are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-11-23
+
+### Changed
+
+- Dependency updates: DOMPurify 3.4.18 for the Markdown preview, plus newer lint and test
+  tooling, and Vite 8 for the documentation site.
+- Development builds (`pnpm start`) no longer open the protected credential vault, so they no
+  longer ask for your macOS password at every start. Accounts added in a development build last
+  for that session only. Set `LANTERN_DEV_VAULT=1` to use the real vault there. The installed app
+  is unchanged.
+
 ## [0.4.4] - 2026-11-19
 
 ### Changed
@@ -160,7 +171,8 @@ All notable changes to Lantern are listed here. The format follows
 - Issue templates and a pull request template.
 - GitHub pull request state in the review view.
 
-[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.4...HEAD
+[Unreleased]: https://github.com/MobileReality/lantern/compare/v0.4.5...HEAD
+[0.4.5]: https://github.com/MobileReality/lantern/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/MobileReality/lantern/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/MobileReality/lantern/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/MobileReality/lantern/compare/v0.4.1...v0.4.2
