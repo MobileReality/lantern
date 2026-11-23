@@ -1,11 +1,11 @@
 lantern-pr 1
 # 78
-#title Keep the protected vault closed in dev builds unless LANTERN_DEV_VAULT=1
+#title feat: keep the protected vault closed in dev builds unless LANTERN_DEV_VAULT=1
 #url https://github.com/MobileReality/lantern/pull/78
 #branch feat/dev-vault-off-by-default
-#base main
+#base origin/main
 #opened 2026-11-23
-#head d8c8a8531341d970f0412ee2e9f9acfdb49f8c3b
+#head 90ff8f94279197c0d192dcb3133c027244ff8212
 #describe what A dev build no longer opens the protected credential vault, so it stops asking for the macOS password at every start.
 #describe before Every dev start called safeStorage and asked for the login password.
 #describe after Dev keeps accounts in memory for the session and serves them over the credential socket; LANTERN_DEV_VAULT=1 opts into the real vault. Production is unchanged.
