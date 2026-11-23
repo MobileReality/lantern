@@ -9,7 +9,7 @@ src/shared/code-highlighting.ts . schema 28ed9c711129
 src/shared/code-preview.ts . config 54b61910a554
 #feature code-insight
 
-src/shared/config.ts . config 00a07233bbf7
+src/shared/config.ts . config 2bd5d553bc22
 #feature notifications
 
 src/shared/control-characters.ts . pure a52a19db2fb3

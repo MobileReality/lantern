@@ -112,6 +112,8 @@ session **finishes**, **needs approval** or is **waiting for input**.
 A `pnpm start` build runs as the `dev` profile and shows no notification cards, because it watches
 the same sessions as an installed Lantern. Set `LANTERN_NOTIFICATIONS=1` to turn them on there, or
 `LANTERN_NOTIFICATIONS=0` to silence any run.
+A dev build keeps accounts in memory and never asks for your login password; set `LANTERN_DEV_VAULT=1` to
+use the protected vault there.
 
 Codex activity hooks are optional and need an explicit **Set up** click, shown when Codex is the
 selected assistant. Open `/hooks` in Codex to review and trust what Lantern installed.

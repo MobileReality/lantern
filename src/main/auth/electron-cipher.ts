@@ -18,5 +18,24 @@ function electronCipher(storage: SafeStorageLike, platform: NodeJS.Platform = pr
   };
 }
 
-export { electronCipher };
-export type { SafeStorageLike };
+const sessionOnlyCipher: Cipher = {
+  available: () => false,
+  encrypt: () => {
+    throw new Error('the protected vault is off for this run');
+  },
+  decrypt: () => {
+    throw new Error('the protected vault is off for this run');
+  },
+};
+
+interface VaultChoice {
+  dev: boolean;
+  optIn: boolean;
+}
+
+function vaultCipher(storage: SafeStorageLike, { dev, optIn }: VaultChoice, platform: NodeJS.Platform = process.platform): Cipher {
+  return dev && !optIn ? sessionOnlyCipher : electronCipher(storage, platform);
+}
+
+export { electronCipher, vaultCipher };
+export type { SafeStorageLike, VaultChoice };

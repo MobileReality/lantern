@@ -70,7 +70,7 @@ import { windowIconPath } from './window-icon';
 import { readTranscript, transcriptPath } from './session-context';
 import { SOUND_SETTING_FOR_KIND } from '../shared/settings-notifications';
 import { CARD_KINDS, type CardKind, deliverTransitionCard, sampleCard, sampleLabel } from './session-notification';
-import { DEV_PROFILE, NOTIFICATIONS_OFF, PORT } from '../shared/config';
+import { DEV_PROFILE, DEV_VAULT, NOTIFICATIONS_OFF, PORT } from '../shared/config';
 import { APP_NAME, userDataDir } from '@shared/app-identity';
 import { MEMORY_FREE_CHANNEL, MEMORY_WATCH_CHANNEL } from '../shared/memory';
 import { PR_EXPLAIN_CANCEL, PR_EXPLAIN_DONE, PR_EXPLAIN_SAVED, PR_EXPLAIN_START } from '../shared/pr-explain';
@@ -81,7 +81,7 @@ import { canJumpToSession, jumpToSession } from './session-jump';
 import { createMemoryService } from './memory-service';
 import { createProjectRelease } from './memory-free';
 import { createAuth } from './auth';
-import { electronCipher } from './auth/electron-cipher';
+import { vaultCipher } from './auth/electron-cipher';
 import { namesInProjectFiles } from './auth/env-names';
 import { registerAuthIpc } from './auth/ipc';
 import { createCredentialServer } from './auth/credential-server';
@@ -682,7 +682,7 @@ const releaseProjectMemory = createProjectRelease({
 
 const auth = createAuth({
   dir: app.getPath('userData'),
-  cipher: electronCipher(electron.safeStorage),
+  cipher: vaultCipher(electron.safeStorage, { dev: DEV_PROFILE, optIn: DEV_VAULT }),
   drivers: {},
   resolveProject: (project) => resolveRoot(project, projectPaths()),
   detectHost: (root) => codeHostOf(root),

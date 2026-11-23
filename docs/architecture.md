@@ -180,6 +180,12 @@ instances watch the same Claude sessions, so the dev profile shows no notificati
 (`debugToken` in the same file, `lantern-debug.json` in the data folder for the installed profile), see
 [Debug harness](../CONTRIBUTING.md#debug-harness).
 
+The dev profile does not open the protected credential vault (macOS Keychain through `safeStorage`),
+so a start never asks for the login password: accounts added in a dev session live in memory for that
+session only, nothing is written to disk, and the credential server and the integration skills serve
+them as usual. `LANTERN_DEV_VAULT=1 pnpm start` makes a dev build use the real vault, to test it. The
+installed app always uses the vault.
+
 `pnpm test:graph:e2e` runs the graph's Electron checks in a hidden, nonactivating window; set
 `LANTERN_GRAPH_VISIBLE=1` only when debugging them locally.
 

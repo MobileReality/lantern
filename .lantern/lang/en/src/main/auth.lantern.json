@@ -11,7 +11,7 @@
     "credential-server.ts = src/main/auth/redact.ts#createLog": "logs requests and refusals with tokens hidden",
     "credential-socket.ts": "Defines the socket's place per platform, its size and time limits, the request and reply shapes and the request parser",
     "credential-socket.ts gotcha": "The path follows the profile's user-data folder, so a dev run has its own; Windows uses a per-user pipe.",
-    "electron-cipher.ts":"Adapts the operating system's safeStorage to the cipher the secret store needs, and treats the Linux basic_text backend as unavailable",
+    "electron-cipher.ts":"Adapts the operating system's safeStorage to the cipher the secret store needs, and treats the Linux basic_text backend as unavailable, and gives a dev run that has not opted in a cipher that never asks the operating system, so accounts stay in memory for the session",
     "electron-cipher.ts = ext:os-keychain": "encrypts and decrypts refresh tokens",
     "env-names.ts": "Lists which credential variable names are set in the environment or in a project's .ai/.env and .env files, names only",
     "env-names.ts gotcha": "Never returns a value, and skips symlinked or oversized files.",
