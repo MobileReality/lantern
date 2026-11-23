@@ -6,7 +6,7 @@ import { createAuth } from '@main/auth';
 import { vaultCipher } from '@main/auth/electron-cipher';
 import type { SafeStorageLike } from '@main/auth/electron-cipher';
 import { createSecretStore } from '@main/auth/secret-store';
-import { callArguments } from './helpers/source-blocks';
+import { callArguments, occurrences } from './helpers/source-blocks';
 import { GITHUB_HOST, createCredentialWorld } from './helpers/credential-world';
 import { listFiles, makeTempDir } from './helpers/auth-world';
 
@@ -87,6 +87,6 @@ describe('the protected vault in a dev build', () => {
   it('is wired in main.ts from the dev profile and the opt-in, never straight from safeStorage', () => {
     const args = callArguments(MAIN, 'createAuth').text;
     expect(args).toMatch(/cipher:\s*vaultCipher\(\s*electron\.safeStorage,\s*\{\s*dev:\s*DEV_PROFILE,\s*optIn:\s*DEV_VAULT\s*\}\s*\)/);
-    expect(MAIN).not.toMatch(/electronCipher\(/);
+    expect(occurrences(MAIN, /\belectronCipher\(/)).toEqual([]);
   });
 });
