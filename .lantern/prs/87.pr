@@ -1,0 +1,30 @@
+lantern-pr 1
+# 87
+#title fix: stay quiet when an update check fails offline
+#url https://github.com/MobileReality/lantern/pull/87
+#branch fix/offline-update-check-quiet
+#base main
+#opened 2026-11-26
+#head 71ec1a3215f072618b0e30e8a3524709d13a4d2d
+#describe what An update check that fails only because the machine is asleep or offline no longer logs a warning.
+#describe before Update check failed: GitHub did not answer: net::ERR_NETWORK_IO_SUSPENDED appeared in Diagnostics.
+#describe after Nothing is logged for sleep or offline errors; HTTP errors and malformed feeds still warn.
+#describe verified pnpm test and pnpm run typecheck pass.
+~ src/main/updater/feed.ts
+~ src/main/updater/service.ts
+~ test/updater-service.test.ts
+#order src/main/updater/feed.ts
+#order src/main/updater/service.ts
+#order test/updater-service.test.ts
+#reason src/main/updater/feed.ts A machine that is asleep or offline needs a way to be told apart from a real failure, so the warning can be skipped.
+#reason src/main/updater/service.ts All three failure sites share one helper so an offline reason never reaches Diagnostics.
+#reason test/updater-service.test.ts Pins that a suspended-network failure logs nothing while the check still reports failed.
+#story Update check while the computer sleeps
+#step actor Lantern
+#step action checks for an update
+#step subject while the computer is asleep or offline
+#file src/main/updater/feed.ts
+#below interaction stays quiet instead of warning
+#file src/main/updater/service.ts
+#file test/updater-service.test.ts
+#below consequence logged a warning in Diagnostics => logs nothing, retries later
