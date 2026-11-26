@@ -1218,7 +1218,6 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       side.innerHTML = prHeadHtml(prRowsContext(pr, 0));
       side.append(guideView.rail);
       drawDescription(pr);
-      regionTools.attachList();
       return;
     }
     if (macro.isOn()) {
