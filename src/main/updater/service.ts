@@ -1,6 +1,6 @@
 import type { UpdateAction, UpdateNotice } from '../../shared/updates';
 import { type ActivityState, type LiveParts, canInstallNow, liveParts } from './guard';
-import { type HttpFetch, isReleasePageUrl, macFeedUrl, readLatestRelease, readMacFeed } from './feed';
+import { type HttpFetch, isOfflineReason, isReleasePageUrl, macFeedUrl, readLatestRelease, readMacFeed } from './feed';
 import type { NativeUpdater } from './native';
 import { displayVersion } from './version';
 
@@ -146,7 +146,7 @@ export function createUpdater(deps: UpdaterDeps) {
       return { kind: 'unavailable' };
     }
     if (answer.kind === 'failed') {
-      warn('Update check failed', answer.reason);
+      warnFailed(answer.reason);
       return { kind: 'failed' };
     }
     squirrel.setFeedUrl(url);
@@ -155,11 +155,15 @@ export function createUpdater(deps: UpdaterDeps) {
     return { kind: 'downloading', version: answer.version };
   }
 
+  function warnFailed(reason: string): void {
+    if (!isOfflineReason(reason)) warn('Update check failed', reason);
+  }
+
   async function checkRelease(): Promise<CheckOutcome> {
     const answer = await readLatestRelease(deps.fetch, deps.version);
     if (answer.kind === 'up-to-date') return answer;
     if (answer.kind === 'failed') {
-      warn('Update check failed', answer.reason);
+      warnFailed(answer.reason);
       return { kind: 'failed' };
     }
     release = { version: answer.version, url: answer.url };
@@ -171,7 +175,7 @@ export function createUpdater(deps: UpdaterDeps) {
     try {
       return native ? await checkSquirrel(native) : await checkRelease();
     } catch (error) {
-      warn('Update check failed', error instanceof Error ? error.message : String(error));
+      warnFailed(error instanceof Error ? error.message : String(error));
       downloading = null;
       return { kind: 'failed' };
     }

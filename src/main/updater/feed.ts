@@ -120,3 +120,9 @@ export async function readLatestRelease(fetchUrl: HttpFetch, version: string): P
     return { kind: 'failed', reason: `the GitHub answer could not be read: ${reasonOf(error)}` };
   }
 }
+
+const OFFLINE_ERRORS = /net::ERR_(NETWORK_IO_SUSPENDED|INTERNET_DISCONNECTED|NETWORK_CHANGED|NAME_NOT_RESOLVED|NETWORK_ACCESS_DENIED|ADDRESS_UNREACHABLE|PROXY_CONNECTION_FAILED|CONNECTION_(RESET|CLOSED|REFUSED|TIMED_OUT))|ENOTFOUND|EAI_AGAIN|ENETUNREACH|ENETDOWN/;
+
+export function isOfflineReason(reason: string): boolean {
+  return OFFLINE_ERRORS.test(reason);
+}
