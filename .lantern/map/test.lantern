@@ -2629,7 +2629,7 @@ test/lantern-delegate-commit-identity.test.ts . test f4e0e76de264
   = skills/lantern-delegate/scripts/preflight.mjs
   = skills/lantern-delegate/scripts/github/identity.mjs
 
-test/lantern-delegate-delivery-flow.test.ts . test b55eee1a502f
+test/lantern-delegate-delivery-flow.test.ts . test 121d498b5abe
 #feature delegate-runs
   = scripts/e2e-delegate/checks.mjs
   = scripts/e2e-delegate/fake-lantern.mjs

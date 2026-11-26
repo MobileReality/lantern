@@ -53,7 +53,7 @@ skills/lantern-delegate/scripts/lint-transcript.mjs . script c16f26715f74
   < skills/lantern-delegate/scripts/skill-linker.mjs#configuredSkillLinkerPath
   < skills/lantern-delegate/scripts/skill-linker.mjs#isSkillLinkerWord
 
-skills/lantern-delegate/scripts/permissions.mjs . util cfee0b2e5900
+skills/lantern-delegate/scripts/permissions.mjs . util 9d6df27d4e73
 #feature delegate-runs
 
 skills/lantern-delegate/scripts/pr-append-cost.mjs . script 9e3feb5e45cd
