@@ -9,6 +9,7 @@ interface GuideBar {
 
 const GUIDE_TITLE = 'The pull request as a short guided tour: steps in reading order, each with its own hunks';
 const CONTEXT_LINES = 2;
+const GAP_TEXT = '\u22EF';
 const GUIDE_ERROR_PREFIX = 'The guide in this record could not be read: ';
 
 function guideOf(pr: Pick<LanternPr, 'guide'> | undefined): LanternGuide | null {
@@ -78,7 +79,7 @@ function selectInBlock(block: readonly DiffRow[], refs: readonly LanternGuideHun
   for (const index of keptIndexes(body, runs)) {
     if (index !== previous + 1) {
       const lastOld = [...out].reverse().find((row) => row.oldLn !== undefined)?.oldLn ?? 0;
-      out.push({ type: 'hunk', text: out.length === 0 ? (head?.text ?? '') : '', oldStart: lastOld + 1, newStart: 0 });
+      out.push({ type: 'hunk', text: out.length === 0 ? (head?.text ?? '') : GAP_TEXT, oldStart: lastOld + 1, newStart: 0 });
     }
     out.push(body[index]);
     previous = index;

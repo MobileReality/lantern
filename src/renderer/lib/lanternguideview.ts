@@ -28,7 +28,7 @@ interface GuideState {
 
 const RISK_LABEL = { low: 'Low risk', medium: 'Medium risk', high: 'High risk' } as const;
 const NO_READER_TEXT = 'Diffs cannot be read in this window.';
-const KEEPS_KEYS = 'input, textarea, select, [contenteditable="true"]';
+const KEEPS_KEYS = 'input:not([type="checkbox"]), textarea, select, [contenteditable="true"]';
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, text = '') {
   const node = document.createElement(tag);
