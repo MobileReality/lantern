@@ -115,7 +115,7 @@ src/renderer/lib/lanternguide.ts . pure dccf4b193e82
   < src/renderer/lib/codeview.ts#DiffRow
   = src/renderer/lib/lanternctx.ts#esc
 
-src/renderer/lib/lanternguideview.ts . component f063dd6c35a6
+src/renderer/lib/lanternguideview.ts . component f3479ab718b4
 #feature review-screen
   < src/main/lantern.ts
   = src/renderer/lib/codeview.ts#parseDiffRows
@@ -439,7 +439,7 @@ src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
   < src/renderer/lib/lanternplanfocus.ts#planFilePaths
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lanternprpanel.ts . component b65da7a7b17a
+src/renderer/lib/lanternprpanel.ts . component 2a71ef6d76f7
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml
@@ -500,7 +500,7 @@ src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
 #feature file-graph
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternview.ts . component e5f2e5095f4a
+src/renderer/lib/lanternview.ts . component df16c7acde0f
 #feature file-graph
   < src/main/lantern.ts
   < src/main/local-reasons.ts#LocalReasonsResult

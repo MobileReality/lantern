@@ -648,7 +648,7 @@ test/lantern-flow-reading.test.ts . test 07b583124b3f
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-map.ts#mapOf
 
-test/lantern-guide-view.test.ts . test 9eb88b4dd72d
+test/lantern-guide-view.test.ts . test 1680a57b2f34
 #feature review-screen
   = src/renderer/lib/codeview.ts#parseDiffRows
   = src/renderer/lib/lanternguide.ts#selectRows

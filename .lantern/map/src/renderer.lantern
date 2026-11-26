@@ -39,7 +39,7 @@ src/renderer/diagnostics.css . style 73d6b7749286
 src/renderer/lantern-flow.css . style 934625fc4247
 #feature pr-flow
 
-src/renderer/lantern-guide.css . style 0a0c4093f6d3
+src/renderer/lantern-guide.css . style ecfcf2c2f353
 #feature review-screen
 
 src/renderer/lantern-macroview.css . style 14604f7b1dc4
