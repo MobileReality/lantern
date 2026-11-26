@@ -4,8 +4,10 @@ import { REASON_MAX_CHARS } from '../shared/reason';
 import { matchDescribeLine, parseDescribeLines } from './lantern-describe-parse';
 import { matchFlowLine, parseFlowLines } from './lantern-flow-parse';
 import type { FlowLine } from './lantern-flow-parse';
+import { matchGuideLine, parseGuideLines } from './lantern-guide-parse';
+import type { GuideLine } from './lantern-guide-parse';
 import { decodePath } from './lantern-parse';
-import type { LanternFlowStory, LanternPrDescription, LanternPrFileKind, LanternPrPlanRef } from './lantern-types';
+import type { LanternFlowStory, LanternGuide, LanternPrDescription, LanternPrFileKind, LanternPrPlanRef } from './lantern-types';
 
 const PR_FORMAT_HEADER = 'lantern-pr 1';
 const PR_DIR = '.lantern/prs';
@@ -44,6 +46,8 @@ interface ParsedPr {
   ordered?: boolean;
   flow?: LanternFlowStory[];
   flowError?: string;
+  guide?: LanternGuide;
+  guideError?: string;
 }
 
 type PrParseResult = { pr: ParsedPr; error: null } | { pr: null; error: string };
@@ -81,6 +85,7 @@ function parseRecord(text: string, fileName: string, spec: RecordSpec): PrParseR
   const reasons = new Map<string, string>();
   const order: string[] = [];
   const flowLines: FlowLine[] = [];
+  const guideLines: GuideLine[] = [];
   const describeLines: string[] = [];
   const plans: LanternPrPlanRef[] = [];
   let id: string | null = null;
@@ -123,6 +128,11 @@ function parseRecord(text: string, fileName: string, spec: RecordSpec): PrParseR
         flowLines.push(flowLine);
         continue;
       }
+      const guideLine = matchGuideLine(line, at);
+      if (guideLine) {
+        guideLines.push(guideLine);
+        continue;
+      }
       const m = KEY_LINE.exec(line);
       if (!m) continue;
       const [, key, value = ''] = m;
@@ -149,6 +159,7 @@ function parseRecord(text: string, fileName: string, spec: RecordSpec): PrParseR
   const first = rank.flatMap((p) => decorated.filter((f) => f.path === p));
   const rest = decorated.filter((f) => !rank.includes(f.path));
   const flow = parseFlowLines(flowLines, seen);
+  const guide = parseGuideLines(guideLines, seen);
   const description = parseDescribeLines(describeLines);
   return {
     pr: {
@@ -166,6 +177,8 @@ function parseRecord(text: string, fileName: string, spec: RecordSpec): PrParseR
       ...(rank.length > 0 ? { ordered: true } : {}),
       ...(flow.stories.length > 0 ? { flow: flow.stories } : {}),
       ...(flow.error ? { flowError: flow.error } : {}),
+      ...(guide.guide ? { guide: guide.guide } : {}),
+      ...(guide.error ? { guideError: guide.error } : {}),
     },
     error: null,
   };

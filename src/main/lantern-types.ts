@@ -185,6 +185,32 @@ interface LanternFlowStory {
   below: LanternFlowStep[];
 }
 
+interface LanternGuideHunk {
+  path: string;
+  side?: 'old' | 'new';
+  start?: number;
+  end?: number;
+}
+
+interface LanternGuideRisk {
+  level: 'low' | 'medium' | 'high';
+  why: string;
+}
+
+interface LanternGuideStep {
+  title: string;
+  why: string;
+  careful: boolean;
+  hunks: LanternGuideHunk[];
+  pseudo?: string[];
+}
+
+interface LanternGuide {
+  summary: string;
+  risk: LanternGuideRisk;
+  steps: LanternGuideStep[];
+}
+
 type LanternPrDescriptionSection = 'what' | 'before' | 'after' | 'verified';
 type LanternPrDescription = Partial<Record<LanternPrDescriptionSection, string[]>>;
 
@@ -229,6 +255,8 @@ interface LanternPr {
   ordered?: boolean;
   flow?: LanternFlowStory[];
   flowError?: string;
+  guide?: LanternGuide;
+  guideError?: string;
   state: LanternPrState;
   tip?: string;
   revision?: string;
@@ -290,6 +318,10 @@ export type {
   LanternFlowKind,
   LanternFlowStep,
   LanternFlowStory,
+  LanternGuide,
+  LanternGuideHunk,
+  LanternGuideRisk,
+  LanternGuideStep,
   LanternLanguage,
   LanternMap,
   LanternNode,

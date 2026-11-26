@@ -2,7 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
+import * as appGuide from '../src/main/lantern-guide-parse';
 import { parsePrRecord } from '../src/main/lantern-pr-parse';
+import { GUIDE_FILE_LINES, GUIDE_LINES, GUIDE_VALUE, REJECTED_GUIDES } from './helpers/lantern-guide-cases';
 import { FILES_MAX, FLOW_STORY, FLOW_STORY_VALUE, REF_FILE_LINES, REF_PATHS, REF_STORY, REF_STORY_VALUE, REJECTED_FLOWS, REJECTED_REFERENCES, refLines } from './helpers/lantern-flow-cases';
 
 const SKILL = path.join(__dirname, '..', 'skills', 'lantern-setup');
@@ -24,6 +26,7 @@ interface SkillPr {
   order: string[];
   plans: { slug: string; item: string }[];
   flow: unknown[];
+  guide: unknown;
   description: Record<string, string[]>;
   errors: string[];
   warnings: string[];
@@ -37,6 +40,7 @@ interface SkillDismissed {
 
 let parseSkill: (text: string, file: string) => SkillPr;
 let inReviewOrder: (files: { kind: string; path: string }[], order: string[]) => { kind: string; path: string }[];
+let skillGuide: Record<string, number>;
 let parseDismissed: (text: string, file?: string) => SkillDismissed;
 let serializeDismissed: (ids: string[]) => string;
 
@@ -44,6 +48,7 @@ beforeAll(async () => {
   const mod = await import(pathToFileURL(path.join(SKILL, 'scripts', 'prs.mjs')).href);
   parseSkill = mod.parsePr;
   inReviewOrder = mod.inReviewOrder;
+  skillGuide = await import(pathToFileURL(path.join(SKILL, 'scripts', 'prguide.mjs')).href);
   parseDismissed = mod.parseDismissed;
   serializeDismissed = mod.serializeDismissed;
 });
@@ -327,6 +332,89 @@ describe('flow references (#file): both parsers agree', () => {
     const { skill, app } = both(record([...VALID, ...REF_FILE_LINES, '#story s', '#step actor A', '#file src/zzz.ts']), '7.pr');
     expect(skill.errors[0]).toMatch(/:18: #file names/);
     expect(app.pr!.flowError).toMatch(/^line 18: #file names/);
+  });
+});
+
+describe('guide (#guide, #risk, #gstep, #gwhy, #ghunk, #gpseudo): both parsers agree', () => {
+  it('read the same summary, risk, steps, hunk references and pseudocode from a valid guide', () => {
+    const { skill, app, skillAccepts, appAccepts } = both(record([...VALID, ...GUIDE_FILE_LINES, ...GUIDE_LINES]), '7.pr');
+    expect(skill.errors).toEqual([]);
+    expect(skillAccepts).toBe(true);
+    expect(appAccepts).toBe(true);
+    expect(skill.guide).toEqual(GUIDE_VALUE);
+    expect(app.pr!.guide).toEqual(skill.guide);
+    expect(app.pr).not.toHaveProperty('guideError');
+  });
+
+  it('read a tab between a tag and its text the same way', () => {
+    const lines = ['#guide\tSummary', '#risk\tlow\tWhy', '#gstep\tskim\tTitle', '#gwhy\tBecause.', '#ghunk\tsrc/a.ts'];
+    const { skill, app } = both(record([...VALID, '+ src/a.ts', ...lines]), '7.pr');
+    expect(skill.errors).toEqual([]);
+    expect(app.pr!.guide).toEqual(skill.guide);
+    expect(app.pr!.guide).toEqual({ summary: 'Summary', risk: { level: 'low', why: 'Why' }, steps: [{ title: 'Title', why: 'Because.', careful: false, hunks: [{ path: 'src/a.ts' }] }] });
+  });
+
+  it('read a record without guide lines as having no guide', () => {
+    const { skill, app, skillAccepts, appAccepts } = both(record([...VALID, '+ src/a.ts']), '7.pr');
+    expect(skillAccepts).toBe(true);
+    expect(appAccepts).toBe(true);
+    expect(skill.guide).toBeNull();
+    expect(app.pr).not.toHaveProperty('guide');
+    expect(app.pr).not.toHaveProperty('guideError');
+  });
+
+  it('accept the caps: eight steps, sixty hunks, eight pseudocode lines, the longest texts', () => {
+    const hunks = Array.from({ length: 60 }, (_, i) => `#ghunk src/a.ts +${i + 1}`);
+    const longStep = ['#gstep careful ' + 'x'.repeat(60), `#gwhy ${'y'.repeat(240)}`, ...hunks, ...Array.from({ length: 8 }, () => `#gpseudo ${'z'.repeat(100)}`)];
+    const rest = Array.from({ length: 7 }, (_, i) => [`#gstep skim s${i}`, '#gwhy Why.', '#ghunk src/b.ts']).flat();
+    const lines = [`#guide ${'s'.repeat(160)}`, `#risk high ${'r'.repeat(160)}`, ...longStep, ...rest];
+    const { skill, app } = both(record([...VALID, '+ src/a.ts', '+ src/b.ts', ...lines]), '7.pr');
+    expect(skill.errors).toEqual([]);
+    expect(app.pr!.guide).toEqual(skill.guide);
+    expect(app.pr!.guide!.steps).toHaveLength(8);
+  });
+
+  it.each(REJECTED_GUIDES)('both refuse %s: the skill errors, the app drops the guide and still shows the record', (_label, lines, pattern) => {
+    const { skill, app, skillAccepts, appAccepts } = both(record([...VALID, ...GUIDE_FILE_LINES, ...lines]), '7.pr');
+    expect(skillAccepts).toBe(false);
+    expect(skill.errors.join('\n')).toMatch(pattern);
+    expect(skill.guide).toBeNull();
+    expect(appAccepts).toBe(true);
+    expect(app.pr!.guide).toBeUndefined();
+    expect(app.pr!.guideError).toMatch(pattern);
+    expect(app.pr!.files).toHaveLength(GUIDE_FILE_LINES.length);
+  });
+
+  it('name the same line for the same fault', () => {
+    const { skill, app } = both(record([...VALID, ...GUIDE_FILE_LINES, '#guide s', '#risk low w', '#gstep skim t', '#gwhy w', '#ghunk src/zzz.ts']), '7.pr');
+    expect(skill.errors[0]).toMatch(/:16: #ghunk names/);
+    expect(app.pr!.guideError).toMatch(/^line 16: #ghunk names/);
+  });
+
+  it('leave the flow and the guide independent: a bad guide keeps a good flow and the other way round', () => {
+    const flow = ['#story s', '#step actor A'];
+    const badGuide = both(record([...VALID, '+ src/a.ts', ...flow, '#guide s']), '7.pr');
+    expect(badGuide.app.pr!.flow).toHaveLength(1);
+    expect(badGuide.app.pr!.guideError).toBeDefined();
+    const badFlow = both(record([...VALID, '+ src/a.ts', '#story s', '#guide s', '#risk low w', '#gstep skim t', '#gwhy w', '#ghunk src/a.ts']), '7.pr');
+    expect(badFlow.app.pr!.flowError).toBeDefined();
+    expect(badFlow.app.pr!.guide).toBeDefined();
+  });
+
+  it('mirror the limits of prguide.mjs', () => {
+    const mirrored = {
+      GUIDE_MAX_STEPS: appGuide.GUIDE_MAX_STEPS,
+      GUIDE_MAX_HUNKS_PER_STEP: appGuide.GUIDE_MAX_HUNKS_PER_STEP,
+      GUIDE_MAX_PSEUDO_LINES: appGuide.GUIDE_MAX_PSEUDO_LINES,
+      GUIDE_SUMMARY_MAX: appGuide.GUIDE_SUMMARY_MAX,
+      GUIDE_RISK_WHY_MAX: appGuide.GUIDE_RISK_WHY_MAX,
+      GUIDE_TITLE_MAX: appGuide.GUIDE_TITLE_MAX,
+      GUIDE_WHY_MAX: appGuide.GUIDE_WHY_MAX,
+      GUIDE_WHY_MAX_SENTENCES: appGuide.GUIDE_WHY_MAX_SENTENCES,
+      GUIDE_PSEUDO_MAX: appGuide.GUIDE_PSEUDO_MAX,
+    };
+    const skillLimits = Object.fromEntries(Object.keys(mirrored).map((name) => [name, skillGuide[name]]));
+    expect(mirrored).toEqual(skillLimits);
   });
 });
 
