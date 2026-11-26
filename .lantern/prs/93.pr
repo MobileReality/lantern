@@ -1,0 +1,210 @@
+lantern-pr 1
+# 93
+#title LAN-122: guided review of a pull request
+#url https://github.com/MobileReality/lantern/pull/93
+#branch feat/guided-review
+#base main
+#opened 2026-11-26
+#head a7f8ff89a5ab6ceec1db65bd1b42b9743da13eb0
+#describe what A guide in the PR record, written by sync.mjs pr --guide-file and gated by verify --require-guide.
+#describe what Delegates write it; the review screen opens on it.
+#describe before The review screen shows files in review order; nothing groups hunks by intent.
+#describe after A PR with a guide opens as 1-8 steps in reading order with only their own hunks.
+#describe verified typecheck, lint, pnpm test and CI on each item PR; e2e pr-review-guide.spec; screenshots of the demo PR.
++ skills/lantern-setup/scripts/prguide.mjs
++ src/main/lantern-guide-parse.ts
++ src/renderer/lantern-guide.css
++ src/renderer/lib/lanternguide.ts
++ src/renderer/lib/lanternguideview.ts
++ test/e2e/pr-review-guide.spec.ts
++ test/helpers/lantern-guide-cases.ts
++ test/lantern-guide-view.test.ts
++ test/lantern-pr-guide.test.ts
++ test/lantern-sync-guide.test.ts
+~ package.json
+~ scripts/e2e-delegate/README.md
+~ scripts/e2e-delegate/checks.mjs
+~ scripts/e2e-delegate/verify.mjs
+~ scripts/esbuild.mjs
+~ scripts/pr-review-demo.mjs
+~ scripts/skill-test/fake-agent.mjs
+~ scripts/skill-test/run.mjs
+~ skills/lantern-delegate-complex/SKILL.md
+~ skills/lantern-delegate/SKILL.md
+~ skills/lantern-delegate/protocol.md
+~ skills/lantern-delegate/scripts/permissions.mjs
+~ skills/lantern-setup/references/format.md
+~ skills/lantern-setup/scripts/prs.mjs
+~ skills/lantern-sync/SKILL.md
+~ skills/lantern-sync/scripts/sync.mjs
+~ src/main/lantern-local.ts
+~ src/main/lantern-pr-parse.ts
+~ src/main/lantern-prs.ts
+~ src/main/lantern-types.ts
+~ src/renderer/lantern.css
+~ src/renderer/lib/lanternmacroview.ts
+~ src/renderer/lib/lanternprpanel.ts
+~ src/renderer/lib/lanternview.ts
+~ src/renderer/workspace.html
+~ test/e2e/app/index.html
+~ test/e2e/app/main.cjs
+~ test/e2e/app/renderer.ts
+~ test/fixtures/graph/pr-review-demo.ts
+~ test/lantern-delegate-delivery-flow.test.ts
+~ test/lantern-pr-parity.test.ts
+#order skills/lantern-setup/scripts/prguide.mjs
+#order skills/lantern-setup/scripts/prs.mjs
+#order skills/lantern-setup/references/format.md
+#order test/lantern-pr-guide.test.ts
+#order skills/lantern-sync/scripts/sync.mjs
+#order skills/lantern-sync/SKILL.md
+#order test/lantern-sync-guide.test.ts
+#order src/main/lantern-types.ts
+#order src/main/lantern-guide-parse.ts
+#order src/main/lantern-pr-parse.ts
+#order src/main/lantern-prs.ts
+#order src/main/lantern-local.ts
+#order test/helpers/lantern-guide-cases.ts
+#order test/lantern-pr-parity.test.ts
+#order skills/lantern-delegate/protocol.md
+#order skills/lantern-delegate/scripts/permissions.mjs
+#order skills/lantern-delegate/SKILL.md
+#order skills/lantern-delegate-complex/SKILL.md
+#order scripts/skill-test/fake-agent.mjs
+#order scripts/skill-test/run.mjs
+#order scripts/e2e-delegate/checks.mjs
+#order scripts/e2e-delegate/verify.mjs
+#order test/lantern-delegate-delivery-flow.test.ts
+#order scripts/e2e-delegate/README.md
+#order src/renderer/lib/lanternguide.ts
+#order src/renderer/lib/lanternguideview.ts
+#order src/renderer/lib/lanternview.ts
+#order src/renderer/lib/lanternmacroview.ts
+#order src/renderer/lib/lanternprpanel.ts
+#order src/renderer/lantern-guide.css
+#order src/renderer/lantern.css
+#order src/renderer/workspace.html
+#order scripts/esbuild.mjs
+#order test/fixtures/graph/pr-review-demo.ts
+#order test/e2e/app/renderer.ts
+#order test/e2e/app/main.cjs
+#order test/e2e/app/index.html
+#order scripts/pr-review-demo.mjs
+#order test/e2e/pr-review-guide.spec.ts
+#order test/lantern-guide-view.test.ts
+#order package.json
+#reason skills/lantern-setup/scripts/prguide.mjs The guide needs one place that owns its limits, its record grammar and the check that every hunk belongs to one step.
+#reason src/main/lantern-guide-parse.ts Gives the app the same strict reading of guide lines as the skill, so a guide means one thing everywhere
+#reason src/renderer/lantern-guide.css Gives the Guide view its quiet look from existing theme variables.
+#reason src/renderer/lib/lanternguide.ts Keeps the switch rules and the choice of rows a step owns apart from the DOM.
+#reason src/renderer/lib/lanternguideview.ts Draws the guide as a short tour with its own state for the session.
+#reason test/e2e/pr-review-guide.spec.ts Proves the guide opens, steps, folds, toggles and hands back to Files.
+#reason test/helpers/lantern-guide-cases.ts Holds the guide cases and their expected messages so the parity test stays short
+#reason test/lantern-guide-view.test.ts Pins row selection, the switch rules and the view behaviour without a browser.
+#reason test/lantern-pr-guide.test.ts Pins the round trip, each limit and the missed and doubled hunk reports before later items build on them.
+#reason test/lantern-sync-guide.test.ts Pins write, keep, clear, adopt and the red and green coverage cases.
+#reason package.json Lists the new guide spec in the pull request review e2e script.
+#reason scripts/e2e-delegate/README.md The check table must name the guide flag and the panel guide check
+#reason scripts/e2e-delegate/checks.mjs The e2e checks must fail a delegate run whose record has no guide
+#reason scripts/e2e-delegate/verify.mjs The branch verify in the e2e run must pass --require-guide like the delegate does
+#reason scripts/esbuild.mjs Copies the new Guide stylesheet into the build.
+#reason scripts/pr-review-demo.mjs Opens the demo on its guide so the tour can be looked at by hand.
+#reason scripts/skill-test/fake-agent.mjs The fake delegate needs a valid guide, and a mode without one, to test the gate offline
+#reason scripts/skill-test/run.mjs The no-guide fake must be selectable from the command line and documented in usage
+#reason skills/lantern-delegate-complex/SKILL.md Keeps its description of what the heavy delegate records in step with the protocol
+#reason skills/lantern-delegate/SKILL.md The orchestrator gate must require the guide and know which guides go back
+#reason skills/lantern-delegate/protocol.md Delegates must write and record a guide so no PR ships without a reader's path through it
+#reason skills/lantern-delegate/scripts/permissions.mjs An unattended delegate needs permission to edit its guide file
+#reason skills/lantern-setup/references/format.md The guide section named the sync wiring as a later item; it now says what verify checks.
+#reason skills/lantern-setup/scripts/prs.mjs A malformed guide has to fail a record the way a malformed flow does, so the reader never shows a broken guide.
+#reason skills/lantern-sync/SKILL.md The guide scratch path is now named, so the old note that it is open is wrong
+#reason skills/lantern-sync/scripts/sync.mjs Gates a delegate's guide like its flow: written by pr, hunk coverage checked from git by verify.
+#reason src/main/lantern-local.ts Carries the guide of a local branch record onto its comparison like the flow
+#reason src/main/lantern-pr-parse.ts Collects the guide lines of a record and keeps a bad guide from breaking the rest of it
+#reason src/main/lantern-prs.ts Carries the parsed guide from a PR record onto the PR the map shows
+#reason src/main/lantern-types.ts Defines the guide shape the review screen will read, with guideError beside it like flowError
+#reason src/renderer/lantern.css Lets the Guide reuse the review diff colours instead of copying them.
+#reason src/renderer/lib/lanternmacroview.ts Adds the Guide button to the view strip next to Files, Macro and Flow.
+#reason src/renderer/lib/lanternprpanel.ts Lets the guide keep the header card in the left pane without the file list.
+#reason src/renderer/lib/lanternview.ts Hosts the Guide like Flow and opens on it when the record has one.
+#reason src/renderer/workspace.html Loads the Guide stylesheet in the app.
+#reason test/e2e/app/index.html Loads the Guide stylesheet in the harness.
+#reason test/e2e/app/main.cjs Passes the guide switch from the environment to the harness page.
+#reason test/e2e/app/renderer.ts Attaches the demo guide only on request so other specs keep opening in Files.
+#reason test/fixtures/graph/pr-review-demo.ts Gives the demo pull request a realistic five-step guide.
+#reason test/lantern-delegate-delivery-flow.test.ts Proves the offline run is red without a guide, and that verify carries the new flag
+#reason test/lantern-pr-parity.test.ts Fails when the app and the skill read a guide differently or the mirrored limits drift
+#story Reading a pull request as a guide
+#step actor A reviewer
+#step action opens a pull request in Lantern
+#step subject the review screen
+#file src/renderer/lib/lanternguideview.ts
+#below interaction reads it step by step with J and K and ticks steps off
+#file src/renderer/lib/lanternguide.ts
+#below consequence a list of files in review order => a few steps in reading order with only their own hunks
+#story A delegate hands over its pull request
+#step actor A Lantern delegate
+#step action records its pull request
+#step subject the guide for that change
+#file skills/lantern-delegate/protocol.md
+#file skills/lantern-sync/scripts/sync.mjs
+#below consequence a record with reasons, order and flow => the same record cannot pass the gate without a guide covering every hunk
+#guide A pull request reads as ordered steps with their own hunks, and every Lantern delegate must write that guide.
+#risk medium Changes the delegate gate every run passes and adds a new mode to the review screen.
+#gstep careful The guide grammar and its checks
+#gwhy The record format every other step builds on: the guide lines, their limits and the hunk coverage check.
+#ghunk skills/lantern-setup/scripts/prguide.mjs
+#ghunk test/lantern-pr-guide.test.ts
+#ghunk skills/lantern-setup/references/format.md
+#ghunk skills/lantern-setup/scripts/prs.mjs
+#gpseudo validate guide JSON, write #guide lines, parse them back
+#gpseudo coverage: every git hunk in exactly one step
+#gstep careful Writing and gating the guide
+#gwhy sync.mjs writes the guide into the record and verify --require-guide fails on a missed or doubled hunk.
+#ghunk test/lantern-sync-guide.test.ts
+#ghunk skills/lantern-sync/SKILL.md
+#ghunk skills/lantern-sync/scripts/sync.mjs
+#gpseudo pr --guide-file -> guideFromJson -> record lines
+#gpseudo verify --require-guide -> git diff -U0 hunks -> guideCoverage
+#gstep skim The app reads the guide
+#gwhy The main process parses the same lines into LanternPr.guide, pinned to the skill by the parity test.
+#ghunk src/main/lantern-guide-parse.ts
+#ghunk test/helpers/lantern-guide-cases.ts
+#ghunk src/main/lantern-local.ts
+#ghunk src/main/lantern-pr-parse.ts
+#ghunk src/main/lantern-prs.ts
+#ghunk src/main/lantern-types.ts
+#ghunk test/lantern-pr-parity.test.ts
+#gstep skim Delegates must write it
+#gwhy The delegate protocol, the orchestrator gate and the e2e checks now require a guide.
+#ghunk scripts/e2e-delegate/README.md
+#ghunk scripts/e2e-delegate/checks.mjs
+#ghunk scripts/e2e-delegate/verify.mjs
+#ghunk scripts/skill-test/fake-agent.mjs
+#ghunk scripts/skill-test/run.mjs
+#ghunk skills/lantern-delegate-complex/SKILL.md
+#ghunk skills/lantern-delegate/SKILL.md
+#ghunk skills/lantern-delegate/protocol.md
+#ghunk skills/lantern-delegate/scripts/permissions.mjs
+#ghunk test/lantern-delegate-delivery-flow.test.ts
+#gstep careful The Guide view
+#gwhy The review screen opens on the guide: step rail, J and K, skim steps folded, pseudocode on demand.
+#ghunk src/renderer/lantern-guide.css
+#ghunk src/renderer/lib/lanternguide.ts
+#ghunk src/renderer/lib/lanternguideview.ts
+#ghunk test/e2e/pr-review-guide.spec.ts
+#ghunk test/lantern-guide-view.test.ts
+#ghunk package.json
+#ghunk scripts/esbuild.mjs
+#ghunk scripts/pr-review-demo.mjs
+#ghunk src/renderer/lantern.css
+#ghunk src/renderer/lib/lanternmacroview.ts
+#ghunk src/renderer/lib/lanternprpanel.ts
+#ghunk src/renderer/lib/lanternview.ts
+#ghunk src/renderer/workspace.html
+#ghunk test/e2e/app/index.html
+#ghunk test/e2e/app/main.cjs
+#ghunk test/e2e/app/renderer.ts
+#ghunk test/fixtures/graph/pr-review-demo.ts
+#gpseudo guide on -> hide file pane, rail in left pane
+#gpseudo J/K -> current step ring + rail tint
