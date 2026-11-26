@@ -21,7 +21,7 @@
   "lint-skill-reads.mjs gotcha": "informational only: the orchestrator reports its count and never blocks the handover on it",
   "lint-transcript.mjs": "flags chained, expanding or otherwise guard-unsafe Bash commands recorded in a delegate transcript, and a run of the configured skill linker without --skill",
   "lint-transcript.mjs gotcha": "informational only: the orchestrator reports its count and never blocks the handover on it",
-  "permissions.mjs": "lists the git, skills-link, script and skill linker (list and link) permissions a delegate needs, plus the Edit and Write rules for every file the skills tell an agent to write (EDIT_TARGETS), and prints them as a settings.json snippet; also finds settings files that cannot be parsed or have the wrong permissions shape",
+  "permissions.mjs": "lists the git, skills-link, script and skill linker (list and link) permissions a delegate needs, plus the Edit and Write rules for every file the skills tell an agent to write (EDIT_TARGETS, the guide file included), and prints them as a settings.json snippet; also finds settings files that cannot be parsed or have the wrong permissions shape",
   "permissions.mjs gotcha": "deny patterns are matched by the harness, not enforced here; protocol.md still forbids force pushes",
   "pr-append-cost.mjs": "appends the run cost table to an open PR on either host through the host skill's description block command",
   "pr-append-cost.mjs gotcha": "reads no token: the host skill resolves the account from the environment or the running Lantern",

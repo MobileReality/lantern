@@ -51,7 +51,7 @@ Torn between heavy and not: it is not, and Sonnet takes it.
 | reviewer | `reviewer-complex` for a Fable delegate | Fable | the same |
 
 The delegate does the whole run, including the Lantern work (`sync.mjs finish`, the re-mapping, features and
-areas, the PR record with reasons, order and flow, `sync.mjs verify`), because the heavy delegate already
+areas, the PR record with reasons, order, flow and guide, `sync.mjs verify --require-guide`), because the heavy delegate already
 holds the context and the map's model policy accepts it (`$L/scripts/model.mjs floor`: Sonnet, Opus
 and Fable of any version; Sonnet 5.5, Opus 5.5 and Fable 5.1 or newer are recommended and a lower version
 only warns; Haiku is refused). Nothing is handed to a third agent. The

@@ -693,7 +693,7 @@ Report and the PR give it; the worktree's own branch is `worktree-agent-<id>` an
 the pushed one):
 
 ```bash
-node $S/scripts/sync.mjs verify --base <target> --require-pr --require-reason --require-order --require-flow \
+node $S/scripts/sync.mjs verify --base <target> --require-pr --require-reason --require-order --require-flow --require-guide \
   --branch <type>/<slug> --root .claude/worktrees/agent-<id>
 ```
 
@@ -709,6 +709,12 @@ It should say who does what to whom, what that party can now do and what changed
 plain words; a flow that narrates the diff or names files and functions in its texts goes back. Its steps' `files`
 (`#file` lines) should point at the changed files that really implement them; a link that doesn't, or a
 `verify` warning that no step has any, goes back too.
+`--require-guide` does the same for the guide (`#guide`, `#risk` and `#gstep` lines, the Guide view of the Lantern app; it also fails a hunk in no step or in two): read it too.
+A good guide has one to eight steps in reading order, foundations first (types and core logic, then callers, UI, tests),
+each step a meaning ("the new rule", "the screen that uses it"), a `why` of at most two sentences that says why the
+step matters and not what the lines are, `careful` only where a reader must think (logic, money, security, contracts)
+and the rest `skim`. A guide that is one step holding every file of a change of several files, steps in alphabetical or file order, a `why` that
+narrates the diff, or `careful` on everything goes back, as does pseudocode on a skim step or one that only repeats the code.
 
 - **Green**: carry on with step 9. It proves the map is true for the change and the record is in the
   branch (a map-only PR has a record with no file lines, and is green too). Under `Delivery: push` and
@@ -908,7 +914,7 @@ target branch's version and re-places only its own features.
   the same goal.
 - **`.lantern/` is written only through `lantern-sync`'s scripts and the re-mapping they list**, staged
   by name. You never edit a delegate's map, never refresh a drifted one silently, and a missing map
-  never blocks a dispatch. A delegate with a map reports only after `verify --require-pr --require-reason --require-order --require-flow` exits 0
+  never blocks a dispatch. A delegate with a map reports only after `verify --require-pr --require-reason --require-order --require-flow --require-guide` exits 0
   (in every delivery and in local mode: the record is a PR record or, with no host PR, the local one); a red `verify` is not done and goes back to the delegate with the exact output.
   `sync.mjs carry` is the one other `lantern-sync` command you run: it copies a local record out of a worktree.
 - **A delegate never writes to the project's primitives map or decision record** unless the brief

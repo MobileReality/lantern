@@ -29,15 +29,15 @@ name; every other delegate skips that section.
   local branch: reset to it without `fetch`, push nothing.
 
 **A record with no host PR** (`push` and `local`): step 10's `sync.mjs pr` is called without `<id>`, `--url`
-and `--title`, and with every other argument as for a PR (`--base`, `--branch`, the reason, order, flow and
+and `--title`, and with every other argument as for a PR (`--base`, `--branch`, the reason, order, flow, guide and
 describe files, `--plan`/`--item`). It writes `.lantern/local/<branch, with / as __>.branch` in your
-worktree: the same reasons, review order, flow, description and plan ticks as a PR record. That folder is
+worktree: the same reasons, review order, flow, guide, description and plan ticks as a PR record. That folder is
 ignored by git, so the record is never committed and step 11 and 12 do not exist for it. `sync.mjs pr`
 copies it into the project's own `.lantern/local/` itself, so the Lantern app shows the branch with the cards
 a PR shows the moment you have written it, with nobody to run anything; and `verify` is red while that copy is
 missing or differs; re-run step 10's `pr` with the same arguments to resolve that red line before you report. Opening a real PR for the branch later adopts it. Write it once the run
 folder is removed and the branch has its final name, so `#branch` and `#head` are final. Step 13 is
-the same `verify` with the same four `--require-*` flags.
+the same `verify` with the same five `--require-*` flags.
 
 ## Local mode
 
@@ -376,7 +376,7 @@ the map records no model) and `## Procedure` step 3 first.
 8. Once green: remove the run folder and commit, then push
    `git push origin HEAD:refs/heads/<type>/<slug>`. Under `Delivery: push` this is the last remote act; under `local` there is no push but the branch rename (see "Delivery").
 9. Open the PR with `pr-create.mjs` as above (`Delivery: pr` only). Read the id off the URL it prints.
-10. `node <Skills>/lantern-sync/scripts/sync.mjs pr <id> --url <PR url> --title "<PR title>" --base <target> --branch <type>/<slug> --reason-file .ai/tmp/reason.json --order-file .ai/tmp/order.json --flow-file .ai/tmp/flow.json --describe-file .ai/tmp/describe.json`.
+10. `node <Skills>/lantern-sync/scripts/sync.mjs pr <id> --url <PR url> --title "<PR title>" --base <target> --branch <type>/<slug> --reason-file .ai/tmp/reason.json --order-file .ai/tmp/order.json --flow-file .ai/tmp/flow.json --guide-file .ai/tmp/guide.json --describe-file .ai/tmp/describe.json`.
     **With no host PR** (`push`, `local`) the same call without `<id>`, `--url` and `--title`: it writes the local record (see "Delivery"). Everything below about this step holds for both.
     `--branch` is required: your local branch is `worktree-agent-<id>`, the record names the pushed
     one. Exit 1 (it refused): if the message says "N of M changed file(s) have no reason", add the listed files to `.ai/tmp/reason.json` and run `pr` again; for any other refusal (wrong branch, second record) stop and report its message verbatim; the branch is already pushed.
@@ -385,8 +385,8 @@ the map records no model) and `## Procedure` step 3 first.
     `pr` refuses a plan or item that does not exist (exit 1): stop and report its message verbatim. Never
     edit the plan file; the PR record is the tick. Re-runs keep the ticks, and every re-run of step 10 carries the same flags.
     **A map-only task** (a seed or a refresh: nothing changed outside `.lantern/`) is a normal PR:
-    `pr` records it with no file lines (so no reasons, order or flow to write), and `verify
-    --require-pr --require-reason --require-order --require-flow` is green on it. Do not report it red.
+    `pr` records it with no file lines (so no reasons, order, flow or guide to write), and `verify
+    --require-pr --require-reason --require-order --require-flow --require-guide` is green on it (it has no hunks, so no guide is needed or written). Do not report it red.
     **Write the reasons first, at this step:** one entry per changed file, from your own diff
     (`git diff --name-only <target>...HEAD -- . ':!.lantern'` lists them), in
     `.ai/tmp/reason.json` as `{"<path>": "<reason>"}`. A reason follows
@@ -411,6 +411,35 @@ the map records no model) and `## Procedure` step 3 first.
     The reviewer opens them from the step. Attach them to every step you honestly can and invent no
     link: a step no changed file stands behind gets none (the texts stay file-free; only `files` names
     them). `verify` warns when no step has any.
+    **Write the guide too**, the diff read as steps instead of files: `.ai/tmp/guide.json`, an object
+    `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks", "pseudo"}]}`.
+    `verify --require-guide` is red unless every hunk of `git diff -U0 <target>...HEAD` (outside `.lantern/`)
+    is in exactly one step, so write it from that diff. What makes it good:
+    - 1 to 8 steps, in reading order, foundations first: types and the core rule, then the code that
+      uses it, then wiring and UI, then tests, then docs and generated files.
+    - A step is a meaning ("a todo can be renamed"), never a file: one file may be split across steps,
+      and one step may gather hunks of several files.
+    - `why` is at most two sentences (240 characters): why a reader needs this step, not what the lines do.
+    - `careful: true` only where a reader must think: logic, money, security, contracts. Trivial glue,
+      renames, config and tests that mirror the code are `careful: false` (skim).
+    - `pseudo` (one to eight short lines) only on a careful step, and only when it says more than the
+      code does: the rule in words, the order of effects. Left out otherwise.
+    - `hunks`: a changed path (the whole file, the only way to cover a rename or a binary file) or
+      `{"path", "side": "new", "start", "end"}` for a range of new lines (`"side": "old"` for a pure deletion).
+      A hunk you list twice, or one that matches nothing, fails `verify`. `risk.level` is `low`, `medium` or `high`.
+    Example:
+    ```json
+    {"summary": "A todo can be renamed, and the list shows the new text at once.",
+     "risk": {"level": "low", "why": "One new pure function; no stored data changes."},
+     "steps": [
+       {"title": "The rename rule", "why": "Everything else calls this. It must leave the other todos untouched.", "careful": true,
+        "hunks": [{"path": "src/todos.ts", "side": "new", "start": 40, "end": 47}],
+        "pseudo": ["copy the list", "replace only the text of the todo at the index"]},
+       {"title": "Rename in the list and its test", "why": "Wires the rule to the input and proves it.", "careful": false,
+        "hunks": ["src/list.ts", "test/todos.test.ts"]}
+     ]}
+    ```
+    After any new commit, update guide.json so every hunk of the new diff is in one step (line ranges move), and re-run with it.
     **Write the description too**, so the Lantern card shows it without the host (a branch with no PR has none):
     `.ai/tmp/describe.json`, `{"what": [...], "before": [...], "after": [...], "verified": [...]}`,
     filled from what you write in the PR body (What this changes, Before / after, Verified with), in
@@ -420,7 +449,7 @@ the map records no model) and `## Procedure` step 3 first.
 11. `git add .lantern/prs/<id>.pr`, commit `chore: record pull request #<id> in the Lantern map`.
     Only that file in it. (`pr` only: the local record is never committed.)
 12. **Push again, same branch, plain:** `git push origin HEAD:refs/heads/<type>/<slug>`. Never `--force`. (`pr` only.)
-13. `node <Skills>/lantern-sync/scripts/sync.mjs verify --base <target> --require-pr --require-reason --require-order --require-flow --branch <type>/<slug>`
+13. `node <Skills>/lantern-sync/scripts/sync.mjs verify --base <target> --require-pr --require-reason --require-order --require-flow --require-guide --branch <type>/<slug>`
     must be green (exit 0) before you report. Red (a file without a reason included): fix what it
     prints, then **Re-entry**.
 

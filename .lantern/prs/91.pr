@@ -1,0 +1,89 @@
+lantern-pr 1
+# 91
+#title feat: require a guide in every delegate PR
+#url https://github.com/MobileReality/lantern/pull/91
+#branch feat/require-guide-in-delegates
+#base feat/guided-review
+#opened 2026-11-26
+#head 753ab0bd762515eeae6284bd884fe058fe746773
+#describe what Delegates write .ai/tmp/guide.json and record it; verify --require-guide joins the delegate gate, the orchestrator gate and the e2e delegate checks.
+#describe before A delegate PR could ship without a guide.
+#describe after The protocol teaches a good guide, and the gates fail a record without one.
+#describe verified Offline delegate run green with a guide and red with the no-guide fake; pnpm test and typecheck green (one load-timeout in install-skills passes alone).
+#plan guided-pr-review s3.1
+~ scripts/e2e-delegate/README.md
+~ scripts/e2e-delegate/checks.mjs
+~ scripts/e2e-delegate/verify.mjs
+~ scripts/skill-test/fake-agent.mjs
+~ scripts/skill-test/run.mjs
+~ skills/lantern-delegate-complex/SKILL.md
+~ skills/lantern-delegate/SKILL.md
+~ skills/lantern-delegate/protocol.md
+~ skills/lantern-delegate/scripts/permissions.mjs
+~ skills/lantern-sync/SKILL.md
+~ test/lantern-delegate-delivery-flow.test.ts
+#order skills/lantern-delegate/protocol.md
+#order skills/lantern-delegate/scripts/permissions.mjs
+#order skills/lantern-delegate/SKILL.md
+#order skills/lantern-delegate-complex/SKILL.md
+#order skills/lantern-sync/SKILL.md
+#order scripts/skill-test/fake-agent.mjs
+#order scripts/skill-test/run.mjs
+#order scripts/e2e-delegate/checks.mjs
+#order scripts/e2e-delegate/verify.mjs
+#order test/lantern-delegate-delivery-flow.test.ts
+#order scripts/e2e-delegate/README.md
+#reason scripts/e2e-delegate/README.md The check table must name the guide flag and the panel guide check
+#reason scripts/e2e-delegate/checks.mjs The e2e checks must fail a delegate run whose record has no guide
+#reason scripts/e2e-delegate/verify.mjs The branch verify in the e2e run must pass --require-guide like the delegate does
+#reason scripts/skill-test/fake-agent.mjs The fake delegate needs a valid guide, and a mode without one, to test the gate offline
+#reason scripts/skill-test/run.mjs The no-guide fake must be selectable from the command line and documented in usage
+#reason skills/lantern-delegate-complex/SKILL.md Keeps its description of what the heavy delegate records in step with the protocol
+#reason skills/lantern-delegate/SKILL.md The orchestrator gate must require the guide and know which guides go back
+#reason skills/lantern-delegate/protocol.md Delegates must write and record a guide so no PR ships without a reader's path through it
+#reason skills/lantern-delegate/scripts/permissions.mjs An unattended delegate needs permission to edit its guide file
+#reason skills/lantern-sync/SKILL.md The guide scratch path is now named, so the old note that it is open is wrong
+#reason test/lantern-delegate-delivery-flow.test.ts Proves the offline run is red without a guide, and that verify carries the new flag
+#story A delegate hands over its pull request
+#step actor A delegate
+#file skills/lantern-delegate/protocol.md
+#step action writes a guide of the change
+#step subject its pull request record
+#file skills/lantern-delegate/scripts/permissions.mjs
+#below interaction A reviewer reads the change as steps
+#below consequence a record could ship with no guide => a record without a guide fails the gate
+#story The orchestrator checks a handover
+#step actor The orchestrator
+#file skills/lantern-delegate/SKILL.md
+#step action runs the gate with the guide flag
+#step subject the delegate's branch
+#file scripts/e2e-delegate/verify.mjs
+#file scripts/e2e-delegate/checks.mjs
+#file test/lantern-delegate-delivery-flow.test.ts
+#below interaction Sends a weak guide back
+#below consequence only the flow was read => the guide is read too
+#guide Every delegate now writes a guide, and the delegate and orchestrator gates and the e2e checks require it.
+#risk low Skill text, gate flags and a fake agent; no app code or record grammar changes.
+#gstep careful What a delegate must write
+#gwhy The protocol is the contract the delegates follow: it adds the guide file, the call flags and the rules for a good guide. The worked example must stay valid for the guide parser.
+#ghunk skills/lantern-delegate/protocol.md
+#ghunk skills/lantern-delegate/scripts/permissions.mjs
+#gpseudo delegate writes .ai/tmp/guide.json from the diff hunks
+#gpseudo sync.mjs pr records it, verify --require-guide gates it
+#gstep skim How the orchestrator gates and reads it
+#gwhy The orchestrator's map gate and hard rule gain the flag, and it learns which guides go back to the delegate.
+#ghunk skills/lantern-delegate/SKILL.md
+#ghunk skills/lantern-delegate-complex/SKILL.md
+#ghunk skills/lantern-sync/SKILL.md
+#gstep skim The offline fake agent writes a guide
+#gwhy The fake delegate must produce a valid guide so the offline skill tests stay green, with a no-guide mode to prove the red case.
+#ghunk scripts/skill-test/fake-agent.mjs
+#ghunk scripts/skill-test/run.mjs
+#gstep careful The e2e checks demand the guide
+#gwhy sync-verify-green passes --require-guide and panel-sees-record fails when the app reader shows no guide. A test proves both the green and the red run.
+#ghunk scripts/e2e-delegate/checks.mjs
+#ghunk scripts/e2e-delegate/verify.mjs
+#ghunk scripts/e2e-delegate/README.md
+#ghunk test/lantern-delegate-delivery-flow.test.ts
+#gpseudo verify runs with --require-guide on the branch clone
+#gpseudo panel check fails when pr.guide has no steps

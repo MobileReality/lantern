@@ -82,9 +82,9 @@ Hard checks fail the run; informational ones are reported as `WARN`.
 | `map-build-session` | the map session ended with a successful result line |
 | `map-pushed` | `.lantern/map` is on `origin/main` |
 | `one-open-pr` | the mock holds exactly one open PR, feature branch into `main` |
-| `sync-verify-green` | `sync.mjs verify --require-pr --require-why --require-order --require-flow` is GREEN on the pushed branch (a fresh clone of it) |
-| `no-pr`, `branch-pushed`, `nothing-pushed` | under delivery `push` or `local` the mock holds no PR; `push` leaves the branch on the remote, `local` leaves the remote with `main` only (and `sync-verify-green` runs with the same four `--require-*` flags on the branch's local record, `sync.mjs carry`-ed into the clone) |
-| `panel-sees-record` | under delivery `push` or `local`, `localPrs` of `src/main/lantern-local.ts` shows the branch against `main` with a reason for every file, the review order, the flow and the description |
+| `sync-verify-green` | `sync.mjs verify --require-pr --require-reason --require-order --require-flow --require-guide` is GREEN on the pushed branch (a fresh clone of it) |
+| `no-pr`, `branch-pushed`, `nothing-pushed` | under delivery `push` or `local` the mock holds no PR; `push` leaves the branch on the remote, `local` leaves the remote with `main` only (and `sync-verify-green` runs with the same five `--require-*` flags on the branch's local record, `sync.mjs carry`-ed into the clone) |
+| `panel-sees-record` | under delivery `push` or `local`, `localPrs` of `src/main/lantern-local.ts` shows the branch against `main` with a reason for every file, the review order, the flow, the guide and the description |
 | `validate-settled` | `validate.mjs --settled` prints OK on that clone |
 | `panel-sees-pr` | `src/main/lantern-prs.ts` (bundled with esbuild) loads the PR as `open`, lists every changed file, with no warnings |
 | `skills-dir-clean` | the bundled skills (among them `lantern-commit`, `lantern-no-comments` and `lantern-local-loop`) are real folders; the rest are symlinks to generic conventions only (no `delegate`, `wayfinder`, ...; a user's own linked `commit`, `no-comments` or `local-loop` stays allowed); the project's own extras are the one allowed exception and must be present |
