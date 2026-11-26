@@ -383,6 +383,7 @@ function startServerProcess(bin: string) {
     tail.push(line);
     stderrReport.push(line);
   });
+  child.once('close', () => stderrReport.flush());
   child.on('error', (error) => {
     stderrReport.flush();
     if (proc !== child) return;
