@@ -1644,6 +1644,13 @@ test/lantern-sync-describe.test.ts . test 0f26c391911f
   = src/main/lantern-pr-parse.ts
   = test/helpers/git-repo.ts
 
+test/lantern-sync-guide.test.ts . test 12fa5a4e1cca
+#feature pull-requests
+  = skills/lantern-setup/scripts/prguide.mjs
+  = skills/lantern-sync/scripts/sync.mjs
+  = test/helpers/git-repo.ts
+  = test/helpers/lantern-plan-world.ts
+
 test/lantern-sync-resolution.test.ts . test f1a9391762fb
 #feature map-sync
   = skills/lantern-sync/scripts/sync.mjs
