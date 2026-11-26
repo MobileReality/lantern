@@ -11,7 +11,7 @@ src/main/diagnostics/editor.ts . pure 981df63dfb1e
   < src/shared/diagnostics.ts#DiagnosticInput
   < src/shared/diagnostics.ts#clip
   = src/main/diagnostics/throttle.ts#createThrottle
-src/main/diagnostics/editor-server.ts . pure ab7c5729fd59
+src/main/diagnostics/editor-server.ts . pure 805261cba036
 #feature app-diagnostics
   < src/main/serveweb-parse.ts#ServerPage
   < src/shared/diagnostics.ts#DiagnosticInput
