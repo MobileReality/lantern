@@ -311,8 +311,9 @@ test/diagnostics-editor.test.ts . test d90ff43e5be3
   = src/main/diagnostics/throttle.ts#createThrottle
   = test/helpers/diagnostics-world.ts
 
-test/diagnostics-github.test.ts . test 8a9b68516782
+test/diagnostics-github.test.ts . test d12d918a7e6b
 #feature app-diagnostics
+  = src/main/diagnostics/github.ts#composeIssue
   = src/main/diagnostics/github.ts#planIssue
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
   = src/main/diagnostics/report.ts#formatReport

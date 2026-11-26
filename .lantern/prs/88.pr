@@ -1,0 +1,26 @@
+lantern-pr 1
+# 88
+#title Title a diagnostics issue after its most serious entry
+#url https://github.com/MobileReality/lantern/pull/88
+#branch fix/title-issue-by-severity
+#base fix/group-server-stderr-burst
+#opened 2026-11-26
+#head 9b77e2bea32f06b493dc40ef95d526002bb93414
+#describe what A diagnostics GitHub issue is titled after its most serious entry, the latest among equals.
+#describe before The title came from the latest entry, so a report with a warning could be titled Lantern started.
+#describe after The same report is titled after the warning about the unexpected close. Crash titles are unchanged.
+#describe verified pnpm test and pnpm run typecheck are green; the new title test fails on the base.
+~ src/main/diagnostics/github.ts
+~ test/diagnostics-github.test.ts
+#order src/main/diagnostics/github.ts
+#order test/diagnostics-github.test.ts
+#reason src/main/diagnostics/github.ts A report with a warning was titled after the later info entry; the title now follows the most serious entry.
+#reason test/diagnostics-github.test.ts Proves a warning-bearing report gets a warning title, an error beats a later warning, and crash titles hold.
+#story Reporting a problem from Diagnostics
+#step actor A Lantern user
+#step action sends a GitHub issue from the Diagnostics view
+#file src/main/diagnostics/github.ts
+#step subject a report holding warnings and info entries
+#file test/diagnostics-github.test.ts
+#below interaction Sees an issue titled after the real problem
+#below consequence Titled after the latest entry, e.g. Lantern started => Titled after the most serious entry, latest among equals
