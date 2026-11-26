@@ -186,6 +186,7 @@ export function guideFromJson(value, listed = null) {
     if (typeof value.summary !== 'string') errors.push('the guide needs a string "summary"');
     else lines.push({ tag: 'guide', raw: fold(value.summary), where });
     if (!isObject(value.risk) || typeof value.risk.level !== 'string' || typeof value.risk.why !== 'string') errors.push('the guide needs "risk": {"level": "low|medium|high", "why": "<one line>"}');
+    else if (!GUIDE_RISK_LEVELS.includes(value.risk.level)) errors.push(`the risk level must be one of ${GUIDE_RISK_LEVELS.join(', ')}, got "${value.risk.level}"`);
     else lines.push({ tag: 'risk', raw: `${value.risk.level} ${fold(value.risk.why)}`.trim(), where });
     if (!Array.isArray(value.steps)) errors.push('the guide needs a "steps" array');
     else

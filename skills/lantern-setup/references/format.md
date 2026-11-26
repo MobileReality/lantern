@@ -591,20 +591,20 @@ lantern-pr 1
   `#guide` and `#risk` appear once each and open the guide; each `#gstep` starts a step and owns
   the `#gwhy`, `#ghunk` and `#gpseudo` lines under it. A step is `careful` (read closely) or `skim`
   (collapsed by default), has exactly one `#gwhy` and at least one `#ghunk`. A `#ghunk` names the
-  hunks the step owns: `<path>` alone is the whole file (the only form that covers a deleted or
-  renamed file, a binary file and a mode change); `<path> +<from>-<to>` is a range of new-file
+  hunks the step owns: `<path>` alone is the whole file (the only form that covers a change with no
+  lines: a pure rename, a binary file, a mode change; a deleted file is also covered by its old range); `<path> +<from>-<to>` is a range of new-file
   lines and `<path> -<from>-<to>` a range of old-file lines (a deletion-only hunk has no new
   lines, so it is named by its old ones); a single line is `+<n>` or `-<n>`. The path is encoded as
   in a file line and must be a file line of the same record; a file may be split across steps by
   ranges. A range covers a hunk of `git diff -U0` it overlaps on the named side; every hunk should
-  belong to exactly one step (`prguide.mjs`'s `guideCoverage` reports hunks in no step and hunks
-  in more than one). Limits, all counted in characters and with no control characters or tabs
+  belong to exactly one step (`prguide.mjs`'s `guideCoverage` reports hunks in no step, hunks
+  in more than one, and references that match no hunk; pseudocode indentation is not kept). Limits, all counted in characters and with no control characters or tabs
   (the constants of `prguide.mjs`): summary 1 to 160, risk why 1 to 160, title 1 to 60, why 1 to
   240 and at most 2 sentences, pseudocode line 1 to 100 and at most 8 per step, at most 8 steps and
   60 `#ghunk` lines per step, no hunk twice on a step. `lantern-sync` reads the guide from a JSON
   `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks", "pseudo"}]}`
   (a hunk is a path string, or `{"path", "side": "old"|"new", "start", "end"}`) through
-  `guideFromJson` and writes it with `guideRecordLines`. Like `#reason`, the lines are unknown `#`
+  `guideFromJson` and writes it with `guideRecordLines` (the `sync.mjs` wiring is a later item). Like `#reason`, the lines are unknown `#`
   lines to a reader that predates them, so the format stays `lantern-pr 1`. `prs.mjs` errors on
   a guide line before the `#gstep` it belongs to, a missing or repeated `#guide` or `#risk`, an
   unknown level or mode, a step with no `#gwhy` or `#ghunk`, a `#gpseudo` on a skim step, a
