@@ -43,7 +43,7 @@ try {
   if (!interrupted) {
     child = spawn(electron, [path.join(appDir, 'main.cjs')], {
       stdio: 'inherit',
-      env: { ...process.env, ELECTRON_RUN_AS_NODE: '', LANTERN_GRAPH_USER_DATA: userData, LANTERN_GRAPH_FIXTURE: 'pr-review', LANTERN_GRAPH_FLOW: 'rich' },
+      env: { ...process.env, ELECTRON_RUN_AS_NODE: '', LANTERN_GRAPH_USER_DATA: userData, LANTERN_GRAPH_FIXTURE: 'pr-review', LANTERN_GRAPH_FLOW: 'rich', LANTERN_GRAPH_GUIDE: 'demo' },
     });
     const code = await new Promise((resolve, reject) => {
       child.once('error', reject);

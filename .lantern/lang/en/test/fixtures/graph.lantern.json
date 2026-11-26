@@ -5,7 +5,7 @@
     "macro-sized-demo.ts": "Builds a harness map with a pull request and its Macro payload for a chosen number of areas and features, so the areas map can be tried on a small and a large project",
     "macro-lab-demo.ts": "Turns the generated Orchard Market evaluation project into a harness map with a pull request and its Flow, and its Macro payload with areas",
     "macro-sizes-demo.ts": "Turns the generated small or large evaluation project into a harness map and its Macro payload with areas, with no pull request",
-    "pr-review-demo.ts":"Supplies synthetic pull request maps with their demo flow, a richer one with long texts and five-step rows, and the demo files its steps point at, branch overlays, source files and diffs",
+    "pr-review-demo.ts":"Supplies synthetic pull request maps with their demo flow, a demo guide of five steps, a richer flow with long texts and five-step rows, and the demo files its steps point at, branch overlays, source files and diffs",
     "scenarios.json": "Declares deterministic graph visual and performance scenarios"
   }
 }

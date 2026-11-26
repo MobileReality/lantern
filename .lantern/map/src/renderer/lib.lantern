@@ -109,6 +109,22 @@ src/renderer/lib/lanternflow.ts . component 763d49749950
   < src/main/lantern.ts
   = src/renderer/lib/lanternctx.ts#esc
 
+src/renderer/lib/lanternguide.ts . pure dccf4b193e82
+#feature review-screen
+  < src/main/lantern.ts
+  < src/renderer/lib/codeview.ts#DiffRow
+  = src/renderer/lib/lanternctx.ts#esc
+
+src/renderer/lib/lanternguideview.ts . component f3479ab718b4
+#feature review-screen
+  < src/main/lantern.ts
+  = src/renderer/lib/codeview.ts#parseDiffRows
+  = src/renderer/lib/diffcollapse.ts#planDiff
+  = src/renderer/lib/diffview.ts#renderDiff
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/lanternguide.ts#selectRows
+  < src/renderer/lib/prdiffmodal.ts#ReadDiff
+
 src/renderer/lib/lanternhead.ts . component 284ab3e9663f
 #feature file-graph
   < src/main/lantern.ts#LanternLanguage
@@ -328,12 +344,13 @@ src/renderer/lib/lanternmacrosystemside.ts . component 42ab8036b439
   = src/renderer/lib/lanternmacro.ts#plural
   < src/renderer/lib/lanternmacrosystems.ts#SystemUses
 
-src/renderer/lib/lanternmacroview.ts . state aa3d9b4edd33
+src/renderer/lib/lanternmacroview.ts . state 060dfc00ea3f
 #feature macro-view
   < src/main/lantern-macro-load.ts#MacroLoad
   < src/main/lantern.ts#LanternMap
   = src/renderer/lib/lanternctx.ts#esc
   = src/renderer/lib/lanternflow.ts#flowButtonHtml
+  = src/renderer/lib/lanternguide.ts#guideButtonHtml
   = src/renderer/lib/lanternmacrodrawer.ts#overviewButtonHtml
   = src/renderer/lib/lanternmacrofoundation.ts#foundationNear
   = src/renderer/lib/lanternmacrofoundation.ts#foundationUsesNear
@@ -422,7 +439,7 @@ src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
   < src/renderer/lib/lanternplanfocus.ts#planFilePaths
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lanternprpanel.ts . component b65da7a7b17a
+src/renderer/lib/lanternprpanel.ts . component 2a71ef6d76f7
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml
@@ -483,7 +500,7 @@ src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
 #feature file-graph
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternview.ts . component 4b79cb1ba5fc
+src/renderer/lib/lanternview.ts . component df16c7acde0f
 #feature file-graph
   < src/main/lantern.ts
   < src/main/local-reasons.ts#LocalReasonsResult
@@ -494,6 +511,8 @@ src/renderer/lib/lanternview.ts . component 4b79cb1ba5fc
   < src/renderer/lib/lanternctx.ts
   = src/renderer/lib/lanterndetail.ts
   = src/renderer/lib/lanternflow.ts#flowHtml
+  = src/renderer/lib/lanternguide.ts#guideOf
+  = src/renderer/lib/lanternguideview.ts#createGuideView
   = src/renderer/lib/lanternlayout.ts
   = src/renderer/lib/lanternlock.ts
   = src/renderer/lib/lanternmacro.ts#blockKey

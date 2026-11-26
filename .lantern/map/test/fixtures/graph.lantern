@@ -27,7 +27,7 @@ test/fixtures/graph/macro-sized-demo.ts . test ca02b52bcc25
   = test/helpers/lantern-map.ts
   = test/helpers/macroview-world.ts#macroViewWorld
 
-test/fixtures/graph/pr-review-demo.ts . test dc29af014837
+test/fixtures/graph/pr-review-demo.ts . test 76685091b0dc
   < src/main/filecontent.ts
   < src/main/lantern-prdiff.ts
   < src/main/lantern-prfile.ts
