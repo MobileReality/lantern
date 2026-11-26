@@ -604,7 +604,7 @@ lantern-pr 1
   60 `#ghunk` lines per step, no hunk twice on a step. `lantern-sync` reads the guide from a JSON
   `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks", "pseudo"}]}`
   (a hunk is a path string, or `{"path", "side": "old"|"new", "start", "end"}`) through
-  `guideFromJson` and writes it with `guideRecordLines` (the `sync.mjs` wiring is a later item). Like `#reason`, the lines are unknown `#`
+  `guideFromJson` and writes it with `guideRecordLines` (`sync.mjs pr --guide-file`; `verify --require-guide` runs `guideCoverage` on the hunks of `git diff -U0 <base>...HEAD`, a rename carrying its new path and a hunk with no lines being covered by the bare path). Like `#reason`, the lines are unknown `#`
   lines to a reader that predates them, so the format stays `lantern-pr 1`. `prs.mjs` errors on
   a guide line before the `#gstep` it belongs to, a missing or repeated `#guide` or `#risk`, an
   unknown level or mode, a step with no `#gwhy` or `#ghunk`, a `#gpseudo` on a skim step, a

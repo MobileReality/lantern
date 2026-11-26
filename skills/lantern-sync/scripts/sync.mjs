@@ -11,19 +11,20 @@ const USAGE = `usage: sync.mjs <command> [options]   (run from the project root,
   finish --base <branch> [--model <your exact model id>] [--include-drift]
   pr [<id> --url <url> --title <title>] --base <branch> [--branch <branch>] [--summary <text>] [--reason <path>=<reason>]... [--reason-file <json>]
       [--order <path>]... [--order-file <json array>] [--flow-file <json array>]
+      [--guide-file <json object: summary, risk, steps with hunks; {} clears it>]
       [--describe-file <json object: what, before, after, verified arrays of short texts>]
       [--plan <slug> --item <id>...]
       (without <id>, --url and --title the branch has no pull request: the record is local, in .lantern/local/, never committed; a later pr <id> for the branch adopts it)
-  verify --base <branch> [--require-pr] [--require-reason] [--require-order] [--require-flow] [--branch <branch>]
+  verify --base <branch> [--require-pr] [--require-reason] [--require-order] [--require-flow] [--require-guide] [--branch <branch>]
   dismiss <id>...
   tidy --base <branch> [--dry-run]
   local --base <branch> [--head <branch>] [--reason <path>=<reason>]... [--reason-file <json>]
   carry --from <worktree dir> --branch <branch>   (copies the worktree's local record of the branch into this checkout)
 every command takes --json`;
 
-const VALUE_FLAGS = new Set(['root', 'base', 'head', 'model', 'url', 'title', 'branch', 'summary', 'reason', 'reason-file', 'order', 'order-file', 'flow-file', 'describe-file', 'provider', 'plan', 'item', 'from']);
+const VALUE_FLAGS = new Set(['root', 'base', 'head', 'model', 'url', 'title', 'branch', 'summary', 'reason', 'reason-file', 'order', 'order-file', 'flow-file', 'guide-file', 'describe-file', 'provider', 'plan', 'item', 'from']);
 const REPEAT_FLAGS = new Set(['reason', 'order', 'item']);
-const BOOL_FLAGS = new Set(['json', 'include-drift', 'require-pr', 'require-reason', 'require-order', 'require-flow', 'dry-run']);
+const BOOL_FLAGS = new Set(['json', 'include-drift', 'require-pr', 'require-reason', 'require-order', 'require-flow', 'require-guide', 'dry-run']);
 const LANTERN_EXCLUDE = ':(exclude).lantern';
 const LANTERN_DIR = '.lantern';
 const LOCAL_DATA_PREFIX = `${LANTERN_DIR}/.project/`;
@@ -108,6 +109,7 @@ const L = await importSetup('lib.mjs');
 const T = await importSetup('texts.mjs');
 const P = await importSetup('prs.mjs');
 const F = await importSetup('prflow.mjs');
+const G = await importSetup('prguide.mjs');
 const D = await importSetup('prdescribe.mjs');
 const Shell = await importSetup('shell.mjs');
 const PlanRef = await importSetup('plan-ref.mjs');
@@ -218,6 +220,49 @@ function changeSet(root, base) {
 function prEntries(cs) {
     const encoded = (kind, files) => files.map((f) => ({ kind, path: L.encodePath(f) })).sort((a, b) => cmp(a.path, b.path));
     return [...encoded('+', cs.added), ...encoded('~', cs.modified), ...encoded('-', cs.removed)];
+}
+
+function unquoteGitPath(text) {
+    if (!text.startsWith('"')) return text;
+    const escapes = { t: '\t', n: '\n', '"': '"', '\\': '\\' };
+    return text.slice(1, -1).replace(/\\(.)/g, (_, char) => escapes[char] ?? char);
+}
+
+function diffHeaderPath(line) {
+    return unquoteGitPath(line.slice(4).replace(/\t.*$/, '')).replace(/^[ab]\//, '');
+}
+
+// A rename carries its new path; a pure rename, a binary file, a mode change and an empty file have no @@ line,
+// so each becomes one zero-count hunk that only a whole-file reference covers.
+function changeHunks(root, cs) {
+    const out = git(root, ['-c', 'core.quotePath=false', 'diff', '-U0', '--no-color', '--no-ext-diff', '--no-textconv', '-M', '--relative', '--src-prefix=a/', '--dst-prefix=b/', `${cs.baseSha}...HEAD`, '--', '.', LANTERN_EXCLUDE]);
+    const hunks = [];
+    const withLines = new Set();
+    let inHeader = false;
+    let oldPath = null;
+    let current = null;
+    for (const line of out.split('\n')) {
+        if (line.startsWith('diff --git ')) {
+            inHeader = true;
+            oldPath = null;
+            current = null;
+        } else if (inHeader && line.startsWith('--- ')) oldPath = diffHeaderPath(line);
+        else if (inHeader && line.startsWith('+++ ')) {
+            const newPath = diffHeaderPath(line);
+            current = line.slice(4).startsWith('/dev/null') ? oldPath : newPath;
+        } else if (line.startsWith('@@ ')) {
+            inHeader = false;
+            const match = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/.exec(line);
+            if (!match || current === null) continue;
+            withLines.add(current);
+            hunks.push({ path: current, oldStart: Number(match[1]), oldCount: match[2] === undefined ? 1 : Number(match[2]), newStart: Number(match[3]), newCount: match[4] === undefined ? 1 : Number(match[4]) });
+        }
+    }
+    const renamedFrom = new Set(cs.renamed.map((rename) => rename.from));
+    for (const file of [...cs.added, ...cs.modified, ...cs.removed.filter((removed) => !renamedFrom.has(removed))]) {
+        if (!withLines.has(file)) hunks.push({ path: file, oldStart: 0, oldCount: 0, newStart: 0, newCount: 0 });
+    }
+    return hunks.sort((a, b) => cmp(a.path, b.path) || a.newStart - b.newStart || a.oldStart - b.oldStart);
 }
 
 function lastSourceCommit(root, fallback = null) {
@@ -580,6 +625,38 @@ function collectFlow(flags, existing, listed) {
     return flow.stories;
 }
 
+function collectGuide(flags, existing, listed) {
+    if (flags['guide-file'] === undefined) return existing;
+    let parsed;
+    try {
+        parsed = JSON.parse(fs.readFileSync(path.resolve(flags['guide-file']), 'utf8'));
+    } catch (error) {
+        throw new SyncError(`--guide-file ${flags['guide-file']}: ${error.message}`);
+    }
+    const empty = Array.isArray(parsed) ? parsed.length === 0 : parsed !== null && typeof parsed === 'object' && Object.keys(parsed).length === 0;
+    if (empty) return null;
+    const guide = G.guideFromJson(parsed, listed);
+    if (guide.errors.length) throw new SyncError(`--guide-file ${flags['guide-file']} is not a valid guide:\n  ${guide.errors.join('\n  ')}`);
+    return guide.guide;
+}
+
+function hunkLabel(hunk) {
+    const path = L.encodePath(hunk.path);
+    if (hunk.newCount > 0) return `${path} +${hunk.newStart}${hunk.newCount > 1 ? `-${hunk.newStart + hunk.newCount - 1}` : ''}`;
+    if (hunk.oldCount > 0) return `${path} -${hunk.oldStart}${hunk.oldCount > 1 ? `-${hunk.oldStart + hunk.oldCount - 1}` : ''}`;
+    return `${path} (no changed lines: name the whole file)`;
+}
+
+function guideCoverageProblems(file, hunks, guide) {
+    const coverage = G.guideCoverage(hunks, guide);
+    const stepName = (index) => `step ${index + 1} "${guide.steps[index].title}"`;
+    return [
+        ...coverage.missed.map((hunk) => `${file}: hunk ${hunkLabel(hunk)} is in no guide step; add it to a #gstep with --guide-file`),
+        ...coverage.doubled.map(({ hunk, steps }) => `${file}: hunk ${hunkLabel(hunk)} is in ${steps.length} guide steps (${steps.map(stepName).join(', ')}); give it to one`),
+        ...coverage.unknown.map(({ step, ref }) => `${file}: ${stepName(step)} names ${G.hunkRefLine(ref)}, which matches no hunk of the change set`),
+    ];
+}
+
 function collectDescription(flags, existing) {
     if (flags['describe-file'] === undefined) return existing;
     let parsed;
@@ -803,6 +880,7 @@ function cmdPr(root, positional, flags) {
     const kept = new Map();
     let keptOrder = [];
     let keptFlow = [];
+    let keptGuide = null;
     let keptDescription = {};
     let keptPlans = [];
     const existing = adopted ?? (fs.existsSync(abs) ? parseRecord(fs.readFileSync(abs, 'utf8'), rel) : null);
@@ -812,6 +890,7 @@ function cmdPr(root, positional, flags) {
         for (const file of existing.files) if (file.reason) kept.set(file.path, file.reason);
         keptOrder = existing.order;
         keptFlow = existing.flow;
+        keptGuide = existing.guide;
         keptDescription = existing.description;
         keptPlans = existing.plans;
     }
@@ -822,6 +901,7 @@ function cmdPr(root, positional, flags) {
     const order = collectOrder(flags, known, keptOrder);
     const listed = new Set(entries.map((entry) => L.decodePath(entry.path)));
     const flow = collectFlow(flags, keptFlow.map((story) => ({ ...story, steps: withListedFiles(story.steps, listed), below: withListedFiles(story.below, listed) })), listed);
+    const guide = collectGuide(flags, keptGuide, listed);
     for (const other of P.listPrs(root)) {
         if (other.branch === branch && other.id !== id) throw new SyncError(`${other.file} already records branch "${branch}" as pull request #${other.id}; refusing to add a second record for it`, 1);
     }
@@ -847,10 +927,11 @@ function cmdPr(root, positional, flags) {
         if (reason) lines.push(`#reason ${entry.path} ${reason}`);
     }
     lines.push(...F.flowRecordLines(flow));
+    if (guide) lines.push(...G.guideRecordLines(guide));
     const text = `${lines.join('\n')}\n`;
     const parsed = parseRecord(text, rel);
     const problems = [...parsed.errors, ...parsed.warnings];
-    if (problems.length) throw new SyncError(`generated record does not validate:\n  ${problems.join('\n  ')}`, 1);
+    if (problems.length) throw new SyncError(`generated record does not validate:\n  ${problems.join('\n  ')}${guide && flags['guide-file'] === undefined ? '\n(the recorded guide no longer fits the change set; re-run with --guide-file)' : ''}`, 1);
 
     fs.mkdirSync(path.dirname(abs), { recursive: true });
     if (noPr) fs.writeFileSync(path.join(root, LOCAL_DIR, '.gitignore'), '*\n');
@@ -862,15 +943,15 @@ function cmdPr(root, positional, flags) {
     }
     const mirrored = noPr ? mirrorRecord(root, rel, text) : null;
     const flowFiles = flow.reduce((sum, story) => sum + [...story.steps, ...story.below].filter((step) => step.files?.length).length, 0);
-    const report = { file: rel, id: id ?? null, branch, base, head, added: cs.added.length, modified: cs.modified.length, removed: cs.removed.length, reasons: reasons.size, ordered: order.length, flow: flow.length, flowSteps: flowFiles, described: D.describeRecordLines(description).length, plans };
+    const report = { file: rel, id: id ?? null, branch, base, head, added: cs.added.length, modified: cs.modified.length, removed: cs.removed.length, reasons: reasons.size, ordered: order.length, flow: flow.length, flowSteps: flowFiles, described: D.describeRecordLines(description).length, guideSteps: guide ? guide.steps.length : 0, plans };
     const planned = plans.length ? `, ticks ${plans.map((ref) => `${ref.slug} ${ref.item}`).join(', ')}` : '';
     report.adopted = adopted ? localRel : null;
     report.mirrored = mirrored;
     const next = noPr
         ? `next: ${rel} is never committed (its folder is ignored); ${mirrored ? `a copy is already in the project at ${mirrored}, so the Lantern app shows it now` : 'it is not in the project yet: the orchestrator copies it with sync.mjs carry before the worktree goes'}.`
         : `next: git add ${rel}; commit "chore: record pull request #${id} in the Lantern map"; plain git push (never force).`;
-    const human = [`wrote ${rel}: +${cs.added.length} ~${cs.modified.length} -${cs.removed.length}, ${reasons.size}/${entries.length} with a reason, ${order.length}/${entries.length} with a review position, ${flow.length} flow stories (${flowFiles} steps with files), ${report.described} description lines${planned}, #head ${head.slice(0, 9)}`];
-    if (adopted) human.push(`adopted the local record ${localRel} (reasons, order, flow, description and plan ticks kept) and removed it`);
+    const human = [`wrote ${rel}: +${cs.added.length} ~${cs.modified.length} -${cs.removed.length}, ${reasons.size}/${entries.length} with a reason, ${order.length}/${entries.length} with a review position, ${flow.length} flow stories (${flowFiles} steps with files), ${report.described} description lines${guide ? `, guide of ${guide.steps.length} steps` : ''}${planned}, #head ${head.slice(0, 9)}`];
+    if (adopted) human.push(`adopted the local record ${localRel} (reasons, order, flow, guide, description and plan ticks kept) and removed it`);
     human.push(next);
     return { report, human };
 }
@@ -1156,6 +1237,12 @@ function cmdVerify(root, flags) {
     if (flags['require-flow']) {
         if (!reasonRecord) problems.push(`--require-flow needs ${NO_RECORD_NEEDED} ${reasonBranch ?? '(detached HEAD: pass --branch)'}`);
         else if (reasonRecord.flow.length === 0 && reasonRecord.files.length > 0) problems.push(`${reasonRecord.file}: no flow (#story, #step, #below lines); re-run sync.mjs pr with --flow-file`);
+    }
+    if (flags['require-guide']) {
+        if (!reasonRecord) problems.push(`--require-guide needs ${NO_RECORD_NEEDED} ${reasonBranch ?? '(detached HEAD: pass --branch)'}`);
+        else if (!reasonRecord.guide) {
+            if (reasonRecord.files.length > 0) problems.push(`${reasonRecord.file}: no guide (#guide, #risk, #gstep lines); re-run sync.mjs pr with --guide-file`);
+        } else problems.push(...guideCoverageProblems(reasonRecord.file, changeHunks(root, cs), reasonRecord.guide));
     }
     if (reasonRecord && flowHasNoFiles(reasonRecord.flow)) warnings.push(`${reasonRecord.file}: no step of the flow points at a changed file (#file lines); add "files" to the steps in --flow-file where a file honestly implements one`);
     const ok = problems.length === 0;
