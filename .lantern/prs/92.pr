@@ -70,3 +70,38 @@ lantern-pr 1
 #below consequence a flat file list only => a guide opens first, Files is one click away
 #file src/renderer/lib/lanternmacroview.ts
 #file test/e2e/pr-review-guide.spec.ts
+#guide The review screen gets a Guide view: a short tour of the pull request opened first when the record has a guide.
+#risk low Renderer only; Files mode, Flow and the parsers are untouched and a record without a guide behaves as before.
+#gstep skim Demo guide fixture
+#gwhy The demo pull request gets a five-step guide to read the rest against.
+#ghunk test/fixtures/graph/pr-review-demo.ts
+#gstep careful The guide view module
+#gwhy Row selection decides which hunks a step owns; the view draws the rail, steps, ticks and J/K.
+#ghunk src/renderer/lib/lanternguide.ts
+#ghunk src/renderer/lib/lanternguideview.ts
+#gpseudo a step names whole files or line ranges
+#gpseudo keep only the changes inside a range, with context and a gap marker
+#gpseudo careful steps open, skim steps collapse until clicked
+#gpseudo J and K move the current step unless a text field has focus
+#gstep careful Wiring into the screen
+#gwhy The guide hosts like Flow, opens first when the record has one and remembers the choice per pull request.
+#ghunk src/renderer/lib/lanternview.ts
+#ghunk src/renderer/lib/lanternmacroview.ts
+#gpseudo no guide: no switch; unreadable guide: disabled switch
+#gpseudo selecting a pull request with a guide turns the guide on
+#gpseudo guide on hides the graph, the other views and the tabs
+#gstep skim Styles and build
+#gwhy Quiet styling from existing theme variables, reusing the review diff colours.
+#ghunk src/renderer/lantern-guide.css
+#ghunk src/renderer/lantern.css
+#ghunk src/renderer/workspace.html
+#ghunk scripts/esbuild.mjs
+#gstep skim Harness, demo script and tests
+#gwhy The harness attaches the demo guide only on request, so other specs keep opening in Files.
+#ghunk test/e2e/app/renderer.ts
+#ghunk test/e2e/app/main.cjs
+#ghunk test/e2e/app/index.html
+#ghunk scripts/pr-review-demo.mjs
+#ghunk package.json
+#ghunk test/e2e/pr-review-guide.spec.ts
+#ghunk test/lantern-guide-view.test.ts
