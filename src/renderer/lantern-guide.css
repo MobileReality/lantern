@@ -9,8 +9,6 @@
 .lt-guide-level { color: var(--lt-ink); font-weight: 700; }
 .lt-guide-risk[data-level="high"] .lt-guide-level { color: var(--lt-glow); }
 
-.lt-grid.lt-review-on.lt-guide-wide { grid-template-columns: minmax(0, min(var(--lt-pane-left, clamp(300px, 26%, 360px)), 40%)) 6px minmax(0, 1fr); }
-.lt-grid.lt-guide-wide .lt-review, .lt-grid.lt-guide-wide .lt-review + .lt-split { display: none; }
 .lt-guide-nav { min-width: 0; padding: 12px 0 16px; }
 .lt-guide-rail, .lt-guide-steps { margin: 0; padding: 0; list-style: none; }
 .lt-guide-rail { display: flex; flex-direction: column; border-left: 1px solid var(--lt-rule); }

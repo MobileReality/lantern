@@ -47,8 +47,10 @@ test('opens on the guide with the summary, the risk, a step rail and the steps i
   await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(0);
   await expect(page.locator('.lt-side .lt-guide-rail')).toBeVisible();
   const [rail, guide] = await Promise.all([page.locator('.lt-side:not(.lt-overview)').boundingBox(), page.locator('.lt-guide-view').boundingBox()]);
-  expect(guide!.x).toBeGreaterThan(rail!.x + rail!.width - 1);
-  expect(guide!.width).toBeGreaterThan(700);
+  expect(rail).not.toBeNull();
+  expect(guide).not.toBeNull();
+  expect(guide?.x).toBeGreaterThan((rail?.x ?? 0) + (rail?.width ?? 0) - 1);
+  expect(guide?.width).toBeGreaterThan(700);
 });
 
 test('shows only the hunks a step names, a file may sit in several steps', async () => {
@@ -128,6 +130,20 @@ test('switching to Files shows the file list and the graph, and back to Guide ke
   await expect(page.locator('.lt-review')).toBeHidden();
   await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(0);
   await expect(step(page, 0).locator('.lt-guide-pseudo')).toBeVisible();
+});
+
+test('hidden areas saved in Files do not break the guide', async () => {
+  await loadGraphFixture(harness, 'pr-review');
+  const page = harness.page;
+  await page.keyboard.press('Alt+1');
+  await expect(page.locator('.lt-side:not(.lt-overview)')).toBeHidden();
+  await openGuide();
+  await expect(page.locator('.lt-side .lt-guide-rail')).toBeVisible();
+  await expect(page.locator('.lt-guide-view')).toBeVisible();
+  await expect(page.locator('[data-rail]')).toHaveCount(0);
+  await page.locator('.lt-viewbar [data-view="files"]').click();
+  await page.keyboard.press('Alt+0');
+  await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(5);
 });
 
 test('a file name inside a step switches to Files with that file open', async () => {

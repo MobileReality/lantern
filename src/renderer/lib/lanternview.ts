@@ -370,8 +370,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   function syncReview() {
     const pr = currentPr();
-    panes.setActive(!!pr);
-    regionTools.setActive(!!pr);
+    panes.setActive(!!pr && !guideOn);
+    regionTools.setActive(!!pr && !guideOn);
     applyFoundationHidden();
     const off = pr && peeked && !byPath.has(peeked) ? peeked : null;
     mapNote.textContent = off ? `${off.split('/').pop()} is not in the map, so there are no connections to show.` : '';
@@ -668,7 +668,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   function openFromGuide(path: string) {
     showView('files');
-    reveal(path, review.mode(), false);
+    reveal(path, review.mode());
   }
 
   function wantsGuide(id: string) {
@@ -681,7 +681,6 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     pixiHost.hidden = flow || guide;
     flowHost.hidden = !flow;
     guideHost.hidden = !guide;
-    grid.classList.toggle('lt-guide-wide', guide);
     main.classList.toggle('lt-flow-on', flow);
     main.classList.toggle('lt-guide-on', guide);
   }

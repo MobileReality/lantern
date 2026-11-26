@@ -198,14 +198,14 @@ describe('the review screen with a guide', () => {
     const root = mount({ guide: GUIDE });
     expect(root.querySelector('.lt-side .lt-guide-rail')).not.toBeNull();
     expect(root.querySelector('.lt-side .pr-file')).toBeNull();
-    expect(root.querySelector('.lt-grid')?.classList.contains('lt-guide-wide')).toBe(true);
+    expect(root.querySelector('.lt-grid')?.classList.contains('lt-review-on')).toBe(false);
     root.querySelector<HTMLButtonElement>('.lt-guide-go[data-guide-go="1"]')?.click();
     expect(root.querySelector('.lt-guide-step[aria-current="step"]')?.getAttribute('data-step')).toBe('1');
     await flush();
     await flush();
     root.querySelector<HTMLButtonElement>('[data-guide-open]')?.click();
     expect(button(root, 'files')?.getAttribute('aria-pressed')).toBe('true');
-    expect(root.querySelector('.lt-grid')?.classList.contains('lt-guide-wide')).toBe(false);
+    expect(root.querySelector('.lt-grid')?.classList.contains('lt-review-on')).toBe(true);
     expect(root.querySelector('.lt-side .pr-file')).not.toBeNull();
     expect(root.querySelector('.lt-side .lt-guide-rail')).toBeNull();
   });
