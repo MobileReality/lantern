@@ -901,7 +901,8 @@ function cmdPr(root, positional, flags) {
     const order = collectOrder(flags, known, keptOrder);
     const listed = new Set(entries.map((entry) => L.decodePath(entry.path)));
     const flow = collectFlow(flags, keptFlow.map((story) => ({ ...story, steps: withListedFiles(story.steps, listed), below: withListedFiles(story.below, listed) })), listed);
-    const guide = collectGuide(flags, keptGuide, listed);
+    const renamedAway = new Set(cs.renamed.map((rename) => rename.from));
+    const guide = collectGuide(flags, keptGuide, new Set([...listed].filter((file) => !renamedAway.has(file))));
     for (const other of P.listPrs(root)) {
         if (other.branch === branch && other.id !== id) throw new SyncError(`${other.file} already records branch "${branch}" as pull request #${other.id}; refusing to add a second record for it`, 1);
     }

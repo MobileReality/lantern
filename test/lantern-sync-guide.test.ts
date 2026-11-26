@@ -175,15 +175,14 @@ describe('sync.mjs verify --require-guide', () => {
     expect(unknown.stdout).toMatch(/step 1 "The new defaults" names src\/b\.ts \+5-6, which matches no hunk/);
   });
 
-  it('carries a rename on its new path: a whole-file reference to it covers the hunk, the old path matches none', () => {
+  it('carries a rename on its new path: a whole-file reference to it covers the hunk and the old path is refused', () => {
     const viaNew = guideOf([stepOf('The new defaults', [{ path: 'src/b.ts', side: 'new', start: 1, end: 1 }, { path: 'src/b.ts', side: 'new', start: 12, end: 12 }]), stepOf('The rest', ['src/moved.ts', 'src/a.ts', 'assets/logo.png'])]);
     expect(writeRecord('--guide-file', guideFile(viaNew)).status).toBe(0);
     expect(verifyGuide().status, 'the old path needs no reference').toBe(0);
     const stale = guideOf([stepOf('The new defaults', [{ path: 'src/b.ts', side: 'new', start: 1, end: 1 }, { path: 'src/b.ts', side: 'new', start: 12, end: 12 }]), stepOf('The rest', ['src/moved.ts', 'src/old.ts', 'src/a.ts', 'assets/logo.png'])]);
-    expect(writeRecord('--guide-file', guideFile(stale, 'stale.json')).status).toBe(0);
-    const red = verifyGuide();
-    expect(red.status).toBe(1);
-    expect(red.stdout).toMatch(/names src\/old\.ts, which matches no hunk/);
+    const refused = writeRecord('--guide-file', guideFile(stale, 'stale.json'));
+    expect(refused.status).toBe(2);
+    expect(refused.stderr).toMatch(/src\/old\.ts/);
   });
 
   it('fails a malformed guide in the record without the flag', () => {
