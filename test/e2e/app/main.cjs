@@ -43,6 +43,7 @@ app.whenReady().then(async () => {
       requestedDpr: String(requestedDpr),
       ...(process.env.LANTERN_GRAPH_PR ? { pr: process.env.LANTERN_GRAPH_PR } : {}),
       ...(process.env.LANTERN_GRAPH_FLOW ? { flow: process.env.LANTERN_GRAPH_FLOW } : {}),
+      ...(process.env.LANTERN_GRAPH_GUIDE ? { guide: process.env.LANTERN_GRAPH_GUIDE } : {}),
     },
   });
 });
