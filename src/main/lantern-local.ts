@@ -143,6 +143,8 @@ function recordFields(record: ParsedPr): Partial<LanternPr> {
     ...(record.ordered ? { ordered: true } : {}),
     ...(record.flow ? { flow: record.flow } : {}),
     ...(record.flowError ? { flowError: record.flowError } : {}),
+    ...(record.guide ? { guide: record.guide } : {}),
+    ...(record.guideError ? { guideError: record.guideError } : {}),
   };
 }
 

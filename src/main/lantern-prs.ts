@@ -246,6 +246,8 @@ async function loadGitPrs(root: string, mapped: Set<string>): Promise<PrLoadDeta
       ...(pr.ordered ? { ordered: true } : {}),
       ...(pr.flow ? { flow: pr.flow } : {}),
       ...(pr.flowError ? { flowError: pr.flowError } : {}),
+      ...(pr.guide ? { guide: pr.guide } : {}),
+      ...(pr.guideError ? { guideError: pr.guideError } : {}),
       state,
       ...(tip ? { tip } : {}),
       ...(merged?.at ? { mergedAt: merged.at } : {}),

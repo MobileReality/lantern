@@ -192,6 +192,12 @@ src/main/lantern-git.ts . gateway 38b1cd7ee2d4
 #feature pull-requests
   = ext:git
 
+src/main/lantern-guide-parse.ts . pure 005adffe6147
+#feature pull-requests
+  < src/shared/control-characters.ts#hasControlCharacter
+  = src/main/lantern-parse.ts#decodePath
+  < src/main/lantern-types.ts#LanternGuide
+
 src/main/lantern-host-avatar.ts . gateway 56618ca503b1
 #feature pull-requests
   < src/main/lantern-types.ts#LanternPrInfo
@@ -346,12 +352,13 @@ src/main/lantern-pr-cache.ts . service a9712e7e5e25
   = src/main/lantern-git.ts#git
   < src/main/lantern-pr-parse.ts#PR_DIR
 
-src/main/lantern-pr-parse.ts . pure c50c203d8348
+src/main/lantern-pr-parse.ts . pure 0cd3b220afd4
 #feature pull-requests
   < src/shared/control-characters.ts#hasControlCharacter
   < skills/lantern-plan/scripts/plan-format.mjs#PLAN_REF
   = src/main/lantern-describe-parse.ts#parseDescribeLines
   = src/main/lantern-flow-parse.ts#parseFlowLines
+  = src/main/lantern-guide-parse.ts#parseGuideLines
   = src/main/lantern-parse.ts
   < src/main/lantern-types.ts
   < src/shared/reason.ts#REASON_MAX_CHARS
@@ -416,7 +423,7 @@ src/main/lantern-proverlay.ts . service 0442b90dfd9c
   < src/main/lantern-types.ts
   = src/main/lantern-local.ts
 
-src/main/lantern-prs.ts . service 7cc35c41b5c2
+src/main/lantern-prs.ts . service 121340d07a18
 #feature pull-requests
   = src/main/lantern-git.ts
   = src/main/lantern-host-status.ts
@@ -449,7 +456,7 @@ src/main/lantern-texts.ts . service 18029fc1c004
   = src/main/lantern-parse.ts
   < src/main/lantern-types.ts
 
-src/main/lantern-types.ts . model 21e1450b2111
+src/main/lantern-types.ts . model 280458a0890b
 #feature file-graph
   < src/main/lantern-plan-view-types.ts#LanternPlanView
   < src/shared/lantern-plan-fix.ts#LanternBrokenPlan
@@ -910,7 +917,7 @@ src/main/windows.ts . service e1ecb680abb8
 src/main/webview-permissions.ts . service a8d4b567a662
 #feature serve-web
 
-src/main/lantern-local.ts . service 0bd236388a6b
+src/main/lantern-local.ts . service a05f6368c78c
 #feature pull-requests
   = src/main/filecontent.ts#regularFileInside
   = src/main/lantern-git.ts#git

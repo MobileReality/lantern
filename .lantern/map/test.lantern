@@ -1384,11 +1384,14 @@ test/lantern-pr-panel.test.ts . test 46c92f79264f
   = test/helpers/lantern-map.ts
   = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-pr-parity.test.ts . test ca48c079e6b3
+test/lantern-pr-parity.test.ts . test be5c8c4dedc0
 #feature pull-requests
+  = skills/lantern-setup/scripts/prguide.mjs
   = skills/lantern-setup/scripts/prs.mjs
+  = src/main/lantern-guide-parse.ts
   = src/main/lantern-pr-parse.ts
   = test/helpers/lantern-flow-cases.ts#REJECTED_FLOWS
+  = test/helpers/lantern-guide-cases.ts#REJECTED_GUIDES
 
 test/lantern-pr-parse.test.ts . test d77ac41cd650
 #feature pull-requests
