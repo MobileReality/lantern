@@ -1,32 +1,63 @@
 import type { DiagnosticInput } from '../../shared/diagnostics';
 import type { ServerPage } from '../serveweb-parse';
 
-const SERIOUS_LINE = /\b(error|fatal|exception|failed|cannot|can't|EADDRINUSE|ENOENT|EACCES|EPERM|ENOTFOUND|ECONNREFUSED)\b|is not recognized/i;
+const SERIOUS_LINE = /\b(error|fatal|exception|failed|panicked|cannot|can't|EADDRINUSE|ENOENT|EACCES|EPERM|ENOTFOUND|ECONNREFUSED)\b|is not recognized/i;
 const MAX_STDERR_ENTRIES = 40;
 const MAX_LINE_CHARS = 600;
+const BURST_QUIET_MS = 250;
+const MAX_BURST_LINES = 40;
 const SUPPRESSED = 'More editor server output was left out of the log.';
 const WINDOWS_HINT = 'On Windows this usually means the VS Code command line tool is missing, blocked, or not the one Lantern expects.';
 
 export type ServerReport = (input: DiagnosticInput) => void;
 
+const clip = (text: string) => (text.length > MAX_LINE_CHARS ? `${text.slice(0, MAX_LINE_CHARS - 1)}…` : text);
+
 export function classifyServerLine(line: string): DiagnosticInput | null {
   const text = line.trim();
   if (!text) return null;
-  const shown = text.length > MAX_LINE_CHARS ? `${text.slice(0, MAX_LINE_CHARS - 1)}…` : text;
-  return { source: 'editor-server', severity: SERIOUS_LINE.test(text) ? 'error' : 'warning', message: `Editor server output: ${shown}` };
+  return { source: 'editor-server', severity: SERIOUS_LINE.test(text) ? 'error' : 'warning', message: `Editor server output: ${clip(text)}` };
 }
 
-export function createServerOutputReporter(report: ServerReport, limit = MAX_STDERR_ENTRIES) {
+function classifyServerBurst(lines: string[]): DiagnosticInput {
+  const lead = lines.find((line) => SERIOUS_LINE.test(line)) ?? lines[0];
+  const input = classifyServerLine(lead)!;
+  if (lines.length === 1) return input;
+  return { ...input, detail: lines.map(clip).join('\n') };
+}
+
+export function createServerOutputReporter(report: ServerReport, limit = MAX_STDERR_ENTRIES, quietMs = BURST_QUIET_MS) {
   let reported = 0;
+  let burst: string[] = [];
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
+  function emit(input: DiagnosticInput) {
+    reported++;
+    if (reported <= limit) report(input);
+    else if (reported === limit + 1) report({ source: 'editor-server', severity: 'warning', message: SUPPRESSED });
+  }
+
+  function flush() {
+    if (timer) clearTimeout(timer);
+    timer = null;
+    if (!burst.length) return;
+    const lines = burst;
+    burst = [];
+    emit(classifyServerBurst(lines));
+  }
+
   return {
     push(line: string) {
-      const input = classifyServerLine(line);
-      if (!input) return;
-      reported++;
-      if (reported <= limit) report(input);
-      else if (reported === limit + 1) report({ source: 'editor-server', severity: 'warning', message: SUPPRESSED });
+      const text = line.trim();
+      if (!text) return;
+      burst.push(text);
+      if (timer) clearTimeout(timer);
+      if (burst.length >= MAX_BURST_LINES) return flush();
+      timer = setTimeout(flush, quietMs);
     },
+    flush,
     reset() {
+      flush();
       reported = 0;
     },
   };

@@ -384,6 +384,7 @@ function startServerProcess(bin: string) {
     stderrReport.push(line);
   });
   child.on('error', (error) => {
+    stderrReport.flush();
     if (proc !== child) return;
     proc = null;
     graceSeconds = null;
@@ -392,6 +393,7 @@ function startServerProcess(bin: string) {
     fail('Couldn’t launch the VS Code server.', true);
   });
   child.on('exit', (code, signal) => {
+    stderrReport.flush();
     if (dying === child) dying = null;
     if (proc !== child) return;
     proc = null;
