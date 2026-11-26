@@ -713,7 +713,7 @@ plain words; a flow that narrates the diff or names files and functions in its t
 A good guide has one to eight steps in reading order, foundations first (types and core logic, then callers, UI, tests),
 each step a meaning ("the new rule", "the screen that uses it"), a `why` of at most two sentences that says why the
 step matters and not what the lines are, `careful` only where a reader must think (logic, money, security, contracts)
-and the rest `skim`. A guide that is one step holding every file, steps in alphabetical or file order, a `why` that
+and the rest `skim`. A guide that is one step holding every file of a change of several files, steps in alphabetical or file order, a `why` that
 narrates the diff, or `careful` on everything goes back, as does pseudocode on a skim step or one that only repeats the code.
 
 - **Green**: carry on with step 9. It proves the map is true for the change and the record is in the

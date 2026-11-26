@@ -439,7 +439,7 @@ the map records no model) and `## Procedure` step 3 first.
         "hunks": ["src/list.ts", "test/todos.test.ts"]}
      ]}
     ```
-    Re-running keeps the recorded guide; a file added since needs its hunks in a step (pass the whole file again).
+    After any new commit, update guide.json so every hunk of the new diff is in one step (line ranges move), and re-run with it.
     **Write the description too**, so the Lantern card shows it without the host (a branch with no PR has none):
     `.ai/tmp/describe.json`, `{"what": [...], "before": [...], "after": [...], "verified": [...]}`,
     filled from what you write in the PR body (What this changes, Before / after, Verified with), in

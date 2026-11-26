@@ -22,7 +22,7 @@ export const USAGE = `usage: pnpm run skill-test -- <${SKILL_NAMES.join('|')}> [
   --keep       keep the temp fixture and logs
   --json       print the report as JSON instead of text
   --delivery D lantern-delegate only: the project's stored PR delivery, pr (default), push or local; the checks follow it
-  Offline only: --fake broken (the fake agent leaves the fixture broken), --fake no-reason (the fake delegate's record lacks its reasons), --fake no-guide (the fake delegate writes no guide),--fake-cost N (USD the fake reports per call, default ${FAKE_COST_USD}).
+  Offline only: --fake broken (the fake agent leaves the fixture broken), --fake no-reason (the fake delegate's record lacks its reasons), --fake no-guide (the fake delegate writes no guide), --fake-cost N (USD the fake reports per call, default ${FAKE_COST_USD}).
   CLAUDE_BIN names the claude binary for --live.`;
 
 export function parseArgs(argv, env) {
