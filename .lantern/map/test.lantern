@@ -2411,7 +2411,7 @@ test/updater-guard.test.ts . test 034892cd9043
   = src/main/updater/guard.ts
   = src/main/updater/process-activity.ts
 
-test/updater-service.test.ts . test 7c4ed2027207
+test/updater-service.test.ts . test 87ec06bb9651
 #feature app-updates
   = src/main/updater/service.ts
   < test/helpers/updater-world.ts#updaterWorld

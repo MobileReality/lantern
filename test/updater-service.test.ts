@@ -78,6 +78,17 @@ describe('a failing check', () => {
     expect(world.logs).toEqual([{ severity: 'warning', message: 'Update check failed', detail: expect.stringContaining('offline') }]);
   });
 
+  it('is not logged when the machine is asleep or offline, and the next check still asks', async () => {
+    const world = updaterWorld({
+      fetch: async () => {
+        throw new Error('net::ERR_NETWORK_IO_SUSPENDED');
+      },
+    });
+    expect(await world.updater.check()).toEqual({ kind: 'failed' });
+    expect(await world.updater.check()).toEqual({ kind: 'failed' });
+    expect(world.logs.filter((entry) => entry.message === 'Update check failed')).toEqual([]);
+  });
+
   it('is logged when Squirrel cannot start the download', async () => {
     const world = updaterWorld({ status: 200, body: FEED_NEWER });
     world.native.checkForUpdates.mockImplementation(() => {
