@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/guide-review-view
 #base feat/guided-review
 #opened 2026-11-26
-#head dbff7b305b115fe8afa7d11b88223872035921f2
+#head a15c3b2af717eea3a24bd07e30ea6705835d398d
 #describe what The review screen gets a Guide view: summary and risk, a step rail with ticks, steps with only their own hunks, careful steps open, skim steps collapsed, J and K, and a pseudocode toggle.
 #describe before Files, Macro and Flow only.
 #describe after A pull request with a guide opens on it; one without opens in Files with no switch.
@@ -21,6 +21,7 @@ lantern-pr 1
 ~ scripts/pr-review-demo.mjs
 ~ src/renderer/lantern.css
 ~ src/renderer/lib/lanternmacroview.ts
+~ src/renderer/lib/lanternprpanel.ts
 ~ src/renderer/lib/lanternview.ts
 ~ src/renderer/workspace.html
 ~ test/e2e/app/index.html
@@ -31,6 +32,7 @@ lantern-pr 1
 #order src/renderer/lib/lanternguideview.ts
 #order src/renderer/lib/lanternview.ts
 #order src/renderer/lib/lanternmacroview.ts
+#order src/renderer/lib/lanternprpanel.ts
 #order src/renderer/lantern-guide.css
 #order src/renderer/lantern.css
 #order src/renderer/workspace.html
@@ -53,6 +55,7 @@ lantern-pr 1
 #reason scripts/pr-review-demo.mjs Opens the demo on its guide so the tour can be looked at by hand.
 #reason src/renderer/lantern.css Lets the Guide reuse the review diff colours instead of copying them.
 #reason src/renderer/lib/lanternmacroview.ts Adds the Guide button to the view strip next to Files, Macro and Flow.
+#reason src/renderer/lib/lanternprpanel.ts Lets the guide keep the header card in the left pane without the file list.
 #reason src/renderer/lib/lanternview.ts Hosts the Guide like Flow and opens on it when the record has one.
 #reason src/renderer/workspace.html Loads the Guide stylesheet in the app.
 #reason test/e2e/app/index.html Loads the Guide stylesheet in the harness.
@@ -84,9 +87,10 @@ lantern-pr 1
 #gpseudo careful steps open, skim steps collapse until clicked
 #gpseudo J and K move the current step unless a text field has focus
 #gstep careful Wiring into the screen
-#gwhy The guide hosts like Flow, opens first when the record has one and remembers the choice per pull request.
+#gwhy The guide hosts like Flow, takes the whole review area with its rail in the left pane, and opens first when the record has one.
 #ghunk src/renderer/lib/lanternview.ts
 #ghunk src/renderer/lib/lanternmacroview.ts
+#ghunk src/renderer/lib/lanternprpanel.ts
 #gpseudo no guide: no switch; unreadable guide: disabled switch
 #gpseudo selecting a pull request with a guide turns the guide on
 #gpseudo guide on hides the graph, the other views and the tabs
