@@ -1,0 +1,31 @@
+lantern-pr 1
+# 89
+#title feat: gate the PR guide in sync pr and verify
+#url https://github.com/MobileReality/lantern/pull/89
+#branch feat/sync-guide-gate
+#base feat/guided-review
+#opened 2026-11-26
+#head 31e0f499b070ede4eb0abe1b78f91cfe67cb9fe7
+#describe what sync pr --guide-file writes the guide; verify --require-guide checks every git hunk is in exactly one step.
+#describe before --guide-file and --require-guide were unknown flags.
+#describe after A hunk in no step, in two steps or matching no reference turns verify red.
+#describe verified pnpm test and typecheck are green.
+#plan guided-pr-review s2.1
++ test/lantern-sync-guide.test.ts
+~ skills/lantern-setup/references/format.md
+~ skills/lantern-sync/SKILL.md
+~ skills/lantern-sync/scripts/sync.mjs
+#order skills/lantern-sync/scripts/sync.mjs
+#order skills/lantern-setup/references/format.md
+#order skills/lantern-sync/SKILL.md
+#order test/lantern-sync-guide.test.ts
+#reason test/lantern-sync-guide.test.ts Pins write, keep, clear, adopt and the red and green coverage cases.
+#reason skills/lantern-setup/references/format.md The guide section named the sync wiring as a later item; it now says what verify checks.
+#reason skills/lantern-sync/SKILL.md Documents the two new flags and the rename rule where delegates read the sync commands.
+#reason skills/lantern-sync/scripts/sync.mjs Gates a delegate's guide like its flow: written by pr, hunk coverage checked from git by verify.
+#story A delegate's guide is gated
+#step actor A delegate
+#step action records a guide for
+#file skills/lantern-sync/scripts/sync.mjs
+#step subject its pull request
+#below consequence a guide was never checked => verify fails on a hunk in no step
