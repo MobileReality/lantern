@@ -5,7 +5,7 @@ lantern-pr 1
 #branch feat/guided-review
 #base main
 #opened 2026-11-26
-#head a7f8ff89a5ab6ceec1db65bd1b42b9743da13eb0
+#head 75d44f9349d57bae3ca43a3aa7691ac9938334d2
 #describe what A guide in the PR record, written by sync.mjs pr --guide-file and gated by verify --require-guide.
 #describe what Delegates write it; the review screen opens on it.
 #describe before The review screen shows files in review order; nothing groups hunks by intent.
