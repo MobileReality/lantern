@@ -3,8 +3,9 @@ lantern 1
 
 test/e2e/app/harness.css . style 362b854f8fb3
 
-test/e2e/app/index.html . test 906c0f7630c6
+test/e2e/app/index.html . test 2b90295d68a9
   < src/renderer/lantern-flow.css
+  < src/renderer/lantern-guide.css
   < src/renderer/lantern-macroview.css
   < src/renderer/lantern-prs.css
   < src/renderer/lantern-relation.css
@@ -78,10 +79,10 @@ test/e2e/app/integrations.html . test c5ca8885c3a1
   < src/renderer/workspace.css
   > test/e2e/app/integrations-renderer.ts
 
-test/e2e/app/main.cjs . test 847289af4668
+test/e2e/app/main.cjs . test a84d2cd1a52a
   > test/e2e/app/index.html
 
-test/e2e/app/renderer.ts . test 8a81d4321d96
+test/e2e/app/renderer.ts . test 2ed3e6811ee5
   < src/main/lantern-macro-load.ts#MacroLoad
   < src/main/lantern-macro.ts#MacroView
   < src/main/lantern.ts

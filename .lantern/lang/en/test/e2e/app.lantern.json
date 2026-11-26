@@ -16,6 +16,6 @@
   "tray-popover-shell.css": "Paints a desktop and menu bar behind the popover and places the frame, a rounded translucent window, under the icon",
   "tray-popover-shell.js": "Resizes the frame to the height the popover reports",
   "tray-popover.html": "Holds the desktop backdrop and the frame that shows the popover page",
-  "renderer.ts": "Mounts production graph views using deterministic or supplied map fixtures, and a pinned macro view with this repo's feature texts or a pinned areas payload on request, a stub explanation client for the review demo, a project name when asked, the Orchard Market evaluation project with its pull request, a small or large evaluation project, and a project sized by the areas and features in the address"
+  "renderer.ts": "Mounts production graph views using deterministic or supplied map fixtures, and a pinned macro view with this repo's feature texts or a pinned areas payload on request, a stub explanation client for the review demo, the demo guide on request, a project name when asked, the Orchard Market evaluation project with its pull request, a small or large evaluation project, and a project sized by the areas and features in the address"
  }
 }

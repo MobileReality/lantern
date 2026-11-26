@@ -3,7 +3,7 @@ lantern 1
 
 scripts/check-linux-package.sh . script 89a5078ad7f6
 
-scripts/esbuild.mjs . script 913468a9e4b4
+scripts/esbuild.mjs . script 0f379d450e45
   < scripts/app-manifest.mjs#appManifest
   < scripts/node-bundle.mjs#nodeBundle
   < src/main/main.ts
@@ -13,6 +13,7 @@ scripts/esbuild.mjs . script 913468a9e4b4
   < src/renderer/command-palette.css
   < src/renderer/floating.css
   < src/renderer/lantern-flow.css
+  < src/renderer/lantern-guide.css
   < src/renderer/lantern-macroview.css
   < src/renderer/lantern-plans.css
   < src/renderer/lantern-prs.css
@@ -98,7 +99,7 @@ scripts/patch-claude-mic.js . script 087b1d9b23f0
 #feature serve-web
   = ext:claude-code-extension
 
-scripts/pr-review-demo.mjs . script 1728a77e2872
+scripts/pr-review-demo.mjs . script 5cd0944ba291
 #feature review-screen
   < src/renderer/lib/syntax-worker.ts
   < test/e2e/app/renderer.ts

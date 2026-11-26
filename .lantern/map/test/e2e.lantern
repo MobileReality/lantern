@@ -109,6 +109,10 @@ test/e2e/pr-review-explain.spec.ts . test 74e9fcb9eae6
 #feature pr-explain
   = test/e2e/support/graph-harness.ts
 
+test/e2e/pr-review-guide.spec.ts . test 1971a02ff013
+#feature review-screen
+  = test/e2e/support/graph-harness.ts
+
 test/e2e/pr-review-layout.spec.ts . test b31d6d6780c3
 #feature review-screen
   = test/e2e/support/graph-harness.ts
