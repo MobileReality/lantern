@@ -133,10 +133,15 @@ describe('the VS Code server lifecycle', () => {
     expect(describeLaunchError(error, command, 'win32').detail).toContain('code.cmd');
   });
 
-  it('turns stderr lines into entries, marks errors, and stops after a bounded number', () => {
+  it('turns spaced stderr lines into entries, marks errors, and stops after a bounded number', () => {
+    vi.useFakeTimers();
     const service = startService(makeLogDir());
     const stderr = createServerOutputReporter((input) => service.record(input), 3);
-    for (const line of ['', 'Error: EADDRINUSE 127.0.0.1:9888', 'warming up', 'line three', 'line four', 'line five']) stderr.push(line);
+    for (const line of ['', 'Error: EADDRINUSE 127.0.0.1:9888', 'warming up', 'line three', 'line four', 'line five']) {
+      stderr.push(line);
+      vi.advanceTimersByTime(1000);
+    }
+    vi.useRealTimers();
     const entries = service.listing().entries.filter((e) => e.source === 'editor-server');
     expect(entries.map((e) => [e.severity, e.message])).toEqual([
       ['error', 'Editor server output: Error: EADDRINUSE 127.0.0.1:9888'],
@@ -144,6 +149,40 @@ describe('the VS Code server lifecycle', () => {
       ['warning', 'Editor server output: line three'],
       ['warning', 'More editor server output was left out of the log.'],
     ]);
+  });
+
+  it('records a burst of stderr lines, such as a panic, as one entry with the rest as detail', () => {
+    vi.useFakeTimers();
+    const service = startService(makeLogDir());
+    const stderr = createServerOutputReporter((input) => service.record(input));
+    const panic = [
+      "thread 'tokio-rt-worker' panicked at D:\\a\\_work\\1\\s\\cli\\src\\commands\\serve_web.rs:803:5:",
+      'called `Result::unwrap()` on an `Err` value: RecvError(())',
+      'note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace',
+    ];
+    for (const line of panic) {
+      stderr.push(line);
+      vi.advanceTimersByTime(20);
+    }
+    vi.advanceTimersByTime(1000);
+    vi.useRealTimers();
+    const entries = service.listing().entries.filter((e) => e.source === 'editor-server');
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({ severity: 'error', message: expect.stringContaining('panicked at') });
+    for (const line of panic) expect(entries[0].detail).toContain(line.slice(0, 40));
+  });
+
+  it('flushes a burst still pending when the server exits', () => {
+    vi.useFakeTimers();
+    const report = vi.fn();
+    const stderr = createServerOutputReporter(report);
+    stderr.push('first');
+    stderr.push('second');
+    expect(report).not.toHaveBeenCalled();
+    stderr.flush();
+    vi.useRealTimers();
+    expect(report).toHaveBeenCalledTimes(1);
+    expect(report.mock.calls[0][0]).toMatchObject({ severity: 'warning', message: 'Editor server output: first', detail: 'first\nsecond' });
   });
 
   it('says what the health check last saw', () => {

@@ -297,7 +297,7 @@ test/devserver.test.ts . test 159caa06feda
   = src/main/devserver-guard.ts#TOKEN_HEADER
   = src/main/devserver.ts#start
 
-test/diagnostics-capture.test.ts . test 66caeddabe35
+test/diagnostics-capture.test.ts . test 812be14305b6
 #feature app-diagnostics
   = src/main/diagnostics/capture.ts#installMainCapture
   = src/main/diagnostics/editor-server.ts#describeServerStop
