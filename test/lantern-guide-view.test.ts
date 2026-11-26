@@ -100,7 +100,7 @@ describe('the guide view', () => {
     await flush();
     expect(view.el.querySelector('.lt-guide-summary')?.textContent).toBe('Two edits in one file.');
     expect(view.el.querySelector('.lt-guide-level')?.textContent).toBe('Low risk');
-    expect(view.el.querySelectorAll('.lt-guide-rail-item input[type="checkbox"]')).toHaveLength(2);
+    expect(view.rail.querySelectorAll('.lt-guide-rail-item input[type="checkbox"]')).toHaveLength(2);
     expect(view.el.querySelector('.lt-guide-step[data-step="0"] .cl.add .code')?.textContent).toBe('FOUR');
     expect(view.el.querySelector('.lt-guide-step[data-step="0"]')?.textContent).not.toContain('TEN');
   });
@@ -148,7 +148,7 @@ describe('the guide view', () => {
     expect(pseudo.textContent).toBe('four becomes FOUR');
     view.el.querySelector<HTMLButtonElement>('.lt-guide-pseudo-toggle')?.click();
     expect(pseudo.hidden).toBe(true);
-    const check = view.el.querySelector<HTMLInputElement>('.lt-guide-rail-item[data-step="0"] input') as HTMLInputElement;
+    const check = view.rail.querySelector<HTMLInputElement>('.lt-guide-rail-item[data-step="0"] input') as HTMLInputElement;
     check.checked = true;
     check.dispatchEvent(new Event('change', { bubbles: true }));
     expect(view.el.querySelector('.lt-guide-step[data-step="0"]')?.getAttribute('data-done')).toBe('true');
@@ -159,12 +159,12 @@ describe('the guide view', () => {
   it('keeps ticks and the current step when the same pull request is shown again', () => {
     const { view } = mountGuide();
     view.move(1);
-    const check = view.el.querySelector<HTMLInputElement>('.lt-guide-rail-item[data-step="1"] input') as HTMLInputElement;
+    const check = view.rail.querySelector<HTMLInputElement>('.lt-guide-rail-item[data-step="1"] input') as HTMLInputElement;
     check.checked = true;
     check.dispatchEvent(new Event('change', { bubbles: true }));
     view.show(pr('1', { files: FILES, guide: { ...GUIDE } }));
     expect(view.el.querySelector('.lt-guide-step[aria-current="step"]')?.getAttribute('data-step')).toBe('1');
-    expect(view.el.querySelector<HTMLInputElement>('.lt-guide-rail-item[data-step="1"] input')?.checked).toBe(true);
+    expect(view.rail.querySelector<HTMLInputElement>('.lt-guide-rail-item[data-step="1"] input')?.checked).toBe(true);
   });
 });
 
@@ -192,6 +192,22 @@ describe('the review screen with a guide', () => {
     expect(root.querySelector('.lt-guide-step[aria-current="step"]')?.getAttribute('data-step')).toBe('1');
     button(root, 'guide')?.click();
     expect(root.querySelector<HTMLElement>('.lt-guide')?.hidden).toBe(false);
+  });
+
+  it('puts the step rail in the left pane in place of the file list, and a file name in a step opens Files on that file', async () => {
+    const root = mount({ guide: GUIDE });
+    expect(root.querySelector('.lt-side .lt-guide-rail')).not.toBeNull();
+    expect(root.querySelector('.lt-side .pr-file')).toBeNull();
+    expect(root.querySelector('.lt-grid')?.classList.contains('lt-guide-wide')).toBe(true);
+    root.querySelector<HTMLButtonElement>('.lt-guide-go[data-guide-go="1"]')?.click();
+    expect(root.querySelector('.lt-guide-step[aria-current="step"]')?.getAttribute('data-step')).toBe('1');
+    await flush();
+    await flush();
+    root.querySelector<HTMLButtonElement>('[data-guide-open]')?.click();
+    expect(button(root, 'files')?.getAttribute('aria-pressed')).toBe('true');
+    expect(root.querySelector('.lt-grid')?.classList.contains('lt-guide-wide')).toBe(false);
+    expect(root.querySelector('.lt-side .pr-file')).not.toBeNull();
+    expect(root.querySelector('.lt-side .lt-guide-rail')).toBeNull();
   });
 
   it('opens a pull request without a guide in Files with no Guide switch', () => {

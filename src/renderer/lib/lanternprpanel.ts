@@ -164,6 +164,10 @@ function headerHtml(ctx: PrPanelContext) {
   );
 }
 
+function prHeadHtml(ctx: PrPanelContext) {
+  return `<button class="pr-back" data-pr-back>← Back to filters</button>${headerHtml(ctx)}`;
+}
+
 function prPanelHtml(ctx: PrPanelContext) {
   const clear = ctx.activeFilters ? `<button class="clear-all" data-clear-all data-tip="Reset every filter and leave the pull request">Clear all filters · ${ctx.activeFilters}</button>` : '';
   return (
@@ -175,5 +179,5 @@ function prPanelHtml(ctx: PrPanelContext) {
   );
 }
 
-export { fileRow, isHttpsUrl, prMarks, prPanelHtml, reviewSequence };
+export { fileRow, isHttpsUrl, prHeadHtml, prMarks, prPanelHtml, reviewSequence };
 export type { FileMark, PrMark, PrPanelContext };

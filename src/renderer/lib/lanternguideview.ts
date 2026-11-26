@@ -13,6 +13,7 @@ interface GuideViewOptions {
 
 interface GuideView {
   el: HTMLElement;
+  rail: HTMLElement;
   show(pr: LanternPr | undefined): void;
   move(delta: 1 | -1): void;
   handleKey(ev: KeyboardEvent): boolean;
@@ -58,6 +59,7 @@ function newState(): GuideState {
 
 function createGuideView(opts: GuideViewOptions): GuideView {
   const root = el('section', 'lt-guide-view');
+  const rail = el('nav', 'lt-guide-nav');
   const states = new Map<string, GuideState>();
   let pr: LanternPr | undefined;
   let guide: LanternGuide | null = null;
@@ -71,7 +73,7 @@ function createGuideView(opts: GuideViewOptions): GuideView {
     if (!guide) return;
     guide.steps.forEach((_, index) => {
       const step = stepEl(index);
-      const rail = root.querySelector<HTMLElement>(`.lt-guide-rail-item[data-step="${index}"]`);
+      const item = rail.querySelector<HTMLElement>(`.lt-guide-rail-item[data-step="${index}"]`);
       const open = isOpen(index);
       const current = index === state.current;
       const done = state.done.has(index);
@@ -87,12 +89,12 @@ function createGuideView(opts: GuideViewOptions): GuideView {
         step.querySelector<HTMLElement>('.lt-guide-pseudo')?.toggleAttribute('hidden', !pseudo);
         step.querySelector<HTMLElement>('.lt-guide-pseudo-toggle')?.setAttribute('aria-pressed', String(pseudo));
       }
-      if (rail) {
-        rail.dataset.current = String(current);
-        rail.dataset.done = String(done);
-        if (current) rail.setAttribute('aria-current', 'step');
-        else rail.removeAttribute('aria-current');
-        const check = rail.querySelector<HTMLInputElement>('input');
+      if (item) {
+        item.dataset.current = String(current);
+        item.dataset.done = String(done);
+        if (current) item.setAttribute('aria-current', 'step');
+        else item.removeAttribute('aria-current');
+        const check = item.querySelector<HTMLInputElement>('input');
         if (check) check.checked = done;
       }
     });
@@ -174,16 +176,13 @@ function createGuideView(opts: GuideViewOptions): GuideView {
     risk.dataset.level = next.risk.level;
     risk.append(el('b', 'lt-guide-level', RISK_LABEL[next.risk.level]), document.createTextNode(` ${next.risk.why}`));
     head.append(risk);
-    const rail = el('ol', 'lt-guide-rail');
-    rail.setAttribute('aria-label', 'Steps');
-    rail.append(...next.steps.map(railItem));
+    const list = el('ol', 'lt-guide-rail');
+    list.setAttribute('aria-label', 'Steps');
+    list.append(...next.steps.map(railItem));
+    rail.replaceChildren(list);
     const steps = el('ol', 'lt-guide-steps');
     steps.append(...next.steps.map(stepItem));
-    const nav = el('nav', 'lt-guide-nav');
-    nav.append(rail);
-    const body = el('div', 'lt-guide-body');
-    body.append(nav, steps);
-    root.replaceChildren(head, body);
+    root.replaceChildren(head, steps);
     root.setAttribute('aria-label', `Guide of pull request #${id}`);
   }
 
@@ -194,7 +193,7 @@ function createGuideView(opts: GuideViewOptions): GuideView {
     if (scroll) stepEl(index)?.scrollIntoView?.({ block: 'nearest' });
   }
 
-  root.addEventListener('click', (ev) => {
+  function onClick(ev: Event) {
     const target = ev.target as Element;
     const open = target.closest<HTMLElement>('[data-guide-open]');
     if (open) return opts.open(open.dataset.guideOpen ?? '');
@@ -205,25 +204,31 @@ function createGuideView(opts: GuideViewOptions): GuideView {
     if (pseudo) flip(state.pseudo, Number(pseudo.dataset.guidePseudo));
     const picked = fold?.dataset.guideFold ?? pseudo?.dataset.guidePseudo ?? jump?.dataset.guideGo;
     if (picked !== undefined) go(Number(picked), !!jump);
-  });
+  }
 
-  root.addEventListener('change', (ev) => {
+  root.addEventListener('click', onClick);
+  rail.addEventListener('click', onClick);
+  rail.addEventListener('change', onChange);
+
+  function onChange(ev: Event) {
     const check = (ev.target as Element).closest<HTMLInputElement>('[data-guide-done]');
     if (!check) return;
     const index = Number(check.dataset.guideDone);
     if (check.checked) state.done.add(index);
     else state.done.delete(index);
     sync();
-  });
+  }
 
   return {
     el: root,
+    rail,
     show(next) {
       const nextGuide = guideOf(next);
       if (!next || !nextGuide) {
         pr = undefined;
         guide = null;
         root.replaceChildren();
+        rail.replaceChildren();
         return;
       }
       if (pr?.id === next.id && guide === nextGuide) return;
@@ -248,6 +253,7 @@ function createGuideView(opts: GuideViewOptions): GuideView {
     dispose() {
       tickets += 1;
       root.replaceChildren();
+      rail.replaceChildren();
     },
   };
 }

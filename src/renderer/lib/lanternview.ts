@@ -35,7 +35,7 @@ import { mountRegionTools } from './lanternregiontools';
 import { mountSections } from './lanternsections/controller';
 import { isSelectable, mountPrStrip } from './lanternprs';
 import { fillDescriptions } from './lanternprdescribe';
-import { prMarks, prPanelHtml, reviewSequence } from './lanternprpanel';
+import { prHeadHtml, prMarks, prPanelHtml, reviewSequence } from './lanternprpanel';
 import type { PrPanelContext } from './lanternprpanel';
 import type { StepNav } from './modalsteps';
 import type { Filters, Layout, Pos } from './lanternlayout';
@@ -293,7 +293,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     comments: { project: opts.project, language: () => source.language.code, openFile: (path) => reveal(path, review.mode()) },
     onStep: stepTo,
   });
-  const guideView = createGuideView({ readDiff: diffCache?.read, open: (path) => reveal(path, review.mode(), false) });
+  const guideView = createGuideView({ readDiff: diffCache?.read, open: openFromGuide });
   guideHost.append(guideView.el);
   const regions = createRegions(browserRegionStore(opts.project));
   const panes = mountPanes(grid, side, review.el, { regions, main, store: browserStore(opts.project) });
@@ -666,6 +666,11 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     nav.silence();
   }
 
+  function openFromGuide(path: string) {
+    showView('files');
+    reveal(path, review.mode(), false);
+  }
+
   function wantsGuide(id: string) {
     const pick = data.prs.find((p) => p.id === id);
     return !!guideOf(pick) && (guideChoice.get(id) ?? true);
@@ -676,6 +681,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     pixiHost.hidden = flow || guide;
     flowHost.hidden = !flow;
     guideHost.hidden = !guide;
+    grid.classList.toggle('lt-guide-wide', guide);
     main.classList.toggle('lt-flow-on', flow);
     main.classList.toggle('lt-guide-on', guide);
   }
@@ -1209,6 +1215,13 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const overviewOnly = macro.isOn() && !top && !plan;
     grid.classList.toggle('lt-side-none', overviewOnly);
     if (!macro.isOn()) drawer.set(false, true);
+    if (pr && guideOn) {
+      side.innerHTML = prHeadHtml(prRowsContext(pr, 0));
+      side.append(guideView.rail);
+      drawDescription(pr);
+      regionTools.attachList();
+      return;
+    }
     if (macro.isOn()) {
       const prView = macroPrNow();
       const rows = prView ? prRowsContext(prView.pr, 0) : null;
@@ -1425,7 +1438,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       return drawer.set(false);
     }
     if (graphless()) {
-      if ((guideOn && guideView.handleKey(ev)) || review.stepKey(ev) || nav.backspace(ev)) return;
+      if (guideOn ? guideView.handleKey(ev) : review.stepKey(ev) || nav.backspace(ev)) return;
       if (ev.key !== 'Escape') return;
       if (flowPick) clearFlowPick();
       else if (macro.isOn() && macro.selected()) pickBlock(null);
@@ -1526,7 +1539,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   side.addEventListener('click', onSideClick);
   side.addEventListener('contextmenu', onSideMenu);
   side.addEventListener('keydown', (ev) => {
-    if (currentPr()) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file'));
+    if (currentPr() && !guideOn) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file'));
   });
   planPane.addEventListener('click', onSideClick);
   drawer.el.addEventListener('click', onSideClick);

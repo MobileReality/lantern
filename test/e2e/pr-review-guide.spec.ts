@@ -43,6 +43,12 @@ test('opens on the guide with the summary, the risk, a step rail and the steps i
   await expect(step(page, 0).locator('.lt-guide-why')).toContainText('read its contract first');
   await expect(step(page, 0).locator('.cl.add').first()).toContainText('export function calculateOrderTotal');
   await expect(page.locator('.lt-pixi-host')).toBeHidden();
+  await expect(page.locator('.lt-review')).toBeHidden();
+  await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(0);
+  await expect(page.locator('.lt-side .lt-guide-rail')).toBeVisible();
+  const [rail, guide] = await Promise.all([page.locator('.lt-side:not(.lt-overview)').boundingBox(), page.locator('.lt-guide-view').boundingBox()]);
+  expect(guide!.x).toBeGreaterThan(rail!.x + rail!.width - 1);
+  expect(guide!.width).toBeGreaterThan(700);
 });
 
 test('shows only the hunks a step names, a file may sit in several steps', async () => {
@@ -73,6 +79,12 @@ test('J and K move the current step, a collapsed skim step expands on click', as
   await expect(step(page, 3)).toHaveAttribute('aria-current', 'step');
   await page.keyboard.press('k');
   await expect(step(page, 2)).toHaveAttribute('aria-current', 'step');
+  await expect(step(page, 2)).toBeInViewport();
+  await page.locator('.lt-guide-go[data-guide-go="4"]').click();
+  await expect(step(page, 4)).toHaveAttribute('aria-current', 'step');
+  await expect(page.locator('.lt-guide-rail-item[data-step="4"]')).toHaveAttribute('aria-current', 'step');
+  await expect(step(page, 4)).toBeInViewport();
+  await page.locator('.lt-guide-go[data-guide-go="2"]').click();
   await expect(step(page, 2)).toHaveAttribute('data-open', 'false');
   await step(page, 4).locator('.lt-guide-fold').click();
   await expect(step(page, 4)).toHaveAttribute('data-open', 'true');
@@ -108,10 +120,24 @@ test('switching to Files shows the file list and the graph, and back to Guide ke
   await expect(page.locator('.lt-viewbar [data-view="files"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.pr-review')).toContainText('Changed files');
   await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(5);
+  await expect(page.locator('.lt-side .lt-guide-rail')).toHaveCount(0);
+  await expect(page.locator('.lt-review')).toBeVisible();
   await expect(page.locator('.lt-pixi-node-access.pr-new')).toContainText('calculate-order-total.ts');
   await page.locator('.lt-viewbar [data-view="guide"]').click();
   await expect(page.locator('.lt-guide-view')).toBeVisible();
+  await expect(page.locator('.lt-review')).toBeHidden();
+  await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(0);
   await expect(step(page, 0).locator('.lt-guide-pseudo')).toBeVisible();
+});
+
+test('a file name inside a step switches to Files with that file open', async () => {
+  await openGuide();
+  const page = harness.page;
+  await step(page, 1).locator('.lt-guide-file-name').first().click();
+  await expect(page.locator('.lt-viewbar [data-view="files"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.lt-guide-view')).toBeHidden();
+  await expect(page.locator('.lt-review .lt-code-path')).toContainText('use-checkout.ts');
+  await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(5);
 });
 
 test('a pull request with no guide opens in Files and offers no Guide switch', async () => {
