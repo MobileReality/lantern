@@ -1332,6 +1332,11 @@ test/lantern-pr-flow-parse.test.ts . test b5a5e7f62cd5
   = src/main/lantern-pr-parse.ts#parsePrRecord
   = test/helpers/lantern-flow-cases.ts#REJECTED_FLOWS
 
+test/lantern-pr-guide.test.ts . test 39df52d3d2a8
+#feature pull-requests
+  = skills/lantern-setup/scripts/prguide.mjs
+  = skills/lantern-setup/scripts/prs.mjs
+
 test/lantern-pr-merge.test.ts . test 7eebeece46d2
 #feature pull-requests
   = src/main/lantern.ts

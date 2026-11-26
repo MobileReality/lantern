@@ -202,6 +202,7 @@
   "lantern-pr-overlay-view.test.ts": "Checks branch graph overlays and view cache invalidation",
   "lantern-pr-overlay.test.ts": "Checks branch map overlays, tip caching and access guards",
   "lantern-pr-flow-parse.test.ts": "Checks the PR record flow: valid stories, the files a step points at and every refusal, with the record still shown without its flow",
+  "lantern-pr-guide.test.ts": "Checks a PR guide survives JSON to record lines to parsed form, every limit refuses, a malformed guide fails the record, and coverage reports missed, doubled and unknown hunks",
   "lantern-areas-lookup.test.ts": "Proves lookup packets hold no member list, other feature or path, skip features in To assign, and that lookup score passes a correct set, fails a shuffled one, lists every misplaced feature and exits 2 on missing or malformed answers",
   "lantern-areas-run.test.ts": "Proves lookup run passes a right stand-in reader, fails a shuffled one with the misplaced list, exits 2 naming a packet that errors or times out, and calls claude with exactly the no-tools flags from a scratch directory outside the project without ELECTRON_RUN_AS_NODE",
   "lantern-areas-check.test.ts": "Proves areas.mjs check passes a product grouping, rejects a layer-named one by its names, fails each of the eight rules alone, ignores file share, handles unassigned features and exits 2 on unusable input",

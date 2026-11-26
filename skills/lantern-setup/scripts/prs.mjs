@@ -6,6 +6,7 @@ import { decodePath, hasControlCharacter } from './lib.mjs';
 import { PLAN_REF, PLAN_TAG, isIsoDate } from './plan-ref.mjs';
 import { DESCRIBE_TAG, parseDescribeLines } from './prdescribe.mjs';
 import { FLOW_TAGS, parseFlowLines } from './prflow.mjs';
+import { GUIDE_TAGS, parseGuideLines } from './prguide.mjs';
 
 export const PR_HEADER = 'lantern-pr 1';
 export const PR_DIR = '.lantern/prs';
@@ -83,6 +84,7 @@ function parseRecord(text, file, spec) {
     const planEntries = [];
     const orders = [];
     const flowLines = [];
+    const guideLines = [];
     const describeLines = [];
     const seen = new Map();
     const lines = text.split(/\r?\n/);
@@ -134,6 +136,11 @@ function parseRecord(text, file, spec) {
             const flowLine = /^#([a-z]+)(?:[ \t]+(.*))?$/.exec(line);
             if (flowLine && FLOW_TAGS.includes(flowLine[1])) {
                 flowLines.push({ tag: flowLine[1], raw: (flowLine[2] ?? '').trim(), where });
+                return;
+            }
+            const guideLine = /^#([a-z]+)(?:[ \t]+(.*))?$/.exec(line);
+            if (guideLine && GUIDE_TAGS.includes(guideLine[1])) {
+                guideLines.push({ tag: guideLine[1], raw: (guideLine[2] ?? '').trim(), where });
                 return;
             }
             if (!key || ![...spec.required, ...OPTIONAL].includes(key[1])) return;
@@ -211,6 +218,8 @@ function parseRecord(text, file, spec) {
     const plans = parsePlanEntries(planEntries, errors);
     const flow = parseFlowLines(flowLines, listed);
     errors.push(...flow.errors);
+    const guide = parseGuideLines(guideLines, listed);
+    errors.push(...guide.errors);
     const describe = parseDescribeLines(describeLines);
     errors.push(...describe.errors);
 
@@ -255,6 +264,7 @@ function parseRecord(text, file, spec) {
         order,
         plans,
         flow: flow.errors.length ? [] : flow.stories,
+        guide: guide.guide,
         description: describe.description,
         errors,
         warnings,

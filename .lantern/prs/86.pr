@@ -1,0 +1,35 @@
+lantern-pr 1
+# 86
+#title Add the PR guide grammar, validator and hunk coverage check
+#url https://github.com/MobileReality/lantern/pull/86
+#branch feat/pr-guide-grammar
+#base feat/guided-review
+#opened 2026-11-26
+#head 149a2232d7e6b8dfaf6635f99a2879559299fdd9
+#describe what A pull-request guide of one to eight steps, each owning hunks, can be validated, written as record lines, parsed back and checked for coverage.
+#describe before A record had no guide.
+#describe after A record may carry guide lines; a malformed guide fails the record and a record without one stays valid.
+#describe verified The guide test, the full test suite and the typecheck pass.
+#plan guided-pr-review s1.1
++ skills/lantern-setup/scripts/prguide.mjs
++ test/lantern-pr-guide.test.ts
+~ skills/lantern-setup/references/format.md
+~ skills/lantern-setup/scripts/prs.mjs
+#order skills/lantern-setup/scripts/prguide.mjs
+#order skills/lantern-setup/scripts/prs.mjs
+#order skills/lantern-setup/references/format.md
+#order test/lantern-pr-guide.test.ts
+#reason skills/lantern-setup/scripts/prguide.mjs The guide needs one place that owns its limits, its record grammar and the check that every hunk belongs to one step.
+#reason test/lantern-pr-guide.test.ts Pins the round trip, each limit and the missed and doubled hunk reports before later items build on them.
+#reason skills/lantern-setup/references/format.md The guide lines and their limits are part of the record format, so readers and writers share one written grammar.
+#reason skills/lantern-setup/scripts/prs.mjs A malformed guide has to fail a record the way a malformed flow does, so the reader never shows a broken guide.
+#story A pull request carries a guide
+#step actor Author of a pull request
+#file skills/lantern-setup/scripts/prguide.mjs
+#step action writes a guide of ordered steps for
+#step subject the reviewer reading it
+#below actor Reviewer
+#below interaction can read the change step by step
+#file skills/lantern-setup/scripts/prs.mjs
+#file test/lantern-pr-guide.test.ts
+#below consequence only a flat list of files => steps in reading order, each with a why
