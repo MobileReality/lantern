@@ -297,7 +297,7 @@ test/devserver.test.ts . test 159caa06feda
   = src/main/devserver-guard.ts#TOKEN_HEADER
   = src/main/devserver.ts#start
 
-test/diagnostics-capture.test.ts . test 66caeddabe35
+test/diagnostics-capture.test.ts . test 812be14305b6
 #feature app-diagnostics
   = src/main/diagnostics/capture.ts#installMainCapture
   = src/main/diagnostics/editor-server.ts#describeServerStop
@@ -311,8 +311,9 @@ test/diagnostics-editor.test.ts . test d90ff43e5be3
   = src/main/diagnostics/throttle.ts#createThrottle
   = test/helpers/diagnostics-world.ts
 
-test/diagnostics-github.test.ts . test 8a9b68516782
+test/diagnostics-github.test.ts . test d12d918a7e6b
 #feature app-diagnostics
+  = src/main/diagnostics/github.ts#composeIssue
   = src/main/diagnostics/github.ts#planIssue
   = src/main/diagnostics/ipc.ts#registerDiagnosticsIpc
   = src/main/diagnostics/report.ts#formatReport
@@ -2433,7 +2434,7 @@ test/updater-guard.test.ts . test 034892cd9043
   = src/main/updater/guard.ts
   = src/main/updater/process-activity.ts
 
-test/updater-service.test.ts . test 7c4ed2027207
+test/updater-service.test.ts . test 87ec06bb9651
 #feature app-updates
   = src/main/updater/service.ts
   < test/helpers/updater-world.ts#updaterWorld

@@ -102,6 +102,30 @@ describe('a report too long for a link', () => {
   });
 });
 
+describe('the title of an issue', () => {
+  const warning = (id: string, message: string) => entry({ id, severity: 'warning', message });
+
+  it('comes from the most serious entry, not the latest one', () => {
+    const entries = [
+      warning('a', 'Editor server output: port in use'),
+      warning('b', 'Lantern closed unexpectedly last time'),
+      entry({ id: 'c', severity: 'info', message: 'Lantern started' }),
+    ];
+    const { draft } = composeIssue(entries, reportContext());
+    expect(draft.title).toBe('[Bug] Lantern closed unexpectedly last time');
+  });
+
+  it('prefers an error over a later warning', () => {
+    const entries = [entry({ id: 'a', severity: 'error', message: 'Window crashed' }), warning('b', 'Slow start')];
+    expect(composeIssue(entries, reportContext()).draft.title).toBe('[Bug] Window crashed');
+  });
+
+  it('keeps the crash titles', () => {
+    const entries = [warning('a', 'Something odd')];
+    expect(composeIssue(entries, reportContext(), 'fatal').draft.title).toBe('[Bug] Lantern recorded a crash');
+  });
+});
+
 describe('formatting a report', () => {
   it('lists the environment and each entry with exit code, signal and indented detail', () => {
     const text = formatReport([entry({ exitCode: 3, signal: 'SIGTERM', detail: 'line a\nline b' })], reportContext());

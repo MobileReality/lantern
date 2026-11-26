@@ -1,4 +1,4 @@
-import { clip, type CrashNotice, type DiagnosticEntry } from '../../shared/diagnostics';
+import { clip, severityRank, type CrashNotice, type DiagnosticEntry } from '../../shared/diagnostics';
 import { redactText } from './redact';
 import { environmentLines, formatReport, summarizeEntries, type ReportContext } from './report';
 
@@ -82,7 +82,7 @@ const CRASH_ISSUE_TITLE: Record<CrashNotice['reason'], string> = {
 
 function titleFor(entries: DiagnosticEntry[], crash: CrashNotice['reason'] | null, context: ReportContext): string {
   if (crash) return CRASH_ISSUE_TITLE[crash];
-  const subject = entries.at(-1);
+  const subject = entries.reduce<DiagnosticEntry | undefined>((top, next) => (!top || severityRank(next.severity) >= severityRank(top.severity) ? next : top), undefined);
   return redactText(subject ? `${TITLE_PREFIX}${subject.message}`.replace(/\s+/g, ' ') : `${TITLE_PREFIX}Lantern diagnostics`, context);
 }
 

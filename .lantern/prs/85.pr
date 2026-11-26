@@ -1,0 +1,31 @@
+lantern-pr 1
+# 85
+#title fix: record a server stderr burst as one Diagnostics entry
+#url https://github.com/MobileReality/lantern/pull/85
+#branch fix/group-server-stderr-burst
+#base main
+#opened 2026-11-26
+#head 94155aeb181bbaef637c6ef00e1b0ed25e5c0d77
+#describe what Server output lines that arrive together are logged as one Diagnostics entry, with the rest as its detail.
+#describe before A three-line Rust panic produced three entries and three issues.
+#describe after The same panic is one error entry holding all three lines.
+#describe verified The full test suite and the type check pass; the new panic test fails on the old code.
+~ src/main/diagnostics/editor-server.ts
+~ src/main/serveweb.ts
+~ test/diagnostics-capture.test.ts
+#order src/main/diagnostics/editor-server.ts
+#order src/main/serveweb.ts
+#order test/diagnostics-capture.test.ts
+#reason src/main/diagnostics/editor-server.ts One server crash printed several stderr lines, so each became its own entry and its own issue.
+#reason src/main/serveweb.ts A burst still waiting when the server exits or closes must be logged, not dropped.
+#reason test/diagnostics-capture.test.ts Pins that the three panic lines make one entry and that spaced lines still make one each.
+#story One server crash shows as one entry
+#step actor The VS Code server
+#file src/main/serveweb.ts
+#step action prints a panic over several lines to
+#file src/main/diagnostics/editor-server.ts
+#step subject the Diagnostics view
+#below actor A user
+#below interaction sees the whole panic in one entry
+#file test/diagnostics-capture.test.ts
+#below consequence one panic made three entries => one panic makes one entry

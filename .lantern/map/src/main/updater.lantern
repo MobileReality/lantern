@@ -15,7 +15,7 @@ src/main/updater/dialogs.ts . pure 0b8341cca2e5
   < src/main/updater/service.ts#CheckOutcome
   < src/shared/lang/messages.ts#msg
 
-src/main/updater/feed.ts . gateway c94a2fbe3c61
+src/main/updater/feed.ts . gateway e1722bf5b73f
 #feature app-updates
   < src/main/updater/version.ts#isNewerVersion
   = ext:electron-update-service
@@ -35,8 +35,9 @@ src/main/updater/process-activity.ts . service a7d95c85b333
   < src/main/updater/guard.ts#ProcessActivity
   = ext:macos-process-tools
 
-src/main/updater/service.ts . service 4149631276e0
+src/main/updater/service.ts . service 96c81786aa59
 #feature app-updates
+  < src/main/updater/feed.ts#isOfflineReason
   < src/main/updater/feed.ts#readLatestRelease
   < src/main/updater/feed.ts#readMacFeed
   < src/main/updater/guard.ts#canInstallNow

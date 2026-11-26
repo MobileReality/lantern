@@ -796,8 +796,9 @@ src/main/serveweb-reclaim.ts . service 4bae2cb5af8c
 src/main/serveweb-settings.ts . service 95c6102e988e
 #feature serve-web
 
-src/main/serveweb.ts . service a3a7e00dc6a0
+src/main/serveweb.ts . service 3912a2d153c8
 #feature serve-web
+  > src/main/diagnostics/editor-server.ts#createServerOutputReporter
   > src/main/diagnostics/editor-server.ts#describeServerStop
   > src/main/diagnostics/index.ts#reportDiagnostic
   = src/main/serveweb-code-paths.ts

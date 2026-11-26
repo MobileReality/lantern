@@ -11,13 +11,14 @@ src/main/diagnostics/editor.ts . pure 981df63dfb1e
   < src/shared/diagnostics.ts#DiagnosticInput
   < src/shared/diagnostics.ts#clip
   = src/main/diagnostics/throttle.ts#createThrottle
-src/main/diagnostics/editor-server.ts . pure ab7c5729fd59
+src/main/diagnostics/editor-server.ts . pure 805261cba036
 #feature app-diagnostics
   < src/main/serveweb-parse.ts#ServerPage
   < src/shared/diagnostics.ts#DiagnosticInput
-src/main/diagnostics/github.ts . pure a73f7be5c250
+src/main/diagnostics/github.ts . pure dd47cdf280b7
 #feature app-diagnostics
   < src/shared/diagnostics.ts#clip
+  < src/shared/diagnostics.ts#severityRank
   = src/main/diagnostics/redact.ts#redactText
   = src/main/diagnostics/report.ts#formatReport
   = src/main/diagnostics/report.ts#summarizeEntries
