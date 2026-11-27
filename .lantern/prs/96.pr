@@ -57,3 +57,31 @@ lantern-pr 1
 #step subject a step
 #file src/renderer/lib/lanternreview.ts
 #below consequence Step note and file reason both showed => Only the step note explains the file
+#guide The guide becomes the left pane in Macro as in Files and Flow, and the overview card shrinks to a bar that expands on demand.
+#risk low Renderer-only change to one pane; no data, parsing or record format is touched, and the unguided review is unchanged.
+#gstep careful Split the overview card into a bar and a foldable rest
+#gwhy Everything else leans on this markup: the bar keeps id, state, title and View PR, and the rest hides behind a toggle whose default depends on the guide.
+#ghunk src/renderer/lib/lanternprpanel.ts
+#gpseudo the bar always shows number, state, title, View PR and the toggle
+#gpseudo the rest of the card is hidden unless the card is open
+#gpseudo the card is open by default only when the record has no guide
+#gstep careful Host the guide in Macro and remember the card state
+#gwhy Macro now draws the header plus the guide pane instead of the file list, and the toggle keeps one open or closed choice per pull request.
+#ghunk src/renderer/lib/lanternview.ts
+#gpseudo guide stops no longer exclude Macro, so stepping follows the guide there too
+#gpseudo in Macro with a guide, the side pane is the header and the guide pane
+#gpseudo toggling the card flips the stored choice for this pull request and redraws
+#gstep skim Drop the reason under a step note
+#gwhy A one-line change: the step note already explains the file, so the reason block is skipped when a note is shown.
+#ghunk src/renderer/lib/lanternreview.ts
+#gstep skim Style the compact bar
+#gwhy Layout for the bar and its toggle in one or two lines, using only the existing theme variables.
+#ghunk src/renderer/lantern-prs.css
+#gstep skim Give the harness a guided pull request on the areas map
+#gwhy Macro is only available on the areas fixture, so it gets a guided copy and the harness can load it with the guide parameter.
+#ghunk test/fixtures/graph/areas-pr-demo.ts
+#ghunk test/e2e/app/renderer.ts
+#gstep skim Pin the behaviour in tests
+#gwhy The e2e spec asserts the guide in Macro, the card collapsed then expanded, and no REASON above the diff; the unit test covers the same rules in jsdom.
+#ghunk test/e2e/pr-review-guide.spec.ts
+#ghunk test/lantern-guide-view.test.ts
