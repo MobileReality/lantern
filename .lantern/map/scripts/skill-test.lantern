@@ -41,7 +41,7 @@ scripts/skill-test/extra-skills.mjs . service b0276ba45b03
   > skills/lantern-delegate/agents/reviewer.md
   > skills/lantern-delegate/protocol.md
   > skills/lantern-delegate/scripts/required-skills.mjs
-scripts/skill-test/fake-agent.mjs . util a9407c1f9a02
+scripts/skill-test/fake-agent.mjs . util 8387640a30ee
 #feature skill-checks
   < scripts/e2e-delegate/workspace.mjs#REPO_ROOT
   < scripts/skill-test/fixtures.mjs#mapProject

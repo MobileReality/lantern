@@ -13,7 +13,7 @@ skills/lantern-setup/references/codex.md . skill bd1dfb875ece
   @ skills/lantern-setup/scripts/model.mjs
   @ skills/lantern-setup/scripts/systems.mjs
 
-skills/lantern-setup/references/format.md . skill 033c2321fda2
+skills/lantern-setup/references/format.md . skill a12d094c6602
 #feature map-setup
   @ skills/lantern-plan/scripts/plan-format.mjs
   @ skills/lantern-plan/scripts/plan-parse.mjs
