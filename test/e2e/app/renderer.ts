@@ -1,7 +1,7 @@
 import { mountLanternView } from '../../../src/renderer/lib/lanternview';
 import { graphFixtures } from '../../fixtures/graph/graph-fixtures';
 import type { GraphFixtureName } from '../../fixtures/graph/graph-fixtures';
-import { AREAS_PR_ID, areasPrDemo, readAreasFile, readAreasPrDiff, readAreasPrFile } from '../../fixtures/graph/areas-pr-demo';
+import { AREAS_PR_ID, areasPrDemo, areasPrGuided, readAreasFile, readAreasPrDiff, readAreasPrFile } from '../../fixtures/graph/areas-pr-demo';
 import { MACRO_LAB_PR_ID, macroLabDemo, macroLabPayload } from '../../fixtures/graph/macro-lab-demo';
 import { MACRO_SIZED_PR_ID, macroSized } from '../../fixtures/graph/macro-sized-demo';
 import { macroSizeDemo } from '../../fixtures/graph/macro-sizes-demo';
@@ -29,8 +29,8 @@ const sizeFixtures = { 'macro-lab-small': 'small', 'macro-lab-large': 'large' } 
 const macroSize = fixtureName in sizeFixtures ? macroSizeDemo(sizeFixtures[fixtureName as keyof typeof sizeFixtures]) : null;
 const sized = isMacroSized ? macroSized(Number(params.get('areas') ?? 4), Number(params.get('features') ?? 8)) : null;
 const withFlow = params.get('flow') === 'rich' ? { ...prReviewDemo, prs: prReviewDemo.prs.map((one) => ({ ...one, flow: richFlow })) } : prReviewDemo;
-const prReviewMap = params.get('guide') === 'demo' ? { ...withFlow, prs: withFlow.prs.map((one) => ({ ...one, guide: demoGuide })) } : withFlow;
-const fixture = fixtureName === 'real' ? (__LANTERN_REAL_MAP__ ?? graphFixtures.overview) : isPrReview ? prReviewMap : isAreasPr ? areasPrDemo : isMacroLab ? macroLabDemo : sized ? sized.map : macroSize ? macroSize.map : graphFixtures[fixtureName as GraphFixtureName];
+const prReviewMap = params.get('guide') === 'demo' ? { ...withFlow, prs: withFlow.prs.map((one) => ({ ...one, guide: demoGuide, url: 'https://github.com/example/shop/pull/317' })) } : withFlow;
+const fixture = fixtureName === 'real' ? (__LANTERN_REAL_MAP__ ?? graphFixtures.overview) : isPrReview ? prReviewMap : isAreasPr ? (params.get('guide') === 'demo' ? areasPrGuided : areasPrDemo) : isMacroLab ? macroLabDemo : sized ? sized.map : macroSize ? macroSize.map : graphFixtures[fixtureName as GraphFixtureName];
 const root = document.querySelector('#graph-harness');
 
 if (!(root instanceof HTMLElement)) throw new Error('Graph harness root is missing');

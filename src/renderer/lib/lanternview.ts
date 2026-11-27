@@ -177,6 +177,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   let tilesCache: { base: Layout; sig: string; layout: Layout } | null = null;
   const expandedDirs = new Set<string>();
   const describeOpen = new Set<string>();
+  const headOpen = new Map<string, boolean>();
   let foldFiles = opts.foldFiles ?? true;
   let searchTimer: ReturnType<typeof setTimeout> | undefined;
   let relationMode = false;
@@ -328,7 +329,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   function guideStopsNow(): GuideStop[] | null {
     const pr = currentPr();
     const guide = guideOf(pr);
-    return pr && guide && !macro.isOn() ? guideStops(guide, reviewSequence(pr)) : null;
+    return pr && guide ? guideStops(guide, reviewSequence(pr)) : null;
   }
 
   function currentStop(stops: readonly GuideStop[], path: string | null) {
@@ -1125,7 +1126,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function prRowsContext(pr: LanternPr, activeFilters: number): PrPanelContext {
-    return { stats: statsFor(pr), pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
+    return { headOpen: headOpen.get(pr.id), stats: statsFor(pr), pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
   }
 
   let refreshing: { id: string; busy: boolean; note: string } | null = null;
@@ -1182,6 +1183,14 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     (side.querySelector('.pr-reasons-row') as HTMLElement | null)?.focus({ preventScroll: true });
   }
 
+  function toggleHead() {
+    const pr = currentPr();
+    if (!pr) return;
+    headOpen.set(pr.id, !(headOpen.get(pr.id) ?? !guideOf(pr)));
+    redrawSide();
+    (side.querySelector('.pr-head-toggle') as HTMLElement | null)?.focus({ preventScroll: true });
+  }
+
   function drawDescription(pr: LanternPr) {
     fillDescriptions(
       side,
@@ -1214,7 +1223,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       planPane.textContent = '';
       planPaneHtml = '';
     }
-    const top = pr ? `<div class="lt-side-list">${prPanelHtml(prRowsContext(pr, activeGroups(filters, showUnmapped)))}</div>` : '';
+    const macroStops = pr && macro.isOn() ? guideStopsNow() : null;
+    const top = pr ? `<div class="lt-side-list">${macroStops ? prHeadHtml(prRowsContext(pr, activeGroups(filters, showUnmapped))) : prPanelHtml(prRowsContext(pr, activeGroups(filters, showUnmapped)))}</div>` : '';
     const overviewOnly = macro.isOn() && !top && !plan;
     grid.classList.toggle('lt-side-none', overviewOnly);
     if (!macro.isOn()) drawer.set(false, true);
@@ -1223,6 +1233,11 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       const rows = prView ? prRowsContext(prView.pr, 0) : null;
       drawer.fill(macroSideHtml(data, macro.frame(), macro.selected(), prView && rows ? { view: prView, rows } : null, openFileNow()));
       side.innerHTML = top;
+      if (pr && macroStops) {
+        currentStop(macroStops, reviewPath());
+        guidePane.show(pr, { stops: macroStops, at: guideAt, marked: pickedNow()?.files });
+        side.querySelector('.lt-side-list')?.append(guidePane.el);
+      }
       if (pr) drawDescription(pr);
       regionTools.attachList();
       return;
@@ -1513,6 +1528,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       focusSearch = true;
     } else if (t.hasAttribute('data-pr-map')) return opts.onMapMissing?.();
     else if (t.hasAttribute('data-pr-reasons')) return generateReasons();
+    else if (t.hasAttribute('data-pr-head-toggle')) return toggleHead();
     else if (t.hasAttribute('data-pr-refresh')) return refreshPr();
     else if (t.hasAttribute('data-pr-back')) setPr(null, false);
     else if (t.hasAttribute('data-pr-diff')) return openPrDiff(t.getAttribute('data-pr-diff') ?? '');

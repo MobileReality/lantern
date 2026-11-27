@@ -148,9 +148,63 @@ test('the left pane of the guide hides and comes back with the saved layout like
   await expect(page.locator('.lt-side .lt-guide-step')).toHaveCount(5);
 });
 
+const head = (page: Page) => page.locator('.lt-side .pr-head');
+const headToggle = (page: Page) => head(page).locator('.pr-head-toggle');
+
+test('Macro keeps the guide in the left pane in place of the changed-files list', async () => {
+  await loadGraphFixture(harness, 'areas-pr', undefined, '', { guide: 'demo', macro: 'areas' });
+  const page = harness.page;
+  const macro = page.locator('.lt-viewbar [data-view="macro"]');
+  if ((await macro.getAttribute('aria-pressed')) !== 'true') await macro.click();
+  await expect(macro).toHaveAttribute('aria-pressed', 'true');
+  const side = page.locator('.lt-side:not(.lt-overview)');
+  await expect(side.locator('.lt-guide-pane')).toBeVisible();
+  await expect(side.locator('.lt-guide-step')).toHaveCount(3);
+  await expect(side.locator('.pr-ordered .pr-file')).toHaveCount(0);
+  await expect(side.locator('.pr-head')).toBeVisible();
+  await expect(side.locator('.pr-head-toggle')).toHaveAttribute('aria-expanded', 'false');
+  await side.locator('.lt-guide-step[data-step="1"] .lt-guide-file-name').click();
+  await expect(page.locator('.lt-review .lt-guide-note-title')).toHaveText('Review area 2');
+  await expect(side.locator('.lt-guide-step[data-step="1"] .lt-guide-file[data-current="true"]')).toHaveCount(1);
+});
+
+test('the overview card is a compact bar with a guide, opens on its toggle, and is the same in Flow', async () => {
+  await openGuide();
+  const page = harness.page;
+  await expect(headToggle(page)).toHaveAttribute('aria-expanded', 'false');
+  await expect(head(page).locator('.pr-id')).toContainText('#');
+  await expect(head(page).locator('.pr-badge')).toBeVisible();
+  await expect(head(page).locator('.pr-title')).toBeVisible();
+  await expect(head(page).locator('.pr-open-link')).toBeVisible();
+  await expect(head(page).locator('.pr-head-more')).toBeHidden();
+  await expect(head(page).locator('.pr-meta').first()).toBeHidden();
+  await headToggle(page).click();
+  await expect(headToggle(page)).toHaveAttribute('aria-expanded', 'true');
+  await expect(head(page).locator('.pr-head-more')).toBeVisible();
+  await expect(head(page).locator('.pr-meta').first()).toBeVisible();
+  await page.locator('.lt-viewbar [data-view="flow"]').click();
+  await expect(page.locator('.lt-flow')).toBeVisible();
+  await expect(headToggle(page)).toHaveAttribute('aria-expanded', 'true');
+  await headToggle(page).click();
+  await expect(head(page).locator('.pr-head-more')).toBeHidden();
+  await expect(page.locator('.lt-side .lt-guide-pane')).toBeVisible();
+});
+
+test('with a guide the middle pane shows the step note and no REASON block above the diff', async () => {
+  await openGuide();
+  const page = harness.page;
+  await file(page, 3, 'src/checkout/order-summary.tsx').click();
+  await expect(page.locator('.lt-review .lt-guide-note')).toBeVisible();
+  await expect(page.locator('.lt-review .lt-modal-reason')).toHaveCount(0);
+  await expect(page.locator('.lt-review .lt-reason-label')).toHaveCount(0);
+});
+
 test('a pull request with no guide keeps the file list and offers no guide', async () => {
   await loadGraphFixture(harness, 'pr-review');
   const page = harness.page;
+  await expect(headToggle(page)).toHaveAttribute('aria-expanded', 'true');
+  await expect(head(page).locator('.pr-head-more')).toBeVisible();
+  await expect(page.locator('.lt-review .lt-modal-reason')).toHaveCount(1);
   await expect(page.locator('.lt-viewbar [data-view="guide"]')).toHaveCount(0);
   await expect(page.locator('.lt-guide-pane')).toHaveCount(0);
   await expect(page.locator('.pr-ordered .pr-file')).toHaveCount(5);

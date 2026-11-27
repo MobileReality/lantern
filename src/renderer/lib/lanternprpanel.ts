@@ -3,13 +3,14 @@ import type { PrFileStats } from '../../main/lantern-prdiff';
 import { providerOfRecordUrl } from '@shared/providers';
 import { esc } from './lanternctx';
 import { providerLogo } from './provider-logo';
+import CHEVRON_ICON from '@renderer/assets/icons/chevron-down.svg';
 import PEN_ICON from '@renderer/assets/icons/pen.svg';
 import UNMAPPED_ICON from '@renderer/assets/icons/stat-unmapped.svg';
 import { diffHtml, prInfoHtml, stateClass } from '@renderer/pr-info';
 import { descriptionHostHtml } from './lanternprdescribe';
 import { fileLabelHtml } from './file-label';
 import type { PickedStep } from './lanternflow';
-import { guideErrorOf } from './lanternguide';
+import { guideErrorOf, guideOf } from './lanternguide';
 
 type PrMark = '+' | '~' | '-';
 type FileMark = PrMark | 'related';
@@ -39,6 +40,7 @@ interface PrPanelContext {
   refreshBusy?: boolean;
   refreshNote?: string;
   stats?: PrFileStats;
+  headOpen?: boolean;
 }
 
 function prMarks(pr: LanternPr, only?: ReadonlySet<string> | null) {
@@ -127,41 +129,63 @@ function mapMissingHtml(ctx: PrPanelContext) {
   return pill ? `<div class="pr-meta pr-map-row">${pill}</div>` : '';
 }
 
-function actionsHtml(ctx: PrPanelContext, description: string) {
-  const pr = ctx.pr;
+function openLinkHtml(pr: LanternPr) {
   const host = providerOfRecordUrl(pr.url);
-  const link = isHttpsUrl(pr.url) ? `<a class="lt-btn lt-primary pr-open-link" href="${esc(pr.url)}" target="_blank" rel="noopener noreferrer">${host ? providerLogo(host).outerHTML : ''}View PR</a>` : '';
+  return isHttpsUrl(pr.url) ? `<a class="lt-btn lt-primary pr-open-link" href="${esc(pr.url)}" target="_blank" rel="noopener noreferrer">${host ? providerLogo(host).outerHTML : ''}View PR</a>` : '';
+}
+
+function actionsHtml(ctx: PrPanelContext, description: string) {
   const refresh = ctx.canRefresh ? `<button class="lt-btn pr-secondary pr-refresh" data-pr-refresh data-tip="Fetch from the remote and read this pull request again"${ctx.refreshBusy ? ' disabled aria-busy="true"' : ''}>${ctx.refreshBusy ? 'Refreshing…' : 'Refresh'}</button>` : '';
   const note = ctx.refreshNote ? `<span class="pr-reasons-note" role="status">${esc(ctx.refreshNote)}</span>` : '';
-  if (!link && !refresh && !description) return '';
-  return `<div class="pr-actions pr-refresh-row" tabindex="-1"><span class="pr-desc-slot"></span><span class="pr-actions-gap"></span>${note}${refresh}${link}</div>`;
+  if (!refresh && !description) return '';
+  return `<div class="pr-actions pr-refresh-row" tabindex="-1"><span class="pr-desc-slot"></span><span class="pr-actions-gap"></span>${note}${refresh}</div>`;
+}
+
+function headOpenNow(ctx: PrPanelContext) {
+  return ctx.headOpen ?? !guideOf(ctx.pr);
+}
+
+function headBarHtml(ctx: PrPanelContext, id: string, badge: string, link: string, open: boolean) {
+  const label = open ? 'Hide the pull request overview' : 'Show the pull request overview';
+  return (
+    `<div class="pr-head-bar"><div class="pr-id">${id}${badge}</div><h1 class="pr-title" data-tip="${esc(ctx.pr.title)}">${esc(ctx.pr.title)}</h1>${link}` +
+    `<button class="pr-head-toggle" data-pr-head-toggle aria-expanded="${open}" aria-controls="pr-head-more" aria-label="${label}" data-tip="${label}">${CHEVRON_ICON}</button></div>`
+  );
+}
+
+function headMoreHtml(open: boolean, inner: string) {
+  return `<div class="pr-head-more" id="pr-head-more"${open ? '' : ' hidden'}>${inner}</div>`;
 }
 
 function localHeaderHtml(ctx: PrPanelContext) {
   const pr = ctx.pr;
+  const open = headOpenNow(ctx);
   const summary = pr.summary ? `<p class="pr-summary">${esc(pr.summary)}</p>` : '';
   const description = descriptionHostHtml(pr);
   const story = summary || description ? `<div class="pr-story">${summary}${description}</div>` : '';
   const bar = description ? '<div class="pr-actions" tabindex="-1"><span class="pr-desc-slot"></span></div>' : '';
+  const more =
+    `<div class="pr-head-top"><div class="pr-meta"><code>${esc(pr.branch)}</code> compared with where it left <code>${esc(pr.base)}</code></div>` +
+    `<div class="pr-card-foot"><span>${diffHtml(pr)}</span></div></div>${story}${bar}`;
   return (
-    `<div class="pr-head pr-local"><div class="pr-head-card"><div class="pr-head-top"><div class="pr-id"><span>local comparison</span><span class="pr-badge pr-local">local</span></div>` +
-    `<h1 class="pr-title">${esc(pr.title)}</h1>` +
-    `<div class="pr-meta"><code>${esc(pr.branch)}</code> compared with where it left <code>${esc(pr.base)}</code></div>` +
-    `<div class="pr-card-foot"><span>${diffHtml(pr)}</span></div></div>${story}${bar}</div></div>${contextHtml(ctx)}`
+    `<div class="pr-head pr-local" data-open="${open}"><div class="pr-head-card">` +
+    `${headBarHtml(ctx, '<span>local comparison</span>', '<span class="pr-badge pr-local">local</span>', '', open)}${headMoreHtml(open, more)}</div></div>${contextHtml(ctx)}`
   );
 }
 
 function headerHtml(ctx: PrPanelContext) {
   const pr = ctx.pr;
   if (pr.source === 'local') return localHeaderHtml(ctx);
+  const open = headOpenNow(ctx);
   const summary = pr.summary ? `<p class="pr-summary">${esc(pr.summary)}</p>` : '';
   const description = descriptionHostHtml(pr);
   const story = summary || description ? `<div class="pr-story">${summary}${description}</div>` : '';
+  const more =
+    `<div class="pr-head-top"><div class="pr-meta"><code>${esc(pr.branch)}</code> → <code>${esc(pr.base)}</code></div>` +
+    `${prInfoHtml(pr, Date.now())}${mapMissingHtml(ctx)}</div>${story}${actionsHtml(ctx, description)}`;
   return (
-    `<div class="pr-head ${stateClass(pr)}"><div class="pr-head-card"><div class="pr-head-top"><div class="pr-id"><span>#${esc(pr.id)}</span><span class="pr-badge ${stateClass(pr)}" aria-label="Pull request state: ${pr.state}">${pr.state}</span></div>` +
-    `<h1 class="pr-title">${esc(pr.title)}</h1>` +
-    `<div class="pr-meta"><code>${esc(pr.branch)}</code> → <code>${esc(pr.base)}</code></div>` +
-    `${prInfoHtml(pr, Date.now())}${mapMissingHtml(ctx)}</div>${story}${actionsHtml(ctx, description)}</div></div>`
+    `<div class="pr-head ${stateClass(pr)}" data-open="${open}"><div class="pr-head-card">` +
+    `${headBarHtml(ctx, `<span>#${esc(pr.id)}</span>`, `<span class="pr-badge ${stateClass(pr)}" aria-label="Pull request state: ${pr.state}">${pr.state}</span>`, openLinkHtml(pr), open)}${headMoreHtml(open, more)}</div></div>`
   );
 }
 

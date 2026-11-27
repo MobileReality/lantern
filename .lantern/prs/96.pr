@@ -1,0 +1,87 @@
+lantern-pr 1
+# 96
+#title feat: guide in every review view and a compact overview card
+#url https://github.com/MobileReality/lantern/pull/96
+#branch feat/guide-compact-card
+#base feat/guided-review
+#opened 2026-11-27
+#head 9760d1b75cc39c0354451ff450f66a53aa9f6dc6
+#describe what The guide is the left pane in Files, Flow and Macro, and the overview card is a compact bar that expands on demand.
+#describe what With a guide the middle pane shows the step note only, with no REASON block.
+#describe before Macro fell back to the changed-files list with reasons, and the full overview card sat above the guide.
+#describe after Macro shows the bar and the guide steps; the card opens on its toggle and starts collapsed when the record has a guide.
+#describe verified Typecheck, lint, the unit suite and the pull request review and graph e2e runs, with e2e checks that fail on the old behaviour.
+~ src/renderer/lantern-prs.css
+~ src/renderer/lib/lanternprpanel.ts
+~ src/renderer/lib/lanternreview.ts
+~ src/renderer/lib/lanternview.ts
+~ test/e2e/app/renderer.ts
+~ test/e2e/pr-review-guide.spec.ts
+~ test/fixtures/graph/areas-pr-demo.ts
+~ test/lantern-guide-view.test.ts
+#order src/renderer/lib/lanternprpanel.ts
+#order src/renderer/lib/lanternview.ts
+#order src/renderer/lib/lanternreview.ts
+#order src/renderer/lantern-prs.css
+#order test/fixtures/graph/areas-pr-demo.ts
+#order test/e2e/app/renderer.ts
+#order test/e2e/pr-review-guide.spec.ts
+#order test/lantern-guide-view.test.ts
+#reason src/renderer/lantern-prs.css Gives the compact bar and its toggle a layout of one or two lines, using the existing theme variables only.
+#reason src/renderer/lib/lanternprpanel.ts Splits the overview card into an always-visible bar and a foldable rest, so a guided review does not open on a wall of text.
+#reason src/renderer/lib/lanternreview.ts The step note already explains the file, so a second REASON block above the diff only repeats it.
+#reason src/renderer/lib/lanternview.ts Hosts the guide in Macro as in Files and Flow, and keeps the card's open state per pull request so it does not depend on the view.
+#reason test/e2e/app/renderer.ts Lets the harness show a guided pull request on the areas map and gives it a link, so Macro and View PR can be checked.
+#reason test/e2e/pr-review-guide.spec.ts Pins the three behaviours asked for: guide in Macro, card collapsed with a guide and opened on click, no REASON above a step's diff.
+#reason test/fixtures/graph/areas-pr-demo.ts Supplies a guided copy of the areas pull request, the only fixture where the Macro view is available.
+#reason test/lantern-guide-view.test.ts Covers the card default and toggle and the reason rule at unit level, where the e2e run would be slow to diagnose.
+#story Reviewer reads a guided pull request
+#step actor Reviewer
+#file src/renderer/lib/lanternview.ts
+#step action opens the guide of
+#step subject a guided pull request in any view
+#below interaction can follow the steps in Files, Flow and Macro
+#file test/e2e/pr-review-guide.spec.ts
+#below consequence Macro dropped the guide for a file list => Macro keeps the guide steps on the left
+#story Reviewer skims the overview
+#step actor Reviewer
+#step action opens the overview of
+#step subject a pull request with a guide
+#file src/renderer/lib/lanternprpanel.ts
+#file src/renderer/lantern-prs.css
+#below interaction can expand the card when they want the details
+#below consequence A full card pushed the steps down => A bar of one or two lines sits above the steps
+#story Reviewer reads one step in the diff
+#step actor Reviewer
+#step action opens a file of
+#step subject a step
+#file src/renderer/lib/lanternreview.ts
+#below consequence Step note and file reason both showed => Only the step note explains the file
+#guide The guide becomes the left pane in Macro as in Files and Flow, and the overview card shrinks to a bar that expands on demand.
+#risk low Renderer-only change to one pane; no data, parsing or record format is touched, and the unguided review is unchanged.
+#gstep careful Split the overview card into a bar and a foldable rest
+#gwhy Everything else leans on this markup: the bar keeps id, state, title and View PR, and the rest hides behind a toggle whose default depends on the guide.
+#ghunk src/renderer/lib/lanternprpanel.ts
+#gpseudo the bar always shows number, state, title, View PR and the toggle
+#gpseudo the rest of the card is hidden unless the card is open
+#gpseudo the card is open by default only when the record has no guide
+#gstep careful Host the guide in Macro and remember the card state
+#gwhy Macro now draws the header plus the guide pane instead of the file list, and the toggle keeps one open or closed choice per pull request.
+#ghunk src/renderer/lib/lanternview.ts
+#gpseudo guide stops no longer exclude Macro, so stepping follows the guide there too
+#gpseudo in Macro with a guide, the side pane is the header and the guide pane
+#gpseudo toggling the card flips the stored choice for this pull request and redraws
+#gstep skim Drop the reason under a step note
+#gwhy A one-line change: the step note already explains the file, so the reason block is skipped when a note is shown.
+#ghunk src/renderer/lib/lanternreview.ts
+#gstep skim Style the compact bar
+#gwhy Layout for the bar and its toggle in one or two lines, using only the existing theme variables.
+#ghunk src/renderer/lantern-prs.css
+#gstep skim Give the harness a guided pull request on the areas map
+#gwhy Macro is only available on the areas fixture, so it gets a guided copy and the harness can load it with the guide parameter.
+#ghunk test/fixtures/graph/areas-pr-demo.ts
+#ghunk test/e2e/app/renderer.ts
+#gstep skim Pin the behaviour in tests
+#gwhy The e2e spec asserts the guide in Macro, the card collapsed then expanded, and no REASON above the diff; the unit test covers the same rules in jsdom.
+#ghunk test/e2e/pr-review-guide.spec.ts
+#ghunk test/lantern-guide-view.test.ts
