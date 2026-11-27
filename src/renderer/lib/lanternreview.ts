@@ -232,7 +232,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     guideNote = guideNoteBlock(next.guide);
     if (guideNote) head.after(guideNote);
     reason?.remove();
-    reason = reasonBlock(next.reason);
+    reason = next.guide ? null : reasonBlock(next.reason);
     if (reason) (guideNote ?? head).after(reason);
     explanation?.remove();
     explanation = opts.explain && next.head ? opts.explain.row({ pr: next.pr, path: next.path, head: next.head }) : null;

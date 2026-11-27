@@ -283,6 +283,47 @@ describe('the review screen with a guide', () => {
     expect(button(root, 'guide')).toBeNull();
   });
 
+  const toggle = (root: HTMLElement) => root.querySelector<HTMLButtonElement>('.pr-head .pr-head-toggle') as HTMLButtonElement;
+  const more = (root: HTMLElement) => root.querySelector<HTMLElement>('.pr-head .pr-head-more') as HTMLElement;
+
+  it('collapses the overview card to its bar when the record has a guide, and opens it on the toggle', () => {
+    const root = mount({ guide: GUIDE, summary: 'Why this exists.' });
+    expect(toggle(root).getAttribute('aria-expanded')).toBe('false');
+    expect(more(root).hidden).toBe(true);
+    expect(root.querySelector('.pr-head .pr-head-bar .pr-title')).not.toBeNull();
+    expect(root.querySelector('.pr-head .pr-head-bar .pr-open-link')).not.toBeNull();
+    toggle(root).click();
+    expect(toggle(root).getAttribute('aria-expanded')).toBe('true');
+    expect(more(root).hidden).toBe(false);
+    expect(more(root).textContent).toContain('Why this exists.');
+    toggle(root).click();
+    expect(more(root).hidden).toBe(true);
+    expect(root.querySelector('.lt-side .lt-guide-pane')).not.toBeNull();
+  });
+
+  it('keeps the overview card open without a guide, and lets it be closed', () => {
+    const root = mount({ summary: 'Why this exists.' });
+    expect(toggle(root).getAttribute('aria-expanded')).toBe('true');
+    expect(more(root).hidden).toBe(false);
+    toggle(root).click();
+    expect(more(root).hidden).toBe(true);
+  });
+
+  it('leaves the reason out of the middle pane when the step note explains the file, and keeps it for a file no step names', async () => {
+    const root = mount({ guide: GUIDE });
+    await open(root, 'src/a.ts', 1);
+    expect(root.querySelector('.lt-review .lt-guide-note')).not.toBeNull();
+    expect(root.querySelector('.lt-review .lt-modal-reason')).toBeNull();
+    const review = root.querySelector('.lt-review') as HTMLElement;
+    key(review, 'ArrowRight');
+    key(review, 'ArrowRight');
+    await flush();
+    await flush();
+    expect(reviewed(root)).toContain('c.ts');
+    expect(root.querySelector('.lt-review .lt-guide-note')).toBeNull();
+    expect(root.querySelector('.lt-review .lt-modal-reason')?.textContent).toContain('Left out of the guide.');
+  });
+
   it('says in the left pane that the guide could not be read, with the reason, and keeps the file list', () => {
     const root = mount({ guideError: 'step 1 has no why' });
     expect(root.querySelector('.lt-side .pr-guide-error')?.textContent).toBe('The guide in this record could not be read: step 1 has no why');
