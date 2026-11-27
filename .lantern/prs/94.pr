@@ -68,3 +68,42 @@ lantern-pr 1
 #below consequence a separate Guide view with one long scroll of hunks => the usual review screen, one file at a time in guide order
 #file src/renderer/lib/lanternmacroview.ts
 #file test/lantern-guide-view.test.ts
+#guide The guide now rides on the review screen: steps in the left pane, one file's diff in the middle, arrows walk files in guide order.
+#risk medium Changes how the review screen picks the file order and the left pane for every pull request that has a guide.
+#gstep careful Turn the guide into ordered stops
+#gwhy Everything else leans on this pure module, so read it first. A stop is one file of one step, and the same file under two steps is two stops.
+#ghunk src/renderer/lib/lanternguide.ts
+#gpseudo list each changed file of each step in step order
+#gpseudo append the changed files no step names
+#gpseudo find the stop of a file, keeping the current one if it still fits
+#gpseudo mark the diff rows a step's line ranges cover
+#gstep careful Show the step next to the diff
+#gwhy The review pane gets the step note above the diff and marks the step's lines once the diff has drawn. The diff view now reports each fill so the marks are never lost.
+#ghunk src/renderer/lib/lanternreview.ts
+#ghunk src/renderer/lib/lanternguidenote.ts
+#ghunk src/renderer/lib/prdiffmodal.ts
+#gpseudo repaint the note and marks when only the step changes
+#gpseudo mark and scroll to the first marked line after each diff fill
+#gstep careful Draw the steps in the left pane
+#gwhy The guide pane replaces the changed-file list: ticks, folds, pseudocode and each step's files with the current one highlighted. The header also tells when a guide could not be read.
+#ghunk src/renderer/lib/lanternguideview.ts
+#ghunk src/renderer/lib/lanternprpanel.ts
+#gpseudo draw summary, risk and one card per step with its files
+#gpseudo highlight the current file under its own step
+#gpseudo keep ticks and folds per pull request
+#gstep careful Wire the review screen to the guide
+#gwhy The view swaps the file list for the guide pane, builds the review target and stepping from the stops, and drops the Guide view. Macro keeps the plain list and order.
+#ghunk src/renderer/lib/lanternview.ts
+#gpseudo when the pull request has a guide and Macro is off, use the guide stops for the file order
+#gpseudo a click on a guide file opens it as a diff at that step and keeps focus there
+#gpseudo arrow stepping moves to the next stop and resolves its step
+#gstep skim Drop the Guide switch and restyle
+#gwhy The strip goes back to Files, Macro and Flow, and the styles move from the full-screen view to the left pane, the note and the marked lines.
+#ghunk src/renderer/lib/lanternmacroview.ts
+#ghunk src/renderer/lantern-guide.css
+#ghunk src/renderer/lantern-select.css
+#ghunk src/renderer/lantern.css
+#gstep skim Test the new behaviour
+#gwhy The unit tests pin stops, marks and the pane, and the e2e spec proves no Guide button, steps on the left, arrows in guide order and Flow staying open.
+#ghunk test/lantern-guide-view.test.ts
+#ghunk test/e2e/pr-review-guide.spec.ts
