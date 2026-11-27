@@ -1,35 +1,32 @@
 import type { LanternGuide, LanternGuideStep, LanternPr } from '../../main/lantern';
-import { langFor, parseDiffRows, semanticLanguageFor } from './codeview';
-import { planDiff } from './diffcollapse';
-import { diffLexicalLines, renderDiff } from './diffview';
 import { fileLabelHtml } from './file-label';
-import { guideOf, pathsOf, refsOf, selectRows } from './lanternguide';
-import type { ReadDiff } from './prdiffmodal';
+import { NO_STEP, guideOf, pathsOf } from './lanternguide';
+import type { GuideStop } from './lanternguide';
 
-interface GuideViewOptions {
-  readDiff?: ReadDiff;
-  open(path: string): void;
+interface GuidePaneOptions {
+  open(path: string, step: number): void;
 }
 
-interface GuideView {
+interface GuidePaneState {
+  stops: readonly GuideStop[];
+  at: number;
+  marked?: ReadonlySet<string>;
+}
+
+interface GuidePane {
   el: HTMLElement;
-  rail: HTMLElement;
-  show(pr: LanternPr | undefined): void;
-  move(delta: 1 | -1): void;
-  handleKey(ev: KeyboardEvent): boolean;
+  show(pr: LanternPr | undefined, state: GuidePaneState): void;
   dispose(): void;
 }
 
-interface GuideState {
+interface Ticks {
   done: Set<number>;
   toggled: Set<number>;
   pseudo: Set<number>;
-  current: number;
 }
 
 const RISK_LABEL = { low: 'Low risk', medium: 'Medium risk', high: 'High risk' } as const;
-const NO_READER_TEXT = 'Diffs cannot be read in this window.';
-const KEEPS_KEYS = 'input:not([type="checkbox"]), textarea, select, [contenteditable="true"]';
+const REST_TITLE = 'Not in a step';
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, text = '') {
   const node = document.createElement(tag);
@@ -45,112 +42,91 @@ function button(cls: string, text: string, data: Record<string, string> = {}) {
   return node;
 }
 
-function notice(text: string) {
-  return el('div', 'rv-trunc', text);
-}
-
 function flip(set: Set<number>, index: number) {
   if (!set.delete(index)) set.add(index);
 }
 
-function newState(): GuideState {
-  return { done: new Set(), toggled: new Set(), pseudo: new Set(), current: 0 };
+function newTicks(): Ticks {
+  return { done: new Set(), toggled: new Set(), pseudo: new Set() };
 }
 
-function createGuideView(opts: GuideViewOptions): GuideView {
-  const root = el('section', 'lt-guide-view');
-  const rail = el('nav', 'lt-guide-nav');
-  const states = new Map<string, GuideState>();
-  let pr: LanternPr | undefined;
-  let guide: LanternGuide | null = null;
-  let state = newState();
-  let tickets = 0;
+function fileItem(path: string, step: number) {
+  const item = el('li', 'lt-guide-file');
+  item.dataset.path = path;
+  const open = button('lt-guide-file-name', '', { guideOpen: path, guideStep: String(step) });
+  open.innerHTML = fileLabelHtml(path);
+  open.dataset.tip = path;
+  open.setAttribute('aria-label', `Open ${path}`);
+  item.append(open);
+  return item;
+}
 
-  const isOpen = (index: number) => (guide?.steps[index].careful ?? false) !== state.toggled.has(index);
+function createGuidePane(opts: GuidePaneOptions): GuidePane {
+  const root = el('section', 'lt-guide-pane');
+  const states = new Map<string, Ticks>();
+  let guide: LanternGuide | null = null;
+  let shownFor: { id: string; guide: LanternGuide; stops: string } | null = null;
+  let ticks = newTicks();
+
+  const isOpen = (index: number) => (guide?.steps[index].careful ?? false) !== ticks.toggled.has(index);
   const stepEl = (index: number) => root.querySelector<HTMLElement>(`.lt-guide-step[data-step="${index}"]`);
 
-  function sync() {
-    if (!guide) return;
-    guide.steps.forEach((_, index) => {
-      const step = stepEl(index);
-      const item = rail.querySelector<HTMLElement>(`.lt-guide-rail-item[data-step="${index}"]`);
-      const open = isOpen(index);
-      const current = index === state.current;
-      const done = state.done.has(index);
-      if (step) {
-        step.dataset.open = String(open);
-        step.dataset.done = String(done);
-        if (current) step.setAttribute('aria-current', 'step');
-        else step.removeAttribute('aria-current');
-        step.dataset.current = String(current);
-        step.querySelector<HTMLElement>('.lt-guide-fold')?.setAttribute('aria-expanded', String(open));
-        step.querySelector<HTMLElement>('.lt-guide-step-body')?.toggleAttribute('hidden', !open);
-        const pseudo = state.pseudo.has(index);
-        step.querySelector<HTMLElement>('.lt-guide-pseudo')?.toggleAttribute('hidden', !pseudo);
-        step.querySelector<HTMLElement>('.lt-guide-pseudo-toggle')?.setAttribute('aria-pressed', String(pseudo));
-      }
-      if (item) {
-        item.dataset.current = String(current);
-        item.dataset.done = String(done);
-        if (current) item.setAttribute('aria-current', 'step');
-        else item.removeAttribute('aria-current');
-        const check = item.querySelector<HTMLInputElement>('input');
-        if (check) check.checked = done;
-      }
-    });
-    const open = [...root.querySelectorAll<HTMLElement>('.lt-guide-step[data-open="true"] .lt-guide-hunks:not([data-loaded])')];
-    for (const box of open) void fillHunks(box, Number(box.dataset.step));
-  }
-
-  async function fillFile(box: HTMLElement, path: string, step: LanternGuideStep, ticket: number) {
-    const section = el('section', 'lt-guide-file');
-    const name = button('lt-guide-file-name', '', { guideOpen: path });
-    name.innerHTML = fileLabelHtml(path);
-    name.setAttribute('aria-label', `Open ${path}`);
-    const body = el('div', 'rv-code lt-code-body lt-guide-code');
-    section.append(name, body);
-    box.append(section);
-    const res = await (opts.readDiff as ReadDiff)((pr as LanternPr).id, path).catch(() => null);
-    if (ticket !== tickets) return;
-    if (!res?.ok) return void body.replaceChildren(notice(`Diff not available: ${res?.reason || 'could not read it'}.`));
-    if (res.binary) return void body.replaceChildren(notice('Binary file: no text diff to show.'));
-    const rows = selectRows(parseDiffRows(res.diff), refsOf(step.hunks, path));
-    if (!rows.length) return void body.replaceChildren(notice('This step names no line changes in this file.'));
-    const lexical = await diffLexicalLines(rows, langFor(path));
-    if (ticket !== tickets) return;
-    body.replaceChildren(renderDiff(rows, lexical, planDiff(rows, true), {}, semanticLanguageFor(path)));
-  }
-
-  async function fillHunks(box: HTMLElement, index: number) {
-    box.dataset.loaded = 'true';
-    const step = guide?.steps[index];
+  function syncStep(index: number, current: boolean) {
+    const step = stepEl(index);
     if (!step) return;
-    if (!opts.readDiff) return void box.append(notice(NO_READER_TEXT));
-    const ticket = tickets;
-    await Promise.all(pathsOf(step.hunks).map((path) => fillFile(box, path, step, ticket)));
+    const open = isOpen(index);
+    const done = ticks.done.has(index);
+    const pseudo = ticks.pseudo.has(index);
+    step.dataset.open = String(open);
+    step.dataset.done = String(done);
+    step.dataset.current = String(current);
+    if (current) step.setAttribute('aria-current', 'step');
+    else step.removeAttribute('aria-current');
+    step.querySelector<HTMLElement>('.lt-guide-fold')?.setAttribute('aria-expanded', String(open));
+    step.querySelector<HTMLElement>('.lt-guide-step-body')?.toggleAttribute('hidden', !open);
+    step.querySelector<HTMLElement>('.lt-guide-pseudo')?.toggleAttribute('hidden', !pseudo);
+    step.querySelector<HTMLElement>('.lt-guide-pseudo-toggle')?.setAttribute('aria-pressed', String(pseudo));
+    const check = step.querySelector<HTMLInputElement>('.lt-guide-check');
+    if (check) check.checked = done;
   }
 
-  function railItem(step: LanternGuideStep, index: number) {
-    const item = el('li', 'lt-guide-rail-item');
-    item.dataset.step = String(index);
-    const check = el('input', 'lt-guide-check');
-    check.type = 'checkbox';
-    check.dataset.guideDone = String(index);
-    check.setAttribute('aria-label', `Mark step ${index + 1} done: ${step.title}`);
-    const go = button('lt-guide-go', step.title, { guideGo: String(index) });
-    item.append(check, go);
-    return item;
+  function syncFiles(state: GuidePaneState) {
+    const here = state.stops[state.at];
+    root.querySelectorAll<HTMLElement>('.lt-guide-file').forEach((item) => {
+      const group = item.closest<HTMLElement>('[data-group]');
+      const path = item.dataset.path ?? '';
+      const current = !!here && group?.dataset.group === String(here.step) && path === here.path;
+      item.dataset.current = String(current);
+      item.dataset.same = String(!current && !!here && path === here.path);
+      item.dataset.flow = String(!!state.marked?.has(path));
+      const open = item.querySelector<HTMLElement>('.lt-guide-file-name');
+      if (current) open?.setAttribute('aria-current', 'true');
+      else open?.removeAttribute('aria-current');
+    });
+  }
+
+  function sync(state: GuidePaneState) {
+    if (!guide) return;
+    const here = state.stops[state.at];
+    guide.steps.forEach((_, index) => { syncStep(index, here?.step === index); });
+    syncFiles(state);
   }
 
   function stepItem(step: LanternGuideStep, index: number) {
     const item = el('li', 'lt-guide-step');
     item.dataset.step = String(index);
+    item.dataset.group = String(index);
     item.dataset.careful = String(step.careful);
     const where = `lt-guide-body-${index}`;
+    const top = el('div', 'lt-guide-step-top');
+    const check = el('input', 'lt-guide-check');
+    check.type = 'checkbox';
+    check.dataset.guideDone = String(index);
+    check.setAttribute('aria-label', `Mark step ${index + 1} done: ${step.title}`);
     const fold = button('lt-guide-fold', '', { guideFold: String(index) });
     fold.setAttribute('aria-controls', where);
-    const files = pathsOf(step.hunks).length;
-    fold.append(el('span', 'lt-guide-num', String(index + 1)), el('span', 'lt-guide-title', step.title), el('span', 'lt-guide-meta', `${step.careful ? 'careful' : 'skim'} · ${files} file${files === 1 ? '' : 's'}`));
+    fold.append(el('span', 'lt-guide-num', String(index + 1)), el('span', 'lt-guide-title', step.title), el('span', 'lt-guide-meta', step.careful ? 'careful' : 'skim'));
+    top.append(check, fold);
     const body = el('div', 'lt-guide-step-body');
     body.id = where;
     body.append(el('p', 'lt-guide-why', step.why));
@@ -161,102 +137,86 @@ function createGuideView(opts: GuideViewOptions): GuideView {
       code.setAttribute('aria-label', `Pseudocode of step ${index + 1}`);
       body.append(toggle, code);
     }
-    const hunks = el('div', 'lt-guide-hunks');
-    hunks.dataset.step = String(index);
-    body.append(hunks);
-    item.append(fold, body);
+    const files = el('ul', 'lt-guide-files');
+    files.append(...pathsOf(step.hunks).map((path) => fileItem(path, index)));
+    item.append(top, body, files);
     return item;
   }
 
-  function paint(next: LanternGuide, id: string) {
-    tickets += 1;
+  function restItem(paths: readonly string[]) {
+    const item = el('li', 'lt-guide-rest');
+    item.dataset.group = String(NO_STEP);
+    const files = el('ul', 'lt-guide-files');
+    files.append(...paths.map((path) => fileItem(path, NO_STEP)));
+    item.append(el('h2', 'lt-guide-rest-title', REST_TITLE), files);
+    return item;
+  }
+
+  function paint(next: LanternGuide, id: string, state: GuidePaneState) {
     const head = el('header', 'lt-guide-head');
     head.append(el('p', 'lt-guide-summary', next.summary));
     const risk = el('p', 'lt-guide-risk');
     risk.dataset.level = next.risk.level;
     risk.append(el('b', 'lt-guide-level', RISK_LABEL[next.risk.level]), document.createTextNode(` ${next.risk.why}`));
     head.append(risk);
-    const list = el('ol', 'lt-guide-rail');
-    list.setAttribute('aria-label', 'Steps');
-    list.append(...next.steps.map(railItem));
-    rail.replaceChildren(list);
     const steps = el('ol', 'lt-guide-steps');
+    steps.setAttribute('aria-label', 'Steps');
     steps.append(...next.steps.map(stepItem));
+    const rest = state.stops.filter((stop) => stop.step === NO_STEP).map((stop) => stop.path);
+    if (rest.length) steps.append(restItem(rest));
     root.replaceChildren(head, steps);
     root.setAttribute('aria-label', `Guide of pull request #${id}`);
-  }
-
-  function go(index: number, scroll = true) {
-    if (!guide || index < 0 || index >= guide.steps.length) return;
-    state.current = index;
-    sync();
-    if (scroll) stepEl(index)?.scrollIntoView?.({ block: 'nearest' });
   }
 
   function onClick(ev: Event) {
     const target = ev.target as Element;
     const open = target.closest<HTMLElement>('[data-guide-open]');
-    if (open) return opts.open(open.dataset.guideOpen ?? '');
+    if (open) return opts.open(open.dataset.guideOpen ?? '', Number(open.dataset.guideStep));
     const fold = target.closest<HTMLElement>('[data-guide-fold]');
     const pseudo = target.closest<HTMLElement>('[data-guide-pseudo]');
-    const jump = target.closest<HTMLElement>('[data-guide-go]');
-    if (fold) flip(state.toggled, Number(fold.dataset.guideFold));
-    if (pseudo) flip(state.pseudo, Number(pseudo.dataset.guidePseudo));
-    const picked = fold?.dataset.guideFold ?? pseudo?.dataset.guidePseudo ?? jump?.dataset.guideGo;
-    if (picked !== undefined) go(Number(picked), !!jump);
+    if (fold) flip(ticks.toggled, Number(fold.dataset.guideFold));
+    if (pseudo) flip(ticks.pseudo, Number(pseudo.dataset.guidePseudo));
+    const owner = (fold ?? pseudo)?.closest<HTMLElement>('.lt-guide-step');
+    if (owner) syncStep(Number(owner.dataset.step), owner.dataset.current === 'true');
   }
-
-  root.addEventListener('click', onClick);
-  rail.addEventListener('click', onClick);
-  rail.addEventListener('change', onChange);
 
   function onChange(ev: Event) {
     const check = (ev.target as Element).closest<HTMLInputElement>('[data-guide-done]');
     if (!check) return;
     const index = Number(check.dataset.guideDone);
-    if (check.checked) state.done.add(index);
-    else state.done.delete(index);
-    sync();
+    if (check.checked) ticks.done.add(index);
+    else ticks.done.delete(index);
+    syncStep(index, stepEl(index)?.dataset.current === 'true');
   }
+
+  root.addEventListener('click', onClick);
+  root.addEventListener('change', onChange);
 
   return {
     el: root,
-    rail,
-    show(next) {
+    show(next, state) {
       const nextGuide = guideOf(next);
       if (!next || !nextGuide) {
-        pr = undefined;
         guide = null;
+        shownFor = null;
         root.replaceChildren();
-        rail.replaceChildren();
         return;
       }
-      if (pr?.id === next.id && guide === nextGuide) return;
-      pr = next;
-      guide = nextGuide;
-      state = states.get(next.id) ?? newState();
-      state.current = Math.min(state.current, nextGuide.steps.length - 1);
-      states.set(next.id, state);
-      paint(nextGuide, next.id);
-      sync();
-    },
-    move: (delta) => go(state.current + delta),
-    handleKey(ev) {
-      if (!guide || ev.defaultPrevented || ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) return false;
-      if ((ev.target as Element | null)?.closest?.(KEEPS_KEYS)) return false;
-      const delta = ev.key.toLowerCase() === 'j' ? 1 : ev.key.toLowerCase() === 'k' ? -1 : 0;
-      if (!delta) return false;
-      ev.preventDefault();
-      go(state.current + delta);
-      return true;
+      const stops = state.stops.map((stop) => `${stop.step}:${stop.path}`).join('\0');
+      if (shownFor?.id !== next.id || shownFor.guide !== nextGuide || shownFor.stops !== stops) {
+        guide = nextGuide;
+        shownFor = { id: next.id, guide: nextGuide, stops };
+        ticks = states.get(next.id) ?? newTicks();
+        states.set(next.id, ticks);
+        paint(nextGuide, next.id, state);
+      }
+      sync(state);
     },
     dispose() {
-      tickets += 1;
       root.replaceChildren();
-      rail.replaceChildren();
     },
   };
 }
 
-export { createGuideView };
-export type { GuideView, GuideViewOptions };
+export { createGuidePane };
+export type { GuidePane, GuidePaneOptions, GuidePaneState };

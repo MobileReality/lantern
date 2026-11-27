@@ -132,7 +132,7 @@ interface DiffView {
   load(pr: string, path: string): void;
 }
 
-function createDiffView(read: ReadDiff, readSemantic?: ReadSemantic): DiffView {
+function createDiffView(read: ReadDiff, readSemantic?: ReadSemantic, onFilled?: () => void): DiffView {
   const stat = el('span', 'lt-diff-stat');
   const toggle = el('button', 'lt-diff-fold');
   toggle.type = 'button';
@@ -181,6 +181,7 @@ function createDiffView(read: ReadDiff, readSemantic?: ReadSemantic): DiffView {
           loaded = { path, res };
           fill(body, path, res, chrome, lexical, semantics, semanticResults, side);
           body.scrollTop = 0;
+          onFilled?.();
         });
         if (readSemantic) void Promise.all([
           res.oldSource ? readSemantic(path, res.oldSource) : undefined,
@@ -209,6 +210,7 @@ function createDiffView(read: ReadDiff, readSemantic?: ReadSemantic): DiffView {
     if (!loaded) return;
     fill(body, loaded.path, loaded.res, chrome, lexical, semantics, semanticResults, side);
     body.scrollTop = 0;
+    onFilled?.();
   });
   return { body, stat, toggle, load };
 }

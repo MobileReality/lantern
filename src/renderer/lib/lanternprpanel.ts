@@ -9,6 +9,7 @@ import { diffHtml, prInfoHtml, stateClass } from '@renderer/pr-info';
 import { descriptionHostHtml } from './lanternprdescribe';
 import { fileLabelHtml } from './file-label';
 import type { PickedStep } from './lanternflow';
+import { guideErrorOf } from './lanternguide';
 
 type PrMark = '+' | '~' | '-';
 type FileMark = PrMark | 'related';
@@ -164,16 +165,19 @@ function headerHtml(ctx: PrPanelContext) {
   );
 }
 
+function guideErrorHtml(pr: LanternPr) {
+  const error = guideErrorOf(pr);
+  return error ? `<p class="pr-guide-error" role="note">${esc(error)}</p>` : '';
+}
+
 function prHeadHtml(ctx: PrPanelContext) {
-  return `<button class="pr-back" data-pr-back>← Back to filters</button>${headerHtml(ctx)}`;
+  return `<button class="pr-back" data-pr-back>← Back to filters</button>${headerHtml(ctx)}${guideErrorHtml(ctx.pr)}${flowStepHtml(ctx.flowStep)}`;
 }
 
 function prPanelHtml(ctx: PrPanelContext) {
   const clear = ctx.activeFilters ? `<button class="clear-all" data-clear-all data-tip="Reset every filter and leave the pull request">Clear all filters · ${ctx.activeFilters}</button>` : '';
   return (
-    '<button class="pr-back" data-pr-back>← Back to filters</button>' +
-    headerHtml(ctx) +
-    flowStepHtml(ctx.flowStep) +
+    prHeadHtml(ctx) +
     clear +
     (ctx.pr.ordered ? orderedHtml(ctx) : GROUPS.map((g) => groupHtml(ctx, g.kind, g.title)).join(''))
   );
