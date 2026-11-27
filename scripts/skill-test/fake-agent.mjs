@@ -120,7 +120,7 @@ function writeRecordInputs(cwd, scenario) {
 }
 
 function dropGuide(file) {
-  const guideLine = /^#(guide|risk|gstep|gwhy|ghunk|gpseudo|gcareful) /;
+  const guideLine = /^#(guide|risk|gstep|gwhy|ghunk|gcareful) /;
   fs.writeFileSync(file, fs.readFileSync(file, 'utf8').split('\n').filter((line) => !guideLine.test(line)).join('\n'));
 }
 

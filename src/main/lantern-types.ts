@@ -202,7 +202,6 @@ interface LanternGuideStep {
   why: string;
   careful: boolean;
   hunks: LanternGuideHunk[];
-  pseudo?: string[];
 }
 
 interface LanternGuide {

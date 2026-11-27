@@ -513,7 +513,7 @@ lantern-pr 1
 - **Header** — line 1 is `lantern-pr 1`. The first `#` line is `# <id>` and equals the file name
   (`24.pr`). `#title`, `#url`, `#branch`, `#base`, `#opened` (ISO date `YYYY-MM-DD`) and `#head`
   (the full 40-hex commit sha the map matches) are required; `#summary` is optional. Each
-  appears at most once. `#reason`, `#order`, `#describe`, `#plan` and the flow lines `#story`, `#step`, `#below`, `#file` and the guide lines `#guide`, `#risk`, `#gstep`, `#gwhy`, `#ghunk`, `#gpseudo` (below) are the repeatable keys. Other `#` lines and blank
+  appears at most once. `#reason`, `#order`, `#describe`, `#plan` and the flow lines `#story`, `#step`, `#below`, `#file` and the guide lines `#guide`, `#risk`, `#gstep`, `#gwhy`, `#ghunk` (below) are the repeatable keys. Other `#` lines and blank
   lines are ignored.
 - **File lines** — `<kind> <path>`: `+` added, `~` modified, `-` removed. A rename is a `-` and a
   `+`. Every changed file is listed, mapped or not.
@@ -585,11 +585,10 @@ lantern-pr 1
   #ghunk <path>
   #ghunk <path> +<from>-<to>
   #ghunk <path> -<from>-<to>
-  #gpseudo <one line of pseudocode, careful steps only>
   ```
 
   `#guide` and `#risk` appear once each and open the guide; each `#gstep` starts a step and owns
-  the `#gwhy`, `#ghunk` and `#gpseudo` lines under it. A step is `careful` (read closely) or `skim`
+  the `#gwhy` and `#ghunk` lines under it. A step is `careful` (read closely) or `skim`
   (collapsed by default), has exactly one `#gwhy` and at least one `#ghunk`. A `#ghunk` names the
   hunks the step owns: `<path>` alone is the whole file (the only form that covers a change with no
   lines: a pure rename, a binary file, a mode change; a deleted file is also covered by its old range); `<path> +<from>-<to>` is a range of new-file
@@ -598,16 +597,16 @@ lantern-pr 1
   in a file line and must be a file line of the same record; a file may be split across steps by
   ranges. A range covers a hunk of `git diff -U0` it overlaps on the named side; every hunk should
   belong to exactly one step (`prguide.mjs`'s `guideCoverage` reports hunks in no step, hunks
-  in more than one, and references that match no hunk; pseudocode indentation is not kept). Limits, all counted in characters and with no control characters or tabs
+  in more than one, and references that match no hunk). Limits, all counted in characters and with no control characters or tabs
   (the constants of `prguide.mjs`): summary 1 to 160, risk why 1 to 160, title 1 to 60, why 1 to
-  240 and at most 2 sentences, pseudocode line 1 to 100 and at most 8 per step, at most 8 steps and
+  240 and at most 2 sentences, at most 8 steps and
   60 `#ghunk` lines per step, no hunk twice on a step. `lantern-sync` reads the guide from a JSON
-  `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks", "pseudo"}]}`
+  `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks"}]}`
   (a hunk is a path string, or `{"path", "side": "old"|"new", "start", "end"}`) through
   `guideFromJson` and writes it with `guideRecordLines` (`sync.mjs pr --guide-file`; `verify --require-guide` runs `guideCoverage` on the hunks of `git diff -U0 <base>...HEAD`, a rename carrying its new path and a hunk with no lines being covered by the bare path). Like `#reason`, the lines are unknown `#`
   lines to a reader that predates them, so the format stays `lantern-pr 1`. `prs.mjs` errors on
   a guide line before the `#gstep` it belongs to, a missing or repeated `#guide` or `#risk`, an
-  unknown level or mode, a step with no `#gwhy` or `#ghunk`, a `#gpseudo` on a skim step, a
+  unknown level or mode, a step with no `#gwhy` or `#ghunk`, a
   malformed range, a path the record does not list, and any limit above; the same rule as for a
   malformed flow.
 - **Description** — optional `#describe <section> <text>` lines, the pull request's own words for

@@ -23,11 +23,6 @@
 .lt-guide-step-body { display: flex; flex-direction: column; gap: 8px; padding: 6px 10px 0 31px; }
 .lt-guide-step-body[hidden] { display: none; }
 .lt-guide-why { margin: 0; color: var(--lt-ink-2); font-size: var(--fs-base); line-height: 1.5; overflow-wrap: anywhere; }
-.lt-guide-pseudo-toggle { align-self: flex-start; padding: 2px 9px; background: none; border: 1px solid var(--lt-rule); border-radius: var(--radius-sm); color: var(--lt-ink-2); font: inherit; font-size: var(--fs-sm); cursor: default; }
-.lt-guide-pseudo-toggle:hover, .lt-guide-pseudo-toggle[aria-pressed="true"] { color: var(--lt-ink); border-color: var(--lt-ink-3); }
-.lt-guide-pseudo-toggle:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 1px; }
-.lt-guide-pseudo { margin: 0; padding: 8px 10px; background: var(--lt-panel); border-left: 2px solid var(--lt-ink-3); color: var(--lt-ink); font: var(--fs-sm) / 1.5 var(--lt-mono); white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
-.lt-guide-pseudo[hidden] { display: none; }
 
 .lt-guide-rest-title { margin: 0; padding: 7px 10px 0; color: var(--lt-ink-3); font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .lt-guide-files { display: flex; flex-direction: column; margin: 0; padding: 4px 4px 5px; list-style: none; min-width: 0; }

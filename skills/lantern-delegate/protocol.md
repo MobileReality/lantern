@@ -410,7 +410,7 @@ the map records no model) and `## Procedure` step 3 first.
     link: a step no changed file stands behind gets none (the texts stay file-free; only `files` names
     them). `verify` warns when no step has any.
     **Write the guide too**, the diff read as steps instead of files: `.ai/tmp/guide.json`, an object
-    `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks", "pseudo"}]}`.
+    `{"summary", "risk": {"level", "why"}, "steps": [{"title", "why", "careful", "hunks"}]}`.
     `verify --require-guide` is red unless every hunk of `git diff -U0 <target>...HEAD` (outside `.lantern/`)
     is in exactly one step, so write it from that diff. What makes it good:
     - 1 to 8 steps, in reading order, foundations first: types and the core rule, then the code that
@@ -420,8 +420,6 @@ the map records no model) and `## Procedure` step 3 first.
     - `why` is at most two sentences (240 characters): why a reader needs this step, not what the lines do.
     - `careful: true` only where a reader must think: logic, money, security, contracts. Trivial glue,
       renames, config and tests that mirror the code are `careful: false` (skim).
-    - `pseudo` (one to eight short lines) only on a careful step, and only when it says more than the
-      code does: the rule in words, the order of effects. Left out otherwise.
     - `hunks`: a changed path (the whole file, the only way to cover a rename or a binary file) or
       `{"path", "side": "new", "start", "end"}` for a range of new lines (`"side": "old"` for a pure deletion).
       A hunk you list twice, or one that matches nothing, fails `verify`. `risk.level` is `low`, `medium` or `high`.
@@ -431,8 +429,7 @@ the map records no model) and `## Procedure` step 3 first.
      "risk": {"level": "low", "why": "One new pure function; no stored data changes."},
      "steps": [
        {"title": "The rename rule", "why": "Everything else calls this. It must leave the other todos untouched.", "careful": true,
-        "hunks": [{"path": "src/todos.ts", "side": "new", "start": 40, "end": 47}],
-        "pseudo": ["copy the list", "replace only the text of the todo at the index"]},
+        "hunks": [{"path": "src/todos.ts", "side": "new", "start": 40, "end": 47}]},
        {"title": "Rename in the list and its test", "why": "Wires the rule to the input and proves it.", "careful": false,
         "hunks": ["src/list.ts", "test/todos.test.ts"]}
      ]}
