@@ -82,5 +82,5 @@ function markRows(root: ParentNode, refs: readonly LanternGuideHunk[]) {
   return marked;
 }
 
-export { MARK_CLASS, NO_STEP, guideErrorOf, guideOf, guideStops, markRows, noteOf, pathsOf, refsOf, stopAt };
+export { NO_STEP, guideErrorOf, guideOf, guideStops, markRows, noteOf, pathsOf, stopAt };
 export type { GuideNote, GuideStop };
