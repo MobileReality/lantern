@@ -1,7 +1,7 @@
 lantern 1
 # test/fixtures/graph
 
-test/fixtures/graph/areas-pr-demo.ts . test 2b5af6811595
+test/fixtures/graph/areas-pr-demo.ts . test 71894888063f
 #feature product-areas
   < src/main/filecontent.ts
   < src/main/lantern-prdiff.ts

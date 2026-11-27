@@ -438,7 +438,7 @@ src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
   < src/renderer/lib/lanternplanfocus.ts#planFilePaths
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lanternprpanel.ts . component 6c47a55ffaeb
+src/renderer/lib/lanternprpanel.ts . component cd7a783d5211
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml
@@ -464,7 +464,7 @@ src/renderer/lib/lanternrelview.ts . pure 9cc7d752f475
   < src/main/lantern.ts
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternreview.ts . component 3b370994e6f3
+src/renderer/lib/lanternreview.ts . component 36b8a78dc8bc
 #feature review-screen
   = src/renderer/lib/codemodal.ts#createCodeView
   = src/renderer/lib/modalsteps.ts#createStepper
@@ -503,7 +503,7 @@ src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
 #feature file-graph
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternview.ts . component 6d4f1021bdab
+src/renderer/lib/lanternview.ts . component 479728d57528
 #feature file-graph
   < src/main/lantern.ts
   < src/main/local-reasons.ts#LocalReasonsResult

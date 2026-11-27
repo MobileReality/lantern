@@ -649,7 +649,7 @@ test/lantern-flow-reading.test.ts . test 07b583124b3f
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-map.ts#mapOf
 
-test/lantern-guide-view.test.ts . test 82137407901c
+test/lantern-guide-view.test.ts . test a583446f95d4
 #feature review-screen
   = src/renderer/lib/lanternguide.ts#guideStops
   = src/renderer/lib/lanternguideview.ts#createGuidePane

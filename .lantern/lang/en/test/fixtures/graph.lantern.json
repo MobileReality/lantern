@@ -1,6 +1,6 @@
 {
   "text": {
-    "areas-pr-demo.ts": "Supplies a map built from the areas payload with a pull request that changes files in three areas, and the readers the harness needs to review it",
+    "areas-pr-demo.ts": "Supplies a map built from the areas payload with a pull request that changes files in three areas, a copy of it whose pull request carries a guide, and the readers the harness needs to review it",
     "graph-fixtures.ts": "Builds deterministic graph maps for navigation, visuals and scale regression",
     "macro-sized-demo.ts": "Builds a harness map with a pull request and its Macro payload for a chosen number of areas and features, so the areas map can be tried on a small and a large project",
     "macro-lab-demo.ts": "Turns the generated Orchard Market evaluation project into a harness map with a pull request and its Flow, and its Macro payload with areas",

@@ -48,7 +48,7 @@ src/renderer/lantern-macroview.css . style 14604f7b1dc4
 src/renderer/lantern-plans.css . style 3889555ff700
 #feature planning
 
-src/renderer/lantern-prs.css . style 1cbb697a6c59
+src/renderer/lantern-prs.css . style b1a331f693d9
 #feature pull-requests
 
 src/renderer/lantern-relation.css . style 22c56f6957c8
