@@ -55,8 +55,9 @@ import { macroPrView, planMacroMarks } from './lanternmacromarks';
 import type { MacroPrView } from './lanternmacromarks';
 import type { MacroLayout } from './lanternmacrolayout';
 import { flowBar, flowHtml, flowOf, pickedStep, syncPick, syncReading } from './lanternflow';
-import { guideBar, guideOf } from './lanternguide';
-import { createGuideView } from './lanternguideview';
+import { guideOf, guideStops, noteOf, stopAt } from './lanternguide';
+import type { GuideStop } from './lanternguide';
+import { createGuidePane } from './lanternguideview';
 import type { OpenFileBlock } from './lanternmacrocurrent';
 import { itemPick, planFileMarks, planFilePaths, planFocus, planPick, questionPick, samePick, stagePick } from './lanternplanfocus';
 import { createPlanAsk } from './lanternplanask';
@@ -125,7 +126,7 @@ interface ViewOptions {
   planFix?: PlanFix;
 }
 
-type ViewName = 'files' | 'macro' | 'flow' | 'guide';
+type ViewName = 'files' | 'macro' | 'flow';
 type ListFilter = 'roles' | 'dirs' | 'kinds' | 'features';
 
 type ReadPrOverlay = (pr: string, lang: string) => Promise<LanternPrOverlay>;
@@ -159,12 +160,11 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   let prOnly = false;
   let prMarking = true;
   let flowOn = false;
-  let guideOn = false;
-  const guideChoice = new Map<string, boolean>();
+  let guideAt = -1;
   let flowPick: string | null = null;
   let planSlug: string | null = null;
   let planPicked: PlanPick | null = null;
-  let cameFrom: { macro: boolean; flow: boolean; guide: boolean; pr: string | null } | null = null;
+  let cameFrom: { macro: boolean; flow: boolean; pr: string | null } | null = null;
   let refreshes = 0;
   let macroPrCache: { pr: LanternPr; shape: MacroLayout; data: LanternMap; view: MacroPrView | null } | null = null;
   let shown = { nodes: 0, edges: 0 };
@@ -189,7 +189,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   let disposed = false;
 
   root.classList.add('lt-root');
-  root.innerHTML = `<div class="lt-prs" role="group" aria-label="Pull requests" hidden></div><div class="lt-plans" role="group" aria-label="${say(VIEW.STRIP_LABEL)}" hidden></div><div class="lt-planbar" hidden><span class="lt-planbar-label">${say(VIEW.WINDOW_LABEL)}</span><button class="lt-planbar-leave" data-plan-leave data-tip="${say(VIEW.WINDOW_LEAVE_TITLE)}">${say(VIEW.WINDOW_LEAVE)}</button></div><div class="lt-toolbar"><div class="lt-viewbar" hidden></div><nav class="lt-tabs"></nav><nav class="lt-secs"></nav></div><div class="lt-grid"><aside class="lt-side"></aside><main class="lt-main" tabindex="0"><div class="lt-guide" hidden></div><div class="lt-flow" hidden></div><div class="lt-macroview-host" hidden></div><div class="lt-graph-crumbs" hidden></div><div class="lt-pixi-host"></div><div class="lt-rvbar" hidden><div class="lt-rvbtns"><button class="lt-lock" data-lock aria-pressed="false" data-tip="${LOCK_TITLE}">${LOCK_ICON}<span>Lock</span></button><button class="lt-rvtoggle" data-relview aria-pressed="false" data-tip="Show only this file and its relations (Esc to leave)"><i aria-hidden="true"></i>Relation view</button><button class="lt-pronly" data-pronly aria-pressed="false" data-tip="${PRONLY_OFF_TITLE}" hidden>${PRONLY_ICON}<span>${prOnlyLabel(false, 0)}</span></button></div><p class="lt-prnote" role="status" hidden></p><p class="lt-prnote lt-mapnote" role="status" hidden></p></div></main><section class="lt-overlay" tabindex="-1" aria-label="Project section" hidden></section><section class="lt-planpane" hidden></section></div><p class="lt-sr" aria-live="polite"></p>`;
+  root.innerHTML = `<div class="lt-prs" role="group" aria-label="Pull requests" hidden></div><div class="lt-plans" role="group" aria-label="${say(VIEW.STRIP_LABEL)}" hidden></div><div class="lt-planbar" hidden><span class="lt-planbar-label">${say(VIEW.WINDOW_LABEL)}</span><button class="lt-planbar-leave" data-plan-leave data-tip="${say(VIEW.WINDOW_LEAVE_TITLE)}">${say(VIEW.WINDOW_LEAVE)}</button></div><div class="lt-toolbar"><div class="lt-viewbar" hidden></div><nav class="lt-tabs"></nav><nav class="lt-secs"></nav></div><div class="lt-grid"><aside class="lt-side"></aside><main class="lt-main" tabindex="0"><div class="lt-flow" hidden></div><div class="lt-macroview-host" hidden></div><div class="lt-graph-crumbs" hidden></div><div class="lt-pixi-host"></div><div class="lt-rvbar" hidden><div class="lt-rvbtns"><button class="lt-lock" data-lock aria-pressed="false" data-tip="${LOCK_TITLE}">${LOCK_ICON}<span>Lock</span></button><button class="lt-rvtoggle" data-relview aria-pressed="false" data-tip="Show only this file and its relations (Esc to leave)"><i aria-hidden="true"></i>Relation view</button><button class="lt-pronly" data-pronly aria-pressed="false" data-tip="${PRONLY_OFF_TITLE}" hidden>${PRONLY_ICON}<span>${prOnlyLabel(false, 0)}</span></button></div><p class="lt-prnote" role="status" hidden></p><p class="lt-prnote lt-mapnote" role="status" hidden></p></div></main><section class="lt-overlay" tabindex="-1" aria-label="Project section" hidden></section><section class="lt-planpane" hidden></section></div><p class="lt-sr" aria-live="polite"></p>`;
   const tabs = root.querySelector('.lt-tabs') as HTMLElement;
   const viewBar = root.querySelector('.lt-viewbar') as HTMLElement;
   const grid = root.querySelector('.lt-grid') as HTMLElement;
@@ -234,7 +234,6 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   const stage = createMacroViewStage({ canvasHost: pixiHost, ownHost: macroViewHost });
   const live = root.querySelector('.lt-sr') as HTMLElement;
   const flowHost = root.querySelector('.lt-flow') as HTMLElement;
-  const guideHost = root.querySelector('.lt-guide') as HTMLElement;
   const rvBar = root.querySelector('.lt-rvbar') as HTMLElement;
   const rvToggle = rvBar.querySelector('.lt-rvtoggle') as HTMLButtonElement;
   const lockToggle = rvBar.querySelector('.lt-lock') as HTMLButtonElement;
@@ -266,7 +265,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   const navigation = mountGraphNavigation({
     main,
     overlayHost: grid,
-    isActive: () => overlay.hidden === true && !flowOn && !guideOn,
+    isActive: () => overlay.hidden === true && !flowOn,
     yieldsKey: stepsFileOnMacro,
     applyOverscroll: (x, y) => {
       const layout = drawnRelation ?? shownLayout ?? baseLayout;
@@ -293,8 +292,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     comments: { project: opts.project, language: () => source.language.code, openFile: (path) => reveal(path, review.mode()) },
     onStep: stepTo,
   });
-  const guideView = createGuideView({ readDiff: diffCache?.read, open: openFromGuide });
-  guideHost.append(guideView.el);
+  const guidePane = createGuidePane({ open: openFromGuide });
   const regions = createRegions(browserRegionStore(opts.project));
   const panes = mountPanes(grid, side, review.el, { regions, main, store: browserStore(opts.project) });
   const regionTools = mountRegionTools({ grid, side, viewer: review.el, main, regions, foundationPresent: () => macro.hasFoundation(), reset: () => panes.reset(), say: (text) => { live.textContent = text; } });
@@ -327,9 +325,26 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     return currentPr()?.files.find((f) => f.path === path)?.reason;
   }
 
+  function guideStopsNow(): GuideStop[] | null {
+    const pr = currentPr();
+    const guide = guideOf(pr);
+    return pr && guide && !macro.isOn() ? guideStops(guide, reviewSequence(pr)) : null;
+  }
+
+  function currentStop(stops: readonly GuideStop[], path: string | null) {
+    guideAt = stopAt(stops, path, guideAt);
+    return guideAt;
+  }
+
   function stepsFor(path: string): StepNav | undefined {
     const pr = currentPr();
     if (!pr) return undefined;
+    const stops = guideStopsNow();
+    if (stops) {
+      const at = currentStop(stops, path);
+      const reasons = new Map(pr.files.map((f) => [f.path, f.reason]));
+      return at < 0 ? undefined : { files: stops.map((stop) => ({ path: stop.path, ...(reasons.get(stop.path) ? { reason: reasons.get(stop.path) } : {}) })), index: at };
+    }
     const files = reviewSequence(pr);
     const index = files.findIndex((f) => f.path === path);
     return index < 0 ? undefined : { files: files.map((f) => ({ path: f.path, ...(f.reason ? { reason: f.reason } : {}) })), index };
@@ -344,7 +359,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function graphless() {
-    return macro.isOn() || flowOn || guideOn;
+    return macro.isOn() || flowOn;
   }
 
   function reviewPath() {
@@ -355,7 +370,12 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const pr = currentPr();
     const path = reviewPath();
     if (!pr || !path) return null;
-    return { pr: pr.id, path, title: pr.title, branch: pr.branch, order: reviewSequence(pr).map((f) => f.path), reason: reasonOf(path), head: pr.head, version: pr.revision ?? pr.head, nav: stepsFor(path), stat: statsFor(pr)?.[path] };
+    const nav = stepsFor(path);
+    const stops = guideStopsNow();
+    const guide = guideOf(pr);
+    const stop = stops && guide && nav ? stops[nav.index] : undefined;
+    const order = stops ? [...new Set(stops.map((one) => one.path))] : reviewSequence(pr).map((f) => f.path);
+    return { pr: pr.id, path, title: pr.title, branch: pr.branch, order, reason: reasonOf(path), head: pr.head, version: pr.revision ?? pr.head, nav, stat: statsFor(pr)?.[path], ...(guide && stop ? { guide: noteOf(guide, stop) } : {}) };
   }
 
   function applyFoundationHidden() {
@@ -370,8 +390,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   function syncReview() {
     const pr = currentPr();
-    panes.setActive(!!pr && !guideOn);
-    regionTools.setActive(!!pr && !guideOn);
+    panes.setActive(!!pr);
+    regionTools.setActive(!!pr);
     applyFoundationHidden();
     const off = pr && peeked && !byPath.has(peeked) ? peeked : null;
     mapNote.textContent = off ? `${off.split('/').pop()} is not in the map, so there are no connections to show.` : '';
@@ -398,7 +418,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     if (takeFocus) review.focus();
   }
 
-  function stepTo(path: string) {
+  function stepTo(path: string, index?: number) {
+    if (index !== undefined && guideStopsNow()?.[index]?.path === path) guideAt = index;
     const held = document.activeElement as HTMLElement | null;
     const fromSide = !!held && side.contains(held);
     reveal(path, review.mode(), false);
@@ -408,17 +429,19 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function focusSelectedRow() {
-    const row = side.querySelector<HTMLElement>('.pr-file.sel .pr-path');
+    const row = side.querySelector<HTMLElement>('.pr-file.sel .pr-path, .lt-guide-file[data-current="true"] .lt-guide-file-name');
     row?.focus({ preventScroll: true });
-    row?.scrollIntoView({ block: 'nearest' });
+    row?.scrollIntoView?.({ block: 'nearest' });
   }
 
   function stepFile(delta: number) {
     const pr = currentPr();
     if (!pr) return;
     if (review.canStep()) return void review.step(delta);
-    const first = reviewSequence(pr)[0];
+    const stops = guideStopsNow();
+    const first = stops ? stops[0] : reviewSequence(pr)[0];
     if (!first) return;
+    if (stops) guideAt = 0;
     const fromSide = side.contains(document.activeElement);
     reveal(first.path, review.mode(), !fromSide);
     if (fromSide) focusSelectedRow();
@@ -550,7 +573,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   function openPlan(slug: string | null) {
     if (slug === planSlug) return;
     if (!slug) return leavePlan();
-    if (!planSlug) cameFrom = { macro: macro.isOn(), flow: flowOn, guide: guideOn, pr: prId };
+    if (!planSlug) cameFrom = { macro: macro.isOn(), flow: flowOn, pr: prId };
     planPicked = null;
     planSlug = slug;
     if (prId) setPr(null, false);
@@ -562,7 +585,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const back = cameFrom;
     closePlan();
     if (back?.pr) setPr(back.pr, false);
-    const view: ViewName = back?.guide && guideOf(currentPr()) ? 'guide' : back?.flow && flowOf(currentPr()) ? 'flow' : back?.macro && macro.available(source) ? 'macro' : 'files';
+    const view: ViewName = back?.flow && flowOf(currentPr()) ? 'flow' : back?.macro && macro.available(source) ? 'macro' : 'files';
     showView(view);
   }
 
@@ -645,8 +668,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     prId = id;
     peeked = null;
     flowPick = null;
-    guideOn = !!id && wantsGuide(id);
-    if (guideOn) leaveOtherViews();
+    guideAt = -1;
     if (!id) prOnly = false;
     opts.onPr?.(id ?? '');
     if (id && data.prs.find((p) => p.id === id)?.source !== 'local') opts.onEnterPr?.(id);
@@ -659,37 +681,25 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   filters.platform = effectivePlatform(data, opts.platform ?? '');
 
-  function leaveOtherViews() {
-    flowOn = false;
-    if (!macro.isOn()) return;
-    macro.set(false);
-    nav.silence();
+  function openPrFile(path: string, mode?: ReviewMode) {
+    if (!byPath.has(path) || (graphless() && currentPr()) || (locked && inspected === path)) return reveal(path, mode ?? review.mode(), false);
+    if (mode) review.prefer(mode);
+    setView('files');
+    goTo(path, true);
   }
 
-  function openFromGuide(path: string) {
-    showView('files');
-    reveal(path, review.mode());
+  function openFromGuide(path: string, step: number) {
+    const at = guideStopsNow()?.findIndex((stop) => stop.path === path && stop.step === step) ?? -1;
+    if (at >= 0) guideAt = at;
+    openPrFile(path, 'diff');
+    focusSelectedRow();
   }
 
-  function wantsGuide(id: string) {
-    const pick = data.prs.find((p) => p.id === id);
-    return !!guideOf(pick) && (guideChoice.get(id) ?? true);
-  }
-
-  function showHost(flow: boolean, guide: boolean) {
-    if (flow || guide || !macro.isOn()) stage.drop();
-    pixiHost.hidden = flow || guide;
+  function showHost(flow: boolean) {
+    if (flow || !macro.isOn()) stage.drop();
+    pixiHost.hidden = flow;
     flowHost.hidden = !flow;
-    guideHost.hidden = !guide;
     main.classList.toggle('lt-flow-on', flow);
-    main.classList.toggle('lt-guide-on', guide);
-  }
-
-  function paintGuide() {
-    main.querySelector('.lt-none')?.remove();
-    rvBar.hidden = true;
-    guideView.show(currentPr());
-    navigation.setContent(0);
   }
 
   function paintFlow() {
@@ -727,13 +737,11 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   function dropFlowWithoutPr() {
     if (flowOn && !flowOf(currentPr())) flowOn = false;
-    if (guideOn && !guideOf(currentPr())) guideOn = false;
   }
 
   function drawGraph() {
     dropFlowWithoutPr();
-    showHost(flowOn, guideOn);
-    if (guideOn) return paintGuide();
+    showHost(flowOn);
     if (flowOn) return paintFlow();
     if (macro.isOn()) return paintMacro();
     filters.only = onlyPaths();
@@ -851,21 +859,17 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   function setView(view: ViewName) {
     const wantMacro = view === 'macro';
     const wantFlow = view === 'flow';
-    const wantGuide = view === 'guide';
-    if (wantMacro === macro.isOn() && wantFlow === flowOn && wantGuide === guideOn) return;
-    if ((wantMacro && !macro.available(source)) || (wantFlow && !flowOf(currentPr())) || (wantGuide && !guideOf(currentPr()))) return;
+    if (wantMacro === macro.isOn() && wantFlow === flowOn) return;
+    if ((wantMacro && !macro.available(source)) || (wantFlow && !flowOf(currentPr()))) return;
     macro.set(wantMacro);
     if (!wantMacro) nav.silence();
     flowOn = wantFlow;
-    guideOn = wantGuide;
-    if (prId) guideChoice.set(prId, wantGuide);
     main.scrollTop = 0;
     main.scrollLeft = 0;
     refresh();
   }
 
   function paintGraph(animate: boolean) {
-    if (guideOn) return paintGuide();
     if (flowOn) return paintFlow();
     if (macro.isOn()) return paintMacro();
     const L = baseLayout as Layout;
@@ -951,7 +955,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   function syncBar(available: boolean, active: boolean) {
     const prOpen = syncPrOnly();
-    rvBar.hidden = macro.isOn() || flowOn || guideOn || (!available && !prOpen);
+    rvBar.hidden = macro.isOn() || flowOn || (!available && !prOpen);
     rvToggle.hidden = !available;
     lockToggle.hidden = !available;
     rvToggle.setAttribute('aria-pressed', String(active));
@@ -961,7 +965,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function applyMarks() {
-    if (shownLayout && !macro.isOn() && !flowOn && !guideOn) renderPixi(liveOf(selected), { tiles: shownTiles ?? shownLayout, layout: shownLayout }, drawnRelation ?? undefined);
+    if (shownLayout && !macro.isOn() && !flowOn) renderPixi(liveOf(selected), { tiles: shownTiles ?? shownLayout, layout: shownLayout }, drawnRelation ?? undefined);
   }
 
   function dropLock(note: string) {
@@ -1043,13 +1047,13 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function expandDir(id: string) {
-    if (!baseLayout || macro.isOn() || flowOn || guideOn) return;
+    if (!baseLayout || macro.isOn() || flowOn) return;
     expandedDirs.add(id);
     renderPixi(liveOf(selected));
   }
 
   function retile() {
-    if (!baseLayout || disposed || drawnRelation || macro.isOn() || flowOn || guideOn) return;
+    if (!baseLayout || disposed || drawnRelation || macro.isOn() || flowOn) return;
     const live = liveOf(selected);
     if (tilesFor(live) !== shownTiles) renderPixi(live);
   }
@@ -1086,7 +1090,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function focusOn(key: string | null, animate: boolean) {
-    if (!baseLayout || flowOn || guideOn) return;
+    if (!baseLayout || flowOn) return;
     const live = liveOf(key);
     const arranged = pixiArrangement(live);
     const target = scrollTarget(shownLive, live, arranged.layout);
@@ -1214,12 +1218,6 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const overviewOnly = macro.isOn() && !top && !plan;
     grid.classList.toggle('lt-side-none', overviewOnly);
     if (!macro.isOn()) drawer.set(false, true);
-    if (pr && guideOn) {
-      side.innerHTML = prHeadHtml(prRowsContext(pr, 0));
-      side.append(guideView.rail);
-      drawDescription(pr);
-      return;
-    }
     if (macro.isOn()) {
       const prView = macroPrNow();
       const rows = prView ? prRowsContext(prView.pr, 0) : null;
@@ -1233,7 +1231,14 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       side.innerHTML = '';
       return;
     }
-    side.innerHTML = pr ? prPanelHtml(prRowsContext(pr, activeGroups(filters, showUnmapped))) : sideHtml(sideContext());
+    const stops = pr ? guideStopsNow() : null;
+    const rows = pr ? prRowsContext(pr, activeGroups(filters, showUnmapped)) : null;
+    side.innerHTML = rows ? (stops ? prHeadHtml(rows) : prPanelHtml(rows)) : sideHtml(sideContext());
+    if (pr && stops) {
+      currentStop(stops, reviewPath());
+      guidePane.show(pr, { stops, at: guideAt, marked: pickedNow()?.files });
+      side.append(guidePane.el);
+    }
     if (pr) drawDescription(pr);
     if (pr && filters.only) {
       const template = document.createElement('template');
@@ -1278,8 +1283,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   function drawTabs() {
     tabs.innerHTML = tabsHtml(data, filters.platform);
     dropFlowWithoutPr();
-    tabs.hidden = macro.isOn() || flowOn || guideOn;
-    viewBar.innerHTML = macro.barHtml(source, { files: data.nodes.length, marking: macro.isOn() && currentPr() ? prMarking : null, flow: flowBar(currentPr(), flowOn), guide: guideBar(currentPr(), guideOn), uid, overview: { open: drawer.isOpen(), id: drawer.id } });
+    tabs.hidden = macro.isOn() || flowOn;
+    viewBar.innerHTML = macro.barHtml(source, { files: data.nodes.length, marking: macro.isOn() && currentPr() ? prMarking : null, flow: flowBar(currentPr(), flowOn), uid, overview: { open: drawer.isOpen(), id: drawer.id } });
     const crumbs = viewBar.querySelector('.lt-crumbs');
     graphCrumbs.replaceChildren(...(crumbs ? [crumbs] : []));
     graphCrumbs.hidden = !crumbs;
@@ -1436,7 +1441,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       return drawer.set(false);
     }
     if (graphless()) {
-      if (guideOn ? guideView.handleKey(ev) : review.stepKey(ev) || nav.backspace(ev)) return;
+      if (review.stepKey(ev) || nav.backspace(ev)) return;
       if (ev.key !== 'Escape') return;
       if (flowPick) clearFlowPick();
       else if (macro.isOn() && macro.selected()) pickBlock(null);
@@ -1512,12 +1517,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     else if (t.hasAttribute('data-pr-back')) setPr(null, false);
     else if (t.hasAttribute('data-pr-diff')) return openPrDiff(t.getAttribute('data-pr-diff') ?? '');
     else if (t.hasAttribute('data-pr-code')) return reveal(t.getAttribute('data-pr-code') ?? '', 'file');
-    else if (t.hasAttribute('data-pr-go')) {
-      const path = t.getAttribute('data-pr-go') ?? '';
-      if (!byPath.has(path) || (graphless() && currentPr()) || (locked && inspected === path)) return reveal(path, review.mode(), false);
-      setView('files');
-      return goTo(path, true);
-    }
+    else if (t.hasAttribute('data-pr-go')) return openPrFile(t.getAttribute('data-pr-go') ?? '');
     else if (t.hasAttribute('data-relview')) return actFromSide(() => setRelationMode(!relationOn()));
     else if (t.hasAttribute('data-lock')) return actFromLock(() => setLock(!locked));
     else if (t.hasAttribute('data-lock-move')) return actFromLock(moveLock);
@@ -1537,7 +1537,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   side.addEventListener('click', onSideClick);
   side.addEventListener('contextmenu', onSideMenu);
   side.addEventListener('keydown', (ev) => {
-    if (currentPr() && !guideOn) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file'));
+    if (currentPr()) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file, .lt-guide-file'));
   });
   planPane.addEventListener('click', onSideClick);
   drawer.el.addEventListener('click', onSideClick);
@@ -1573,7 +1573,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const t = (ev.target as Element).closest('button[data-view]');
     if (!t) return;
     const view = t.getAttribute('data-view') as ViewName;
-    if (planSlug && view !== 'flow' && view !== 'guide') planningShows.set(planningKey(), view);
+    if (planSlug && view !== 'flow') planningShows.set(planningKey(), view);
     setView(view);
     (viewBar.querySelector(`[data-view="${view}"]`) as HTMLElement | null)?.focus();
   });
@@ -1602,7 +1602,6 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
 
   applyOverlay();
   index();
-  guideOn = !!prId && wantsGuide(prId);
   refresh();
 
   return {
@@ -1645,7 +1644,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       regionTools.dispose();
       explainHub?.dispose();
       review.dispose();
-      guideView.dispose();
+      guidePane.dispose();
       diffCache?.stop();
       clearTimeout(searchTimer);
       scrollMain.cancel();

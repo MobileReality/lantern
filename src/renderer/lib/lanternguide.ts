@@ -1,96 +1,29 @@
-import type { LanternGuide, LanternGuideHunk, LanternPr } from '../../main/lantern';
-import type { DiffRow } from './codeview';
-import { esc } from './lanternctx';
+import type { LanternGuide, LanternGuideHunk, LanternGuideStep, LanternPr, LanternPrFile } from '../../main/lantern';
 
-interface GuideBar {
-  on: boolean;
-  reason: string;
+interface GuideStop {
+  path: string;
+  step: number;
 }
 
-const GUIDE_TITLE = 'The pull request as a short guided tour: steps in reading order, each with its own hunks';
-const CONTEXT_LINES = 2;
-const GAP_TEXT = '\u22EF';
+interface GuideNote {
+  at: number;
+  count: number;
+  title: string;
+  why: string;
+  careful: boolean;
+  refs: LanternGuideHunk[];
+}
+
+const NO_STEP = -1;
+const MARK_CLASS = 'guide-hit';
 const GUIDE_ERROR_PREFIX = 'The guide in this record could not be read: ';
 
 function guideOf(pr: Pick<LanternPr, 'guide'> | undefined): LanternGuide | null {
   return pr?.guide?.steps.length ? pr.guide : null;
 }
 
-function guideBar(pr: LanternPr | undefined, on: boolean): GuideBar | null {
-  if (!pr) return null;
-  if (guideOf(pr)) return { on, reason: '' };
-  return pr.guideError ? { on: false, reason: `${GUIDE_ERROR_PREFIX}${pr.guideError}` } : null;
-}
-
-function guideButtonHtml(bar: GuideBar) {
-  const disabled = bar.reason !== '';
-  const tip = esc(disabled ? bar.reason : GUIDE_TITLE);
-  return `<button class="lt-plat" data-view="guide" aria-pressed="${bar.on}" data-tip="${tip}"${disabled ? ' disabled' : ''}>Guide</button>`;
-}
-
-function wholeFile(ref: LanternGuideHunk) {
-  return ref.side === undefined || ref.start === undefined;
-}
-
-function touches(ref: LanternGuideHunk, row: DiffRow) {
-  const line = ref.side === 'old' ? (row.type === 'del' ? row.oldLn : undefined) : row.type === 'add' ? row.newLn : undefined;
-  return line !== undefined && line >= (ref.start as number) && line <= (ref.end ?? (ref.start as number));
-}
-
-function isChange(row: DiffRow) {
-  return row.type === 'add' || row.type === 'del';
-}
-
-function hunkBlocks(rows: readonly DiffRow[]) {
-  const blocks: DiffRow[][] = [];
-  for (const row of rows) {
-    if (row.type === 'hunk' || blocks.length === 0) blocks.push([row]);
-    else blocks[blocks.length - 1].push(row);
-  }
-  return blocks;
-}
-
-function changeRuns(body: readonly DiffRow[]) {
-  const runs: { from: number; to: number }[] = [];
-  body.forEach((row, index) => {
-    if (!isChange(row)) return;
-    const last = runs[runs.length - 1];
-    if (last?.to === index) last.to = index + 1;
-    else runs.push({ from: index, to: index + 1 });
-  });
-  return runs;
-}
-
-function keptIndexes(body: readonly DiffRow[], runs: readonly { from: number; to: number }[]) {
-  const kept = new Set<number>();
-  for (const { from, to } of runs) {
-    for (let i = Math.max(0, from - CONTEXT_LINES); i < Math.min(body.length, to + CONTEXT_LINES); i++) {
-      if ((i >= from && i < to) || body[i].type === 'ctx') kept.add(i);
-    }
-  }
-  return [...kept].sort((a, b) => a - b);
-}
-
-function selectInBlock(block: readonly DiffRow[], refs: readonly LanternGuideHunk[], out: DiffRow[]) {
-  const head = block[0].type === 'hunk' ? block[0] : null;
-  const body = head ? block.slice(1) : block;
-  const runs = changeRuns(body).filter(({ from, to }) => body.slice(from, to).some((row) => refs.some((ref) => touches(ref, row))));
-  let previous = -2;
-  for (const index of keptIndexes(body, runs)) {
-    if (index !== previous + 1) {
-      const lastOld = [...out].reverse().find((row) => row.oldLn !== undefined)?.oldLn ?? 0;
-      out.push({ type: 'hunk', text: out.length === 0 ? (head?.text ?? '') : GAP_TEXT, oldStart: lastOld + 1, newStart: 0 });
-    }
-    out.push(body[index]);
-    previous = index;
-  }
-}
-
-function selectRows(rows: readonly DiffRow[], refs: readonly LanternGuideHunk[]): DiffRow[] {
-  if (refs.some(wholeFile)) return [...rows];
-  const out: DiffRow[] = [];
-  for (const block of hunkBlocks(rows)) selectInBlock(block, refs, out);
-  return out;
+function guideErrorOf(pr: Pick<LanternPr, 'guide' | 'guideError'> | undefined) {
+  return !guideOf(pr) && pr?.guideError ? `${GUIDE_ERROR_PREFIX}${pr.guideError}` : '';
 }
 
 function pathsOf(refs: readonly LanternGuideHunk[]) {
@@ -101,5 +34,53 @@ function refsOf(refs: readonly LanternGuideHunk[], path: string) {
   return refs.filter((ref) => ref.path === path);
 }
 
-export { guideBar, guideButtonHtml, guideOf, pathsOf, refsOf, selectRows };
-export type { GuideBar };
+function guideStops(guide: LanternGuide, files: readonly LanternPrFile[]): GuideStop[] {
+  const changed = new Set(files.map((file) => file.path));
+  const stops: GuideStop[] = [];
+  guide.steps.forEach((step, index) => {
+    for (const path of pathsOf(step.hunks)) if (changed.has(path)) stops.push({ path, step: index });
+  });
+  const named = new Set(stops.map((stop) => stop.path));
+  for (const file of files) if (!named.has(file.path)) stops.push({ path: file.path, step: NO_STEP });
+  return stops;
+}
+
+function stopAt(stops: readonly GuideStop[], path: string | null, preferred: number) {
+  if (!path) return -1;
+  return stops[preferred]?.path === path ? preferred : stops.findIndex((stop) => stop.path === path);
+}
+
+function noteOf(guide: LanternGuide, stop: GuideStop): GuideNote | undefined {
+  const step: LanternGuideStep | undefined = guide.steps[stop.step];
+  if (!step) return undefined;
+  return { at: stop.step, count: guide.steps.length, title: step.title, why: step.why, careful: step.careful, refs: refsOf(step.hunks, stop.path) };
+}
+
+function wholeFile(ref: LanternGuideHunk) {
+  return ref.side === undefined || ref.start === undefined;
+}
+
+function covers(ref: LanternGuideHunk, side: 'old' | 'new', line: number) {
+  return ref.side === side && line >= (ref.start as number) && line <= (ref.end ?? (ref.start as number));
+}
+
+function lineOf(row: Element, side: 'old' | 'new') {
+  return Number(row.querySelectorAll('.ln')[side === 'old' ? 0 : 1]?.textContent);
+}
+
+function markRows(root: ParentNode, refs: readonly LanternGuideHunk[]) {
+  root.querySelectorAll(`.cl.${MARK_CLASS}`).forEach((row) => { row.classList.remove(MARK_CLASS); });
+  if (!refs.length || refs.some(wholeFile)) return [];
+  const marked: HTMLElement[] = [];
+  root.querySelectorAll<HTMLElement>('.cl.add, .cl.del').forEach((row) => {
+    const side = row.classList.contains('del') ? 'old' : 'new';
+    const line = lineOf(row, side);
+    if (!line || !refs.some((ref) => covers(ref, side, line))) return;
+    row.classList.add(MARK_CLASS);
+    marked.push(row);
+  });
+  return marked;
+}
+
+export { NO_STEP, guideErrorOf, guideOf, guideStops, markRows, noteOf, pathsOf, stopAt };
+export type { GuideNote, GuideStop };

@@ -3,8 +3,6 @@ import type { LanternMap } from '../../main/lantern';
 import { esc } from './lanternctx';
 import { flowButtonHtml } from './lanternflow';
 import type { FlowBar } from './lanternflow';
-import { guideButtonHtml } from './lanternguide';
-import type { GuideBar } from './lanternguide';
 import { FOUNDATION_KEY, blockKey, macroAvailable } from './lanternmacro';
 import type { MacroGraph } from './lanternmacro';
 import { crumbsHtml } from './lanternmacrocrumbs';
@@ -40,7 +38,6 @@ interface BarOptions {
   files: number;
   marking: boolean | null;
   flow?: FlowBar | null;
-  guide?: GuideBar | null;
   uid?: string;
   overview?: { open: boolean; id: string } | null;
 }
@@ -208,17 +205,16 @@ function createMacroMode(read: ReadMacro | undefined, redraw: () => void): Macro
       return new Set([...(shape ? foundationUsesNear(shape.graph, selected) : [])].filter((key) => !strong.has(key)));
     },
     frame: () => ({ shape, rest, loaded, minStrongEdge, loading, error, warning, hint, payload }),
-    barHtml(source, { files, marking, flow = null, guide = null, uid = '', overview = null }) {
-      if (!available(source) && !flow && !guide) return '';
-      const filesOn = !on && !flow?.on && !guide?.on;
+    barHtml(source, { files, marking, flow = null, uid = '', overview = null }) {
+      if (!available(source) && !flow) return '';
+      const filesOn = !on && !flow?.on;
       const blocks = rest ? ` <em>${topCards}</em>` : '';
       const prControl = marking === null ? '' : `<button class="lt-plat lt-prmark" data-prmark aria-pressed="${marking}" data-tip="${marking ? PR_MARK_ON_TITLE : PR_MARK_OFF_TITLE}">PR changes</button>`;
       const macroControl = available(source) ? `<button class="lt-plat" data-view="macro" aria-pressed="${on}" data-tip="${esc(graph && graph.level !== 'flat' ? MACRO_AREAS_TITLE : MACRO_TITLE)}">Macro${blocks}</button>` : '';
       const overviewControl = on && overview ? overviewButtonHtml(overview.open, overview.id) : '';
       const flowControl = flow ? flowButtonHtml(flow, uid) : '';
-      const guideControl = guide ? guideButtonHtml(guide) : '';
       const crumbs = on && graph ? crumbsHtml(graph) : '';
-      return `<div class="lt-tabs-strip" role="group" aria-label="Graph view"><b>View</b>${guideControl}<button class="lt-plat" data-view="files" aria-pressed="${filesOn}" data-tip="One node per source file">Files <em>${files}</em></button>${macroControl}${overviewControl}${flowControl}${prControl}</div>${crumbs}`;
+      return `<div class="lt-tabs-strip" role="group" aria-label="Graph view"><b>View</b><button class="lt-plat" data-view="files" aria-pressed="${filesOn}" data-tip="One node per source file">Files <em>${files}</em></button>${macroControl}${overviewControl}${flowControl}${prControl}</div>${crumbs}`;
     },
   };
 }

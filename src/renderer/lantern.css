@@ -248,7 +248,7 @@ marker.lt-head.k-ref path { fill: var(--lt-k-ref); }
 .lt-md table { border-collapse: collapse; }
 .lt-md th, .lt-md td { padding: 4px 10px; border: 1px solid var(--lt-rule); }
 
-.lt-diff-modal, .lt-review, .lt-guide, .pr-files {
+.lt-diff-modal, .lt-review, .pr-files {
   --df-add-bg: rgba(46, 196, 84, 0.26);
   --df-add-bar: #3fd062;
   --df-add-ln: #7fe39a;
@@ -260,20 +260,20 @@ marker.lt-head.k-ref path { fill: var(--lt-k-ref); }
   --df-fold-ink: var(--lt-ink-2);
   --df-scope-ink: var(--lt-ink-3);
 }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl[hidden] { display: none; }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .lt-code-body .ln:empty { display: block; }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.add { background: var(--df-add-bg); box-shadow: inset 3px 0 0 var(--df-add-bar); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.add .ln { color: var(--df-add-ln); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.del { background: var(--df-del-bg); box-shadow: inset 3px 0 0 var(--df-del-bar); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.del .ln { color: var(--df-del-ln); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.hunk { margin: 0; background: var(--df-fold-bg); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.hunk .code { color: var(--df-scope-ink); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.scope { background: color-mix(in srgb, var(--lt-glow) 6%, transparent); box-shadow: inset 3px 0 0 color-mix(in srgb, var(--lt-glow) 55%, transparent); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.scope .code { color: var(--df-scope-ink); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.scope .code::before { content: "in"; margin-right: 8px; padding: 0 5px; border: 1px solid var(--lt-rule); border-radius: 3px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.scope .ln { color: var(--lt-ink-3); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.fold { background: var(--df-fold-bg); }
-:is(.lt-diff-modal, .lt-review, .lt-guide) .cl.fold .code { display: flex; align-items: center; gap: 4px; padding: 1px 6px; white-space: nowrap; }
+:is(.lt-diff-modal, .lt-review) .cl[hidden] { display: none; }
+:is(.lt-diff-modal, .lt-review) .lt-code-body .ln:empty { display: block; }
+:is(.lt-diff-modal, .lt-review) .cl.add { background: var(--df-add-bg); box-shadow: inset 3px 0 0 var(--df-add-bar); }
+:is(.lt-diff-modal, .lt-review) .cl.add .ln { color: var(--df-add-ln); }
+:is(.lt-diff-modal, .lt-review) .cl.del { background: var(--df-del-bg); box-shadow: inset 3px 0 0 var(--df-del-bar); }
+:is(.lt-diff-modal, .lt-review) .cl.del .ln { color: var(--df-del-ln); }
+:is(.lt-diff-modal, .lt-review) .cl.hunk { margin: 0; background: var(--df-fold-bg); }
+:is(.lt-diff-modal, .lt-review) .cl.hunk .code { color: var(--df-scope-ink); }
+:is(.lt-diff-modal, .lt-review) .cl.scope { background: color-mix(in srgb, var(--lt-glow) 6%, transparent); box-shadow: inset 3px 0 0 color-mix(in srgb, var(--lt-glow) 55%, transparent); }
+:is(.lt-diff-modal, .lt-review) .cl.scope .code { color: var(--df-scope-ink); }
+:is(.lt-diff-modal, .lt-review) .cl.scope .code::before { content: "in"; margin-right: 8px; padding: 0 5px; border: 1px solid var(--lt-rule); border-radius: 3px; font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+:is(.lt-diff-modal, .lt-review) .cl.scope .ln { color: var(--lt-ink-3); }
+:is(.lt-diff-modal, .lt-review) .cl.fold { background: var(--df-fold-bg); }
+:is(.lt-diff-modal, .lt-review) .cl.fold .code { display: flex; align-items: center; gap: 4px; padding: 1px 6px; white-space: nowrap; }
 .df-btn { padding: 1px 8px; border: 1px solid transparent; border-radius: 4px; background: none; color: var(--df-fold-ink); font: inherit; font-size: var(--fs-sm); cursor: default; }
 .df-btn:hover { color: var(--lt-ink); border-color: var(--lt-rule); background: color-mix(in srgb, var(--lt-ink) 8%, transparent); }
 .df-btn:focus-visible { outline: 2px solid var(--lt-glow); outline-offset: 1px; }

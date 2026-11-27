@@ -6,6 +6,9 @@ import { esc } from './lanternctx';
 import { createStepper } from './modalsteps';
 import type { StepNav, Stepper } from './modalsteps';
 import { reasonBlock } from './modalreason';
+import { markRows } from './lanternguide';
+import type { GuideNote } from './lanternguide';
+import { guideNoteBlock } from './lanternguidenote';
 import type { ExplainHub } from './prexplain';
 import { createDiffView } from './prdiffmodal';
 import type { ReadDiff, ReadSemantic } from './prdiffmodal';
@@ -25,6 +28,7 @@ interface ReviewTarget {
   version?: string;
   nav?: StepNav;
   stat?: { added: number; removed: number };
+  guide?: GuideNote;
 }
 
 interface ReviewOptions {
@@ -33,7 +37,7 @@ interface ReviewOptions {
   readSemantic?: ReadSemantic;
   explain?: ExplainHub;
   comments?: CommentsOptions;
-  onStep(path: string): void;
+  onStep(path: string, index: number): void;
 }
 
 interface ReviewPane {
@@ -97,8 +101,16 @@ function statOf(stat: { added: number; removed: number }) {
   return box;
 }
 
+function sameSequence(a: ReviewTarget | null, b: ReviewTarget | null) {
+  return a?.nav?.index === b?.nav?.index && a?.nav?.files.length === b?.nav?.files.length && (a?.nav?.files.every((file, at) => file.path === b?.nav?.files[at]?.path) ?? true);
+}
+
+function sameGuide(a: ReviewTarget | null, b: ReviewTarget | null) {
+  return a?.guide?.at === b?.guide?.at && a?.guide?.title === b?.guide?.title && a?.guide?.why === b?.guide?.why;
+}
+
 function sameTarget(a: ReviewTarget | null, b: ReviewTarget | null) {
-  return a?.pr === b?.pr && a?.path === b?.path && a?.reason === b?.reason && a?.head === b?.head && a?.version === b?.version && a?.nav?.index === b?.nav?.index && a?.nav?.files.length === b?.nav?.files.length;
+  return a?.pr === b?.pr && a?.path === b?.path && a?.reason === b?.reason && a?.head === b?.head && a?.version === b?.version && sameSequence(a, b) && sameGuide(a, b);
 }
 
 function sameStat(a: ReviewTarget, b: ReviewTarget) {
@@ -139,7 +151,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
   modes.setAttribute('aria-label', 'Show the file or its diff');
   const buttons: Record<ReviewMode, HTMLButtonElement> = { file: modeButton('file'), diff: modeButton('diff') };
   const code = opts.readFile ? createCodeView(opts.readFile, opts.readSemantic, true) : null;
-  const diff = opts.readDiff ? createDiffView(opts.readDiff, opts.readSemantic) : null;
+  const diff = opts.readDiff ? createDiffView(opts.readDiff, opts.readSemantic, () => markGuide()) : null;
   const available: ReviewMode[] = [...(code ? (['file'] as const) : []), ...(diff ? (['diff'] as const) : [])];
   for (const mode of available) modes.append(buttons[mode]);
   modes.hidden = available.length < 2;
@@ -163,6 +175,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
   let target: ReviewTarget | null = null;
   let painted: { target: ReviewTarget; mode: ReviewMode } | null = null;
   const loaded: Record<ReviewMode, string> = { file: '', diff: '' };
+  let guideNote: HTMLElement | null = null;
   let reason: HTMLElement | null = null;
   let explanation: HTMLElement | null = null;
   let stepper: Stepper | null = null;
@@ -193,7 +206,7 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     stepFiles = nav.files;
     const key = `${pr}\n${nav.files.length}`;
     if (!stepper || stepperFor !== key) {
-      stepper = createStepper(nav, (index) => opts.onStep(stepFiles[index].path), () => buttons[effectiveMode() ?? 'file'].focus());
+      stepper = createStepper(nav, (index) => opts.onStep(stepFiles[index].path, index), () => buttons[effectiveMode() ?? 'file'].focus());
       stepperFor = key;
       steps.replaceChildren(stepper.el);
     }
@@ -215,12 +228,15 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     diffChrome.hidden = mode !== 'diff';
     if (code) code.body.hidden = mode !== 'file';
     if (diff) diff.body.hidden = mode !== 'diff';
+    guideNote?.remove();
+    guideNote = guideNoteBlock(next.guide);
+    if (guideNote) head.after(guideNote);
     reason?.remove();
     reason = reasonBlock(next.reason);
-    if (reason) head.after(reason);
+    if (reason) (guideNote ?? head).after(reason);
     explanation?.remove();
     explanation = opts.explain && next.head ? opts.explain.row({ pr: next.pr, path: next.path, head: next.head }) : null;
-    if (explanation) (reason ?? head).after(explanation);
+    if (explanation) (reason ?? guideNote ?? head).after(explanation);
     paintSteps(next.nav, next.pr);
     comments?.setTarget({ pr: { id: next.pr, title: next.title ?? '', branch: next.branch ?? '' }, path: next.path, order: next.order ?? [] });
   }
@@ -247,6 +263,8 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
       loaded.diff = '';
       title.textContent = '';
       delete title.dataset.tip;
+      guideNote?.remove();
+      guideNote = null;
       reason?.remove();
       reason = null;
       explanation?.remove();
@@ -265,6 +283,13 @@ function createReviewPane(opts: ReviewOptions): ReviewPane {
     paintHead(current, mode);
     if (switched) comments?.modeChanged();
     load(current, mode);
+    if (mode === 'diff') markGuide();
+  }
+
+  function markGuide() {
+    if (!diff) return;
+    const marked = markRows(diff.body, target?.guide?.refs ?? []);
+    marked[0]?.scrollIntoView?.({ block: 'center' });
   }
 
   function step(delta: number) {
