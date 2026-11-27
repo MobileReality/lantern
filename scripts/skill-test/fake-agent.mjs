@@ -10,6 +10,7 @@ import { vocabRetag, vocabSetup } from './vocab-fake.mjs';
 
 export const FAKE_COST_USD = 0.05;
 export const BROKEN = 'broken';
+export const NO_REASON = 'no-reason';
 export const NO_GUIDE = 'no-guide';
 const DELEGATE_BRANCH = 'feat/fake-rename';
 const BRANCH_RECORD_NAME = 'feat__fake-rename.branch';
@@ -86,6 +87,7 @@ function delegateRun(cwd, { scenario }) {
     if (scenario === BROKEN) return false;
     writeRecordInputs(cwd, scenario);
     run(process.execPath, [sync, 'pr', ...idArgs, '--base', BASE_BRANCH, '--branch', DELEGATE_BRANCH, ...(scenario === NO_GUIDE ? ['--reason-file', '.ai/tmp/reason.json'] : []), '--order-file', '.ai/tmp/order.json', '--flow-file', '.ai/tmp/flow.json', ...(scenario === NO_GUIDE ? [] : ['--guide-file', '.ai/tmp/guide.json']), '--describe-file', '.ai/tmp/describe.json']);
+    if (scenario === NO_REASON) dropGuide(path.join(cwd, recordFile));
     if (!subject) return true;
     run('git', ['add', recordFile]);
     run('git', ['commit', '-q', '-m', subject]);
@@ -115,6 +117,11 @@ function writeRecordInputs(cwd, scenario) {
   write('flow.json', [{ title: 'A user renames a todo', steps: [{ kind: 'actor', text: 'User' }, { kind: 'action', text: 'renames' }, { kind: 'subject', text: 'a todo', files: ['src.mjs'] }], below: [{ kind: 'consequence', old: 'the text stayed as typed', new: 'the text can be changed' }] }]);
   write('guide.json', { summary: 'A todo can be renamed.', risk: { level: 'low', why: 'One new pure function.' }, steps: [{ title: 'The rename helper', why: 'It replaces only the text of the todo at the index.', careful: false, hunks: ['src.mjs'] }] });
   write('describe.json', { what: ['A todo can be renamed after it was created.'], before: ['The text stayed as typed.'], after: ['The text can be changed.'], verified: ['The fake agent ran the finish loop.'] });
+}
+
+function dropGuide(file) {
+  const guideLine = /^#(guide|risk|gstep|gwhy|ghunk|gpseudo|gcareful) /;
+  fs.writeFileSync(file, fs.readFileSync(file, 'utf8').split('\n').filter((line) => !guideLine.test(line)).join('\n'));
 }
 
 const HANDLERS = {

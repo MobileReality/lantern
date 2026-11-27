@@ -8,7 +8,7 @@ import { DELIVERY } from '../../skills/lantern-delegate/scripts/preferences.mjs'
 import { stopChild } from '../e2e-delegate/child.mjs';
 import { PROJECTS_HOME } from '../e2e-delegate/execute.mjs';
 import { AGENT_TIMEOUT_MS, usd } from './agent.mjs';
-import { BROKEN, FAKE_COST_USD, NO_GUIDE, writeFakeClaude } from './fake-agent.mjs';
+import { BROKEN, FAKE_COST_USD, NO_GUIDE, NO_REASON, writeFakeClaude } from './fake-agent.mjs';
 import { buildReport, exitCodeFor, renderReport } from './report.mjs';
 import { SKILL_NAMES, SKILLS } from './slices.mjs';
 
@@ -22,7 +22,7 @@ export const USAGE = `usage: pnpm run skill-test -- <${SKILL_NAMES.join('|')}> [
   --keep       keep the temp fixture and logs
   --json       print the report as JSON instead of text
   --delivery D lantern-delegate only: the project's stored PR delivery, pr (default), push or local; the checks follow it
-  Offline only: --fake broken (the fake agent leaves the fixture broken), --fake no-guide (the fake delegate writes no guide), --fake-cost N (USD the fake reports per call, default ${FAKE_COST_USD}).
+  Offline only: --fake broken (the fake agent leaves the fixture broken), --fake no-reason (the fake delegate's record lacks its reasons), --fake no-guide (the fake delegate writes no guide), --fake-cost N (USD the fake reports per call, default ${FAKE_COST_USD}).
   CLAUDE_BIN names the claude binary for --live.`;
 
 export function parseArgs(argv, env) {
@@ -49,7 +49,7 @@ export function parseArgs(argv, env) {
   }
   if (opts.help) return opts;
   if (!SKILL_NAMES.includes(opts.skill)) throw new Error(`skill must be one of: ${SKILL_NAMES.join(', ')}`);
-  if (!['good', BROKEN, NO_GUIDE].includes(opts.fake)) throw new Error(`--fake must be good, ${BROKEN} or ${NO_GUIDE}`);
+  if (!['good', BROKEN, NO_REASON, NO_GUIDE].includes(opts.fake)) throw new Error(`--fake must be good, ${BROKEN}, ${NO_REASON} or ${NO_GUIDE}`);
   if (!Object.values(DELIVERY).includes(opts.delivery)) throw new Error(`--delivery must be one of: ${Object.values(DELIVERY).join(', ')}`);
   if (!Number.isFinite(opts.fakeCost) || opts.fakeCost < 0) throw new Error('--fake-cost must be a number of USD, 0 or more');
   if (opts.live && (opts.fake !== 'good' || argv.includes('--fake-cost'))) throw new Error('--fake and --fake-cost are for the offline mode only');
