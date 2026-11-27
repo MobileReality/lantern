@@ -11,7 +11,7 @@ skills/lantern-sync/scripts/selftest.mjs . test 53b8210bef4f
   = skills/lantern-setup/scripts/validate.mjs
   = skills/lantern-sync/scripts/sync.mjs
 
-skills/lantern-sync/scripts/sync.mjs . script d15a4c65d6f6
+skills/lantern-sync/scripts/sync.mjs . script 57b9c519ce1d
 #feature map-sync
 #see-also skills/lantern-setup/scripts/prs.mjs
   = ext:git
@@ -26,6 +26,7 @@ skills/lantern-sync/scripts/sync.mjs . script d15a4c65d6f6
   < skills/lantern-setup/scripts/plan-ref.mjs
   = skills/lantern-setup/scripts/prdescribe.mjs#describeFromJson
   = skills/lantern-setup/scripts/prflow.mjs#flowFromJson
+  = skills/lantern-setup/scripts/prguide.mjs#guideFromJson
   = skills/lantern-setup/scripts/prs.mjs
   = skills/lantern-setup/scripts/shell.mjs#runGit
   = skills/lantern-setup/scripts/texts.mjs

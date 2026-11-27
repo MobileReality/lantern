@@ -13,11 +13,11 @@ export const CHECK_DOCS = {
   'map-build-session': 'the headless lantern-setup session ended with a successful result line',
   'map-pushed': 'the headless map build committed and pushed .lantern/map to main',
   'one-open-pr': 'the mock Bitbucket holds exactly one open PR, feature branch into main',
-  'sync-verify-green': 'sync.mjs verify --require-pr --require-reason --require-order --require-flow is GREEN on the delegate branch, whether its record is a PR record or a branch record',
+  'sync-verify-green': 'sync.mjs verify --require-pr --require-reason --require-order --require-flow --require-guide is GREEN on the delegate branch, whether its record is a PR record or a branch record',
   'no-pr': 'under Delivery push and local the mock Bitbucket holds no pull request for the project',
   'branch-pushed': 'under Delivery push the remote holds the delegate branch besides main',
   'nothing-pushed': 'under Delivery local the remote holds only main',
-  'panel-sees-record': 'under Delivery push and local the Lantern comparison reader (localPrs) shows the branch against main with every reason, the review order, the flow and the description',
+  'panel-sees-record': 'under Delivery push and local the Lantern comparison reader (localPrs) shows the branch against main with every reason, the review order, the flow, the guide and the description',
   'validate-settled': 'validate.mjs --settled prints OK on the pushed branch',
   'panel-sees-pr': 'the Lantern panel logic (fetchPrs, loadPrs) reads the PR as open with every changed file, no warnings',
   'skills-dir-clean': 'the project holds the bundled skills as real folders and only generic convention symlinks',
@@ -83,7 +83,7 @@ export function runNodeScript(args, cwd) {
 
 const lastLine = (text) => text.trim().split('\n').at(-1) ?? '';
 
-const VERIFY_WITH_RECORD = 'verify --require-pr --require-reason --require-order --require-flow';
+const VERIFY_WITH_RECORD = 'verify --require-pr --require-reason --require-order --require-flow --require-guide';
 
 export function checkSyncVerify(res, label = VERIFY_WITH_RECORD) {
   const ok = res.status === 0 && /\bGREEN\b/.test(res.stdout);
@@ -127,12 +127,13 @@ export function checkPanelRecord({ pr, changedFiles }) {
   const problems = [
     ...(changedFiles.length === 0 ? ['no changed files'] : []),
     ...changedFiles.filter((f) => !listed.has(f)).map((f) => `${f} is not listed`),
-    ...pr.files.filter((f) => !f.reason).map((f) => `${f.path} has no reason`),
+    ...((pr.guide?.steps ?? []).length > 0 ? [] : pr.files.filter((f) => !f.reason)).map((f) => `${f.path} has no reason`),
     ...(pr.ordered ? [] : ['no review order']),
     ...((pr.flow ?? []).length > 0 ? [] : ['no flow']),
+    ...((pr.guide?.steps ?? []).length > 0 ? [] : ['no guide']),
     ...(pr.description ? [] : ['no description']),
   ];
-  return result('panel-sees-record', problems.length === 0, problems.length === 0 ? `${pr.files.length} file(s) with reasons, review order, flow and description` : problems.join('; '));
+  return result('panel-sees-record', problems.length === 0, problems.length === 0 ? `${pr.files.length} file(s) with a guide covering them, review order, flow, guide and description` : problems.join('; '));
 }
 
 export function checkSkillsDir(entries, extras = [], delegateOff = []) {

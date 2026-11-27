@@ -128,7 +128,7 @@ for `.agents/skills`.
 | Write the reasons shown in such a review | `node .claude/skills/lantern-sync/scripts/sync.mjs local --base origin/main --reason-file .ai/tmp/reason.json` |
 | See which files the map is behind on | `node .claude/skills/lantern-sync/scripts/sync.mjs status --base main` |
 | Refresh the map after a change | `node .claude/skills/lantern-sync/scripts/sync.mjs finish --base main --model <model id>` prints the files to re-map (run it again until it prints `WORK LIST EMPTY`); your assistant re-maps them following `lantern-setup`, then `node .claude/skills/lantern-setup/scripts/validate.mjs . --settled` must pass |
-| Record a pull request | `node .claude/skills/lantern-sync/scripts/sync.mjs pr <id> --url <url> --title "<title>" --base main --reason-file .ai/tmp/reason.json` |
+| Record a pull request | `node .claude/skills/lantern-sync/scripts/sync.mjs pr <id> --url <url> --title "<title>" --base main --branch <type>/<slug> --guide-file .ai/tmp/guide.json` (a guide covering every hunk replaces the per-file reasons; without a guide add `--reason-file .ai/tmp/reason.json`) |
 | Check the map before sharing it | `node .claude/skills/lantern-sync/scripts/sync.mjs verify --base main --require-pr` |
 | Start a plan (Claude install only) | `node .claude/skills/lantern-plan/scripts/plan.mjs gate`, then `plan.mjs new <slug> --title <t> --goal <g>` |
 | Check a project before delegating | `node .claude/skills/lantern-delegate/scripts/preflight.mjs --target main` |

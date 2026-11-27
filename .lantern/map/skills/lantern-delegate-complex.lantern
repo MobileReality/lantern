@@ -1,7 +1,7 @@
 lantern 1
 # skills/lantern-delegate-complex
 
-skills/lantern-delegate-complex/SKILL.md . skill f10fe7d42312
+skills/lantern-delegate-complex/SKILL.md . skill 4d1cbf2e8d51
 #feature delegate-runs
   @ skills/lantern-delegate/SKILL.md
   @ skills/lantern-delegate/protocol.md

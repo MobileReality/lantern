@@ -59,7 +59,7 @@ async function branchChecks({ ws, project, branch, panel }) {
     const reason = `could not clone ${branch}: ${e.message}`;
     return ['sync-verify-green', 'validate-settled', 'panel-sees-pr'].map((name) => skipped(name, reason));
   }
-  const verifyArgs = [SYNC, 'verify', '--base', MAIN_BRANCH, '--require-pr', '--require-reason', '--require-order', '--require-flow', '--branch', branch];
+  const verifyArgs = [SYNC, 'verify', '--base', MAIN_BRANCH, '--require-pr', '--require-reason', '--require-order', '--require-flow', '--require-guide', '--branch', branch];
   const checks = [checkSyncVerify(runNodeScript(verifyArgs, clone)), checkValidate(runNodeScript([VALIDATE, clone, '--settled'], clone))];
   try {
     const load = await readPanel(panel, clone);
@@ -109,7 +109,7 @@ const remoteBranches = (bare) =>
     .filter(Boolean);
 
 async function branchRecordChecks({ root, branch, panel }) {
-  const verifyArgs = [SYNC, 'verify', '--base', MAIN_BRANCH, '--require-pr', '--require-reason', '--require-order', '--require-flow', '--branch', branch];
+  const verifyArgs = [SYNC, 'verify', '--base', MAIN_BRANCH, '--require-pr', '--require-reason', '--require-order', '--require-flow', '--require-guide', '--branch', branch];
   const checks = [checkSyncVerify(runNodeScript(verifyArgs, root)), checkValidate(runNodeScript([VALIDATE, root, '--settled'], root))];
   try {
     checks.push(checkPanelRecord({ pr: await readLocalComparison(panel, root, MAIN_BRANCH, branch), changedFiles: changedFilesOf(root, MAIN_BRANCH) }));

@@ -41,6 +41,7 @@ export const EDIT_TARGETS = [
     { pattern: '.ai/tmp/reason.json', writer: 'delegate, lantern-sync (reasons per changed file)', source: 'skills/lantern-delegate/protocol.md' },
     { pattern: '.ai/tmp/order.json', writer: 'delegate (review order)', source: 'skills/lantern-delegate/protocol.md' },
     { pattern: '.ai/tmp/flow.json', writer: 'delegate, lantern-plan-stages (flow)', source: 'skills/lantern-delegate/protocol.md' },
+    { pattern: '.ai/tmp/guide.json', writer: 'delegate (the PR read as steps)', source: 'skills/lantern-delegate/protocol.md' },
     { pattern: '.ai/tmp/describe.json', writer: 'delegate (PR description)', source: 'skills/lantern-delegate/protocol.md' },
     { pattern: '.ai/tmp/pr-body.md', writer: 'delegate (PR body)', source: 'skills/lantern-delegate/protocol.md' },
     { pattern: '.ai/tmp/areas/answers.json', writer: 'setup agent (blind lookup answers)', source: 'skills/lantern-setup/SKILL.md' },

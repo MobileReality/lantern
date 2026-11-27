@@ -1,7 +1,7 @@
 lantern 1
 # test/fixtures/graph
 
-test/fixtures/graph/areas-pr-demo.ts . test 2b5af6811595
+test/fixtures/graph/areas-pr-demo.ts . test 71894888063f
 #feature product-areas
   < src/main/filecontent.ts
   < src/main/lantern-prdiff.ts
@@ -27,7 +27,7 @@ test/fixtures/graph/macro-sized-demo.ts . test ca02b52bcc25
   = test/helpers/lantern-map.ts
   = test/helpers/macroview-world.ts#macroViewWorld
 
-test/fixtures/graph/pr-review-demo.ts . test dc29af014837
+test/fixtures/graph/pr-review-demo.ts . test 82c58e9104bb
   < src/main/filecontent.ts
   < src/main/lantern-prdiff.ts
   < src/main/lantern-prfile.ts

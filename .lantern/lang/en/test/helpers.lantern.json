@@ -26,6 +26,7 @@
   "git-repo.ts gotcha": "prRecord writes the lantern-pr 1 format by hand, so a format change must be mirrored here",
   "host-world.ts": "git project whose origin is a Bitbucket or GitHub URL and whose pull request branches are pushed, plus fixed test credentials",
   "lantern-flow-cases.ts": "a valid flow as record lines and as stories, flows whose steps point at files, every malformed flow or reference with the message it must raise, and the limits of a flow, shared by the parser, parity and view tests",
+  "lantern-guide-cases.ts": "a valid guide as record lines and as a value, and every malformed guide with the message it must raise, shared by the parity tests",
   "lantern-macro-areas-fixture.ts": "builds a ten-feature project on disk with two platforms, outside systems, a four-area tree and area texts, for the areas derivation tests",
   "lantern-macro-areas-payload.ts": "builds the macro payload with areas for the pinned fixture map and four areas over its features, with one feature left to assign, for the view and layout tests and the end-to-end harness",
   "lantern-macro-fixture.ts": "derives the macro view and the block of every file of the pinned fixture map for tests, and reads this repo's feature texts and the fixture's pull request records",

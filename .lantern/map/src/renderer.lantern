@@ -39,13 +39,16 @@ src/renderer/diagnostics.css . style 73d6b7749286
 src/renderer/lantern-flow.css . style 934625fc4247
 #feature pr-flow
 
+src/renderer/lantern-guide.css . style e2ec3cbdc32e
+#feature review-screen
+
 src/renderer/lantern-macroview.css . style 14604f7b1dc4
 #feature macro-view
 
 src/renderer/lantern-plans.css . style 3889555ff700
 #feature planning
 
-src/renderer/lantern-prs.css . style 1cbb697a6c59
+src/renderer/lantern-prs.css . style b1a331f693d9
 #feature pull-requests
 
 src/renderer/lantern-relation.css . style 22c56f6957c8
@@ -57,7 +60,7 @@ src/renderer/lantern-review.css . style 12acd03a1fdb
 src/renderer/lantern-sections.css . style b393efd2a26f
 #feature lantern-sections
 
-src/renderer/lantern-select.css . style 55a994a1e274
+src/renderer/lantern-select.css . style ac4591413807
 #feature review-screen
 
 src/renderer/lantern-setup.css . style ee7ca9584ee0
@@ -113,11 +116,12 @@ src/renderer/tray-popover.ts . entry 1e4549e11faa
 src/renderer/workspace.css . style 5653fa566ef9
   < src/renderer/theme.css
 
-src/renderer/workspace.html . entry 15901cfda4d6
+src/renderer/workspace.html . entry a5077ad49f6d
   < src/renderer/command-palette.css
   < src/renderer/diagnostics.css
   < src/renderer/floating.css
   < src/renderer/lantern-flow.css
+  < src/renderer/lantern-guide.css
   < src/renderer/lantern-macroview.css
   < src/renderer/lantern-plans.css
   < src/renderer/lantern-prs.css

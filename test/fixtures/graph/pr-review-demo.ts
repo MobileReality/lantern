@@ -1,5 +1,5 @@
 import type { ProjectFile } from '../../../src/main/filecontent';
-import type { LanternFlowStory, LanternMap, LanternPrOverlay } from '../../../src/main/lantern';
+import type { LanternFlowStory, LanternGuide, LanternMap, LanternPrOverlay } from '../../../src/main/lantern';
 import type { PrFileDiff } from '../../../src/main/lantern-prdiff';
 import type { PrFile } from '../../../src/main/lantern-prfile';
 import { mapOf, node, pr } from '../../helpers/lantern-map';
@@ -195,6 +195,43 @@ const richFlow: LanternFlowStory[] = [
   },
 ];
 
+const demoGuide: LanternGuide = {
+  summary: 'Checkout now adds up itemized prices with one shared helper and shows the total as currency.',
+  risk: { level: 'medium', why: 'Changes how every checkout total is calculated and shown to the customer.' },
+  steps: [
+    {
+      title: 'Add the shared total helper',
+      why: 'Everything else leans on this new pure helper, so read its contract first.',
+      careful: true,
+      hunks: [{ path: 'src/pricing/calculate-order-total.ts' }],
+    },
+    {
+      title: 'Move checkout onto it',
+      why: 'The checkout hook stops using the fixed-shape helper, which is deleted here.',
+      careful: true,
+      hunks: [{ path: 'src/checkout/use-checkout.ts' }, { path: 'src/pricing/legacy-total.ts' }],
+    },
+    {
+      title: 'Format the amount as currency',
+      why: 'A plain formatting swap: Intl.NumberFormat instead of string concatenation.',
+      careful: false,
+      hunks: [{ path: 'src/checkout/order-summary.tsx', side: 'new', start: 7, end: 10 }],
+    },
+    {
+      title: 'Show the total and the pay action',
+      why: 'The summary becomes a described total plus a button that stays disabled until there is something to pay.',
+      careful: true,
+      hunks: [{ path: 'src/checkout/order-summary.tsx', side: 'new', start: 19, end: 28 }],
+    },
+    {
+      title: 'Cover the helper with a test',
+      why: 'One focused check that the helper adds every price.',
+      careful: false,
+      hunks: [{ path: 'test/checkout/calculate-order-total.test.ts' }],
+    },
+  ],
+};
+
 const prReviewDemo = mapOf({
   project: 'PR review demo · synthetic data',
   nodes: [
@@ -264,4 +301,4 @@ async function readDemoPrOverlay(): Promise<LanternPrOverlay> {
   return overlay;
 }
 
-export { PR_ID, demoFlow, prReviewDemo, readDemoFile, readDemoPrDiff, readDemoPrFile, readDemoPrOverlay, richFlow };
+export { PR_ID, demoFlow, demoGuide, prReviewDemo, readDemoFile, readDemoPrDiff, readDemoPrFile, readDemoPrOverlay, richFlow };

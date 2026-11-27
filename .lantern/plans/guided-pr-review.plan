@@ -1,0 +1,105 @@
+lantern-plan 1
+# guided-pr-review
+#title Guided review of a pull request
+#opened 2026-11-26
+
+#goal A pull request reads as 3-6 steps in reading order, each with a short why and only its own hunks, instead of a file list.
+#goal Delegates write the guide into the PR record; a check proves every hunk is in exactly one step.
+
+#scope-in A guide part of the .pr and .branch record, written by sync.mjs pr --guide-file.
+#scope-in verify --require-guide: every hunk of the change in exactly one step.
+#scope-in Delegates write the guide when they record the PR; the e2e delegate checks require it.
+#scope-in A Guide / Files switch on the review screen, Guide first when the record has one.
+#scope-in Pseudocode only on careful steps, written by the delegate, shown on click.
+#scope-out Running an agent from the app to write a guide or pseudocode on demand.
+#scope-out Changing the per-file explainer or the Flow view.
+#scope-out Saving step checkboxes between sessions.
+#scope-out .reason-only local comparisons (sync.mjs local); they show the file list as today.
+
+#impact area review-changes The PR record, its parser and the review screen gain the guide.
+#impact area build-the-map sync.mjs writes and gates the guide.
+#impact area agent-work The delegate protocol and the e2e delegate checks require the guide.
+#impact feature pull-requests PR and branch records gain #guide lines, parsed by the skill and the app.
+#impact feature map-sync pr takes --guide-file, verify takes --require-guide.
+#impact feature delegate-runs Delegates write guide.json beside flow.json and pass the guide gate.
+#impact feature review-screen A Guide mode next to the file list.
+#impact feature skill-checks The e2e delegate run checks the branch record carries a guide.
+#impact new skills/lantern-setup/scripts/prguide.mjs Validates guide JSON, writes and parses #guide lines, checks hunk coverage.
+#impact file skills/lantern-setup/references/format.md The Pull requests grammar gains the guide lines and their limits.
+#impact file skills/lantern-setup/scripts/prs.mjs Record check reads and validates the guide lines.
+#impact new test/lantern-pr-guide.test.ts Pins the guide JSON rules, the record lines and hunk coverage.
+#impact file skills/lantern-sync/scripts/sync.mjs pr --guide-file and verify --require-guide with hunk coverage.
+#impact file skills/lantern-sync/SKILL.md Documents --guide-file, --require-guide and the delegate step that writes the guide.
+#impact new test/lantern-sync-guide.test.ts pr writes the guide and keeps it on rewrite; verify fails on a missed or doubled hunk.
+#impact file src/main/lantern-pr-parse.ts Parses the guide lines of a PR record for the app.
+#impact file src/main/lantern-types.ts LanternPr gains guide and guideError.
+#impact file test/lantern-pr-parity.test.ts Skill and app parse the same guide the same way.
+#impact file skills/lantern-delegate/protocol.md The delegate writes guide.json and passes --require-guide.
+#impact file skills/lantern-delegate/SKILL.md The orchestrator gate adds --require-guide and reads the guide on handover.
+#impact file scripts/e2e-delegate/checks.mjs sync-verify-green and panel-sees-record include the guide.
+#impact file scripts/skill-test/fake-agent.mjs The fake delegate writes a guide so offline runs stay green.
+#impact new src/renderer/lib/lanternguide.ts The Guide mode: summary, risk, step rail, steps with their hunks, J/K.
+#impact new src/renderer/lantern-guide.css Calm styles for the Guide mode.
+#impact file src/renderer/lib/lanternreview.ts The Guide / Files switch, Guide first when the record has one.
+#impact file test/fixtures/graph/pr-review-demo.ts The demo PR gains a guide.
+#impact new test/e2e/pr-review-guide.spec.ts Guide opens first, J/K moves steps, a collapsed step expands, pseudo toggles.
+
+#stage s1 The guide in the PR record
+#item s1.1 prguide.mjs validates guide JSON, writes and parses #guide lines, and checks hunk coverage
+#touch new skills/lantern-setup/scripts/prguide.mjs
+#touch file skills/lantern-setup/references/format.md
+#touch file skills/lantern-setup/scripts/prs.mjs
+#touch new test/lantern-pr-guide.test.ts
+#accept vitest run test/lantern-pr-guide.test.ts: a missed hunk, a doubled hunk and an over-long why each fail; a valid guide round-trips.
+#question s1.q1 Where does the guide live? Default: #guide lines in the .pr and .branch record, written by sync.mjs pr --guide-file, like the flow.
+#answer Marcin Default: in the record, no separate file.
+#question s1.q2 Risk: a fixed list of sensitive areas or the model's judgement? Default: one level low/medium/high with one line why, careful steps flagged by the delegate.
+#answer Marcin Default: the model's judgement.
+
+#stage s2 Write, gate and read the guide
+#item s2.1 pr --guide-file writes the guide; verify --require-guide fails on a hunk not in exactly one step
+#touch file skills/lantern-sync/scripts/sync.mjs
+#touch file skills/lantern-sync/SKILL.md
+#touch new test/lantern-sync-guide.test.ts
+#accept vitest run test/lantern-sync-guide.test.ts: verify --require-guide is red on a branch with an uncovered hunk and green once guide.json covers it.
+#item s2.2 The app parses #guide lines into LanternPr.guide, same result as the skill
+#touch file src/main/lantern-pr-parse.ts
+#touch file src/main/lantern-types.ts
+#touch file test/lantern-pr-parity.test.ts
+#accept vitest run test/lantern-pr-parity.test.ts: skill and app parse the same guide records alike, and reject the same malformed ones.
+
+#stage s3 Delegates write it, the screen shows it
+#item s3.1 Delegates write guide.json and pass --require-guide; e2e delegate checks require the guide
+#touch file skills/lantern-delegate/protocol.md
+#touch file skills/lantern-delegate/SKILL.md
+#touch file scripts/e2e-delegate/checks.mjs
+#touch file scripts/skill-test/fake-agent.mjs
+#accept The offline e2e delegate run is green with sync-verify-green using --require-guide, and red when the fake agent writes no guide.
+#item s3.2 Review screen: Guide / Files switch, step rail, J/K, collapsed trivial steps, pseudo toggle
+#touch new src/renderer/lib/lanternguide.ts
+#touch new src/renderer/lantern-guide.css
+#touch file src/renderer/lib/lanternreview.ts
+#touch file test/fixtures/graph/pr-review-demo.ts
+#touch new test/e2e/pr-review-guide.spec.ts
+#accept pnpm run test:pr-review:e2e: pr-review-guide.spec opens the demo PR in Guide, J/K moves steps, a collapsed step expands, pseudo toggles.
+#question s3.q1 Who writes the guide, and is it required? Default: the delegate, in the step that writes the flow; verify --require-guide gates it.
+#answer Marcin Default: the delegate, required.
+#question s3.q2 Pseudocode: written by the delegate for careful steps only, or run on demand from the app? Default: delegate writes it, app shows it on click.
+#answer Marcin Default: written by the delegate, shown on click.
+#question s3.q3 Guide in the UI: replace the file list or switch beside it; checkboxes saved? Default: Guide / Files switch, Guide first, checkboxes per session.
+#answer Marcin Default: switch beside the file list, checkboxes per session.
+
+#risk Hunks drift when the branch moves; the guide goes stale with #head like the rest of the record and verify catches it.
+#risk Delegates may lump everything into one step; prguide caps step size and protocol.md shows a good guide.
+#risk Every delegate run now writes one more file; keep guide.json small so run cost barely moves.
+#risk Skill and app parsers can diverge; the parity test pins them to the same cases.
+
+#approved title Marcin 2026-11-26 275b01c400b0
+#approved goal Marcin 2026-11-26 98f2373ba107
+#approved scope Marcin 2026-11-26 b2aca4eca6a8
+#approved impact Marcin 2026-11-26 b6850273e89f
+#approved s1 Marcin 2026-11-26 7c7c4cafa97a
+#approved s2 Marcin 2026-11-26 668d8c6a71f8
+#approved s3 Marcin 2026-11-26 5cda52c2b3d9
+#approved risks Marcin 2026-11-26 5f00b1ff4d95
+#approved plan Marcin 2026-11-26

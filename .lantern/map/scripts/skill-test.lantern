@@ -41,7 +41,7 @@ scripts/skill-test/extra-skills.mjs . service b0276ba45b03
   > skills/lantern-delegate/agents/reviewer.md
   > skills/lantern-delegate/protocol.md
   > skills/lantern-delegate/scripts/required-skills.mjs
-scripts/skill-test/fake-agent.mjs . util f88393517747
+scripts/skill-test/fake-agent.mjs . util 3e7c20721bba
 #feature skill-checks
   < scripts/e2e-delegate/workspace.mjs#REPO_ROOT
   < scripts/skill-test/fixtures.mjs#mapProject
@@ -100,7 +100,7 @@ scripts/skill-test/prompts.mjs . pure 471806a7a71c
 scripts/skill-test/report.mjs . pure 19f73c55ec5b
 #feature skill-checks
   < scripts/skill-test/agent.mjs#usd
-scripts/skill-test/run.mjs . script 446a26b35808
+scripts/skill-test/run.mjs . script f0f181d2514d
 #feature skill-checks
   < scripts/e2e-delegate/child.mjs#stopChild
   < scripts/e2e-delegate/execute.mjs#PROJECTS_HOME

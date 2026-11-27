@@ -649,6 +649,13 @@ test/lantern-flow-reading.test.ts . test 07b583124b3f
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-map.ts#mapOf
 
+test/lantern-guide-view.test.ts . test 10ea0a053c0e
+#feature review-screen
+  = src/renderer/lib/lanternguide.ts#guideStops
+  = src/renderer/lib/lanternguideview.ts#createGuidePane
+  = src/renderer/lib/lanternview.ts#mountLanternView
+  = test/helpers/lantern-map.ts#mapOf
+
 test/lantern-flow-view.test.ts . test c288be86cab7
 #feature pr-flow
   < scripts/esbuild.mjs
@@ -1333,6 +1340,11 @@ test/lantern-pr-flow-parse.test.ts . test b5a5e7f62cd5
   = src/main/lantern-pr-parse.ts#parsePrRecord
   = test/helpers/lantern-flow-cases.ts#REJECTED_FLOWS
 
+test/lantern-pr-guide.test.ts . test c6b83954414c
+#feature pull-requests
+  = skills/lantern-setup/scripts/prguide.mjs
+  = skills/lantern-setup/scripts/prs.mjs
+
 test/lantern-pr-merge.test.ts . test 7eebeece46d2
 #feature pull-requests
   = src/main/lantern.ts
@@ -1380,11 +1392,14 @@ test/lantern-pr-panel.test.ts . test 46c92f79264f
   = test/helpers/lantern-map.ts
   = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-pr-parity.test.ts . test ca48c079e6b3
+test/lantern-pr-parity.test.ts . test 99e4d7896b38
 #feature pull-requests
+  = skills/lantern-setup/scripts/prguide.mjs
   = skills/lantern-setup/scripts/prs.mjs
+  = src/main/lantern-guide-parse.ts
   = src/main/lantern-pr-parse.ts
   = test/helpers/lantern-flow-cases.ts#REJECTED_FLOWS
+  = test/helpers/lantern-guide-cases.ts#REJECTED_GUIDES
 
 test/lantern-pr-parse.test.ts . test d77ac41cd650
 #feature pull-requests
@@ -1639,6 +1654,13 @@ test/lantern-sync-describe.test.ts . test 0f26c391911f
   = skills/lantern-sync/scripts/sync.mjs
   = src/main/lantern-pr-parse.ts
   = test/helpers/git-repo.ts
+
+test/lantern-sync-guide.test.ts . test 955024fbd30d
+#feature pull-requests
+  = skills/lantern-setup/scripts/prguide.mjs
+  = skills/lantern-sync/scripts/sync.mjs
+  = test/helpers/git-repo.ts
+  = test/helpers/lantern-plan-world.ts
 
 test/lantern-sync-resolution.test.ts . test f1a9391762fb
 #feature map-sync
@@ -2615,7 +2637,7 @@ test/lantern-delegate-commit-identity.test.ts . test f4e0e76de264
   = skills/lantern-delegate/scripts/preflight.mjs
   = skills/lantern-delegate/scripts/github/identity.mjs
 
-test/lantern-delegate-delivery-flow.test.ts . test b55eee1a502f
+test/lantern-delegate-delivery-flow.test.ts . test 9665cadf807f
 #feature delegate-runs
   = scripts/e2e-delegate/checks.mjs
   = scripts/e2e-delegate/fake-lantern.mjs

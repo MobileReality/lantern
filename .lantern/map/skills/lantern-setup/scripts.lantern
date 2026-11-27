@@ -152,12 +152,17 @@ skills/lantern-setup/scripts/prflow.mjs . pure 319ff70286a7
 #feature pr-flow
   = skills/lantern-setup/scripts/lib.mjs
 
-skills/lantern-setup/scripts/prs.mjs . script dee8a588cfa8
+skills/lantern-setup/scripts/prguide.mjs . pure 5df484878208
+#feature pull-requests
+  = skills/lantern-setup/scripts/lib.mjs
+
+skills/lantern-setup/scripts/prs.mjs . script dc26f7a62316
 #feature pull-requests
   = skills/lantern-setup/scripts/lib.mjs
   < skills/lantern-setup/scripts/plan-ref.mjs#PLAN_REF
   = skills/lantern-setup/scripts/prdescribe.mjs#parseDescribeLines
   = skills/lantern-setup/scripts/prflow.mjs#parseFlowLines
+  = skills/lantern-setup/scripts/prguide.mjs#parseGuideLines
 
 skills/lantern-setup/scripts/refs.mjs . script 8fb8d41e2991
 #feature map-setup

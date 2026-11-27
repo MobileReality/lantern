@@ -109,6 +109,22 @@ src/renderer/lib/lanternflow.ts . component 763d49749950
   < src/main/lantern.ts
   = src/renderer/lib/lanternctx.ts#esc
 
+src/renderer/lib/lanternguide.ts . pure ea8f6c778a52
+#feature review-screen
+  < src/main/lantern.ts
+
+src/renderer/lib/lanternguidenote.ts . component 02b514f7e3ee
+#feature review-screen
+  < src/renderer/lib/lanternguide.ts#GuideNote
+  = src/renderer/lib/textselection.ts#isSelectingWithin
+
+src/renderer/lib/lanternguideview.ts . component 78d591c37d95
+#feature review-screen
+  < src/main/lantern.ts
+  = src/renderer/lib/file-label.ts#fileLabelHtml
+  = src/renderer/lib/lanternguide.ts#guideOf
+  < src/renderer/lib/lanternguide.ts#GuideStop
+
 src/renderer/lib/lanternhead.ts . component 284ab3e9663f
 #feature file-graph
   < src/main/lantern.ts#LanternLanguage
@@ -422,12 +438,13 @@ src/renderer/lib/lanternpronly.ts . pure 318fe61fe924
   < src/renderer/lib/lanternplanfocus.ts#planFilePaths
   < src/shared/lantern-plan-messages.ts#say
 
-src/renderer/lib/lanternprpanel.ts . component b65da7a7b17a
+src/renderer/lib/lanternprpanel.ts . component cd7a783d5211
 #feature pull-requests
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml
   = src/renderer/lib/lanternctx.ts
   < src/renderer/lib/lanternflow.ts#PickedStep
+  = src/renderer/lib/lanternguide.ts#guideErrorOf
   = src/renderer/lib/lanternprdescribe.ts#descriptionHostHtml
   = src/renderer/pr-info/index.ts#prInfoHtml
   < src/main/lantern-prdiff.ts#PrFileStats
@@ -447,11 +464,14 @@ src/renderer/lib/lanternrelview.ts . pure 9cc7d752f475
   < src/main/lantern.ts
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternreview.ts . component 9b06fde4d90b
+src/renderer/lib/lanternreview.ts . component 36b8a78dc8bc
 #feature review-screen
   = src/renderer/lib/codemodal.ts#createCodeView
   = src/renderer/lib/modalsteps.ts#createStepper
   = src/renderer/lib/modalreason.ts#reasonBlock
+  = src/renderer/lib/lanternguide.ts#markRows
+  < src/renderer/lib/lanternguide.ts#GuideNote
+  = src/renderer/lib/lanternguidenote.ts#guideNoteBlock
   = src/renderer/lib/prdiffmodal.ts#createDiffView
   < src/renderer/lib/prexplain.ts#ExplainHub
   = src/renderer/lib/comments/controller.ts#createReviewComments
@@ -483,7 +503,7 @@ src/renderer/lib/lanterntile.ts . pure c03c6daf9d0c
 #feature file-graph
   < src/renderer/lib/lanternlayout.ts
 
-src/renderer/lib/lanternview.ts . component 4b79cb1ba5fc
+src/renderer/lib/lanternview.ts . component 479728d57528
 #feature file-graph
   < src/main/lantern.ts
   < src/main/local-reasons.ts#LocalReasonsResult
@@ -494,6 +514,10 @@ src/renderer/lib/lanternview.ts . component 4b79cb1ba5fc
   < src/renderer/lib/lanternctx.ts
   = src/renderer/lib/lanterndetail.ts
   = src/renderer/lib/lanternflow.ts#flowHtml
+  = src/renderer/lib/lanternguide.ts#guideOf
+  = src/renderer/lib/lanternguide.ts#guideStops
+  < src/renderer/lib/lanternguide.ts#GuideStop
+  = src/renderer/lib/lanternguideview.ts#createGuidePane
   = src/renderer/lib/lanternlayout.ts
   = src/renderer/lib/lanternlock.ts
   = src/renderer/lib/lanternmacro.ts#blockKey
@@ -583,7 +607,7 @@ src/renderer/lib/prdiffcache.ts . state c18a833daf7c
   < src/main/lantern-pr-revisions.ts#PrSides
   < src/main/lantern-prdiff.ts#PrFileDiff
 
-src/renderer/lib/prdiffmodal.ts . component af0d34c38eb3
+src/renderer/lib/prdiffmodal.ts . component 762e932970f2
 #feature review-screen
   < src/main/lantern-prdiff.ts#PrFileDiff
   = src/renderer/lib/codeview.ts

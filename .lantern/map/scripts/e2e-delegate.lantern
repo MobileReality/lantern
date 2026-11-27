@@ -1,7 +1,7 @@
 lantern 1
 # scripts/e2e-delegate
 
-scripts/e2e-delegate/checks.mjs . util aefbf3c9dfd3
+scripts/e2e-delegate/checks.mjs . util 94c08f639214
 #feature skill-checks
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
   < skills/lantern-delegate/scripts/bundled-skills.mjs#offEverywhere
@@ -62,7 +62,7 @@ scripts/e2e-delegate/session.mjs . util 89a3ea4350f8
 #feature skill-checks
   < scripts/e2e-delegate/child.mjs#stopChild
   < scripts/e2e-delegate/report.mjs#parseResultLines
-scripts/e2e-delegate/verify.mjs . service 4bbaa70b3260
+scripts/e2e-delegate/verify.mjs . service a5adec1c7632
 #feature skill-checks
   < scripts/e2e-delegate/checks.mjs#checkExtraReadInFull
   < scripts/e2e-delegate/checks.mjs#checkNoPr

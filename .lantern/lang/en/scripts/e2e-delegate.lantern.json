@@ -1,6 +1,6 @@
 {
   "text": {
-    "checks.mjs": "judges each end-to-end check of a delegate run from the mock pull requests, remote branches, script output, the comparison view of a branch record, skills folder and session transcripts, including whether the delegate and the orchestrator each read their own extras in full by the required-skills list of their role and whether the dispatch prompt leaves the orchestrator extra out",
+    "checks.mjs": "judges each end-to-end check of a delegate run from the mock pull requests, remote branches, script output, the comparison view of a branch record (guide included), skills folder and session transcripts, including whether the delegate and the orchestrator each read their own extras in full by the required-skills list of their role and whether the dispatch prompt leaves the orchestrator extra out",
     "checks.mjs gotcha": "the reviewer-unavailable verdict test is wording based and best effort; informational checks are flagged hard false",
     "child.mjs": "stops a spawned child by its own pid and waits for a line on its output",
     "child.mjs gotcha": "refuses pid 1 or lower and a child that already exited, so it can never signal a broadcast pid",

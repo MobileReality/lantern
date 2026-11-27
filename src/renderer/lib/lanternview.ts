@@ -35,7 +35,7 @@ import { mountRegionTools } from './lanternregiontools';
 import { mountSections } from './lanternsections/controller';
 import { isSelectable, mountPrStrip } from './lanternprs';
 import { fillDescriptions } from './lanternprdescribe';
-import { prMarks, prPanelHtml, reviewSequence } from './lanternprpanel';
+import { prHeadHtml, prMarks, prPanelHtml, reviewSequence } from './lanternprpanel';
 import type { PrPanelContext } from './lanternprpanel';
 import type { StepNav } from './modalsteps';
 import type { Filters, Layout, Pos } from './lanternlayout';
@@ -55,6 +55,9 @@ import { macroPrView, planMacroMarks } from './lanternmacromarks';
 import type { MacroPrView } from './lanternmacromarks';
 import type { MacroLayout } from './lanternmacrolayout';
 import { flowBar, flowHtml, flowOf, pickedStep, syncPick, syncReading } from './lanternflow';
+import { guideOf, guideStops, noteOf, stopAt } from './lanternguide';
+import type { GuideStop } from './lanternguide';
+import { createGuidePane } from './lanternguideview';
 import type { OpenFileBlock } from './lanternmacrocurrent';
 import { itemPick, planFileMarks, planFilePaths, planFocus, planPick, questionPick, samePick, stagePick } from './lanternplanfocus';
 import { createPlanAsk } from './lanternplanask';
@@ -157,6 +160,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   let prOnly = false;
   let prMarking = true;
   let flowOn = false;
+  let guideAt = -1;
   let flowPick: string | null = null;
   let planSlug: string | null = null;
   let planPicked: PlanPick | null = null;
@@ -173,6 +177,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   let tilesCache: { base: Layout; sig: string; layout: Layout } | null = null;
   const expandedDirs = new Set<string>();
   const describeOpen = new Set<string>();
+  const headOpen = new Map<string, boolean>();
   let foldFiles = opts.foldFiles ?? true;
   let searchTimer: ReturnType<typeof setTimeout> | undefined;
   let relationMode = false;
@@ -288,6 +293,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     comments: { project: opts.project, language: () => source.language.code, openFile: (path) => reveal(path, review.mode()) },
     onStep: stepTo,
   });
+  const guidePane = createGuidePane({ open: openFromGuide });
   const regions = createRegions(browserRegionStore(opts.project));
   const panes = mountPanes(grid, side, review.el, { regions, main, store: browserStore(opts.project) });
   const regionTools = mountRegionTools({ grid, side, viewer: review.el, main, regions, foundationPresent: () => macro.hasFoundation(), reset: () => panes.reset(), say: (text) => { live.textContent = text; } });
@@ -320,9 +326,26 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     return currentPr()?.files.find((f) => f.path === path)?.reason;
   }
 
+  function guideStopsNow(): GuideStop[] | null {
+    const pr = currentPr();
+    const guide = guideOf(pr);
+    return pr && guide ? guideStops(guide, reviewSequence(pr)) : null;
+  }
+
+  function currentStop(stops: readonly GuideStop[], path: string | null) {
+    guideAt = stopAt(stops, path, guideAt);
+    return guideAt;
+  }
+
   function stepsFor(path: string): StepNav | undefined {
     const pr = currentPr();
     if (!pr) return undefined;
+    const stops = guideStopsNow();
+    if (stops) {
+      const at = currentStop(stops, path);
+      const reasons = new Map(pr.files.map((f) => [f.path, f.reason]));
+      return at < 0 ? undefined : { files: stops.map((stop) => ({ path: stop.path, ...(reasons.get(stop.path) ? { reason: reasons.get(stop.path) } : {}) })), index: at };
+    }
     const files = reviewSequence(pr);
     const index = files.findIndex((f) => f.path === path);
     return index < 0 ? undefined : { files: files.map((f) => ({ path: f.path, ...(f.reason ? { reason: f.reason } : {}) })), index };
@@ -348,7 +371,12 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     const pr = currentPr();
     const path = reviewPath();
     if (!pr || !path) return null;
-    return { pr: pr.id, path, title: pr.title, branch: pr.branch, order: reviewSequence(pr).map((f) => f.path), reason: reasonOf(path), head: pr.head, version: pr.revision ?? pr.head, nav: stepsFor(path), stat: statsFor(pr)?.[path] };
+    const nav = stepsFor(path);
+    const stops = guideStopsNow();
+    const guide = guideOf(pr);
+    const stop = stops && guide && nav ? stops[nav.index] : undefined;
+    const order = stops ? [...new Set(stops.map((one) => one.path))] : reviewSequence(pr).map((f) => f.path);
+    return { pr: pr.id, path, title: pr.title, branch: pr.branch, order, reason: reasonOf(path), head: pr.head, version: pr.revision ?? pr.head, nav, stat: statsFor(pr)?.[path], ...(guide && stop ? { guide: noteOf(guide, stop) } : {}) };
   }
 
   function applyFoundationHidden() {
@@ -391,7 +419,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     if (takeFocus) review.focus();
   }
 
-  function stepTo(path: string) {
+  function stepTo(path: string, index?: number) {
+    if (index !== undefined && guideStopsNow()?.[index]?.path === path) guideAt = index;
     const held = document.activeElement as HTMLElement | null;
     const fromSide = !!held && side.contains(held);
     reveal(path, review.mode(), false);
@@ -401,17 +430,19 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function focusSelectedRow() {
-    const row = side.querySelector<HTMLElement>('.pr-file.sel .pr-path');
+    const row = side.querySelector<HTMLElement>('.pr-file.sel .pr-path, .lt-guide-file[data-current="true"] .lt-guide-file-name');
     row?.focus({ preventScroll: true });
-    row?.scrollIntoView({ block: 'nearest' });
+    row?.scrollIntoView?.({ block: 'nearest' });
   }
 
   function stepFile(delta: number) {
     const pr = currentPr();
     if (!pr) return;
     if (review.canStep()) return void review.step(delta);
-    const first = reviewSequence(pr)[0];
+    const stops = guideStopsNow();
+    const first = stops ? stops[0] : reviewSequence(pr)[0];
     if (!first) return;
+    if (stops) guideAt = 0;
     const fromSide = side.contains(document.activeElement);
     reveal(first.path, review.mode(), !fromSide);
     if (fromSide) focusSelectedRow();
@@ -638,6 +669,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     prId = id;
     peeked = null;
     flowPick = null;
+    guideAt = -1;
     if (!id) prOnly = false;
     opts.onPr?.(id ?? '');
     if (id && data.prs.find((p) => p.id === id)?.source !== 'local') opts.onEnterPr?.(id);
@@ -649,6 +681,20 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   filters.platform = effectivePlatform(data, opts.platform ?? '');
+
+  function openPrFile(path: string, mode?: ReviewMode) {
+    if (!byPath.has(path) || (graphless() && currentPr()) || (locked && inspected === path)) return reveal(path, mode ?? review.mode(), false);
+    if (mode) review.prefer(mode);
+    setView('files');
+    goTo(path, true);
+  }
+
+  function openFromGuide(path: string, step: number) {
+    const at = guideStopsNow()?.findIndex((stop) => stop.path === path && stop.step === step) ?? -1;
+    if (at >= 0) guideAt = at;
+    openPrFile(path, 'diff');
+    focusSelectedRow();
+  }
 
   function showHost(flow: boolean) {
     if (flow || !macro.isOn()) stage.drop();
@@ -1080,7 +1126,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   }
 
   function prRowsContext(pr: LanternPr, activeFilters: number): PrPanelContext {
-    return { stats: statsFor(pr), pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
+    return { headOpen: headOpen.get(pr.id), stats: statsFor(pr), pr, byPath, selected: reviewPath(), canOpenCode: !!opts.readFile, canOpenDiff: !!opts.readPrDiff, canOpenPrCode: !!opts.readPrFile, activeFilters, flowStep: pickedNow(), canGenerateReasons: !!opts.onGenerateReasons, canMapMissing: !!opts.onMapMissing, unmapped: new Set(data.unmapped), reasonsBusy: !!reasons?.busy, reasonsRunning: reasons?.id === pr.id && reasons.busy, canRefresh: !!opts.onRefreshPrs, refreshBusy: !!refreshing?.busy, refreshNote: refreshing?.id === pr.id ? refreshing.note : '' };
   }
 
   let refreshing: { id: string; busy: boolean; note: string } | null = null;
@@ -1137,6 +1183,14 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
     (side.querySelector('.pr-reasons-row') as HTMLElement | null)?.focus({ preventScroll: true });
   }
 
+  function toggleHead() {
+    const pr = currentPr();
+    if (!pr) return;
+    headOpen.set(pr.id, !(headOpen.get(pr.id) ?? !guideOf(pr)));
+    redrawSide();
+    (side.querySelector('.pr-head-toggle') as HTMLElement | null)?.focus({ preventScroll: true });
+  }
+
   function drawDescription(pr: LanternPr) {
     fillDescriptions(
       side,
@@ -1169,7 +1223,8 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       planPane.textContent = '';
       planPaneHtml = '';
     }
-    const top = pr ? `<div class="lt-side-list">${prPanelHtml(prRowsContext(pr, activeGroups(filters, showUnmapped)))}</div>` : '';
+    const macroStops = pr && macro.isOn() ? guideStopsNow() : null;
+    const top = pr ? `<div class="lt-side-list">${macroStops ? prHeadHtml(prRowsContext(pr, activeGroups(filters, showUnmapped))) : prPanelHtml(prRowsContext(pr, activeGroups(filters, showUnmapped)))}</div>` : '';
     const overviewOnly = macro.isOn() && !top && !plan;
     grid.classList.toggle('lt-side-none', overviewOnly);
     if (!macro.isOn()) drawer.set(false, true);
@@ -1178,6 +1233,11 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       const rows = prView ? prRowsContext(prView.pr, 0) : null;
       drawer.fill(macroSideHtml(data, macro.frame(), macro.selected(), prView && rows ? { view: prView, rows } : null, openFileNow()));
       side.innerHTML = top;
+      if (pr && macroStops) {
+        currentStop(macroStops, reviewPath());
+        guidePane.show(pr, { stops: macroStops, at: guideAt, marked: pickedNow()?.files });
+        side.querySelector('.lt-side-list')?.append(guidePane.el);
+      }
       if (pr) drawDescription(pr);
       regionTools.attachList();
       return;
@@ -1186,7 +1246,14 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       side.innerHTML = '';
       return;
     }
-    side.innerHTML = pr ? prPanelHtml(prRowsContext(pr, activeGroups(filters, showUnmapped))) : sideHtml(sideContext());
+    const stops = pr ? guideStopsNow() : null;
+    const rows = pr ? prRowsContext(pr, activeGroups(filters, showUnmapped)) : null;
+    side.innerHTML = rows ? (stops ? prHeadHtml(rows) : prPanelHtml(rows)) : sideHtml(sideContext());
+    if (pr && stops) {
+      currentStop(stops, reviewPath());
+      guidePane.show(pr, { stops, at: guideAt, marked: pickedNow()?.files });
+      side.append(guidePane.el);
+    }
     if (pr) drawDescription(pr);
     if (pr && filters.only) {
       const template = document.createElement('template');
@@ -1461,16 +1528,12 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       focusSearch = true;
     } else if (t.hasAttribute('data-pr-map')) return opts.onMapMissing?.();
     else if (t.hasAttribute('data-pr-reasons')) return generateReasons();
+    else if (t.hasAttribute('data-pr-head-toggle')) return toggleHead();
     else if (t.hasAttribute('data-pr-refresh')) return refreshPr();
     else if (t.hasAttribute('data-pr-back')) setPr(null, false);
     else if (t.hasAttribute('data-pr-diff')) return openPrDiff(t.getAttribute('data-pr-diff') ?? '');
     else if (t.hasAttribute('data-pr-code')) return reveal(t.getAttribute('data-pr-code') ?? '', 'file');
-    else if (t.hasAttribute('data-pr-go')) {
-      const path = t.getAttribute('data-pr-go') ?? '';
-      if (!byPath.has(path) || (graphless() && currentPr()) || (locked && inspected === path)) return reveal(path, review.mode(), false);
-      setView('files');
-      return goTo(path, true);
-    }
+    else if (t.hasAttribute('data-pr-go')) return openPrFile(t.getAttribute('data-pr-go') ?? '');
     else if (t.hasAttribute('data-relview')) return actFromSide(() => setRelationMode(!relationOn()));
     else if (t.hasAttribute('data-lock')) return actFromLock(() => setLock(!locked));
     else if (t.hasAttribute('data-lock-move')) return actFromLock(moveLock);
@@ -1490,7 +1553,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
   side.addEventListener('click', onSideClick);
   side.addEventListener('contextmenu', onSideMenu);
   side.addEventListener('keydown', (ev) => {
-    if (currentPr()) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file'));
+    if (currentPr()) runFileStep(ev, stepFile, ev.target instanceof Element && !!ev.target.closest('.pr-file, .lt-guide-file'));
   });
   planPane.addEventListener('click', onSideClick);
   drawer.el.addEventListener('click', onSideClick);
@@ -1597,6 +1660,7 @@ function mountLanternView(root: HTMLElement, initial: LanternMap, opts: ViewOpti
       regionTools.dispose();
       explainHub?.dispose();
       review.dispose();
+      guidePane.dispose();
       diffCache?.stop();
       clearTimeout(searchTimer);
       scrollMain.cancel();

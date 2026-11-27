@@ -89,6 +89,9 @@ test/helpers/lantern-areas-gate-fixtures.ts . test 3ca9857927ba
 test/helpers/lantern-flow-cases.ts . test da9c830f9921
 #feature pr-flow
 
+test/helpers/lantern-guide-cases.ts . test fdea5bb7a173
+#feature pull-requests
+
 test/helpers/lantern-macro-areas-fixture.ts . test 0ef703f3348b
 #feature product-areas
 

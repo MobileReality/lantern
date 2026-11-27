@@ -1,0 +1,54 @@
+lantern-pr 1
+# 90
+#title feat: parse guide lines of a PR record in the app
+#url https://github.com/MobileReality/lantern/pull/90
+#branch feat/app-guide-parse
+#base feat/guided-review
+#opened 2026-11-26
+#head 7b7248e4fc69a1c3e389fe51fc1de49172f6b6d7
+#describe what The app reads the guide lines of a PR or branch record into a guide, or a guideError when they are malformed, exactly as the skill's guide parser does.
+#describe before The app ignored guide lines in a record.
+#describe after The record carries a guide with summary, risk and steps, or a guideError naming the first problem, and the rest of the record is untouched.
+#describe verified Parity test, the full test suite and the typecheck are green.
+#plan guided-pr-review s2.2
++ src/main/lantern-guide-parse.ts
++ test/helpers/lantern-guide-cases.ts
+~ src/main/lantern-local.ts
+~ src/main/lantern-pr-parse.ts
+~ src/main/lantern-prs.ts
+~ src/main/lantern-types.ts
+~ test/lantern-pr-parity.test.ts
+#order src/main/lantern-types.ts
+#order src/main/lantern-guide-parse.ts
+#order src/main/lantern-pr-parse.ts
+#order src/main/lantern-prs.ts
+#order src/main/lantern-local.ts
+#order test/helpers/lantern-guide-cases.ts
+#order test/lantern-pr-parity.test.ts
+#reason src/main/lantern-guide-parse.ts Gives the app the same strict reading of guide lines as the skill, so a guide means one thing everywhere
+#reason test/helpers/lantern-guide-cases.ts Holds the guide cases and their expected messages so the parity test stays short
+#reason src/main/lantern-local.ts Carries the guide of a local branch record onto its comparison like the flow
+#reason src/main/lantern-pr-parse.ts Collects the guide lines of a record and keeps a bad guide from breaking the rest of it
+#reason src/main/lantern-prs.ts Carries the parsed guide from a PR record onto the PR the map shows
+#reason src/main/lantern-types.ts Defines the guide shape the review screen will read, with guideError beside it like flowError
+#reason test/lantern-pr-parity.test.ts Fails when the app and the skill read a guide differently or the mirrored limits drift
+#story A reviewer opens a PR that carries a guide
+#step actor A reviewer
+#step action opens a pull request record with guide lines in
+#file src/main/lantern-pr-parse.ts
+#file src/main/lantern-prs.ts
+#step subject Lantern
+#below actor Lantern
+#below interaction can now read the guide steps of the PR
+#file src/main/lantern-guide-parse.ts
+#file test/lantern-pr-parity.test.ts
+#below consequence guide lines were ignored => guide steps are read and checked
+#file src/main/lantern-types.ts
+#story A malformed guide does not hide the PR
+#step actor A reviewer
+#step action opens a record whose guide is malformed in
+#file test/helpers/lantern-guide-cases.ts
+#step subject Lantern
+#below actor Lantern
+#below interaction still shows the PR and says why the guide failed
+#below consequence no word on a bad guide => the first problem is named
