@@ -5,13 +5,11 @@ export const GUIDE_RISK_LEVELS = ['low', 'medium', 'high'];
 export const GUIDE_STEP_MODES = ['careful', 'skim'];
 export const GUIDE_MAX_STEPS = 8;
 export const GUIDE_MAX_HUNKS_PER_STEP = 60;
-export const GUIDE_MAX_PSEUDO_LINES = 8;
 export const GUIDE_SUMMARY_MAX = 160;
 export const GUIDE_RISK_WHY_MAX = 160;
 export const GUIDE_TITLE_MAX = 60;
 export const GUIDE_WHY_MAX = 240;
 export const GUIDE_WHY_MAX_SENTENCES = 2;
-export const GUIDE_PSEUDO_MAX = 100;
 
 const SIDE_SIGN = { old: '-', new: '+' };
 const RANGE = /^([+-])(\d+)(?:-(\d+))?$/;
@@ -111,10 +109,11 @@ export function parseGuideLines(lines, listed = null) {
                 continue;
             }
             if (steps.length >= GUIDE_MAX_STEPS) errors.push(`${where}: more than ${GUIDE_MAX_STEPS} steps`);
-            step = { title, careful: mode === 'careful', why: null, hunks: [], pseudo: [], where };
+            step = { title, careful: mode === 'careful', why: null, hunks: [], where };
             steps.push(step);
             continue;
         }
+        if (tag === 'gpseudo') continue;
         if (!step) {
             errors.push(`${where}: #${tag} before any #gstep`);
             continue;
@@ -130,12 +129,6 @@ export function parseGuideLines(lines, listed = null) {
             else if (step.hunks.some((ref) => sameRef(ref, parsed.ref))) errors.push(`${where}: #ghunk repeats a hunk of step "${step.title}"`);
             else if (step.hunks.length >= GUIDE_MAX_HUNKS_PER_STEP) errors.push(`${where}: more than ${GUIDE_MAX_HUNKS_PER_STEP} #ghunk lines in step "${step.title}"`);
             else step.hunks.push(parsed.ref);
-        } else {
-            const problem = lineProblem(raw, 'the pseudocode line', GUIDE_PSEUDO_MAX);
-            if (!step.careful) errors.push(`${where}: #gpseudo only on a careful step ("${step.title}" is skim)`);
-            else if (problem) errors.push(`${where}: #gpseudo ${problem}`);
-            else if (step.pseudo.length >= GUIDE_MAX_PSEUDO_LINES) errors.push(`${where}: more than ${GUIDE_MAX_PSEUDO_LINES} #gpseudo lines in step "${step.title}"`);
-            else step.pseudo.push(raw);
         }
     }
     finishStep();
@@ -148,7 +141,7 @@ export function parseGuideLines(lines, listed = null) {
         guide: {
             summary,
             risk,
-            steps: steps.map(({ title, why, careful, hunks, pseudo }) => ({ title, why, careful, hunks, ...(pseudo.length ? { pseudo } : {}) })),
+            steps: steps.map(({ title, why, careful, hunks }) => ({ title, why, careful, hunks })),
         },
         errors,
     };
@@ -162,7 +155,6 @@ export function guideRecordLines(guide) {
             `#gstep ${step.careful ? 'careful' : 'skim'} ${step.title}`,
             `#gwhy ${step.why}`,
             ...step.hunks.map((ref) => `#ghunk ${hunkRefLine(ref)}`),
-            ...(step.pseudo ?? []).map((line) => `#gpseudo ${line}`),
         ]),
     ];
 }
@@ -193,11 +185,7 @@ export function guideFromJson(value, listed = null) {
         value.steps.forEach((step, index) => {
             const at = `step ${index + 1}`;
             if (!isObject(step) || typeof step.title !== 'string' || typeof step.why !== 'string' || typeof step.careful !== 'boolean' || !Array.isArray(step.hunks)) {
-                errors.push(`${at}: must be {"title": string, "why": string, "careful": boolean, "hunks": [...], "pseudo": [...]}`);
-                return;
-            }
-            if (step.pseudo !== undefined && (!Array.isArray(step.pseudo) || step.pseudo.some((line) => typeof line !== 'string'))) {
-                errors.push(`${at}: "pseudo" is an array of strings`);
+                errors.push(`${at}: must be {"title": string, "why": string, "careful": boolean, "hunks": [...]}`);
                 return;
             }
             const refs = step.hunks.map(refFromJson);
@@ -209,7 +197,6 @@ export function guideFromJson(value, listed = null) {
             lines.push({ tag: 'gstep', raw: `${step.careful ? 'careful' : 'skim'} ${fold(step.title)}`, where: at });
             lines.push({ tag: 'gwhy', raw: fold(step.why), where: at });
             for (const { ref } of refs) lines.push({ tag: 'ghunk', raw: hunkRefLine(ref), where: at });
-            for (const line of step.pseudo ?? []) lines.push({ tag: 'gpseudo', raw: fold(line), where: at });
         });
     if (errors.length) return { guide: null, errors };
     return parseGuideLines(lines, listed);

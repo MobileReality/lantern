@@ -22,7 +22,6 @@ interface GuidePane {
 interface Ticks {
   done: Set<number>;
   toggled: Set<number>;
-  pseudo: Set<number>;
 }
 
 const RISK_LABEL = { low: 'Low risk', medium: 'Medium risk', high: 'High risk' } as const;
@@ -47,7 +46,7 @@ function flip(set: Set<number>, index: number) {
 }
 
 function newTicks(): Ticks {
-  return { done: new Set(), toggled: new Set(), pseudo: new Set() };
+  return { done: new Set(), toggled: new Set() };
 }
 
 function fileItem(path: string, step: number) {
@@ -76,7 +75,6 @@ function createGuidePane(opts: GuidePaneOptions): GuidePane {
     if (!step) return;
     const open = isOpen(index);
     const done = ticks.done.has(index);
-    const pseudo = ticks.pseudo.has(index);
     step.dataset.open = String(open);
     step.dataset.done = String(done);
     step.dataset.current = String(current);
@@ -84,8 +82,6 @@ function createGuidePane(opts: GuidePaneOptions): GuidePane {
     else step.removeAttribute('aria-current');
     step.querySelector<HTMLElement>('.lt-guide-fold')?.setAttribute('aria-expanded', String(open));
     step.querySelector<HTMLElement>('.lt-guide-step-body')?.toggleAttribute('hidden', !open);
-    step.querySelector<HTMLElement>('.lt-guide-pseudo')?.toggleAttribute('hidden', !pseudo);
-    step.querySelector<HTMLElement>('.lt-guide-pseudo-toggle')?.setAttribute('aria-pressed', String(pseudo));
     const check = step.querySelector<HTMLInputElement>('.lt-guide-check');
     if (check) check.checked = done;
   }
@@ -130,13 +126,6 @@ function createGuidePane(opts: GuidePaneOptions): GuidePane {
     const body = el('div', 'lt-guide-step-body');
     body.id = where;
     body.append(el('p', 'lt-guide-why', step.why));
-    if (step.pseudo?.length) {
-      const toggle = button('lt-guide-pseudo-toggle', 'Pseudocode', { guidePseudo: String(index) });
-      toggle.setAttribute('aria-pressed', 'false');
-      const code = el('pre', 'lt-guide-pseudo', step.pseudo.join('\n'));
-      code.setAttribute('aria-label', `Pseudocode of step ${index + 1}`);
-      body.append(toggle, code);
-    }
     const files = el('ul', 'lt-guide-files');
     files.append(...pathsOf(step.hunks).map((path) => fileItem(path, index)));
     item.append(top, body, files);
@@ -173,10 +162,9 @@ function createGuidePane(opts: GuidePaneOptions): GuidePane {
     const open = target.closest<HTMLElement>('[data-guide-open]');
     if (open) return opts.open(open.dataset.guideOpen ?? '', Number(open.dataset.guideStep));
     const fold = target.closest<HTMLElement>('[data-guide-fold]');
-    const pseudo = target.closest<HTMLElement>('[data-guide-pseudo]');
-    if (fold) flip(ticks.toggled, Number(fold.dataset.guideFold));
-    if (pseudo) flip(ticks.pseudo, Number(pseudo.dataset.guidePseudo));
-    const owner = (fold ?? pseudo)?.closest<HTMLElement>('.lt-guide-step');
+    if (!fold) return;
+    flip(ticks.toggled, Number(fold.dataset.guideFold));
+    const owner = fold.closest<HTMLElement>('.lt-guide-step');
     if (owner) syncStep(Number(owner.dataset.step), owner.dataset.current === 'true');
   }
 

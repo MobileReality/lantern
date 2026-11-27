@@ -4,7 +4,7 @@ lantern 1
 skills/lantern-delegate/README.md . skill 994498c26e7c
 #feature delegate-runs
 
-skills/lantern-delegate/SKILL.md . skill 800c89115916
+skills/lantern-delegate/SKILL.md . skill 726acd89b20f
 #feature delegate-runs
   @ skills/lantern-delegate-complex/SKILL.md
   @ skills/lantern-delegate/agents/lantern-delegate-high.md
@@ -32,7 +32,7 @@ skills/lantern-delegate/SKILL.md . skill 800c89115916
   @ skills/lantern-sync/SKILL.md
   @ skills/lantern-sync/scripts/sync.mjs
 
-skills/lantern-delegate/protocol.md . skill 16e9e25c12da
+skills/lantern-delegate/protocol.md . skill 8f31f3f68ad3
 #feature delegate-runs
   @ skills/lantern-delegate-complex/agents/reviewer-complex.md
   @ skills/lantern-delegate/agents/reviewer.md

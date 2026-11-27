@@ -118,7 +118,7 @@ src/renderer/lib/lanternguidenote.ts . component 02b514f7e3ee
   < src/renderer/lib/lanternguide.ts#GuideNote
   = src/renderer/lib/textselection.ts#isSelectingWithin
 
-src/renderer/lib/lanternguideview.ts . component 3660851fcbcb
+src/renderer/lib/lanternguideview.ts . component 78d591c37d95
 #feature review-screen
   < src/main/lantern.ts
   = src/renderer/lib/file-label.ts#fileLabelHtml

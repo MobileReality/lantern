@@ -31,7 +31,7 @@ const GUIDE: LanternGuide = {
   summary: 'Two edits in one file, then a second file.',
   risk: { level: 'low', why: 'Renames only.' },
   steps: [
-    { title: 'Start in b', why: 'The contract lives here.', careful: true, hunks: [{ path: 'src/b.ts' }], pseudo: ['b says hello'] },
+    { title: 'Start in b', why: 'The contract lives here.', careful: true, hunks: [{ path: 'src/b.ts' }] },
     { title: 'Upper case four', why: 'The upper case four.', careful: true, hunks: [{ path: 'src/a.ts', side: 'new', start: 4, end: 4 }] },
     { title: 'Upper case ten', why: 'The upper case ten.', careful: false, hunks: [{ path: 'src/a.ts', side: 'old', start: 10 }] },
   ],
@@ -171,16 +171,10 @@ describe('the guide pane', () => {
     expect(item(pane.el, 'src/c.ts', -1).dataset.current).toBe('true');
   });
 
-  it('toggles the pseudocode of a step, ticks steps and tells which file of which step was picked', () => {
+  it('has no pseudocode toggle, ticks steps and tells which file of which step was picked', () => {
     const { pane, opened } = mountPane();
-    const pseudo = pane.el.querySelector<HTMLElement>('.lt-guide-pseudo') as HTMLElement;
-    expect(pseudo.hidden).toBe(true);
-    pane.el.querySelector<HTMLButtonElement>('.lt-guide-pseudo-toggle')?.click();
-    expect(pseudo.hidden).toBe(false);
-    expect(pseudo.textContent).toBe('b says hello');
-    pane.el.querySelector<HTMLButtonElement>('.lt-guide-pseudo-toggle')?.click();
-    expect(pseudo.hidden).toBe(true);
-    expect(pane.el.querySelectorAll('.lt-guide-pseudo-toggle')).toHaveLength(1);
+    expect(pane.el.querySelector('.lt-guide-pseudo, .lt-guide-pseudo-toggle')).toBeNull();
+    expect(pane.el.textContent).not.toMatch(/pseudo/i);
     const check = pane.el.querySelector<HTMLInputElement>('.lt-guide-step[data-step="0"] .lt-guide-check') as HTMLInputElement;
     check.checked = true;
     check.dispatchEvent(new Event('change', { bubbles: true }));

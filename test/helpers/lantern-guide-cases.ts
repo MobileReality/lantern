@@ -29,7 +29,6 @@ const GUIDE_VALUE = {
       why: 'The limit is checked first. Everything else reads it.',
       careful: true,
       hunks: [{ path: 'src/a.ts', side: 'new', start: 10, end: 20 }, { path: 'src/a.ts', side: 'old', start: 3, end: 3 }],
-      pseudo: ['if amount > limit: refuse', 'else: continue'],
     },
     {
       title: 'Callers and docs',
@@ -71,10 +70,28 @@ const REJECTED_GUIDES: [string, string[], RegExp][] = [
   ['a range that ends before it starts', [...OPENING, ...STEP, '#ghunk src/a.ts +9-3'], /the range 9-3 ends before it starts/],
   ['a repeated hunk', [...OPENING, ...STEP, '#ghunk src/a.ts'], /#ghunk repeats a hunk of step "Core"/],
   ['sixty-one hunks on a step', [...OPENING, '#gstep skim t', '#gwhy w', ...Array.from({ length: 61 }, (_, i) => `#ghunk src/a.ts +${i + 1}`)], /more than 60 #ghunk lines/],
-  ['pseudocode on a skim step', [...OPENING, '#gstep skim t', '#gwhy w', '#ghunk src/a.ts', '#gpseudo x'], /#gpseudo only on a careful step \("t" is skim\)/],
-  ['an over-long pseudocode line', [...OPENING, ...STEP, `#gpseudo ${sentence(101)}`], /the pseudocode line is 101 characters, the cap is 100/],
-  ['an empty pseudocode line', [...OPENING, ...STEP, '#gpseudo'], /the pseudocode line is empty/],
-  ['nine pseudocode lines', [...OPENING, ...STEP, ...Array.from({ length: 9 }, (_, i) => `#gpseudo line ${i}`)], /more than 8 #gpseudo lines/],
 ];
 
-export { GUIDE_FILE_LINES, GUIDE_LINES, GUIDE_VALUE, REJECTED_GUIDES };
+const LEGACY_PSEUDO_LINES = [
+  ...OPENING,
+  '#gpseudo before any step',
+  ...STEP,
+  '#gpseudo',
+  `#gpseudo ${sentence(101)}`,
+  ...Array.from({ length: 9 }, (_, i) => `#gpseudo line ${i}`),
+  '#gstep skim t',
+  '#gwhy w',
+  '#ghunk src/a.ts +1',
+  '#gpseudo on a skim step',
+];
+
+const LEGACY_PSEUDO_GUIDE = {
+  summary: 'Adds a limit.',
+  risk: { level: 'low', why: 'Small change.' },
+  steps: [
+    { title: 'Core', why: 'It carries the idea.', careful: true, hunks: [{ path: 'src/a.ts' }] },
+    { title: 't', why: 'w', careful: false, hunks: [{ path: 'src/a.ts', side: 'new', start: 1, end: 1 }] },
+  ],
+};
+
+export { GUIDE_FILE_LINES, GUIDE_LINES, GUIDE_VALUE, LEGACY_PSEUDO_GUIDE, LEGACY_PSEUDO_LINES, REJECTED_GUIDES };

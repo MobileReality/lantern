@@ -1,0 +1,83 @@
+lantern-pr 1
+# 97
+#title Remove pseudocode from the pull request guide
+#url https://github.com/MobileReality/lantern/pull/97
+#branch chore/drop-guide-pseudocode
+#base feat/guided-review
+#opened 2026-11-27
+#head 7b4f8687836ecc9c2d299c1af0116ef38499b3ba
+#describe what The pull request guide no longer has pseudocode: not in the pane, the writer, the docs or the types.
+#describe before A careful step could carry pseudocode and the pane showed a Pseudocode button.
+#describe after The pane has no such button, and old records with pseudocode lines still read the same.
+#describe verified Typecheck, lint, the full test suite and the pull request review end-to-end tests pass.
+~ scripts/skill-test/fake-agent.mjs
+~ skills/lantern-delegate/SKILL.md
+~ skills/lantern-delegate/protocol.md
+~ skills/lantern-setup/references/format.md
+~ skills/lantern-setup/scripts/prguide.mjs
+~ skills/lantern-sync/SKILL.md
+~ src/main/lantern-guide-parse.ts
+~ src/main/lantern-types.ts
+~ src/renderer/lantern-guide.css
+~ src/renderer/lib/lanternguideview.ts
+~ test/e2e/pr-review-guide.spec.ts
+~ test/fixtures/graph/pr-review-demo.ts
+~ test/helpers/lantern-guide-cases.ts
+~ test/lantern-guide-view.test.ts
+~ test/lantern-pr-guide.test.ts
+~ test/lantern-pr-parity.test.ts
+#order src/main/lantern-types.ts
+#order src/main/lantern-guide-parse.ts
+#order skills/lantern-setup/scripts/prguide.mjs
+#order src/renderer/lib/lanternguideview.ts
+#order src/renderer/lantern-guide.css
+#order test/lantern-pr-parity.test.ts
+#order test/helpers/lantern-guide-cases.ts
+#order test/lantern-pr-guide.test.ts
+#order test/lantern-guide-view.test.ts
+#order test/e2e/pr-review-guide.spec.ts
+#order test/fixtures/graph/pr-review-demo.ts
+#order scripts/skill-test/fake-agent.mjs
+#order skills/lantern-setup/references/format.md
+#order skills/lantern-sync/SKILL.md
+#order skills/lantern-delegate/SKILL.md
+#order skills/lantern-delegate/protocol.md
+#story A reviewer reads a guide
+#step actor A reviewer
+#step action opens a pull request's guide
+#step subject the steps of the guide
+#file src/renderer/lib/lanternguideview.ts
+#below consequence a careful step offered a Pseudocode button => a step shows only its why and its files
+#story An old record is opened
+#step actor A reviewer
+#step action opens a record written before this change
+#step subject its guide
+#file src/main/lantern-guide-parse.ts
+#file skills/lantern-setup/scripts/prguide.mjs
+#below consequence the pseudocode lines were read and checked => they are skipped and the guide reads the same
+#guide The guide no longer has pseudocode anywhere, and old records that still have it keep working.
+#risk low Only removes a feature; the one new rule is that both parsers skip an old pseudocode line.
+#gstep careful Old pseudocode lines are ignored
+#gwhy Both parsers now skip a legacy pseudocode line before any check, so committed records stay valid and read the same. The types and limits that only served pseudocode go.
+#ghunk skills/lantern-setup/scripts/prguide.mjs
+#ghunk src/main/lantern-guide-parse.ts
+#ghunk src/main/lantern-types.ts
+#gstep skim The pane shows no pseudocode
+#gwhy The button, the block, their state and their styles are removed from the guide pane.
+#ghunk src/renderer/lib/lanternguideview.ts
+#ghunk src/renderer/lantern-guide.css
+#gstep skim Docs and agents stop asking for it
+#gwhy The format, the sync and delegate skills no longer mention pseudocode, and the fake agent stops filtering it.
+#ghunk skills/lantern-setup/references/format.md
+#ghunk skills/lantern-sync/SKILL.md
+#ghunk skills/lantern-delegate/SKILL.md
+#ghunk skills/lantern-delegate/protocol.md
+#ghunk scripts/skill-test/fake-agent.mjs
+#gstep skim Tests and fixtures
+#gwhy A record with old pseudocode lines parses the same in both parsers, and the pane has no toggle.
+#ghunk test/lantern-pr-parity.test.ts
+#ghunk test/helpers/lantern-guide-cases.ts
+#ghunk test/lantern-pr-guide.test.ts
+#ghunk test/lantern-guide-view.test.ts
+#ghunk test/e2e/pr-review-guide.spec.ts
+#ghunk test/fixtures/graph/pr-review-demo.ts

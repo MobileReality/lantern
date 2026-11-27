@@ -204,14 +204,12 @@ const demoGuide: LanternGuide = {
       why: 'Everything else leans on this new pure helper, so read its contract first.',
       careful: true,
       hunks: [{ path: 'src/pricing/calculate-order-total.ts' }],
-      pseudo: ['add up every price in the list', 'an empty list totals zero'],
     },
     {
       title: 'Move checkout onto it',
       why: 'The checkout hook stops using the fixed-shape helper, which is deleted here.',
       careful: true,
       hunks: [{ path: 'src/checkout/use-checkout.ts' }, { path: 'src/pricing/legacy-total.ts' }],
-      pseudo: ['build the checkout state from the itemized prices', 'the total comes from the shared helper', 'the old helper has no callers left'],
     },
     {
       title: 'Format the amount as currency',
@@ -224,7 +222,6 @@ const demoGuide: LanternGuide = {
       why: 'The summary becomes a described total plus a button that stays disabled until there is something to pay.',
       careful: true,
       hunks: [{ path: 'src/checkout/order-summary.tsx', side: 'new', start: 19, end: 28 }],
-      pseudo: ['render the formatted total in a labelled list', 'announce changes to the total politely', 'disable the pay button while the total is not positive'],
     },
     {
       title: 'Cover the helper with a test',

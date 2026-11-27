@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import * as appGuide from '../src/main/lantern-guide-parse';
 import { parsePrRecord } from '../src/main/lantern-pr-parse';
-import { GUIDE_FILE_LINES, GUIDE_LINES, GUIDE_VALUE, REJECTED_GUIDES } from './helpers/lantern-guide-cases';
+import { GUIDE_FILE_LINES, GUIDE_LINES, GUIDE_VALUE, LEGACY_PSEUDO_GUIDE, LEGACY_PSEUDO_LINES, REJECTED_GUIDES } from './helpers/lantern-guide-cases';
 import { FILES_MAX, FLOW_STORY, FLOW_STORY_VALUE, REF_FILE_LINES, REF_PATHS, REF_STORY, REF_STORY_VALUE, REJECTED_FLOWS, REJECTED_REFERENCES, refLines } from './helpers/lantern-flow-cases';
 
 const SKILL = path.join(__dirname, '..', 'skills', 'lantern-setup');
@@ -335,8 +335,8 @@ describe('flow references (#file): both parsers agree', () => {
   });
 });
 
-describe('guide (#guide, #risk, #gstep, #gwhy, #ghunk, #gpseudo): both parsers agree', () => {
-  it('read the same summary, risk, steps, hunk references and pseudocode from a valid guide', () => {
+describe('guide (#guide, #risk, #gstep, #gwhy, #ghunk): both parsers agree', () => {
+  it('read the same summary, risk, steps and hunk references from a valid guide, a legacy #gpseudo line included', () => {
     const { skill, app, skillAccepts, appAccepts } = both(record([...VALID, ...GUIDE_FILE_LINES, ...GUIDE_LINES]), '7.pr');
     expect(skill.errors).toEqual([]);
     expect(skillAccepts).toBe(true);
@@ -363,9 +363,19 @@ describe('guide (#guide, #risk, #gstep, #gwhy, #ghunk, #gpseudo): both parsers a
     expect(app.pr).not.toHaveProperty('guideError');
   });
 
-  it('accept the caps: eight steps, sixty hunks, eight pseudocode lines, the longest texts', () => {
+  it('accept and ignore every legacy #gpseudo line, wherever it sits and whatever it holds', () => {
+    const { skill, app, skillAccepts, appAccepts } = both(record([...VALID, ...GUIDE_FILE_LINES, ...LEGACY_PSEUDO_LINES]), '7.pr');
+    expect(skill.errors).toEqual([]);
+    expect(skillAccepts).toBe(true);
+    expect(appAccepts).toBe(true);
+    expect(skill.guide).toEqual(LEGACY_PSEUDO_GUIDE);
+    expect(app.pr!.guide).toEqual(skill.guide);
+    expect(app.pr).not.toHaveProperty('guideError');
+  });
+
+  it('accept the caps: eight steps, sixty hunks, the longest texts', () => {
     const hunks = Array.from({ length: 60 }, (_, i) => `#ghunk src/a.ts +${i + 1}`);
-    const longStep = ['#gstep careful ' + 'x'.repeat(60), `#gwhy ${'y'.repeat(240)}`, ...hunks, ...Array.from({ length: 8 }, () => `#gpseudo ${'z'.repeat(100)}`)];
+    const longStep = ['#gstep careful ' + 'x'.repeat(60), `#gwhy ${'y'.repeat(240)}`, ...hunks];
     const rest = Array.from({ length: 7 }, (_, i) => [`#gstep skim s${i}`, '#gwhy Why.', '#ghunk src/b.ts']).flat();
     const lines = [`#guide ${'s'.repeat(160)}`, `#risk high ${'r'.repeat(160)}`, ...longStep, ...rest];
     const { skill, app } = both(record([...VALID, '+ src/a.ts', '+ src/b.ts', ...lines]), '7.pr');
@@ -405,13 +415,11 @@ describe('guide (#guide, #risk, #gstep, #gwhy, #ghunk, #gpseudo): both parsers a
     const mirrored = {
       GUIDE_MAX_STEPS: appGuide.GUIDE_MAX_STEPS,
       GUIDE_MAX_HUNKS_PER_STEP: appGuide.GUIDE_MAX_HUNKS_PER_STEP,
-      GUIDE_MAX_PSEUDO_LINES: appGuide.GUIDE_MAX_PSEUDO_LINES,
       GUIDE_SUMMARY_MAX: appGuide.GUIDE_SUMMARY_MAX,
       GUIDE_RISK_WHY_MAX: appGuide.GUIDE_RISK_WHY_MAX,
       GUIDE_TITLE_MAX: appGuide.GUIDE_TITLE_MAX,
       GUIDE_WHY_MAX: appGuide.GUIDE_WHY_MAX,
       GUIDE_WHY_MAX_SENTENCES: appGuide.GUIDE_WHY_MAX_SENTENCES,
-      GUIDE_PSEUDO_MAX: appGuide.GUIDE_PSEUDO_MAX,
     };
     const skillLimits = Object.fromEntries(Object.keys(mirrored).map((name) => [name, skillGuide[name]]));
     expect(mirrored).toEqual(skillLimits);

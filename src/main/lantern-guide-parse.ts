@@ -6,13 +6,11 @@ const GUIDE_RISK_LEVELS: readonly LanternGuideRisk['level'][] = ['low', 'medium'
 const GUIDE_STEP_MODES = ['careful', 'skim'] as const;
 const GUIDE_MAX_STEPS = 8;
 const GUIDE_MAX_HUNKS_PER_STEP = 60;
-const GUIDE_MAX_PSEUDO_LINES = 8;
 const GUIDE_SUMMARY_MAX = 160;
 const GUIDE_RISK_WHY_MAX = 160;
 const GUIDE_TITLE_MAX = 60;
 const GUIDE_WHY_MAX = 240;
 const GUIDE_WHY_MAX_SENTENCES = 2;
-const GUIDE_PSEUDO_MAX = 100;
 const GUIDE_LINE = /^#(guide|risk|gstep|gwhy|ghunk|gpseudo)(?:[ \t]+(.*?))?[ \t]*$/;
 const RANGE = /^([+-])(\d+)(?:-(\d+))?$/;
 
@@ -34,7 +32,6 @@ interface DraftStep {
   careful: boolean;
   why: string | null;
   hunks: LanternGuideHunk[];
-  pseudo: string[];
   at: string;
 }
 
@@ -128,10 +125,11 @@ function parseGuideLines(lines: readonly GuideLine[], listed: ReadonlySet<string
         continue;
       }
       if (steps.length >= GUIDE_MAX_STEPS) errors.push(`${at}: more than ${GUIDE_MAX_STEPS} steps`);
-      step = { title, careful: mode === 'careful', why: null, hunks: [], pseudo: [], at };
+      step = { title, careful: mode === 'careful', why: null, hunks: [], at };
       steps.push(step);
       continue;
     }
+    if (tag === 'gpseudo') continue;
     if (!step) {
       errors.push(`${at}: #${tag} before any #gstep`);
       continue;
@@ -147,12 +145,6 @@ function parseGuideLines(lines: readonly GuideLine[], listed: ReadonlySet<string
       else if (step.hunks.some((ref) => sameHunk(ref, parsed.ref))) errors.push(`${at}: #ghunk repeats a hunk of step "${step.title}"`);
       else if (step.hunks.length >= GUIDE_MAX_HUNKS_PER_STEP) errors.push(`${at}: more than ${GUIDE_MAX_HUNKS_PER_STEP} #ghunk lines in step "${step.title}"`);
       else step.hunks.push(parsed.ref);
-    } else {
-      const problem = lineProblem(raw, 'the pseudocode line', GUIDE_PSEUDO_MAX);
-      if (!step.careful) errors.push(`${at}: #gpseudo only on a careful step ("${step.title}" is skim)`);
-      else if (problem) errors.push(`${at}: #gpseudo ${problem}`);
-      else if (step.pseudo.length >= GUIDE_MAX_PSEUDO_LINES) errors.push(`${at}: more than ${GUIDE_MAX_PSEUDO_LINES} #gpseudo lines in step "${step.title}"`);
-      else step.pseudo.push(raw);
     }
   }
   finishStep();
@@ -161,15 +153,13 @@ function parseGuideLines(lines: readonly GuideLine[], listed: ReadonlySet<string
   if (risk === null) errors.push(`${first}: a guide needs a #risk line`);
   if (steps.length === 0) errors.push(`${first}: a guide needs at least one #gstep`);
   if (errors.length > 0 || summary === null || risk === null) return { guide: null, error: errors[0] };
-  const made: LanternGuideStep[] = steps.map(({ title, why, careful, hunks, pseudo }) => ({ title, why: why ?? '', careful, hunks, ...(pseudo.length > 0 ? { pseudo } : {}) }));
+  const made: LanternGuideStep[] = steps.map(({ title, why, careful, hunks }) => ({ title, why: why ?? '', careful, hunks }));
   return { guide: { summary, risk, steps: made }, error: null };
 }
 
 export {
   GUIDE_MAX_HUNKS_PER_STEP,
-  GUIDE_MAX_PSEUDO_LINES,
   GUIDE_MAX_STEPS,
-  GUIDE_PSEUDO_MAX,
   GUIDE_RISK_WHY_MAX,
   GUIDE_SUMMARY_MAX,
   GUIDE_TITLE_MAX,

@@ -98,16 +98,10 @@ test('the arrow keys walk the files in guide order across steps, and the middle 
   await expect(page.locator('.lt-review .lt-guide-note-title')).toHaveText('Show the total and the pay action');
 });
 
-test('the pseudocode toggle shows and hides the pseudocode of a careful step, and the ticks stay while files change', async () => {
+test('no step has a pseudocode toggle, and the ticks stay while files change', async () => {
   await openGuide();
   const page = harness.page;
-  await expect(step(page, 0).locator('.lt-guide-pseudo')).toBeHidden();
-  await step(page, 0).locator('.lt-guide-pseudo-toggle').click();
-  await expect(step(page, 0).locator('.lt-guide-pseudo')).toBeVisible();
-  await expect(step(page, 0).locator('.lt-guide-pseudo')).toContainText('add up every price in the list');
-  await step(page, 0).locator('.lt-guide-pseudo-toggle').click();
-  await expect(step(page, 0).locator('.lt-guide-pseudo')).toBeHidden();
-  await expect(step(page, 2).locator('.lt-guide-pseudo-toggle')).toHaveCount(0);
+  await expect(page.locator('.lt-guide-pseudo-toggle, .lt-guide-pseudo')).toHaveCount(0);
   await step(page, 0).locator('.lt-guide-check').check();
   await expect(step(page, 0)).toHaveAttribute('data-done', 'true');
   await file(page, 1, 'src/checkout/use-checkout.ts').click();

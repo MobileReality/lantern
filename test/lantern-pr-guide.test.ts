@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import {
-  GUIDE_MAX_PSEUDO_LINES,
   GUIDE_MAX_STEPS,
   GUIDE_TITLE_MAX,
   GUIDE_WHY_MAX,
@@ -23,7 +22,6 @@ const GUIDE = {
       why: 'The types come first. Everything else reads them.',
       careful: true,
       hunks: [{ path: 'src/a.ts', side: 'new', start: 1, end: 20 }, { path: 'src/old.ts' }],
-      pseudo: ['for each step', 'check every hunk is owned once'],
     },
     {
       title: 'Callers',
@@ -86,9 +84,10 @@ describe('guideFromJson limits', () => {
     expect(guideFromJson(withStep({ why: 'x'.repeat(GUIDE_WHY_MAX) })).errors).toEqual([]);
   });
 
-  it('rejects pseudocode on a skim step and too many pseudocode lines', () => {
-    expect(guideFromJson(withStep({ careful: false })).errors[0]).toMatch(/only on a careful step/);
-    expect(guideFromJson(withStep({ pseudo: Array.from({ length: GUIDE_MAX_PSEUDO_LINES + 1 }, () => 'x') })).errors[0]).toMatch(/more than 8 #gpseudo/);
+  it('writes no pseudocode line, even from a legacy "pseudo" key', () => {
+    const { guide, errors } = guideFromJson(withStep({ pseudo: ['x'] }));
+    expect(errors).toEqual([]);
+    expect(guideRecordLines(guide).join('\n')).not.toMatch(/gpseudo/);
   });
 
   it('rejects too many steps, a long title, no hunks, a bad risk and a backwards range', () => {
