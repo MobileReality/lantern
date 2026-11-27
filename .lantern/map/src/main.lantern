@@ -192,7 +192,7 @@ src/main/lantern-git.ts . gateway 38b1cd7ee2d4
 #feature pull-requests
   = ext:git
 
-src/main/lantern-guide-parse.ts . pure 005adffe6147
+src/main/lantern-guide-parse.ts . pure f7f793f971d3
 #feature pull-requests
   < src/shared/control-characters.ts#hasControlCharacter
   = src/main/lantern-parse.ts#decodePath
@@ -456,7 +456,7 @@ src/main/lantern-texts.ts . service 18029fc1c004
   = src/main/lantern-parse.ts
   < src/main/lantern-types.ts
 
-src/main/lantern-types.ts . model 280458a0890b
+src/main/lantern-types.ts . model 7ed5462b220e
 #feature file-graph
   < src/main/lantern-plan-view-types.ts#LanternPlanView
   < src/shared/lantern-plan-fix.ts#LanternBrokenPlan

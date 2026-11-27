@@ -649,7 +649,7 @@ test/lantern-flow-reading.test.ts . test 07b583124b3f
   = src/renderer/lib/lanternview.ts#mountLanternView
   = test/helpers/lantern-map.ts#mapOf
 
-test/lantern-guide-view.test.ts . test a583446f95d4
+test/lantern-guide-view.test.ts . test 10ea0a053c0e
 #feature review-screen
   = src/renderer/lib/lanternguide.ts#guideStops
   = src/renderer/lib/lanternguideview.ts#createGuidePane
@@ -1340,7 +1340,7 @@ test/lantern-pr-flow-parse.test.ts . test b5a5e7f62cd5
   = src/main/lantern-pr-parse.ts#parsePrRecord
   = test/helpers/lantern-flow-cases.ts#REJECTED_FLOWS
 
-test/lantern-pr-guide.test.ts . test 39df52d3d2a8
+test/lantern-pr-guide.test.ts . test c6b83954414c
 #feature pull-requests
   = skills/lantern-setup/scripts/prguide.mjs
   = skills/lantern-setup/scripts/prs.mjs
@@ -1392,7 +1392,7 @@ test/lantern-pr-panel.test.ts . test 46c92f79264f
   = test/helpers/lantern-map.ts
   = test/helpers/pr-rows.ts#openPrFile
 
-test/lantern-pr-parity.test.ts . test be5c8c4dedc0
+test/lantern-pr-parity.test.ts . test 99e4d7896b38
 #feature pull-requests
   = skills/lantern-setup/scripts/prguide.mjs
   = skills/lantern-setup/scripts/prs.mjs

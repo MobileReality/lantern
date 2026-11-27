@@ -152,7 +152,7 @@ skills/lantern-setup/scripts/prflow.mjs . pure 319ff70286a7
 #feature pr-flow
   = skills/lantern-setup/scripts/lib.mjs
 
-skills/lantern-setup/scripts/prguide.mjs . pure 2d7afdf35f36
+skills/lantern-setup/scripts/prguide.mjs . pure 5df484878208
 #feature pull-requests
   = skills/lantern-setup/scripts/lib.mjs
 
