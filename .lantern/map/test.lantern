@@ -1655,7 +1655,7 @@ test/lantern-sync-describe.test.ts . test 0f26c391911f
   = src/main/lantern-pr-parse.ts
   = test/helpers/git-repo.ts
 
-test/lantern-sync-guide.test.ts . test 12fa5a4e1cca
+test/lantern-sync-guide.test.ts . test 955024fbd30d
 #feature pull-requests
   = skills/lantern-setup/scripts/prguide.mjs
   = skills/lantern-sync/scripts/sync.mjs
@@ -2637,7 +2637,7 @@ test/lantern-delegate-commit-identity.test.ts . test f4e0e76de264
   = skills/lantern-delegate/scripts/preflight.mjs
   = skills/lantern-delegate/scripts/github/identity.mjs
 
-test/lantern-delegate-delivery-flow.test.ts . test 121d498b5abe
+test/lantern-delegate-delivery-flow.test.ts . test 9665cadf807f
 #feature delegate-runs
   = scripts/e2e-delegate/checks.mjs
   = scripts/e2e-delegate/fake-lantern.mjs

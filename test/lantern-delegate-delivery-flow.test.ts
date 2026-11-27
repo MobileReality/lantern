@@ -68,7 +68,7 @@ describe('the delegate PR flow end to end, with the credential variables unset a
       const run = report.slices.find((slice: Slice) => slice.name === 'delegate-run') as Slice;
       expect(code, delivery).toBe(1);
       expect(run.detail?.filter((line) => line.startsWith('FAIL')).map((line) => line.split(':')[0].replace('FAIL ', '')), delivery).toEqual(expect.arrayContaining(['sync-verify-green', 'panel-sees-record']));
-      expect(run.detail?.find((line) => line.includes('sync-verify-green')), delivery).toContain('have no reason');
+      expect(run.detail?.find((line) => line.includes('panel-sees-record')), delivery).toContain('has no reason');
     }
   }, 240_000);
 

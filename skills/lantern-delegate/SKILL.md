@@ -697,10 +697,10 @@ node $S/scripts/sync.mjs verify --base <target> --require-pr --require-reason --
   --branch <type>/<slug> --root .claude/worktrees/agent-<id>
 ```
 
-`--require-reason` makes a changed file without a reason a red result (so does a bare `verify` now, and `sync.mjs pr` refuses to write such a record; always pass the flag): the delegate writes one
-sentence of *why* per changed file into the PR record (its `protocol.md`, step 10), and the Lantern
-app shows it under the file. Read a few of them in the record as part of reading the diff: a reason
-that restates the file name or the diff ("updated the parser") is not one; send it back.
+`--require-reason` makes a changed file without a reason a red result, unless the record's guide covers every hunk: then the
+guide's step titles and `why` lines are the reasons and the delegate writes no `reason.json` (its `protocol.md`, step 10). Keep passing the
+flag: it still fails a record with neither. A record with no guide still needs a `#reason` per file. Read the guide's `why` lines as part of reading
+the diff: one that restates the diff ("updated the parser") is not one; send it back.
 `--require-order` does the same for the review order (`#order` lines, the files numbered in the
 Lantern app): read it too. It should open on the file that carries the core idea or contract, and
 end on tests, map and docs; an order that is just the alphabet goes back.

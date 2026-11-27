@@ -11,7 +11,7 @@ skills/lantern-sync/scripts/selftest.mjs . test 53b8210bef4f
   = skills/lantern-setup/scripts/validate.mjs
   = skills/lantern-sync/scripts/sync.mjs
 
-skills/lantern-sync/scripts/sync.mjs . script c77c57568642
+skills/lantern-sync/scripts/sync.mjs . script 57b9c519ce1d
 #feature map-sync
 #see-also skills/lantern-setup/scripts/prs.mjs
   = ext:git

@@ -1,7 +1,7 @@
 lantern 1
 # scripts/e2e-delegate
 
-scripts/e2e-delegate/checks.mjs . util b96cc77ec55b
+scripts/e2e-delegate/checks.mjs . util 94c08f639214
 #feature skill-checks
   < scripts/lantern-bundle.mjs#BUNDLE_SKILLS
   < skills/lantern-delegate/scripts/bundled-skills.mjs#offEverywhere

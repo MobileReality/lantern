@@ -1,0 +1,64 @@
+lantern-pr 1
+# 95
+#title feat: the guide replaces per-file reasons
+#url https://github.com/MobileReality/lantern/pull/95
+#branch feat/guide-replaces-reasons
+#base feat/guided-review
+#opened 2026-11-27
+#head 605d0ff3b99358b09c178b18cda5ec947fce618b
+#describe what A guide that covers every hunk replaces the per-file reasons in the Lantern skills.
+#describe before A delegate wrote guide.json and also reason.json; pr refused without reasons.
+#describe after pr and verify --require-reason accept a covering guide; #reason stays the fallback for records without one.
+#describe verified typecheck, lint and the full test suite pass.
+~ docs/installation.md
+~ scripts/e2e-delegate/README.md
+~ scripts/e2e-delegate/checks.mjs
+~ scripts/skill-test/fake-agent.mjs
+~ skills/lantern-delegate/SKILL.md
+~ skills/lantern-delegate/protocol.md
+~ skills/lantern-setup/references/format.md
+~ skills/lantern-sync/SKILL.md
+~ skills/lantern-sync/scripts/sync.mjs
+~ test/lantern-delegate-delivery-flow.test.ts
+~ test/lantern-sync-guide.test.ts
+#order skills/lantern-sync/scripts/sync.mjs
+#order test/lantern-sync-guide.test.ts
+#order test/lantern-delegate-delivery-flow.test.ts
+#order skills/lantern-delegate/protocol.md
+#order skills/lantern-delegate/SKILL.md
+#order skills/lantern-sync/SKILL.md
+#order skills/lantern-setup/references/format.md
+#order scripts/e2e-delegate/checks.mjs
+#order scripts/skill-test/fake-agent.mjs
+#order scripts/e2e-delegate/README.md
+#order docs/installation.md
+#story A delegate hands over a PR with only a guide
+#step actor A delegate
+#step action records its pull request with a guide
+#step subject the PR record
+#file skills/lantern-sync/scripts/sync.mjs
+#file test/lantern-sync-guide.test.ts
+#below consequence every changed file needed its own reason => a guide covering every hunk is enough
+#guide A guide that covers every hunk now stands in for the per-file reasons.
+#risk low One gate relaxed, and only when the guide covers every hunk; old records are unchanged.
+#gstep careful The gate accepts a covering guide
+#gwhy pr stops refusing and verify stops failing for missing reasons when the guide covers every hunk. Without one, both behave as before.
+#ghunk skills/lantern-sync/scripts/sync.mjs
+#gpseudo pr: refuse unexplained files only when there is no guide
+#gpseudo verify: excuse missing reasons only when guide coverage has no problems
+#gstep skim Tests for the guide-only record
+#gwhy Prove a guide-only record passes, and that neither a guide nor reasons, or a partial guide, still fails.
+#ghunk test/lantern-sync-guide.test.ts
+#ghunk test/lantern-delegate-delivery-flow.test.ts
+#gstep skim Delegates stop writing reasons
+#gwhy The protocol, skills and format say the guide replaces reasons and #reason is the fallback.
+#ghunk skills/lantern-delegate/protocol.md
+#ghunk skills/lantern-delegate/SKILL.md
+#ghunk skills/lantern-sync/SKILL.md
+#ghunk skills/lantern-setup/references/format.md
+#ghunk docs/installation.md
+#gstep skim Harness and fake agent follow
+#gwhy The e2e panel check and the fake delegate no longer need reasons, and the no-reason scenario now means no guide and no reasons.
+#ghunk scripts/e2e-delegate/checks.mjs
+#ghunk scripts/e2e-delegate/README.md
+#ghunk scripts/skill-test/fake-agent.mjs
