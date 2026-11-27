@@ -1,0 +1,70 @@
+lantern-pr 1
+# 94
+#title Show the guide inside the PR review screen
+#url https://github.com/MobileReality/lantern/pull/94
+#branch feat/guide-in-review
+#base feat/guided-review
+#opened 2026-11-27
+#head 34881690ce6a9c95008f5fa9e3eb29f5774c02d9
+#describe what A pull request with a guide is reviewed on the normal review screen: the steps replace the file list on the left, the middle shows one file's diff with its step's title and why, and the arrow keys walk the files in guide order.
+#describe what The Guide button and the separate Guide view are removed; Flow and Macro are unchanged and a record without a guide behaves as before.
+#describe before A Guide tile switched the whole area to one long scroll of hunks.
+#describe after Picking a file in a step, or stepping with the arrows, opens that file's diff in the middle with the lines the step names marked.
+#describe verified Typecheck, lint, the unit suite and the pull request review e2e specs all pass.
++ src/renderer/lib/lanternguidenote.ts
+~ src/renderer/lantern-guide.css
+~ src/renderer/lantern-select.css
+~ src/renderer/lantern.css
+~ src/renderer/lib/lanternguide.ts
+~ src/renderer/lib/lanternguideview.ts
+~ src/renderer/lib/lanternmacroview.ts
+~ src/renderer/lib/lanternprpanel.ts
+~ src/renderer/lib/lanternreview.ts
+~ src/renderer/lib/lanternview.ts
+~ src/renderer/lib/prdiffmodal.ts
+~ test/e2e/pr-review-guide.spec.ts
+~ test/lantern-guide-view.test.ts
+#order src/renderer/lib/lanternguide.ts
+#order src/renderer/lib/lanternguideview.ts
+#order src/renderer/lib/lanternguidenote.ts
+#order src/renderer/lib/lanternview.ts
+#order src/renderer/lib/lanternreview.ts
+#order src/renderer/lib/prdiffmodal.ts
+#order src/renderer/lib/lanternprpanel.ts
+#order src/renderer/lib/lanternmacroview.ts
+#order src/renderer/lantern-guide.css
+#order src/renderer/lantern-select.css
+#order src/renderer/lantern.css
+#order test/lantern-guide-view.test.ts
+#order test/e2e/pr-review-guide.spec.ts
+#reason src/renderer/lib/lanternguidenote.ts A reviewer needs the step's title and why next to the file's diff, not in a separate view, to know what to look for.
+#reason src/renderer/lantern-guide.css Styles the left-pane guide, the step note and the marked diff lines in place of the old full-screen Guide view.
+#reason src/renderer/lantern-select.css The step's why above a diff is readable text like the reason row, so it must stay selectable.
+#reason src/renderer/lantern.css The full-screen Guide host no longer exists, so its diff colour scope is dropped.
+#reason src/renderer/lib/lanternguide.ts Reviewers walk a guided PR file by file, so the guide has to become an ordered list of stops and line marks instead of a set of hunks to scroll.
+#reason src/renderer/lib/lanternguideview.ts The steps now replace the file list in the left pane, so the pane lists each step's files and highlights the current one instead of drawing hunks.
+#reason src/renderer/lib/lanternmacroview.ts The guide no longer needs a view switch, so the strip goes back to Files, Macro and Flow.
+#reason src/renderer/lib/lanternprpanel.ts With the Guide button gone, a guide that could not be read would be invisible, so the header carries a note and the flow strip stays with the guide pane.
+#reason src/renderer/lib/lanternreview.ts The review pane is where the diff is read, so it shows the step note and marks the lines the step names, and repaints when only the step changes.
+#reason src/renderer/lib/lanternview.ts The guide belongs to the existing review flow, so the file list, review order and arrow stepping follow guide order and the Guide view is removed.
+#reason src/renderer/lib/prdiffmodal.ts Marking the step's lines must happen after the async diff is drawn, so the diff view now tells its owner when it has filled.
+#reason test/e2e/pr-review-guide.spec.ts Proves in the real app that the guide is in the left pane, one file's diff is in the middle, arrow keys follow guide order and Flow stays available.
+#reason test/lantern-guide-view.test.ts Pins the stop order, the marking and the guide pane, and that the review screen shows the guide without a Guide button and still works without one.
+#story A reviewer reads a guided pull request file by file
+#step actor Reviewer
+#step action opens a pull request that has a guide
+#file src/renderer/lib/lanternview.ts
+#step subject the review screen
+#below interaction sees the summary, risk and steps where the file list was
+#file src/renderer/lib/lanternguideview.ts
+#file src/renderer/lantern-guide.css
+#below interaction reads a step's file diff in the middle, its lines marked
+#file src/renderer/lib/lanternreview.ts
+#file src/renderer/lib/lanternguidenote.ts
+#file src/renderer/lib/prdiffmodal.ts
+#below interaction presses an arrow key to reach the next file in guide order
+#file src/renderer/lib/lanternguide.ts
+#file test/e2e/pr-review-guide.spec.ts
+#below consequence a separate Guide view with one long scroll of hunks => the usual review screen, one file at a time in guide order
+#file src/renderer/lib/lanternmacroview.ts
+#file test/lantern-guide-view.test.ts
