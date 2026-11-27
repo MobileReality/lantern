@@ -39,7 +39,7 @@ src/renderer/diagnostics.css . style 73d6b7749286
 src/renderer/lantern-flow.css . style 934625fc4247
 #feature pr-flow
 
-src/renderer/lantern-guide.css . style ecfcf2c2f353
+src/renderer/lantern-guide.css . style f188bc62555b
 #feature review-screen
 
 src/renderer/lantern-macroview.css . style 14604f7b1dc4
@@ -60,13 +60,13 @@ src/renderer/lantern-review.css . style 12acd03a1fdb
 src/renderer/lantern-sections.css . style b393efd2a26f
 #feature lantern-sections
 
-src/renderer/lantern-select.css . style 55a994a1e274
+src/renderer/lantern-select.css . style ac4591413807
 #feature review-screen
 
 src/renderer/lantern-setup.css . style ee7ca9584ee0
 #feature map-setup
 
-src/renderer/lantern.css . style 145f4e398cb0
+src/renderer/lantern.css . style 996edba103b0
 #feature file-graph
 
 src/renderer/memory.css . style 63701ca4d113
