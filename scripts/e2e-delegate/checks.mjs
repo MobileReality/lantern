@@ -127,13 +127,13 @@ export function checkPanelRecord({ pr, changedFiles }) {
   const problems = [
     ...(changedFiles.length === 0 ? ['no changed files'] : []),
     ...changedFiles.filter((f) => !listed.has(f)).map((f) => `${f} is not listed`),
-    ...pr.files.filter((f) => !f.reason).map((f) => `${f.path} has no reason`),
+    ...((pr.guide?.steps ?? []).length > 0 ? [] : pr.files.filter((f) => !f.reason)).map((f) => `${f.path} has no reason`),
     ...(pr.ordered ? [] : ['no review order']),
     ...((pr.flow ?? []).length > 0 ? [] : ['no flow']),
     ...((pr.guide?.steps ?? []).length > 0 ? [] : ['no guide']),
     ...(pr.description ? [] : ['no description']),
   ];
-  return result('panel-sees-record', problems.length === 0, problems.length === 0 ? `${pr.files.length} file(s) with reasons, review order, flow, guide and description` : problems.join('; '));
+  return result('panel-sees-record', problems.length === 0, problems.length === 0 ? `${pr.files.length} file(s) with a guide covering them, review order, flow, guide and description` : problems.join('; '));
 }
 
 export function checkSkillsDir(entries, extras = [], delegateOff = []) {

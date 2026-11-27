@@ -137,7 +137,7 @@ costs a retry. So:
 
 - One plain command per call. No `;`, `&&`, `||`, pipe, `&` or newline joining commands: make separate
   calls and read the exit code from the tool result, not from `echo $?`.
-- No heredoc. Write a file (`.ai/tmp/reason.json`, the PR body) with the Write or Edit tool.
+- No heredoc. Write a file (`.ai/tmp/guide.json`, the PR body) with the Write or Edit tool.
 - No `$VAR` or `$(...)` in an argument. Type the literal absolute path from the brief.
 - No `git -C` and no `cd <dir> && ...`: you are already in the worktree root.
 - A commit is two calls: `git add <path> <path>` in the first, `git commit -m "<subject>"` in the
@@ -376,24 +376,22 @@ the map records no model) and `## Procedure` step 3 first.
 8. Once green: remove the run folder and commit, then push
    `git push origin HEAD:refs/heads/<type>/<slug>`. Under `Delivery: push` this is the last remote act; under `local` there is no push but the branch rename (see "Delivery").
 9. Open the PR with `pr-create.mjs` as above (`Delivery: pr` only). Read the id off the URL it prints.
-10. `node <Skills>/lantern-sync/scripts/sync.mjs pr <id> --url <PR url> --title "<PR title>" --base <target> --branch <type>/<slug> --reason-file .ai/tmp/reason.json --order-file .ai/tmp/order.json --flow-file .ai/tmp/flow.json --guide-file .ai/tmp/guide.json --describe-file .ai/tmp/describe.json`.
+10. `node <Skills>/lantern-sync/scripts/sync.mjs pr <id> --url <PR url> --title "<PR title>" --base <target> --branch <type>/<slug> --order-file .ai/tmp/order.json --flow-file .ai/tmp/flow.json --guide-file .ai/tmp/guide.json --describe-file .ai/tmp/describe.json`.
     **With no host PR** (`push`, `local`) the same call without `<id>`, `--url` and `--title`: it writes the local record (see "Delivery"). Everything below about this step holds for both.
     `--branch` is required: your local branch is `worktree-agent-<id>`, the record names the pushed
-    one. Exit 1 (it refused): if the message says "N of M changed file(s) have no reason", add the listed files to `.ai/tmp/reason.json` and run `pr` again; for any other refusal (wrong branch, second record) stop and report its message verbatim; the branch is already pushed.
+    one. Exit 1 (it refused): if the message says "N of M changed file(s) have no reason", you wrote no guide: write `.ai/tmp/guide.json` (below) and run `pr` again with `--guide-file`; for any other refusal (wrong branch, second record) stop and report its message verbatim; the branch is already pushed.
     **A brief with `Plan: <slug>, item <id>`** (a Lantern plan): add `--plan <slug> --item <id>` to this command
     (`--item` again for each further item the brief names). That writes the `#plan` line that ticks the item.
     `pr` refuses a plan or item that does not exist (exit 1): stop and report its message verbatim. Never
     edit the plan file; the PR record is the tick. Re-runs keep the ticks, and every re-run of step 10 carries the same flags.
     **A map-only task** (a seed or a refresh: nothing changed outside `.lantern/`) is a normal PR:
-    `pr` records it with no file lines (so no reasons, order, flow or guide to write), and `verify
+    `pr` records it with no file lines (so no order, flow or guide to write), and `verify
     --require-pr --require-reason --require-order --require-flow --require-guide` is green on it (it has no hunks, so no guide is needed or written). Do not report it red.
-    **Write the reasons first, at this step:** one entry per changed file, from your own diff
-    (`git diff --name-only <target>...HEAD -- . ':!.lantern'` lists them), in
-    `.ai/tmp/reason.json` as `{"<path>": "<reason>"}`. A reason follows
-    `<Skills>/lantern-setup/references/reason.md`: one sentence, the *why* of the change, not the *what*, at most 160 characters.
-    `--reason <path>=<reason>` (repeatable) does the same for one file. Re-running this step keeps
-    existing reasons; a file added since needs its own.
-    **Write the review order too**, from the same diff: `.ai/tmp/order.json`, a JSON array of every
+    **No reasons to write.** The guide below carries the why of every change, so you write no `reason.json`
+    and no `--reason`: `pr` and `verify --require-reason` accept a record whose guide covers every hunk
+    in place of `#reason` lines. (Only a record with no guide still needs one reason per changed file, in
+    `.ai/tmp/reason.json` by `<Skills>/lantern-setup/references/reason.md`; you always write the guide.)
+    **Write the review order**, from the diff (`git diff --name-only <target>...HEAD -- . ':!.lantern'` lists the files): `.ai/tmp/order.json`, a JSON array of every
     changed path, first = review first. One rule: the file that carries the core idea or contract
     (types, data model, public API) first, then the logic that uses it, then wiring/IPC/UI, then
     tests, then map/docs/generated files last. Re-running keeps the order; a file added since needs
@@ -450,7 +448,7 @@ the map records no model) and `## Procedure` step 3 first.
     Only that file in it. (`pr` only: the local record is never committed.)
 12. **Push again, same branch, plain:** `git push origin HEAD:refs/heads/<type>/<slug>`. Never `--force`. (`pr` only.)
 13. `node <Skills>/lantern-sync/scripts/sync.mjs verify --base <target> --require-pr --require-reason --require-order --require-flow --require-guide --branch <type>/<slug>`
-    must be green (exit 0) before you report. Red (a file without a reason included): fix what it
+    must be green (exit 0) before you report. Red (a hunk missing from the guide included): fix what it
     prints, then **Re-entry**.
 
 **Every push is plain.** Remote work is exactly: push your own branch, open one PR. Each push (the

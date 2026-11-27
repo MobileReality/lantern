@@ -193,3 +193,39 @@ describe('sync.mjs verify --require-guide', () => {
     expect(red.stdout).toMatch(/no #gwhy line/);
   });
 });
+
+describe('a guide in place of the reasons', () => {
+  const prNoReasons = (...extra: string[]) => {
+    write(root, '.ai/tmp/order.json', JSON.stringify(ORDER));
+    write(root, '.ai/tmp/flow.json', JSON.stringify(FLOW));
+    write(root, '.ai/tmp/describe.json', JSON.stringify(DESCRIBE));
+    return runSync(root, 'pr', '--base', 'main', '--branch', BRANCH, '--order-file', '.ai/tmp/order.json', '--flow-file', '.ai/tmp/flow.json', '--describe-file', '.ai/tmp/describe.json', ...extra);
+  };
+
+  it('writes a record with no #reason lines that passes verify --require-reason --require-guide', () => {
+    const run = prNoReasons('--guide-file', guideFile(FULL));
+    expect(run.status, run.stderr).toBe(0);
+    expect(record()).not.toMatch(/^#reason src\//m);
+    const green = verifyGuide();
+    expect(green.status, green.stdout).toBe(0);
+  });
+
+  it('refuses a record with neither a guide nor reasons, and fails verify on it', () => {
+    const run = prNoReasons();
+    expect(run.status).toBe(1);
+    expect(run.stderr).toMatch(/have no reason/);
+    expect(writeRecord().status).toBe(0);
+    write(root, RECORD, record().replace(/^#reason .*\n/gm, ''));
+    const red = verify('--require-pr', '--require-reason');
+    expect(red.status).toBe(1);
+    expect(red.stdout).toMatch(/have no reason/);
+  });
+
+  it('does not accept a guide that leaves a hunk out as the reasons', () => {
+    const partial = guideOf([stepOf('The new defaults', [{ path: 'src/b.ts', side: 'new', start: 1, end: 1 }]), stepOf('The rest', ['src/moved.ts', 'src/a.ts', 'assets/logo.png'])]);
+    expect(prNoReasons('--guide-file', guideFile(partial)).status).toBe(0);
+    const red = verify('--require-pr', '--require-reason');
+    expect(red.status).toBe(1);
+    expect(red.stdout).toMatch(/have no reason/);
+  });
+});

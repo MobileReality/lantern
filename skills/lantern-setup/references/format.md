@@ -524,13 +524,13 @@ lantern-pr 1
   encoding), up to the first space; the rest of the line is the reason, as `reason.md` in this folder
   defines it: one sentence of why, 1 to 160 characters (counted in characters, not bytes), no
   control characters or newlines, otherwise free text (a literal `#`, `%` or `=` needs no escaping;
-  the app shows it as plain text). Files without a reason simply have no `#reason` line. The format
+  the app shows it as plain text). Files without a reason simply have no `#reason` line. A record whose guide covers every hunk needs none: the guide replaces the per-file reasons, and `#reason` is the fallback for records without a guide (old records keep theirs). The format
   stays `lantern-pr 1` on purpose: a `#reason` line is an unknown `#` line, which every reader of
   that version already ignores, whereas an indented continuation line under the file line would
   make older readers reject the whole record. `prs.mjs` errors on a `#reason` for a path the record
   does not list, on a second `#reason` for one path, an empty or over-long reason; the app reader
   drops such a reason and still shows the record. `lantern-sync pr --reason` writes them and
-  `lantern-sync pr` refuses to write a record where a changed file lacks one (lockfiles, assets and generated files get a default), and `lantern-sync verify` fails on such a record.
+  `lantern-sync pr` refuses to write a record without a guide where a changed file lacks one (lockfiles, assets and generated files get a default), and `lantern-sync verify` fails on such a record; a guide covering every hunk stands in for the reasons.
 - **Review order** — optional `#order <path>` lines, one per file, first line = review first;
   `lantern-sync pr --order` writes them after the file lines and before the `#reason` lines (readers
   accept any position). `<path>` is encoded exactly as in its file line. The agent that opened the

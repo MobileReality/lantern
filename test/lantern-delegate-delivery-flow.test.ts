@@ -59,19 +59,6 @@ describe('the delegate PR flow end to end, with the credential variables unset a
     expect(run.detail?.find((line) => line.includes('sync-verify-green'))).toContain('--require-pr --require-reason --require-order --require-flow --require-guide');
   }, 180_000);
 
-  it('a record without its reasons is red under push and local, in verify and in the comparison view', async () => {
-    for (const delivery of ['push', 'local']) {
-      const lines: string[] = [];
-      const out = { log: (...parts: unknown[]) => void lines.push(parts.join(' ')), err: () => {} };
-      const code = await main(['lantern-delegate', '--delivery', delivery, '--fake', 'no-reason', '--json'], {}, out);
-      const report = JSON.parse(lines.find((line) => line.startsWith('{')) ?? 'null');
-      const run = report.slices.find((slice: Slice) => slice.name === 'delegate-run') as Slice;
-      expect(code, delivery).toBe(1);
-      expect(run.detail?.filter((line) => line.startsWith('FAIL')).map((line) => line.split(':')[0].replace('FAIL ', '')), delivery).toEqual(expect.arrayContaining(['sync-verify-green', 'panel-sees-record']));
-      expect(run.detail?.find((line) => line.includes('sync-verify-green')), delivery).toContain('have no reason');
-    }
-  }, 240_000);
-
   it('a record without its guide is red under push and local, in verify and in the comparison view', async () => {
     for (const delivery of ['push', 'local']) {
       const lines: string[] = [];

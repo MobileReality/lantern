@@ -912,8 +912,8 @@ function cmdPr(root, positional, flags) {
         if (!reasons.has(file) && isExempt(file)) reasons.set(file, EXEMPT_REASON);
     }
     const unexplainedFiles = entries.map((entry) => L.decodePath(entry.path)).filter((file) => !reasons.has(file));
-    if (unexplainedFiles.length) {
-        throw new SyncError(`refusing to write ${rel}: ${unexplainedFiles.length} of ${entries.length} changed file(s) have no reason:\n  ${unexplainedFiles.join('\n  ')}\nGive each one with --reason <path>=<reason> or --reason-file (one sentence of why, not what); lockfiles, assets and generated files get a default.`, 1);
+    if (unexplainedFiles.length && !guide) {
+        throw new SyncError(`refusing to write ${rel}: ${unexplainedFiles.length} of ${entries.length} changed file(s) have no reason:\n  ${unexplainedFiles.join('\n  ')}\nGive each one with --reason <path>=<reason> or --reason-file (one sentence of why, not what), or write a guide that covers every hunk with --guide-file; lockfiles, assets and generated files get a default.`, 1);
     }
     const lines = noPr
         ? [P.BRANCH_HEADER, `#branch ${branch}`, `#base ${base}`, `#opened ${opened}`, `#head ${head}`]
@@ -1223,7 +1223,8 @@ function cmdVerify(root, flags) {
     }
     if (reasonRecord) {
         const unexplained = reasonRecord.files.filter((f) => !f.reason && !isExempt(f.path)).map((f) => f.path);
-        if (unexplained.length) problems.push(unexplainedMessage(reasonRecord.file, unexplained, reasonRecord.files.length));
+        const guided = reasonRecord.guide && guideCoverageProblems(reasonRecord.file, changeHunks(root, cs), reasonRecord.guide).length === 0;
+        if (unexplained.length && !guided) problems.push(unexplainedMessage(reasonRecord.file, unexplained, reasonRecord.files.length));
     } else if (flags['require-reason']) problems.push(`--require-reason needs ${NO_RECORD_NEEDED} ${reasonBranch ?? '(detached HEAD: pass --branch)'}`);
     if (reasonRecord) {
         const placed = new Set(reasonRecord.order);
